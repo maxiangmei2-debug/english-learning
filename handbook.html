@@ -345,6 +345,9 @@
     /* Grids */
     .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 14px; }
 
+    /* Inline grids inside cards - force single column on mobile */
+    .card div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; gap: 8px !important; }
+
     /* Tables - critical: add scroll wrapper */
     .study-table { font-size: 12px; min-width: 480px; }
     .study-table th, .study-table td { padding: 5px 6px; }
@@ -379,6 +382,25 @@
     /* Back button */
     .back-link-mobile { display: inline-flex; }
     .back-link-desktop { display: none; }
+
+    /* Sub-title */
+    .sub-title { font-size: 13px; margin: 10px 0 4px; padding-left: 8px; border-left-width: 2px; }
+
+    /* Badge */
+    .badge { font-size: 10px; padding: 1px 6px; }
+
+    /* Inline style overrides for mobile */
+    .card span[style*="font-size:13px"], .card span[style*="font-size:15px"] { font-size: 12px !important; }
+    .card div[style*="font-size:15px"] { font-size: 13px !important; }
+    .card div[style*="font-size:13px"] { font-size: 12px !important; }
+    .card div[style*="font-size:14px"] { font-size: 13px !important; }
+    .card div[style*="border-radius:10px"], .card div[style*="border-radius: 10px"] { border-radius: 8px !important; padding: 10px !important; }
+    .card div[style*="padding:14px"], .card div[style*="padding: 14px"] { padding: 10px !important; }
+    .card div[style*="border-left-width:4px"], .card div[style*="border-left:4px"] { border-left-width: 3px !important; }
+    .card div[style*="margin-bottom:16px"], .card div[style*="margin-bottom: 16px"] { margin-bottom: 10px !important; }
+    .card div[style*="margin-bottom:10px"], .card div[style*="margin-bottom: 10px"] { margin-bottom: 6px !important; }
+    .card div[style*="gap:8px"], .card div[style*="gap: 8px"] { gap: 6px !important; }
+    .card span[style*="padding:4px 14px"], .card span[style*="padding:4px"], .card span[style*="padding: 4px"] { padding: 3px 10px !important; font-size: 11px !important; }
   }
 
   /* Table horizontal scroll for all screens but especially mobile */
@@ -4177,6 +4199,22 @@ function shuffleCards() {
 }
 
 renderFlipCards(flipData);
+
+// Hash-based tab switching for focused navigation from study plan
+(function() {
+  var hash = window.location.hash.replace('#','');
+  if (hash && ['grammar','vocab','phrase','scene','errors','review'].indexOf(hash) >= 0) {
+    switchTab(hash);
+    // Hide header when coming from study plan for focused view
+    var hdr = document.querySelector('.header');
+    if (hdr) hdr.style.display = 'none';
+    // Scroll to content after a small delay
+    setTimeout(function() {
+      var section = document.getElementById(hash);
+      if (section) section.scrollIntoView({behavior:'smooth', block:'start'});
+    }, 100);
+  }
+})();
 </script>
 
 </body>
