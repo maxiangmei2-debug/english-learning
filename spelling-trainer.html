@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>词汇拼写训练营</title>
+<style>
+  :root {
+    --primary:#6366F1; --primary-light:#EEF2FF; --primary-dark:#4F46E5;
+    --success:#10B981; --success-light:#ECFDF5;
+    --danger:#EF4444; --danger-light:#FEF2F2;
+    --accent:#F59E0B; --accent-light:#FFFBEB;
+    --purple:#8B5CF6; --purple-light:#F5F3FF;
+    --gray-50:#F9FAFB; --gray-100:#F3F4F6; --gray-200:#E5E7EB;
+    --gray-300:#D1D5DB; --gray-500:#6B7280; --gray-600:#4B5563;
+    --gray-700:#374151; --gray-800:#1F2937;
+    --radius:14px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    background:linear-gradient(135deg,#6366F1 0%,#8B5CF6 50%,#A855F7 100%);
+    min-height:100vh;color:var(--gray-800);overflow-x:hidden;
+  }
+
+  /* ===== 首页 ===== */
+  .home-page{display:flex;flex-direction:column;min-height:100vh;overflow-y:auto;}
+  .home-hero{text-align:center;padding:36px 20px 16px;color:white;}
+  .home-hero h1{font-size:26px;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,0.2);}
+  .home-hero p{font-size:13px;opacity:0.8;margin-top:6px;}
+
+  .home-stats{display:flex;justify-content:center;gap:24px;padding:10px 20px;color:white;}
+  .home-stat{text-align:center;}
+  .home-stat-icon{font-size:22px;}
+  .home-stat-val{font-size:18px;font-weight:700;}
+  .home-stat-label{font-size:11px;opacity:0.7;}
+
+  /* 模式选择 */
+  .mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px 16px;max-width:500px;margin:0 auto;}
+  .mode-card{
+    background:white;border-radius:var(--radius);padding:16px 12px;
+    box-shadow:0 4px 16px rgba(0,0,0,0.12);cursor:pointer;transition:all 0.2s;text-align:center;
+    touch-action:manipulation;user-select:none;
+  }
+  .mode-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.18);}
+  .mode-card:active{transform:translateY(-1px);}
+  .mode-card-icon{font-size:30px;margin-bottom:4px;}
+  .mode-card-title{font-size:14px;font-weight:700;}
+  .mode-card-desc{font-size:11px;color:var(--gray-500);margin-top:3px;}
+
+  /* 分类选择 */
+  .cat-section{padding:12px 16px 20px;max-width:500px;margin:0 auto;}
+  .cat-label{font-size:13px;color:rgba(255,255,255,0.7);font-weight:600;margin-bottom:8px;}
+  .cat-bar{display:flex;flex-wrap:wrap;gap:6px;}
+  .cat-btn{
+    padding:7px 14px;border-radius:18px;border:1.5px solid rgba(255,255,255,0.35);
+    background:rgba(255,255,255,0.12);color:white;font-size:12px;
+    cursor:pointer;transition:all 0.2s;font-weight:500;
+    touch-action:manipulation;user-select:none;
+  }
+  .cat-btn:hover{background:rgba(255,255,255,0.25);}
+  .cat-btn.active{background:white;color:var(--primary);border-color:white;}
+
+  /* ===== 练习页面 ===== */
+  .practice-page{display:none;min-height:100vh;}
+  .practice-page.active{display:flex;flex-direction:column;}
+
+  .practice-top{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 16px;background:rgba(255,255,255,0.1);color:white;
+  }
+  .practice-back{
+    background:rgba(255,255,255,0.2);border:none;color:white;
+    padding:8px 14px;border-radius:20px;font-size:13px;cursor:pointer;
+    touch-action:manipulation;user-select:none;
+  }
+  .practice-back:hover{background:rgba(255,255,255,0.3);}
+  .practice-info{font-size:14px;font-weight:600;}
+
+  .progress-bar{padding:4px 16px;}
+  .progress-track{width:100%;height:6px;background:rgba(255,255,255,0.2);border-radius:3px;}
+  .progress-fill{height:100%;border-radius:3px;background:white;transition:width 0.3s;}
+
+  /* 题目区 */
+  .q-area{
+    background:white;border-radius:20px 20px 0 0;
+    padding:20px 16px;flex:1;margin-top:8px;
+    box-shadow:0 -4px 20px rgba(0,0,0,0.08);
+    overflow-y:auto;
+  }
+
+  .q-prompt{font-size:18px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .q-sub{font-size:13px;color:var(--gray-500);margin-bottom:14px;}
+
+  /* 模式1：看英文猜中文 - 选择题 */
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .opt-btn{
+    padding:14px 12px;border-radius:12px;border:2px solid var(--gray-200);
+    background:white;font-size:14px;cursor:pointer;transition:all 0.2s;
+    font-weight:500;text-align:center;line-height:1.4;
+    touch-action:manipulation;user-select:none;
+  }
+  .opt-btn:hover{border-color:var(--primary);background:var(--primary-light);}
+  .opt-btn.selected{border-color:var(--primary);background:var(--primary-light);color:var(--primary);}
+  .opt-btn.correct{border-color:var(--success);background:var(--success-light);color:#065F46;animation:pop 0.3s;}
+  .opt-btn.wrong{border-color:var(--danger);background:var(--danger-light);color:#991B1B;animation:shake 0.4s;}
+  @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+  /* 模式2：看中文拼英文 - 拼写区 */
+  .spell-section{margin-bottom:16px;}
+  .spell-prompt{font-size:18px;font-weight:700;margin-bottom:4px;}
+  .spell-hint{font-size:13px;color:var(--gray-500);margin-bottom:10px;}
+  .spell-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .spell-input{
+    flex:1;min-width:120px;padding:12px 14px;border-radius:12px;
+    border:2px solid var(--gray-200);font-size:16px;font-weight:600;
+    outline:none;transition:all 0.2s;
+    touch-action:manipulation;
+  }
+  .spell-input:focus{border-color:var(--primary);}
+  .spell-input.correct{border-color:var(--success);background:var(--success-light);}
+  .spell-input.wrong{border-color:var(--danger);background:var(--danger-light);}
+  .spell-submit{
+    padding:12px 20px;border-radius:12px;border:none;
+    background:var(--primary);color:white;font-size:14px;font-weight:600;
+    cursor:pointer;touch-action:manipulation;user-select:none;
+  }
+  .spell-submit:hover{background:var(--primary-dark);}
+  .spell-show{
+    padding:10px 16px;border-radius:12px;border:2px solid var(--gray-200);
+    background:white;font-size:12px;cursor:pointer;touch-action:manipulation;
+    user-select:none;color:var(--gray-600);
+  }
+  .spell-show:hover{border-color:var(--accent);color:var(--accent);}
+
+  /* 音标展示 */
+  .phonetic{font-size:14px;color:var(--purple);font-weight:500;margin-bottom:4px;}
+
+  /* 拼写练习区（在解析中） */
+  .spell-practice{
+    background:var(--primary-light);border-radius:12px;padding:14px 16px;margin-top:12px;
+  }
+  .spell-practice-title{font-size:13px;font-weight:700;color:var(--primary);margin-bottom:8px;}
+  .spell-practice-row{
+    display:flex;gap:6px;align-items:center;margin-bottom:8px;
+  }
+  .spell-practice-word{font-size:13px;font-weight:600;color:var(--gray-700);min-width:60px;}
+  .spell-practice-input{
+    flex:1;padding:8px 10px;border-radius:8px;border:1.5px solid var(--gray-300);
+    font-size:14px;outline:none;transition:all 0.2s;
+    touch-action:manipulation;
+  }
+  .spell-practice-input:focus{border-color:var(--primary);}
+  .spell-practice-input.correct{border-color:var(--success);background:var(--success-light);}
+  .spell-practice-input.wrong{border-color:var(--danger);background:var(--danger-light);}
+  .spell-practice-btn{
+    padding:6px 10px;border-radius:8px;border:none;
+    background:var(--primary);color:white;font-size:11px;
+    cursor:pointer;touch-action:manipulation;user-select:none;
+  }
+  .spell-practice-result{font-size:12px;font-weight:600;margin-left:4px;}
+
+  /* 解析区 */
+  .explain-area{
+    margin-top:14px;padding:16px;border-radius:12px;
+    background:var(--gray-50);border:1px solid var(--gray-200);
+    display:none;
+  }
+  .explain-area.show{display:block;animation:fadeIn 0.3s;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  .explain-title{font-size:15px;font-weight:700;color:var(--primary);margin-bottom:10px;}
+
+  /* 所有选项含义 */
+  .opts-meanings{margin-bottom:12px;}
+  .opts-meaning-item{
+    display:flex;align-items:center;gap:8px;padding:6px 0;
+    font-size:13px;line-height:1.4;
+  }
+  .opts-meaning-word{font-weight:700;min-width:80px;}
+  .opts-meaning-cn{color:var(--gray-600);}
+  .opts-meaning-correct .opts-meaning-word{color:var(--success);}
+  .opts-meaning-correct .opts-meaning-cn{color:var(--success);}
+  .opts-meaning-wrong .opts-meaning-word{color:var(--danger);}
+  .opts-meaning-selected .opts-meaning-word{color:var(--danger);}
+  .opts-meaning-selected .opts-meaning-cn{color:var(--danger);}
+
+  .explain-content{font-size:13px;line-height:1.6;color:var(--gray-700);}
+  .en{color:var(--primary);font-weight:600;font-style:italic;}
+  .right{color:var(--success);font-weight:600;}
+  .wrong{color:var(--danger);font-weight:600;}
+  .highlight{color:var(--accent);font-weight:700;}
+
+  /* 下一题按钮 */
+  .next-btn{
+    display:block;width:100%;padding:14px;border-radius:12px;border:none;
+    background:var(--primary);color:white;font-size:15px;font-weight:700;
+    cursor:pointer;margin-top:14px;
+    touch-action:manipulation;user-select:none;
+  }
+  .next-btn:hover{background:var(--primary-dark);}
+
+  /* ===== 结果页 ===== */
+  .result-page{display:none;min-height:100vh;padding:40px 20px;text-align:center;}
+  .result-page.active{display:flex;flex-direction:column;align-items:center;}
+  .result-icon{font-size:64px;margin-bottom:12px;}
+  .result-title{font-size:24px;font-weight:800;color:white;margin-bottom:6px;}
+  .result-score{font-size:48px;font-weight:800;color:white;margin:10px 0;}
+  .result-detail{
+    background:white;border-radius:var(--radius);padding:20px;margin-top:20px;
+    width:100%;max-width:400px;box-shadow:0 4px 20px rgba(0,0,0,0.12);
+  }
+  .result-row{display:flex;justify-content:space-between;padding:8px 0;font-size:14px;}
+  .result-row-label{color:var(--gray-500);}
+  .result-row-val{font-weight:700;}
+  .result-back{
+    display:block;width:100%;max-width:400px;padding:14px;border-radius:12px;
+    border:none;background:white;color:var(--primary);font-size:15px;font-weight:700;
+    cursor:pointer;margin-top:16px;
+    touch-action:manipulation;user-select:none;
+  }
+
+  /* toast */
+  .toast-msg{
+    position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+    background:rgba(0,0,0,0.75);color:white;padding:12px 24px;
+    border-radius:12px;font-size:14px;font-weight:600;z-index:999;
+    animation:toastIn 0.3s;
+  }
+  @keyframes toastIn{from{opacity:0;transform:translate(-50%,-50%) scale(0.8)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+
+  /* 响应式 */
+  @media(max-width:400px){
+    .home-hero h1{font-size:22px;}
+    .mode-card{padding:14px 10px;}
+    .q-prompt{font-size:16px;}
+    .opts-grid{grid-template-columns:1fr;}
+    .opt-btn{padding:12px 10px;font-size:13px;}
+  }
+</style>
+</head>
+<body>
+<a href="index.html" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+
+<!-- ===== 首页 ===== -->
+<div class="home-page" id="homePage">
+  <div class="home-hero">
+    <h1>📝 词汇拼写训练营</h1>
+    <p>看词猜义 · 拼写练习 · 全选项解析</p>
+  </div>
+
+  <div class="home-stats">
+    <div class="home-stat">
+      <div class="home-stat-icon">⭐</div>
+      <div class="home-stat-val" id="hScore">0</div>
+      <div class="home-stat-label">总分</div>
+    </div>
+    <div class="home-stat">
+      <div class="home-stat-icon">🔥</div>
+      <div class="home-stat-val" id="hCombo">0</div>
+      <div class="home-stat-label">最高连击</div>
+    </div>
+    <div class="home-stat">
+      <div class="home-stat-icon">✅</div>
+      <div class="home-stat-val" id="hMaster">0</div>
+      <div class="home-stat-label">已掌握</div>
+    </div>
+  </div>
+
+  <!-- 模式选择 -->
+  <div class="mode-grid">
+    <div class="mode-card" onclick="startPractice('en2cn')">
+      <div class="mode-card-icon">🇬🇧→🇨🇳</div>
+      <div class="mode-card-title">看英文猜中文</div>
+      <div class="mode-card-desc">看单词选含义，练阅读</div>
+    </div>
+    <div class="mode-card" onclick="startPractice('cn2en')">
+      <div class="mode-card-icon">🇨🇳→🇬🇧</div>
+      <div class="mode-card-title">看中文拼英文</div>
+      <div class="mode-card-desc">看中文拼写单词，练输出</div>
+    </div>
+    <div class="mode-card" onclick="startPractice('mix')">
+      <div class="mode-card-icon">🔄</div>
+      <div class="mode-card-title">混合闯关</div>
+      <div class="mode-card-desc">两种模式随机切换</div>
+    </div>
+    <div class="mode-card" onclick="startPractice('spellall')">
+      <div class="mode-card-icon">✍️</div>
+      <div class="mode-card-title">拼写全练</div>
+      <div class="mode-card-desc">全部单词逐个拼写</div>
+    </div>
+  </div>
+
+  <!-- 分类选择 -->
+  <div class="cat-section">
+    <div class="cat-label">选择主题</div>
+    <div class="cat-bar" id="catBar"></div>
+  </div>
+</div>
+
+<!-- ===== 练习页面 ===== -->
+<div class="practice-page" id="practicePage">
+  <div class="practice-top">
+    <button class="practice-back" onclick="goHome()">← 返回</button>
+    <div class="practice-info" id="pInfo">1 / 15</div>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-track">
+      <div class="progress-fill" id="pFill"></div>
+    </div>
+  </div>
+  <div class="q-area" id="qArea"></div>
+</div>
+
+<!-- ===== 结果页 ===== -->
+<div class="result-page" id="resultPage">
+  <div class="result-icon" id="rIcon">🎉</div>
+  <div class="result-title" id="rTitle">练习完成</div>
+  <div class="result-score" id="rScore">0</div>
+  <div class="result-detail" id="rDetail"></div>
+  <button class="result-back" onclick="goHome()">返回首页</button>
+</div>
+
+<script>
+// ====== 词库数据 ======
+// 每个词包含：英文、中文、音标、主题、选择题选项（含所有选项的英文含义）
+const WORDS = [
+  // 租房
+  { en:'furnished', cn:'带家具的', ph:'/ˈfɜːrnɪʃd/', topic:'租房',
+    opts:[{cn:'带家具的',en:'furnished'},{cn:'押金',en:'deposit'},{cn:'前台(人)',en:'receptionist'},{cn:'设施',en:'facility'}],
+    explain:'【知识点】furnished vs unfurnished<br>furnished = 带家具的（租房核心词）<br>反义词：unfurnished = 不带家具的<br><br>【易错点】不说"It has furniture"，要说"Is it furnished?"<br>【记忆口诀】furnished = 带"furniture"的' },
+  { en:'deposit', cn:'押金', ph:'/dɪˈpɒzɪt/', topic:'租房',
+    opts:[{cn:'押金',en:'deposit'},{cn:'定金/首付',en:'down payment'},{cn:'退款',en:'refund'},{cn:'收据',en:'receipt'}],
+    explain:'【知识点】deposit的多义<br>deposit = 押金（租房）或存款（银行）<br>≠ down payment = 定金/首付（买房，不退还）<br><br>【记忆口诀】租房押金→deposit，买房定金→down payment' },
+  { en:'receptionist', cn:'前台(人)', ph:'/rɪˈsepʃənɪst/', topic:'租房',
+    opts:[{cn:'前台(人)',en:'receptionist'},{cn:'前台(地方)',en:'reception'},{cn:'房东',en:'landlord'},{cn:'租客',en:'tenant'}],
+    explain:'【知识点】receptionist vs reception<br>receptionist = 前台<strong>人</strong>（-ist结尾=人）<br>reception = 前台<strong>地点</strong><br><br>【记忆口诀】-ist=人，没有-ist=地点' },
+  { en:'facility', cn:'设施', ph:'/fəˈsɪlɪti/', topic:'租房',
+    opts:[{cn:'设施',en:'facility/facilities'},{cn:'家具',en:'furniture'},{cn:'押金',en:'deposit'},{cn:'水电费',en:'utilities'}],
+    explain:'【知识点】facility常用复数<br>facility → facilities（常用复数）<br>因为设施通常不止一个<br>【记忆口诀】问设施→What facilities?' },
+  // 运动
+  { en:'cardio', cn:'有氧运动', ph:'/ˈkɑːrdioʊ/', topic:'运动',
+    opts:[{cn:'有氧运动',en:'cardio'},{cn:'力量训练',en:'weight training'},{cn:'教练',en:'trainer'},{cn:'跑步机',en:'treadmill'}],
+    explain:'【知识点】cardio vs weight training<br>cardio = 有氧运动（练心肺）<br>weight training = 力量训练（练肌肉）<br><br>【记忆口诀】cardio=心肺(跑跳游)，weight=肌肉(举铁蹲)' },
+  { en:'treadmill', cn:'跑步机', ph:'/ˈtredmɪl/', topic:'运动',
+    opts:[{cn:'跑步机',en:'treadmill'},{cn:'椭圆机',en:'elliptical'},{cn:'固定自行车',en:'stationary bike'},{cn:'划船机',en:'rowing machine'}],
+    explain:'【知识点】treadmill≠running machine<br>英语不说running machine，只有treadmill<br>tread(踩踏)+mill(磨坊)→踩踏驱动的磨坊<br>【记忆口诀】跑步机→treadmill，不是running machine' },
+  // 购物
+  { en:'refund', cn:'退款', ph:'/ˈriːfʌnd/', topic:'购物',
+    opts:[{cn:'退款',en:'refund'},{cn:'折扣',en:'discount'},{cn:'收据',en:'receipt'},{cn:'划痕',en:'scratch'}],
+    explain:'【知识点】refund vs discount vs receipt<br>refund = 退款（买后退钱）<br>discount = 折扣（买时打折）<br>receipt = 收据（购物凭证）<br>【记忆口诀】refund=退钱，discount=打折，receipt=收据' },
+  { en:'brand new', cn:'全新的', ph:'', topic:'购物',
+    opts:[{cn:'全新的',en:'brand new'},{cn:'二手的',en:'second-hand'},{cn:'轻微使用的',en:'slightly used'},{cn:'状况良好的',en:'in good condition'}],
+    explain:'【知识点】brand new vs second-hand<br>brand new = 全新的<br>second-hand = 二手的<br>注意：brand new中brand不是"品牌"<br>【记忆口诀】brand new=全新，second-hand=二手' },
+  { en:'discount', cn:'折扣', ph:'/ˈdɪskaʊnt/', topic:'购物',
+    opts:[{cn:'折扣',en:'discount'},{cn:'退款',en:'refund'},{cn:'收据',en:'receipt'},{cn:'讨价还价',en:'bargain'}],
+    explain:'【知识点】discount vs bargain<br>discount = 折扣（商家主动降价）<br>bargain = 讨价还价（买家争取降价）<br>【记忆口诀】discount=商家打折，bargain=买家砍价' },
+  // 办公用品
+  { en:'stapler', cn:'订书机', ph:'/ˈsteɪplər/', topic:'办公',
+    opts:[{cn:'订书机',en:'stapler'},{cn:'订书钉',en:'staple'},{cn:'回形针',en:'paper clip'},{cn:'文件夹',en:'folder'}],
+    explain:'【知识点】stapler vs staple<br>stapler = 订书机（工具，-er结尾）<br>staple = 订书钉（耗材，没有-er）<br><br>【记忆口诀】-er=机器/工具，没有-er=耗材/部件' },
+  { en:'sticky notes', cn:'便利贴', ph:'', topic:'办公',
+    opts:[{cn:'便利贴',en:'sticky notes'},{cn:'回形针',en:'paper clip'},{cn:'文件夹',en:'folder'},{cn:'活页夹',en:'binder'}],
+    explain:'【知识点】sticky notes vs Post-it<br>sticky notes = 便利贴（通用名称）<br>Post-it = 便利贴（3M品牌名）<br><br>【记忆口诀】sticky=粘的，notes=小纸条' },
+  // 手机App
+  { en:'scan QR code', cn:'扫描二维码', ph:'', topic:'手机',
+    opts:[{cn:'扫描二维码',en:'scan QR code'},{cn:'刷短视频',en:'scroll through videos'},{cn:'点外卖',en:'order takeout'},{cn:'线上缴费',en:'pay online'}],
+    explain:'【知识点】QR = Quick Response<br>scan QR code = 扫二维码<br>QR不是"二维码"的缩写，是"快速响应"<br><br>【记忆口诀】QR=Quick Response，scan QR code=扫二维码' },
+  // 外貌性格
+  { en:'punctual', cn:'准时的', ph:'/ˈpʌŋktjuəl/', topic:'性格',
+    opts:[{cn:'准时的',en:'punctual'},{cn:'苗条的',en:'slim'},{cn:'严厉的',en:'strict'},{cn:'可靠的',en:'reliable'}],
+    explain:'【知识点】四个描述人的词<br>punctual = 准时的（看时间）<br>slim = 苗条的（看体型）<br>strict = 严厉的（看行为）<br>reliable = 靠谱的（看信任）<br><br>【记忆口诀】punctual=准时，slim=苗条，strict=严厉，reliable=靠谱' },
+  // 情绪
+  { en:'furious', cn:'狂怒的', ph:'/ˈfjʊəriəs/', topic:'情绪',
+    opts:[{cn:'狂怒的',en:'furious'},{cn:'紧张的',en:'nervous'},{cn:'有压力的',en:'stressed'},{cn:'失望的',en:'disappointed'}],
+    explain:'【知识点】情绪词强度等级<br>furious = 狂怒（最怒）<br>nervous = 紧张（焦虑）<br>stressed = 压力（持续）<br>disappointed = 失望（期望落空）<br><br>愤怒等级：annoyed→angry→furious<br>【记忆口诀】furious=狂怒，nervous=紧张，stressed=压力，disappointed=失望' },
+  { en:'nervous', cn:'紧张的', ph:'/ˈnɜːrvəs/', topic:'情绪',
+    opts:[{cn:'紧张的',en:'nervous'},{cn:'狂怒的',en:'furious'},{cn:'失望的',en:'disappointed'},{cn:'惊讶的',en:'surprised'}],
+    explain:'【知识点】nervous vs anxious<br>nervous = 紧张的（短期、特定事件）<br>anxious = 焦虑的（长期、广泛）<br><br>考试前→nervous，长期担忧→anxious<br>【记忆口诀】nervous=短期紧张，anxious=长期焦虑' },
+  // 职场
+  { en:'cross-department', cn:'跨部门的', ph:'', topic:'职场',
+    opts:[{cn:'跨部门的',en:'cross-department'},{cn:'紧急会议',en:'urgent meeting'},{cn:'考官',en:'examiner'},{cn:'订阅',en:'subscription'}],
+    explain:'【知识点】cross- 前缀<br>cross- = 跨越、交叉<br>cross-department = 跨部门<br>cross-cultural = 跨文化<br>cross-border = 跨境<br><br>【记忆口诀】cross-=跨越' },
+  // 旅行
+  { en:'hostel', cn:'青旅', ph:'/ˈhɒstəl/', topic:'旅行',
+    opts:[{cn:'青旅',en:'hostel'},{cn:'汽车旅馆',en:'motel'},{cn:'民宿',en:'B&B'},{cn:'乡村小旅馆',en:'inn'}],
+    explain:'【知识点】四种住宿类型<br>hostel = 青旅（便宜多人间）≠ hotel = 酒店<br>motel = 汽车旅馆（公路旁）<br>B&B = 民宿（含早餐）<br>inn = 乡村小旅馆<br><br>hostel和hotel拼写只差一个字母，价格差很多！<br>【记忆口诀】hostel=青旅(便宜)，hotel=酒店(贵)' },
+  { en:'motel', cn:'汽车旅馆', ph:'/moʊˈtel/', topic:'旅行',
+    opts:[{cn:'汽车旅馆',en:'motel'},{cn:'青旅',en:'hostel'},{cn:'民宿',en:'B&B'},{cn:'酒店',en:'hotel'}],
+    explain:'【知识点】motel词源<br>motel = motor + hotel<br>公路旁专为开车旅客设计的旅馆<br><br>【记忆口诀】motel=motor+hotel=汽车旅馆' },
+  // 搭配短语
+  { en:'get rid of', cn:'摆脱；处理掉', ph:'', topic:'搭配',
+    opts:[{cn:'摆脱；处理掉',en:'get rid of'},{cn:'耗尽；用完',en:'run out of'},{cn:'想出办法',en:'come up with'},{cn:'情绪失控',en:'freak out'}],
+    explain:'【知识点】四个短语动词<br>get rid of = 摆掉扔掉<br>run out of = 用完耗尽<br>come up with = 想出提出<br>freak out = 失控崩溃<br><br>【记忆口诀】rid=摆脱，out=用完，up=想出，freak=崩溃' },
+  { en:'beat around the bush', cn:'拐弯抹角', ph:'', topic:'搭配',
+    opts:[{cn:'拐弯抹角',en:'beat around the bush'},{cn:'坚守立场',en:'stand one\'s ground'},{cn:'达成折中',en:'reach a compromise'},{cn:'直说正题',en:'get to the point'}],
+    explain:'【知识点】习语来源<br>打猎时敲打灌木丛周围，不敢直接进入<br>→比喻"不敢直接说正题"<br><br>反义：get to the point = 直说正题<br>【记忆口诀】beat around the bush=敲灌木周围=拐弯抹角' },
+  { en:'line up', cn:'排队', ph:'', topic:'搭配',
+    opts:[{cn:'排队',en:'line up'},{cn:'插队',en:'cut the line'},{cn:'赶走',en:'drive away'},{cn:'大笑',en:'laugh out loud'}],
+    explain:'【知识点】line up vs cut the line<br>line up = 排队（美式）/ queue up（英式）<br>cut the line = 插队（美式）/ jump the queue（英式）<br><br>【记忆口诀】line up=排队，cut the line=插队' },
+  { en:'strike up a conversation', cn:'主动搭话', ph:'', topic:'搭配',
+    opts:[{cn:'主动搭话',en:'strike up a conversation'},{cn:'回电话',en:'call back'},{cn:'被占用',en:'be occupied'},{cn:'刷手机',en:'scroll through phone'}],
+    explain:'【知识点】strike up<br>strike up = 自然地发起<br>strike up a conversation = 主动搭话<br><br>【记忆口诀】strike up=自然发起，不是struck up a conversation的现在式' },
+  { en:'buckle up', cn:'系好安全带', ph:'', topic:'搭配',
+    opts:[{cn:'系好安全带',en:'buckle up'},{cn:'踩油门',en:'push the gas pedal'},{cn:'按喇叭',en:'honk at sb'},{cn:'深呼吸',en:'take a deep breath'}],
+    explain:'【知识点】驾驶动作<br>buckle up = 系安全带（buckle=扣环）<br>honk at = 按喇叭<br>push the gas pedal = 踩油门<br><br>【记忆口诀】buckle=扣→buckle up=扣上安全带' },
+  { en:'work-life balance', cn:'工作与生活平衡', ph:'', topic:'搭配',
+    opts:[{cn:'工作与生活平衡',en:'work-life balance'},{cn:'加班',en:'work overtime'},{cn:'均衡饮食',en:'balanced diet'},{cn:'规律作息',en:'routine'}],
+    explain:'【知识点】balance在不同场景<br>work-life balance = 工作生活平衡<br>balanced diet = 饮食均衡<br>同一个balance，不同场景！<br><br>【记忆口诀】work-life=工作生活平衡，balanced diet=饮食均衡' },
+  // 否定表达
+  { en:'have no friends', cn:'没有朋友', ph:'', topic:'否定表达',
+    opts:[{cn:'没有朋友',en:'have no friends'},{cn:'没有时间',en:'have no time'},{cn:'没有钱',en:'have no money'},{cn:'不知道',en:'have no idea'}],
+    explain:'【知识点】no+名词=否定名词<br>have no friends = 没有朋友<br>have no time = 没有时间<br>have no money = 没有钱<br><br>【对比错误】<br>❌ hasn\'t friends → not不能否定名词！<br>✅ has no friends → no+名词<br>✅ hasn\'t got any friends → 英式<br>✅ doesn\'t have any friends → 美式<br><br>【记忆口诀】no配名词，not配动词' },
+  { en:'have no idea', cn:'不知道/没办法', ph:'', topic:'否定表达',
+    opts:[{cn:'不知道/没办法',en:'have no idea'},{cn:'没有朋友',en:'have no friends'},{cn:'没有时间',en:'have no time'},{cn:'没有钱',en:'have no money'}],
+    explain:'【知识点】have no idea = 完全不知道<br>I have no idea = 我完全不知道<br>比I don\'t know更强调"毫无头绪"<br><br>【对比】<br>I don\'t know = 我不知道（普通）<br>I have no idea = 我毫无头绪（强调）<br><br>【记忆口诀】have no idea=毫无头绪' },
+  { en:'not at all', cn:'完全不', ph:'', topic:'否定表达',
+    opts:[{cn:'完全不',en:'not at all'},{cn:'一点也不',en:'not...any more'},{cn:'不再',en:'no longer'},{cn:'难怪',en:'no wonder'}],
+    explain:'【知识点】not at all = 完全不<br>not at all = 一点也不/完全不<br>用于强调否定<br><br>【例句】<br>• Do you mind? — Not at all.（一点也不介意）<br>• It is not at all difficult.（一点也不难）<br><br>【记忆口诀】not at all=完全不/一点也不' },
+  { en:'no wonder', cn:'难怪', ph:'', topic:'否定表达',
+    opts:[{cn:'难怪',en:'no wonder'},{cn:'不再',en:'no longer'},{cn:'完全不',en:'not at all'},{cn:'没有人',en:'no one'}],
+    explain:'【知识点】no wonder = 难怪<br>no wonder = it is not surprising that<br>用于表示"不奇怪"<br><br>【例句】<br>No wonder he is tired. He worked 12 hours.<br>难怪他累了，他工作了12小时。<br><br>【记忆口诀】no wonder=难怪=不奇怪' },
+  // 狼来了
+  { en:'shepherd', cn:'牧羊人', ph:'/ˈʃepərd/', topic:'狼来了',
+    opts:[{cn:'牧羊人',en:'shepherd'},{cn:'村民',en:'villager'},{cn:'圣人',en:'saint'},{cn:'天鹅',en:'swan'}],
+    explain:'【知识点】shepherd = 牧羊人<br>the shepherd boy = 牧羊少年<br>来自sheep（羊）+herd（放牧）<br><br>【记忆口诀】sheep+herd → shepherd 牧羊人' },
+  { en:'flock', cn:'一群（羊/鸟）', ph:'/flɒk/', topic:'狼来了',
+    opts:[{cn:'一群（羊/鸟）',en:'flock'},{cn:'一群（狼）',en:'pack'},{cn:'一群（牛）',en:'herd'},{cn:'一群（鱼）',en:'school'}],
+    explain:'【知识点】flock = 一群（羊/鸟）<br>a flock of sheep = 一群羊<br>≠ a pack of wolves = 一群狼<br><br>【记忆口诀】flock=羊群/鸟群，pack=狼群' },
+  { en:'villager', cn:'村民', ph:'/ˈvɪlɪdʒər/', topic:'狼来了',
+    opts:[{cn:'村民',en:'villager'},{cn:'牧羊人',en:'shepherd'},{cn:'说谎者',en:'liar'},{cn:'圣人',en:'saint'}],
+    explain:'【知识点】villager = 村民<br>village（村庄）+ r（人）= 村民<br><br>【例句】The villagers came running.<br>村民们跑来了。<br><br>【记忆口诀】village+人=村民' },
+  { en:'liar', cn:'说谎的人', ph:'/ˈlaɪər/', topic:'狼来了',
+    opts:[{cn:'说谎的人',en:'liar'},{cn:'调皮的',en:'naughty'},{cn:'令人烦躁的',en:'annoying'},{cn:'骗子',en:'cheater'}],
+    explain:'【知识点】liar = 说谎的人<br>lie（说谎）+ r = liar<br>≠ cheater = 作弊者/骗子（考试等）<br><br>【记忆口诀】lie+人=liar 说谎者' },
+  { en:'naughty', cn:'调皮的', ph:'/ˈnɔːti/', topic:'狼来了',
+    opts:[{cn:'调皮的',en:'naughty'},{cn:'令人烦躁的',en:'annoying'},{cn:'说谎的',en:'lying'},{cn:'愚蠢的',en:'silly'}],
+    explain:'【知识点】naughty = 调皮的（小孩）<br>a naughty boy = 一个调皮的孩子<br>≈ mischievous 但口语中更常用<br><br>【记忆口诀】naughty boy=调皮的孩子' },
+  { en:'shout', cn:'呼喊', ph:'/ʃaʊt/', topic:'狼来了',
+    opts:[{cn:'呼喊',en:'shout'},{cn:'争吵',en:'argue'},{cn:'欺骗',en:'trick'},{cn:'忽视',en:'ignore'}],
+    explain:'【知识点】shout = 呼喊/大叫<br>shout for help = 大声呼救<br>≠ whisper = 小声说<br><br>【记忆口诀】shout=大声喊' },
+  { en:'ignore', cn:'忽视', ph:'/ɪɡˈnɔːr/', topic:'狼来了',
+    opts:[{cn:'忽视',en:'ignore'},{cn:'欺骗',en:'trick'},{cn:'争吵',en:'argue'},{cn:'呼喊',en:'shout'}],
+    explain:'【知识点】ignore = 忽视/不理睬<br>They ignored the boy\'s cries.<br>他们忽视了男孩的喊叫。<br><br>【记忆口诀】ignore=不理=忽视' },
+  { en:'trick', cn:'欺骗', ph:'/trɪk/', topic:'狼来了',
+    opts:[{cn:'欺骗',en:'trick'},{cn:'呼喊',en:'shout'},{cn:'忽视',en:'ignore'},{cn:'争吵',en:'argue'}],
+    explain:'【知识点】trick = 欺骗/恶作剧<br>play a trick on sb = 捉弄某人<br>也可作名词：把戏、诡计<br><br>【记忆口诀】trick=把戏=欺骗=恶作剧' },
+  { en:'responsibility', cn:'责任', ph:'/rɪˌspɒnsəˈbɪləti/', topic:'狼来了',
+    opts:[{cn:'责任',en:'responsibility'},{cn:'回应',en:'response'},{cn:'负责的',en:'responsible'},{cn:'能力',en:'ability'}],
+    explain:'【知识点】responsibility = 责任<br>take responsibility = 承担责任<br>responsible = 负责的（形容词）<br><br>【记忆口诀】response+ability → 回应+能力=责任' },
+  { en:'argue', cn:'争吵', ph:'/ˈɑːrɡjuː/', topic:'狼来了',
+    opts:[{cn:'争吵',en:'argue'},{cn:'同意',en:'agree'},{cn:'呼喊',en:'shout'},{cn:'忽视',en:'ignore'}],
+    explain:'【知识点】argue = 争吵/争论<br>argue with sb = 和某人争吵<br>argue about sth = 为某事争吵<br><br>【记忆口诀】argue ≠ agree（同意），形似意反' },
+  { en:'swan', cn:'天鹅', ph:'/swɒn/', topic:'狼来了',
+    opts:[{cn:'天鹅',en:'swan'},{cn:'小山',en:'hill'},{cn:'天鹅宝宝',en:'cygnet'},{cn:'燕子',en:'swallow'}],
+    explain:'【知识点】swan = 天鹅<br>black swan = 黑天鹅（比喻意外事件）<br>≠ swallow = 燕子<br><br>【记忆口诀】swan=天鹅，swallow=燕子' },
+  { en:'hill', cn:'小山', ph:'/hɪl/', topic:'狼来了',
+    opts:[{cn:'小山',en:'hill'},{cn:'山',en:'mountain'},{cn:'山谷',en:'valley'},{cn:'悬崖',en:'cliff'}],
+    explain:'【知识点】hill = 小山/丘陵<br>hill ≠ mountain（大山）<br>hill比mountain小、低<br><br>【记忆口诀】hill=小山，mountain=大山' },
+  { en:'annoying', cn:'令人烦躁的', ph:'/əˈnɔɪɪŋ/', topic:'狼来了',
+    opts:[{cn:'令人烦躁的',en:'annoying'},{cn:'调皮的',en:'naughty'},{cn:'令人兴奋的',en:'exciting'},{cn:'令人害怕的',en:'frightening'}],
+    explain:'【知识点】annoying = 令人烦躁的<br>annoy（动词）+ ing = annoying<br>The boy was very annoying.<br>这个男孩非常烦人。<br><br>【记忆口诀】annoy+ing=令人烦的' },
+  { en:'saint', cn:'圣人', ph:'/seɪnt/', topic:'狼来了',
+    opts:[{cn:'圣人',en:'saint'},{cn:'牧羊人',en:'shepherd'},{cn:'村民',en:'villager'},{cn:'天鹅',en:'swan'}],
+    explain:'【知识点】saint = 圣人/圣徒<br>St. = Saint的缩写<br>patron saint = 守护圣人<br><br>【记忆口诀】saint=圣人，St.=圣人缩写' },
+  // 看医生 & 身体疼痛
+  { en:'headache', cn:'头痛', topic:'看医生',
+    opts:[{cn:'胃痛/肚子痛',en:'stomachache'},{cn:'发烧',en:'fever'},{cn:'头痛',en:'headache'},{cn:'喉咙痛',en:'sore throat'}],
+    explain:'【知识点】headache = head（头）+ ache（痛）<br>注意：必须说 a headache，不能没有 a！<br><br>【例句】I have a headache = 我头痛<br><br>【记忆口诀】head+ache=头痛，必须加a' },
+  { en:'stomachache', cn:'胃痛/肚子痛', topic:'看医生',
+    opts:[{cn:'喉咙痛',en:'sore throat'},{cn:'胃痛/肚子痛',en:'stomachache'},{cn:'背痛',en:'backache'},{cn:'牙痛',en:'toothache'}],
+    explain:'【知识点】stomachache = stomach（胃/肚子）+ ache（痛）<br>常跟 "have a" 搭配<br><br>【例句】I have a stomachache = 我胃痛<br><br>【记忆口诀】stomach+ache=胃痛' },
+  { en:'toothache', cn:'牙痛', topic:'看医生',
+    opts:[{cn:'头痛',en:'headache'},{cn:'发烧',en:'fever'},{cn:'牙痛',en:'toothache'},{cn:'咳嗽',en:'cough'}],
+    explain:'【知识点】toothache = tooth（牙）+ ache（痛）<br>注意 tooth 的复数是 teeth<br><br>【例句】I have a toothache = 我牙痛<br><br>【记忆口诀】tooth+ache=牙痛，复数teeth' },
+  { en:'backache', cn:'背痛', topic:'看医生',
+    opts:[{cn:'咳嗽',en:'cough'},{cn:'背痛',en:'backache'},{cn:'流鼻涕',en:'runny nose'},{cn:'头晕的',en:'dizzy'}],
+    explain:'【知识点】backache = back（背）+ ache<br>backache 通常作不可数名词，不说 a backache<br><br>【例句】I have backache = 我背痛<br><br>【记忆口诀】back+ache=背痛，不加a' },
+  { en:'fever', cn:'发烧', topic:'看医生',
+    opts:[{cn:'感冒',en:'cold'},{cn:'发烧',en:'fever'},{cn:'咳嗽',en:'cough'},{cn:'头晕的',en:'dizzy'}],
+    explain:'【知识点】fever = 发烧<br>搭配：have a fever / have a high fever 发高烧<br>take one\'s temperature 量体温<br><br>【例句】I have a fever = 我发烧了<br><br>【记忆口诀】fever=发烧，要测体温' },
+  { en:'cough', cn:'咳嗽', topic:'看医生',
+    opts:[{cn:'流鼻涕',en:'runny nose'},{cn:'感冒',en:'cold'},{cn:'咳嗽',en:'cough'},{cn:'发烧',en:'fever'}],
+    explain:'【知识点】cough 既是动词也是名词<br>发音注意 /kɒf/，gh 不发音！<br><br>【例句】I have a cough = 我咳嗽<br><br>【记忆口诀】cough=咳嗽，gh不发音' },
+  { en:'sore throat', cn:'喉咙痛', topic:'看医生',
+    opts:[{cn:'头痛',en:'headache'},{cn:'喉咙痛',en:'sore throat'},{cn:'胃痛/肚子痛',en:'stomachache'},{cn:'咳嗽',en:'cough'}],
+    explain:'【知识点】sore = 疼痛的，throat = 喉咙<br>sore 也可用在 sore eyes/muscles<br><br>【例句】I have a sore throat = 我喉咙痛<br><br>【记忆口诀】sore=酸痛，throat=喉咙' },
+  { en:'runny nose', cn:'流鼻涕', topic:'看医生',
+    opts:[{cn:'咳嗽',en:'cough'},{cn:'流鼻涕',en:'runny nose'},{cn:'发烧',en:'fever'},{cn:'感冒',en:'cold'}],
+    explain:'【知识点】runny = 流液体的（来自 run），nose = 鼻子<br>搭配：have a runny nose<br><br>【例句】I have a runny nose = 我流鼻涕<br><br>【记忆口诀】runny=流，nose=鼻=流鼻涕' },
+  { en:'dizzy', cn:'头晕的', topic:'看医生',
+    opts:[{cn:'恶心的',en:'nauseous'},{cn:'头晕的',en:'dizzy'},{cn:'肿胀的',en:'swollen'},{cn:'发烧',en:'fever'}],
+    explain:'【知识点】dizzy = 头晕眼花的感觉<br>常说 I feel dizzy = 我头晕<br><br>【例句】I feel dizzy = 我头晕<br><br>【记忆口诀】dizzy=晕眩，feel dizzy' },
+  { en:'nauseous', cn:'恶心的', topic:'看医生',
+    opts:[{cn:'头晕的',en:'dizzy'},{cn:'肿胀的',en:'swollen'},{cn:'恶心的',en:'nauseous'},{cn:'发烧',en:'fever'}],
+    explain:'【知识点】nauseous = 感到恶心想吐<br>相近词：throw up / vomit = 呕吐<br><br>【例句】I feel nauseous = 我感到恶心<br><br>【记忆口诀】nauseous=恶心，throw up=呕吐' },
+  { en:'swollen', cn:'肿胀的', topic:'看医生',
+    opts:[{cn:'恶心的',en:'nauseous'},{cn:'肿胀的',en:'swollen'},{cn:'疼痛的',en:'painful'},{cn:'发烧',en:'fever'}],
+    explain:'【知识点】swollen = 肿起来的（原形 swell）<br><br>【例句】My ankle is swollen = 我的脚踝肿了<br><br>【记忆口诀】swollen=swell的过去分词=肿' },
+  { en:'prescription', cn:'处方', topic:'看医生',
+    opts:[{cn:'预约',en:'appointment'},{cn:'处方',en:'prescription'},{cn:'症状',en:'symptom'},{cn:'注射/打针',en:'injection'}],
+    explain:'【知识点】prescription = 处方/药方<br>动词 prescribe = 开（药）<br>搭配：write a prescription / fill a prescription 抓药<br><br>【记忆口诀】prescription=处方，prescribe=开药' },
+  { en:'appointment', cn:'预约', topic:'看医生',
+    opts:[{cn:'处方',en:'prescription'},{cn:'预约',en:'appointment'},{cn:'注射/打针',en:'injection'},{cn:'症状',en:'symptom'}],
+    explain:'【知识点】appointment = 预约<br>搭配：make/have an appointment<br>注意双写 p！appoint + ment<br><br>【例句】I have an appointment = 我有预约<br><br>【记忆口诀】appointment=预约，双写p' },
+  { en:'symptom', cn:'症状', topic:'看医生',
+    opts:[{cn:'预约',en:'appointment'},{cn:'处方',en:'prescription'},{cn:'症状',en:'symptom'},{cn:'诊断',en:'diagnosis'}],
+    explain:'【知识点】symptom = 症状<br>常见症状：fever, cough, headache, sore throat, runny nose<br><br>【例句】What are your symptoms? = 你有什么症状？<br><br>【记忆口诀】symptom=症状，同root对sympathy' },
+  { en:'injection', cn:'注射/打针', topic:'看医生',
+    opts:[{cn:'处方',en:'prescription'},{cn:'预约',en:'appointment'},{cn:'症状',en:'symptom'},{cn:'注射/打针',en:'injection'}],
+    explain:'【知识点】injection = 注射<br>搭配：give an injection / get an injection<br>口语也说 get a shot<br><br>【例句】I need an injection = 我需要打针<br><br>【记忆口诀】injection=注射，shot=打针' },
+  { en:'recover', cn:'康复', topic:'看医生',
+    opts:[{cn:'生病',en:'sick'},{cn:'康复',en:'recover'},{cn:'打针',en:'get a shot'},{cn:'预约',en:'appointment'}],
+    explain:'【知识点】recover = 康复/恢复<br>搭配：recover from 从…恢复<br><br>【例句】I hope you recover soon = 祝你早日康复！<br><br>【记忆口诀】recover=恢复，recover from=从…康复' },
+  // 祈使句
+  { en:'sit down', cn:'请坐', ph:'', topic:'祈使句',
+    opts:[{cn:'起立',en:'stand up'},{cn:'请坐',en:'sit down'},{cn:'进来',en:'come in'},{cn:'快点',en:'hurry up'}],
+    explain:'sit down = 坐下。祈使句：动词原形开头，省略主语。否定：Don\'t sit there. 别坐那。' },
+  { en:'stand up', cn:'起立', ph:'', topic:'祈使句',
+    opts:[{cn:'请坐',en:'sit down'},{cn:'起立',en:'stand up'},{cn:'快点',en:'hurry up'},{cn:'安静',en:'be quiet'}],
+    explain:'stand up = 起立/站起来。课堂常用指令。反义词：sit down。' },
+  { en:'be quiet', cn:'安静', ph:'', topic:'祈使句',
+    opts:[{cn:'快点',en:'hurry up'},{cn:'小心',en:'watch out'},{cn:'安静',en:'be quiet'},{cn:'请坐',en:'sit down'}],
+    explain:'be quiet = 安静。Be + 形容词 = 保持某种状态。Be patient! 耐心点！Be careful! 小心！' },
+  { en:'hurry up', cn:'快点/赶快', ph:'', topic:'祈使句',
+    opts:[{cn:'安静',en:'be quiet'},{cn:'慢点',en:'slow down'},{cn:'小心',en:'watch out'},{cn:'快点',en:'hurry up'}],
+    explain:'hurry up = 快点/赶快。催促用语。反义：slow down 慢点。' },
+  { en:'watch out', cn:'小心/当心', ph:'', topic:'祈使句',
+    opts:[{cn:'快点',en:'hurry up'},{cn:'安静',en:'be quiet'},{cn:'小心',en:'watch out'},{cn:'慢点',en:'slow down'}],
+    explain:'watch out = 小心/当心！紧急提醒用语。= Look out! / Be careful!' },
+  { en:'take care', cn:'保重', ph:'', topic:'祈使句',
+    opts:[{cn:'小心',en:'watch out'},{cn:'保重',en:'take care'},{cn:'慢点',en:'slow down'},{cn:'安静',en:'be quiet'}],
+    explain:'take care = 保重/照顾好自己。道别时的常用嘱咐。Take care of yourself!' },
+  { en:'calm down', cn:'冷静', ph:'', topic:'祈使句',
+    opts:[{cn:'快点',en:'hurry up'},{cn:'安静',en:'be quiet'},{cn:'小心',en:'watch out'},{cn:'冷静',en:'calm down'}],
+    explain:'calm down = 冷静下来。安抚情绪用语。Don\'t be angry. Calm down.' },
+  { en:'cheer up', cn:'振作/开心点', ph:'', topic:'祈使句',
+    opts:[{cn:'冷静',en:'calm down'},{cn:'担心',en:'worry'},{cn:'振作',en:'cheer up'},{cn:'快点',en:'hurry up'}],
+    explain:'cheer up = 振作起来/开心点。安慰鼓励用语。Don\'t be sad. Cheer up!' },
+];
+
+// ====== 主题列表 ======
+const TOPICS = ['全部','租房','运动','购物','办公','手机','性格','情绪','职场','旅行','搭配','否定表达','狼来了','看医生','祈使句'];
+
+// ====== 状态 ======
+let totalScore = 0;
+let maxCombo = 0;
+let currentCombo = 0;
+let masteredSet = new Set();
+let currentMode = ''; // en2cn, cn2en, mix, spellall
+let currentTopic = '全部';
+let questions = [];
+let qIndex = 0;
+let answered = false;
+let correctCount = 0;
+let wrongCount = 0;
+
+// ====== 初始化 ======
+function init() {
+  renderCatBar();
+  updateHomeStats();
+}
+
+function renderCatBar() {
+  const bar = document.getElementById('catBar');
+  bar.innerHTML = TOPICS.map(t =>
+    `<button class="cat-btn ${t===currentTopic?'active':''}" onclick="selectTopic('${t}')">${t==='全部'?'🔄 全部':t}</button>`
+  ).join('');
+}
+
+function selectTopic(t) {
+  currentTopic = t;
+  renderCatBar();
+}
+
+function updateHomeStats() {
+  document.getElementById('hScore').textContent = totalScore;
+  document.getElementById('hCombo').textContent = maxCombo;
+  const hMasterEl = document.getElementById('hMaster');
+  if(hMasterEl) hMasterEl.textContent = masteredSet.size;
+}
+
+// ====== 开始练习 ======
+function startPractice(mode) {
+  currentMode = mode;
+  answered = false;
+  correctCount = 0;
+  wrongCount = 0;
+
+  // 过滤题目
+  let pool = currentTopic === '全部' ? [...WORDS] : WORDS.filter(w => w.topic === currentTopic);
+  if(pool.length === 0) {
+    showToast('该主题暂无题目');
+    return;
+  }
+
+  // 根据模式生成题目
+  if(mode === 'en2cn') {
+    questions = shuffle(pool).map(w => ({ ...w, mode:'en2cn' }));
+  } else if(mode === 'cn2en') {
+    questions = shuffle(pool).map(w => ({ ...w, mode:'cn2en' }));
+  } else if(mode === 'mix') {
+    questions = shuffle(pool).map(w => {
+      const m = Math.random() < 0.5 ? 'en2cn' : 'cn2en';
+      return { ...w, mode:m };
+    });
+  } else if(mode === 'spellall') {
+    questions = shuffle(pool).map(w => ({ ...w, mode:'cn2en' }));
+  }
+
+  qIndex = 0;
+  showPage('practicePage');
+  renderQuestion();
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for(let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function showPage(id) {
+  document.getElementById('homePage').style.display = id==='homePage' ? 'flex' : 'none';
+  document.getElementById('practicePage').className = id==='practicePage' ? 'practice-page active' : 'practice-page';
+  document.getElementById('resultPage').className = id==='resultPage' ? 'result-page active' : 'result-page';
+}
+
+// ====== 渲染题目 ======
+function renderQuestion() {
+  if(qIndex >= questions.length) {
+    showResult();
+    return;
+  }
+
+  answered = false;
+  const q = questions[qIndex];
+  const area = document.getElementById('qArea');
+  const total = questions.length;
+  const pct = ((qIndex) / total * 100).toFixed(0);
+
+  document.getElementById('pInfo').textContent = `${qIndex+1} / ${total}`;
+  document.getElementById('pFill').style.width = pct + '%';
+
+  if(q.mode === 'en2cn') {
+    renderEn2Cn(q, area);
+  } else {
+    renderCn2En(q, area);
+  }
+}
+
+// ====== 模式1：看英文猜中文 ======
+function renderEn2Cn(q, area) {
+  const shuffledOpts = shuffle(q.opts);
+  const correctCn = q.cn;
+
+  area.innerHTML = `
+    <div class="q-prompt">${q.en}</div>
+    ${q.ph ? `<div class="phonetic">${q.ph}</div>` : ''}
+    <div class="q-sub">这个单词是什么意思？</div>
+    <div class="opts-grid">
+      ${shuffledOpts.map((o,i) => `
+        <button class="opt-btn" onclick="selectOpt(${i},'${o.cn}','${correctCn}',this)" data-cn="${o.cn}">
+          ${o.cn}
+        </button>
+      `).join('')}
+    </div>
+    <div class="explain-area" id="explainArea"></div>
+    <button class="next-btn" id="nextBtn" style="display:none" onclick="nextQuestion()">下一题 →</button>
+  `;
+}
+
+function selectOpt(idx, selectedCn, correctCn, btn) {
+  if(answered) return;
+  answered = true;
+
+  const allBtns = document.querySelectorAll('.opt-btn');
+  const isCorrect = selectedCn === correctCn;
+
+  // 标记所有按钮
+  allBtns.forEach(b => {
+    const bCn = b.getAttribute('data-cn');
+    if(bCn === correctCn) b.className = 'opt-btn correct';
+    else if(b === btn && !isCorrect) b.className = 'opt-btn wrong';
+    else b.className = 'opt-btn';
+    b.style.pointerEvents = 'none';
+  });
+
+  // 计分
+  if(isCorrect) {
+    correctCount++;
+    currentCombo++;
+    if(currentCombo > maxCombo) maxCombo = currentCombo;
+    totalScore += 10 + currentCombo * 2;
+    masteredSet.add(questions[qIndex].en);
+  } else {
+    wrongCount++;
+    currentCombo = 0;
+  }
+
+  // 显示解析
+  showExplainForEn2Cn(questions[qIndex], isCorrect, selectedCn);
+
+  document.getElementById('nextBtn').style.display = 'block';
+}
+
+function showExplainForEn2Cn(q, isCorrect, selectedCn) {
+  const ea = document.getElementById('explainArea');
+
+  // 所有选项含义
+  let meaningsHtml = '<div class="opts-meanings"><div class="explain-title">📋 所有选项含义</div>';
+  q.opts.forEach(o => {
+    let cls = '';
+    if(o.cn === q.cn) cls = 'opts-meaning-correct';
+    if(o.cn === selectedCn && !isCorrect) cls = 'opts-meaning-selected';
+    meaningsHtml += `<div class="opts-meaning-item ${cls}">
+      <span class="opts-meaning-word">${o.en}</span>
+      <span class="opts-meaning-cn">= ${o.cn}</span>
+      ${o.cn === q.cn ? '<span style="color:var(--success);font-weight:700;font-size:12px;">✅ 正确答案</span>' : ''}
+      ${o.cn === selectedCn && !isCorrect ? '<span style="color:var(--danger);font-weight:700;font-size:12px;">❌ 你的选择</span>' : ''}
+    </div>`;
+  });
+  meaningsHtml += '</div>';
+
+  // 拼写练习区
+  let spellHtml = `<div class="spell-practice">
+    <div class="spell-practice-title">✍️ 拼写练习：把 ${q.cn} 的英文拼一遍</div>
+    <div class="spell-practice-row">
+      <span class="spell-practice-word">${q.cn}</span>
+      <input class="spell-practice-input" id="spellInput" placeholder="输入英文..." autocomplete="off">
+      <button class="spell-practice-btn" onclick="checkSpellPractice('${q.en}')">检查</button>
+      <span class="spell-practice-result" id="spellResult"></span>
+    </div>
+    <button class="spell-show" onclick="showAnswer('${q.en}')">看答案</button>
+  </div>`;
+
+  // 详细解析
+  const explainHtml = `<div class="explain-content">${q.explain}</div>`;
+
+  ea.innerHTML = meaningsHtml + spellHtml + explainHtml;
+  ea.className = 'explain-area show';
+}
+
+// ====== 模式2：看中文拼英文 ======
+function renderCn2En(q, area) {
+  area.innerHTML = `
+    <div class="spell-prompt">${q.cn}</div>
+    ${q.ph ? `<div class="phonetic">音标：${q.ph}</div>` : ''}
+    <div class="spell-hint">请拼写对应的英文</div>
+    <div class="spell-section">
+      <div class="spell-row">
+        <input class="spell-input" id="mainSpellInput" placeholder="输入英文..." autocomplete="off">
+        <button class="spell-submit" onclick="submitSpell('${q.en}')">提交</button>
+        <button class="spell-show" onclick="showMainAnswer('${q.en}')">看答案</button>
+      </div>
+    </div>
+    <div class="explain-area" id="explainArea"></div>
+    <button class="next-btn" id="nextBtn" style="display:none" onclick="nextQuestion()">下一题 →</button>
+  `;
+
+  // 自动聚焦
+  const inp = document.getElementById('mainSpellInput');
+  if(inp) inp.focus();
+}
+
+function submitSpell(correctEn) {
+  if(answered) return;
+  const inp = document.getElementById('mainSpellInput');
+  if(!inp) return;
+  const val = inp.value.trim().toLowerCase();
+  if(!val) { showToast('请输入答案'); return; }
+
+  answered = true;
+  const correctLower = correctEn.toLowerCase();
+  const isCorrect = val === correctLower;
+
+  inp.className = 'spell-input ' + (isCorrect ? 'correct' : 'wrong');
+  inp.disabled = true;
+
+  if(isCorrect) {
+    correctCount++;
+    currentCombo++;
+    if(currentCombo > maxCombo) maxCombo = currentCombo;
+    totalScore += 15 + currentCombo * 3;
+    masteredSet.add(questions[qIndex].en);
+  } else {
+    wrongCount++;
+    currentCombo = 0;
+  }
+
+  // 显示解析
+  showExplainForCn2En(questions[qIndex], isCorrect, val);
+  document.getElementById('nextBtn').style.display = 'block';
+}
+
+function showExplainForCn2En(q, isCorrect, userAns) {
+  const ea = document.getElementById('explainArea');
+
+  // 正确答案展示
+  let ansHtml = `<div class="explain-title">${isCorrect ? '✅ 拼写正确！' : '❌ 正确答案是：'}</div>`;
+  if(!isCorrect) {
+    ansHtml += `<div style="font-size:18px;font-weight:700;color:var(--success);margin-bottom:8px;">${q.en} ${q.ph}</div>`;
+    ansHtml += `<div style="font-size:13px;color:var(--danger);margin-bottom:8px;">你的答案：${userAns}</div>`;
+  } else {
+    ansHtml += `<div style="font-size:18px;font-weight:700;color:var(--success);margin-bottom:8px;">${q.en} ${q.ph} ✅</div>`;
+  }
+
+  // 如果是选择题类型的词，展示所有选项含义
+  let meaningsHtml = '';
+  if(q.opts && q.opts.length > 1) {
+    meaningsHtml = '<div class="opts-meanings"><div class="explain-title">📋 相关词汇对比</div>';
+    q.opts.forEach(o => {
+      let cls = '';
+      if(o.en.toLowerCase() === q.en.toLowerCase()) cls = 'opts-meaning-correct';
+      if(o.en.toLowerCase() === userAns.toLowerCase() && !isCorrect) cls = 'opts-meaning-selected';
+      meaningsHtml += `<div class="opts-meaning-item ${cls}">
+        <span class="opts-meaning-word">${o.en}</span>
+        <span class="opts-meaning-cn">= ${o.cn}</span>
+        ${o.en.toLowerCase() === q.en.toLowerCase() ? '<span style="color:var(--success);font-weight:700;font-size:12px;">✅ 正确答案</span>' : ''}
+      </div>`;
+    });
+    meaningsHtml += '</div>';
+  }
+
+  // 拼写练习区（再拼一遍巩固）
+  let spellHtml = `<div class="spell-practice">
+    <div class="spell-practice-title">✍️ 再拼一遍巩固记忆</div>
+    <div class="spell-practice-row">
+      <span class="spell-practice-word">${q.cn}</span>
+      <input class="spell-practice-input" id="spellInput2" placeholder="再拼一次..." autocomplete="off">
+      <button class="spell-practice-btn" onclick="checkSpellPractice2('${q.en}')">检查</button>
+      <span class="spell-practice-result" id="spellResult2"></span>
+    </div>
+  </div>`;
+
+  const explainHtml = `<div class="explain-content">${q.explain}</div>`;
+
+  ea.innerHTML = ansHtml + meaningsHtml + spellHtml + explainHtml;
+  ea.className = 'explain-area show';
+}
+
+// ====== 拼写练习辅助函数 ======
+function checkSpellPractice(correctEn) {
+  const inp = document.getElementById('spellInput');
+  const res = document.getElementById('spellResult');
+  if(!inp || !res) return;
+  const val = inp.value.trim().toLowerCase();
+  const correct = correctEn.toLowerCase();
+  if(!val) { showToast('请输入英文'); return; }
+  if(val === correct) {
+    inp.className = 'spell-practice-input correct';
+    res.textContent = '✅';
+    res.style.color = 'var(--success)';
+  } else {
+    inp.className = 'spell-practice-input wrong';
+    res.textContent = '❌ ' + correctEn;
+    res.style.color = 'var(--danger)';
+  }
+}
+
+function checkSpellPractice2(correctEn) {
+  const inp = document.getElementById('spellInput2');
+  const res = document.getElementById('spellResult2');
+  if(!inp || !res) return;
+  const val = inp.value.trim().toLowerCase();
+  const correct = correctEn.toLowerCase();
+  if(!val) { showToast('请输入英文'); return; }
+  if(val === correct) {
+    inp.className = 'spell-practice-input correct';
+    res.textContent = '✅';
+    res.style.color = 'var(--success)';
+  } else {
+    inp.className = 'spell-practice-input wrong';
+    res.textContent = '❌ ' + correctEn;
+    res.style.color = 'var(--danger)';
+  }
+}
+
+function showAnswer(ans) {
+  const inp = document.getElementById('spellInput');
+  if(inp) {
+    inp.value = ans;
+    inp.className = 'spell-practice-input correct';
+    const res = document.getElementById('spellResult');
+    if(res) { res.textContent = '👀 已显示答案'; res.style.color = 'var(--accent)'; }
+  }
+}
+
+function showMainAnswer(ans) {
+  const inp = document.getElementById('mainSpellInput');
+  if(inp && !answered) {
+    inp.value = ans;
+    inp.className = 'spell-input correct';
+    answered = true;
+    // 不计分，只展示答案
+    showExplainForCn2En(questions[qIndex], false, '（看了答案）');
+    document.getElementById('nextBtn').style.display = 'block';
+  }
+}
+
+// ====== 下一题 ======
+function nextQuestion() {
+  qIndex++;
+  renderQuestion();
+}
+
+// ====== 结果页 ======
+function showResult() {
+  const total = questions.length;
+  const pct = Math.round(correctCount / total * 100);
+  let icon, title;
+
+  if(pct >= 90) { icon = '🏆'; title = '太厉害了！'; }
+  else if(pct >= 70) { icon = '🎉'; title = '很不错！'; }
+  else if(pct >= 50) { icon = '💪'; title = '继续加油！'; }
+  else { icon = '📚'; title = '需要多练习'; }
+
+  document.getElementById('rIcon').textContent = icon;
+  document.getElementById('rTitle').textContent = title;
+  document.getElementById('rScore').textContent = totalScore;
+
+  document.getElementById('rDetail').innerHTML = `
+    <div class="result-row"><span class="result-row-label">正确</span><span class="result-row-val" style="color:var(--success)">${correctCount} 题</span></div>
+    <div class="result-row"><span class="result-row-label">错误</span><span class="result-row-val" style="color:var(--danger)">${wrongCount} 题</span></div>
+    <div class="result-row"><span class="result-row-label">正确率</span><span class="result-row-val">${pct}%</span></div>
+    <div class="result-row"><span class="result-row-label">最高连击</span><span class="result-row-val">${maxCombo}</span></div>
+    <div class="result-row"><span class="result-row-label">已掌握</span><span class="result-row-val">${masteredSet.size} 词</span></div>
+  `;
+
+  showPage('resultPage');
+}
+
+function goHome() {
+  updateHomeStats();
+  showPage('homePage');
+}
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast-msg';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+// 启动
+init();
+
+// ====== 全局回车键 ======
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter') return;
+  // 焦点在输入框时不拦截
+  var activeEl = document.activeElement;
+  if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
+    return;
+  }
+  // 练习页面：如果下一题按钮可见，按回车进入下一题
+  var nextBtn = document.getElementById('nextBtn');
+  if (nextBtn && nextBtn.style.display === 'block') {
+    nextQuestion();
+  }
+  // 结果页面：按回车回到首页
+  var resultPage = document.getElementById('resultPage');
+  if (resultPage && resultPage.style.display !== 'none') {
+    goHome();
+  }
+});
+</script>
+</body>
+</html>

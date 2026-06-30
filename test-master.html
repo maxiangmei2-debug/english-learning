@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>英语测试达人</title>
+<style>
+  :root {
+    --primary: #6366F1;
+    --primary-light: #EEF2FF;
+    --primary-dark: #4F46E5;
+    --success: #10B981;
+    --success-light: #ECFDF5;
+    --danger: #EF4444;
+    --danger-light: #FEF2F2;
+    --accent: #F59E0B;
+    --accent-light: #FFFBEB;
+    --purple: #8B5CF6;
+    --purple-light: #F5F3FF;
+    --gray-50: #F9FAFB;
+    --gray-100: #F3F4F6;
+    --gray-200: #E5E7EB;
+    --gray-300: #D1D5DB;
+    --gray-500: #6B7280;
+    --gray-600: #4B5563;
+    --gray-700: #374151;
+    --gray-800: #1F2937;
+    --radius: 14px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #A855F7 100%);
+    min-height: 100vh;
+    color: var(--gray-800);
+    overflow-x: hidden;
+  }
+
+  /* ====== 首页 ====== */
+  .home-page { display:flex; flex-direction:column; min-height:100vh; overflow-y:auto; }
+  .home-hero {
+    text-align:center; padding:40px 20px 20px; color:white;
+  }
+  .home-hero h1 { font-size:28px; font-weight:800; text-shadow:0 2px 8px rgba(0,0,0,0.2); }
+  .home-hero p { font-size:14px; opacity:0.8; margin-top:6px; }
+
+  /* Stats */
+  .home-stats {
+    display:flex; justify-content:center; gap:24px; padding:12px 20px; color:white;
+  }
+  .home-stat { text-align:center; }
+  .home-stat-icon { font-size:24px; }
+  .home-stat-val { font-size:20px; font-weight:700; }
+  .home-stat-label { font-size:11px; opacity:0.7; }
+
+  /* Mode grid */
+  .mode-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:10px;
+    padding:16px 16px; max-width:500px; margin:0 auto;
+  }
+  .mode-card {
+    background:white; border-radius:var(--radius); padding:18px 14px;
+    box-shadow:0 4px 16px rgba(0,0,0,0.12);
+    cursor:pointer; transition:all 0.2s; text-align:center;
+    touch-action:manipulation; user-select:none;
+  }
+  .mode-card:hover { transform:translateY(-3px); box-shadow:0 8px 24px rgba(0,0,0,0.18); }
+  .mode-card:active { transform:translateY(-1px); }
+  .mode-card-icon { font-size:32px; margin-bottom:6px; }
+  .mode-card-title { font-size:15px; font-weight:700; }
+  .mode-card-desc { font-size:12px; color:var(--gray-500); margin-top:4px; }
+
+  /* Category bar */
+  .cat-section {
+    padding:12px 16px 24px; max-width:500px; margin:0 auto;
+  }
+  .cat-label { font-size:13px; color:rgba(255,255,255,0.7); font-weight:600; margin-bottom:8px; }
+  .cat-bar { display:flex; flex-wrap:wrap; gap:6px; }
+  .cat-btn {
+    padding:7px 14px; border-radius:18px; border:1.5px solid rgba(255,255,255,0.35);
+    background:rgba(255,255,255,0.12); color:white; font-size:12px;
+    cursor:pointer; transition:all 0.2s; font-weight:500;
+    touch-action:manipulation; user-select:none;
+  }
+  .cat-btn:hover { background:rgba(255,255,255,0.25); }
+  .cat-btn.active { background:white; color:var(--primary); border-color:white; }
+
+  /* ====== Test Page ====== */
+  .test-page { display:none; min-height:100vh; }
+  .test-page.active { display:flex; flex-direction:column; }
+
+  /* Top bar */
+  .test-top {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 16px; background:rgba(255,255,255,0.1); color:white;
+  }
+  .test-back {
+    background:rgba(255,255,255,0.2); border:none; color:white;
+    padding:8px 14px; border-radius:20px; font-size:13px; cursor:pointer;
+    touch-action:manipulation; user-select:none;
+  }
+  .test-back:hover { background:rgba(255,255,255,0.3); }
+  .test-info { font-size:14px; font-weight:600; }
+  .test-timer { font-size:14px; font-weight:700; }
+
+  /* Progress dots */
+  .progress-dots {
+    display:flex; gap:3px; padding:8px 16px; justify-content:center;
+  }
+  .p-dot {
+    width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.3);
+    transition:all 0.3s;
+  }
+  .p-dot.done { background:var(--success); }
+  .p-dot.fail { background:var(--danger); }
+  .p-dot.current { background:white; transform:scale(1.4); }
+
+  /* Timer bar */
+  .timer-bar-wrap { padding:4px 16px; }
+  .timer-bar { width:100%; height:4px; background:rgba(255,255,255,0.2); border-radius:2px; }
+  .timer-fill { height:100%; border-radius:2px; background:white; transition:width 0.3s; }
+  .timer-fill.warn { background:var(--accent); }
+  .timer-fill.crit { background:var(--danger); }
+
+  /* Lives */
+  .lives-row { display:flex; gap:4px; justify-content:center; padding:6px 0; }
+  .heart { font-size:20px; transition:all 0.3s; }
+  .heart.lost { opacity:0.15; transform:scale(0.7); }
+
+  /* Question area */
+  .q-area {
+    background:white; border-radius:20px 20px 0 0;
+    padding:24px 20px; flex:1; margin-top:8px;
+    box-shadow:0 -4px 20px rgba(0,0,0,0.08);
+  }
+  .q-type-badge {
+    display:inline-block; padding:3px 10px; border-radius:10px;
+    font-size:11px; font-weight:600; margin-bottom:12px;
+  }
+  .badge-grammar { background:var(--primary-light); color:var(--primary); }
+  .badge-vocab { background:var(--success-light); color:var(--success); }
+  .badge-phrase { background:var(--accent-light); color:#92400E; }
+  .badge-scene { background:var(--purple-light); color:var(--purple); }
+  .badge-error { background:var(--danger-light); color:var(--danger); }
+
+  .q-text { font-size:18px; font-weight:700; margin-bottom:16px; line-height:1.5; }
+  .q-hint { font-size:13px; color:var(--gray-500); margin-bottom:16px; }
+
+  /* Options */
+  .opts-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .opt-btn {
+    padding:14px 12px; border-radius:12px; border:2px solid var(--gray-200);
+    background:white; font-size:14px; cursor:pointer; transition:all 0.2s;
+    font-weight:500; text-align:center; line-height:1.4;
+    touch-action:manipulation; user-select:none;
+  }
+  .opt-btn:hover { border-color:var(--primary); background:var(--primary-light); }
+  .opt-btn.selected { border-color:var(--primary); background:var(--primary-light); color:var(--primary); }
+  .opt-btn.correct { border-color:var(--success); background:var(--success-light); color:#065F46; animation:pop 0.3s; }
+  .opt-btn.wrong { border-color:var(--danger); background:var(--danger-light); color:#991B1B; }
+  @keyframes pop { 50% { transform:scale(1.05); } }
+
+  /* Type input */
+  .type-wrap { text-align:center; }
+  .type-prompt-big { font-size:36px; font-weight:800; color:var(--primary); margin:16px 0 8px; }
+  .type-input {
+    width:100%; max-width:360px; padding:14px 20px; border:3px solid var(--gray-200);
+    border-radius:12px; font-size:18px; text-align:center; outline:none; margin-top:8px;
+  }
+  .type-input:focus { border-color:var(--primary); }
+  .type-input.correct { border-color:var(--success); background:var(--success-light); }
+  .type-input.wrong { border-color:var(--danger); background:var(--danger-light); }
+
+  /* Fill-blank */
+  .fill-wrap { text-align:center; }
+  .fill-sentence {
+    font-size:18px; line-height:1.8; margin-bottom:16px;
+  }
+  .fill-blank {
+    display:inline-block; min-width:80px; border-bottom:3px solid var(--primary);
+    padding:2px 4px; font-weight:700; color:var(--primary);
+  }
+  .fill-blank.revealed { color:var(--success); border-color:var(--success); }
+  .fill-blank.wrong-reveal { color:var(--danger); border-color:var(--danger); }
+  .fill-input {
+    width:100%; max-width:360px; padding:14px 20px; border:3px solid var(--gray-200);
+    border-radius:12px; font-size:16px; text-align:center; outline:none;
+  }
+  .fill-input:focus { border-color:var(--primary); }
+  .fill-input.correct { border-color:var(--success); background:var(--success-light); }
+  .fill-input.wrong { border-color:var(--danger); background:var(--danger-light); }
+  .submit-btn {
+    display:inline-block; padding:12px 32px; border-radius:25px; border:none;
+    background:var(--primary); color:white; font-size:15px; font-weight:600;
+    cursor:pointer; margin-top:12px; transition:transform 0.15s;
+    touch-action:manipulation;
+  }
+  .submit-btn:hover { transform:scale(1.03); }
+
+  /* ====== Explanation ====== */
+  .explain-box {
+    background:var(--gray-50); border-radius:12px; padding:16px; margin-top:16px;
+    border-left:4px solid var(--primary); animation:slideUp 0.3s;
+  }
+  @keyframes slideUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+  .explain-title {
+    font-size:15px; font-weight:700; color:var(--primary); margin-bottom:8px;
+    display:flex; align-items:center; gap:6px;
+  }
+  .explain-body { font-size:13px; color:var(--gray-600); line-height:1.6; }
+  .explain-body .en { color:var(--primary); font-weight:600; }
+  .explain-body .highlight { background:var(--accent-light); padding:1px 4px; border-radius:3px; font-weight:600; }
+  .explain-body .wrong { color:var(--danger); text-decoration:line-through; }
+  .explain-body .right { color:var(--success); font-weight:600; }
+  .explain-tip {
+    background:var(--accent-light); border-radius:8px; padding:8px 12px;
+    margin-top:8px; font-size:12px; color:#92400E;
+  }
+  .explain-tip::before { content:'💡 '; }
+
+  .next-btn-wrap { text-align:center; margin-top:16px; }
+  .next-btn {
+    padding:12px 40px; border-radius:25px; border:none;
+    background:var(--primary); color:white; font-size:15px;
+    font-weight:600; cursor:pointer; transition:transform 0.15s;
+    touch-action:manipulation; user-select:none;
+  }
+  .next-btn:hover { transform:scale(1.03); }
+
+  /* ====== Result Page ====== */
+  .result-page { display:none; min-height:100vh; }
+  .result-page.active { display:flex; flex-direction:column; align-items:center; }
+  .result-card {
+    background:white; border-radius:20px; padding:32px 24px; margin:24px 16px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.15); text-align:center; max-width:460px; width:100%;
+  }
+  .result-emoji { font-size:64px; margin-bottom:8px; }
+  .result-score {
+    font-size:56px; font-weight:800;
+    background:linear-gradient(135deg, var(--primary), #a855f7);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .result-label { font-size:16px; color:var(--gray-600); margin-bottom:20px; }
+  .result-grid { display:flex; justify-content:center; gap:16px; margin-bottom:20px; }
+  .result-item { text-align:center; padding:12px 16px; border-radius:12px; background:var(--gray-50); }
+  .result-item .num { font-size:24px; font-weight:700; }
+  .result-item .label { font-size:11px; color:var(--gray-500); }
+
+  /* Weak points */
+  .weak-section {
+    margin-top:16px; text-align:left; width:100%;
+  }
+  .weak-title { font-size:14px; font-weight:700; color:var(--danger); margin-bottom:8px; }
+  .weak-list { font-size:13px; color:var(--gray-600); line-height:1.8; }
+  .weak-list .en { color:var(--primary); font-weight:600; }
+
+  .result-btns { display:flex; gap:10px; justify-content:center; margin-top:16px; }
+  .btn-primary {
+    padding:12px 32px; border-radius:25px; border:none;
+    background:var(--primary); color:white; font-size:15px; font-weight:600; cursor:pointer;
+    touch-action:manipulation; user-select:none;
+  }
+  .btn-primary:hover { transform:scale(1.03); }
+  .btn-outline {
+    padding:12px 32px; border-radius:25px; border:2px solid var(--gray-300);
+    background:white; color:var(--gray-700); font-size:15px; font-weight:600; cursor:pointer;
+    touch-action:manipulation; user-select:none;
+  }
+
+  /* ====== Score float ====== */
+  .score-float {
+    position:fixed; pointer-events:none; font-size:20px; font-weight:700; z-index:998;
+    animation:floatUp 0.8s forwards;
+  }
+  @keyframes floatUp { 0%{opacity:1;transform:translateY(0)} 100%{opacity:0;transform:translateY(-60px)} }
+
+  /* ====== Toast ====== */
+  .toast-msg {
+    position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+    background:rgba(0,0,0,0.75); color:white; padding:16px 28px;
+    border-radius:12px; font-size:14px; font-weight:600; z-index:9999;
+    animation:toastIn 0.3s, toastOut 0.3s 2.2s forwards;
+    white-space:pre-wrap; text-align:center; max-width:80%;
+  }
+  @keyframes toastIn { from{opacity:0;transform:translate(-50%,-50%) scale(0.8)} to{opacity:1;transform:translate(-50%,-50%) scale(1)} }
+  @keyframes toastOut { to{opacity:0;transform:translate(-50%,-50%) scale(0.8)} }
+
+  /* ====== Combo ====== */
+  .combo-pop {
+    position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(0);
+    font-size:42px; font-weight:900; color:var(--accent); pointer-events:none; z-index:999;
+    text-shadow:0 2px 12px rgba(245,158,11,0.4);
+  }
+  .combo-pop.show { animation:comboPop 0.8s forwards; }
+  @keyframes comboPop {
+    0%{transform:translate(-50%,-50%) scale(0);opacity:1}
+    30%{transform:translate(-50%,-50%) scale(1.2);opacity:1}
+    100%{transform:translate(-50%,-80%) scale(0.8);opacity:0}
+  }
+
+  /* ====== Mobile Responsive ====== */
+  @media (max-width:480px) {
+    .home-hero h1 { font-size:22px; }
+    .mode-grid { grid-template-columns:1fr 1fr; gap:8px; padding:12px 12px; }
+    .mode-card { padding:14px 10px; }
+    .mode-card-icon { font-size:26px; }
+    .q-text { font-size:16px; }
+    .opts-grid { grid-template-columns:1fr 1fr; gap:8px; }
+    .opt-btn { padding:12px 10px; font-size:13px; }
+    .type-prompt-big { font-size:28px; }
+    .result-score { font-size:44px; }
+  }
+  @media (min-width:600px) {
+    .q-area { padding:32px 40px; }
+    .opts-grid { grid-template-columns:1fr 1fr; gap:12px; }
+    .mode-grid { max-width:540px; }
+  }
+</style>
+</head>
+<body>
+<a href="index.html" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+
+<!-- ====== 首页 ====== -->
+<div class="home-page" id="homePage">
+  <div class="home-hero">
+    <h1>🎯 英语测试达人</h1>
+    <p>6种玩法 · 200+题目 · 随时随地练</p>
+  </div>
+
+  <div class="home-stats">
+    <div class="home-stat">
+      <div class="home-stat-icon">🏆</div>
+      <div class="home-stat-val" id="hScore">0</div>
+      <div class="home-stat-label">总积分</div>
+    </div>
+    <div class="home-stat">
+      <div class="home-stat-icon">🔥</div>
+      <div class="home-stat-val" id="hCombo">0</div>
+      <div class="home-stat-label">最高连击</div>
+    </div>
+    <div class="home-stat">
+      <div class="home-stat-icon">✅</div>
+      <div class="home-stat-val" id="hMaster">0</div>
+      <div class="home-stat-label">已掌握</div>
+    </div>
+  </div>
+
+  <div class="mode-grid" id="modeGrid">
+    <div class="mode-card" onclick="startMode('speed')">
+      <div class="mode-card-icon">⚡</div>
+      <div class="mode-card-title">极速闯关</div>
+      <div class="mode-card-desc">20题快答，每题15秒</div>
+    </div>
+    <div class="mode-card" onclick="startMode('survival')">
+      <div class="mode-card-icon">❤️</div>
+      <div class="mode-card-title">生存挑战</div>
+      <div class="mode-card-desc">3条命，答错扣命</div>
+    </div>
+    <div class="mode-card" onclick="startMode('fill')">
+      <div class="mode-card-icon">📝</div>
+      <div class="mode-card-title">填空高手</div>
+      <div class="mode-card-desc">补全句子，精准用词</div>
+    </div>
+    <div class="mode-card" onclick="startMode('type')">
+      <div class="mode-card-icon">⌨️</div>
+      <div class="mode-card-title">听写达人</div>
+      <div class="mode-card-desc">看中文，打英文</div>
+    </div>
+    <div class="mode-card" onclick="startMode('judge')">
+      <div class="mode-card-icon">⚖️</div>
+      <div class="mode-card-title">辨析法官</div>
+      <div class="mode-card-desc">判断对错，抓中式英语</div>
+    </div>
+    <div class="mode-card" onclick="startMode('exam')">
+      <div class="mode-card-icon">📋</div>
+      <div class="mode-card-title">模拟考试</div>
+      <div class="mode-card-desc">50题全面测评</div>
+    </div>
+  </div>
+
+  <div class="cat-section">
+    <div class="cat-label">选择测试范围：</div>
+    <div class="cat-bar" id="catBar"></div>
+  </div>
+</div>
+
+<!-- ====== 测试页 ====== -->
+<div class="test-page" id="testPage">
+  <div class="test-top">
+    <button class="test-back" onclick="goHome()">← 返回</button>
+    <div class="test-info" id="testInfo">第 1/20 题</div>
+    <div class="test-timer" id="testTimer"></div>
+  </div>
+  <div class="timer-bar-wrap" id="timerWrap" style="display:none;">
+    <div class="timer-bar"><div class="timer-fill" id="timerFill" style="width:100%"></div></div>
+  </div>
+  <div class="lives-row" id="livesRow" style="display:none;"></div>
+  <div class="progress-dots" id="progressDots"></div>
+  <div class="q-area" id="qArea"></div>
+</div>
+
+<!-- ====== 结果页 ====== -->
+<div class="result-page" id="resultPage">
+  <div class="result-card" id="resultCard"></div>
+</div>
+
+<div class="combo-pop" id="comboPop"></div>
+
+<script>
+// ============ QUESTION BANK ============
+const Q = {
+  grammar: [
+    // === 时态 ===
+    { id:'g1', cat:'grammar', type:'choice', badge:'语法',
+      q:'"I ___ there in 2019." 选哪个？', hint:'注意有明确过去年份',
+      opts:['have been','was','am going to','will be'], ans:1,
+      explain:'【知识点】现在完成时 vs 一般过去时<br><br>有具体过去时间(in 2019)→只能用一般过去时 <span class="right">was</span>。<br><br>【易错点】<span class="wrong">have been</span> 不能搭配具体过去时间！这是现在完成时的<strong>硬禁忌</strong>。<br><br>【规则对比】<br>• 现在完成时：强调"过去动作对现在的影响"，不能加过去时间<br>• 一般过去时：单纯叙述过去事件，必须/可以加过去时间<br><br>【例子对比】<br>✅ I <span class="right">was</span> there in 2019.（单纯叙述，带过去时间）<br>✅ I <span class="right">have been</span> there.（去过，现在有经验，不带时间）<br>❌ I <span class="wrong">have been</span> there in 2019.（错误！现完不能加过去时间）',
+      tip:'现在完成时禁忌：不能搭配具体过去时间(in 2019 / yesterday / last week)' },
+    { id:'g2', cat:'grammar', type:'choice', badge:'语法',
+      q:'"I\'ve ___ there." — 我去过那儿。填什么？', hint:'be动词的完成式',
+      opts:['went','been','gone','was'], ans:1,
+      explain:'【知识点】现在完成时结构：have/has + 过去分词<br><br>be动词的变化：<br>be → was/were → <span class="highlight">been</span>（过去分词）<br><br>【易错对比】<br>• <span class="wrong">gone</span> = 去了某地，人<strong>还没回来</strong><br>• <span class="right">been</span> = 去过某地，人<strong>已回来</strong><br><br>【例子对比】<br>✅ She has <span class="right">been</span> to Paris. = 她去过巴黎（人已回来）<br>✅ She has <span class="right">gone</span> to Paris. = 她去巴黎了（人还在那）<br><br>【记忆技巧】<br>been = "去过"（强调经历，人回来了）<br>gone = "去了"（强调动作，人还没回）',
+      tip:'have been to = 去过（已回来）；have gone to = 去了（还没回来）' },
+    { id:'g3', cat:'grammar', type:'choice', badge:'语法',
+      q:'"She has ___ to Hong Kong." — 她去中国香港了（人还在那）。填什么？', hint:'人还没回来',
+      opts:['been','gone','went','going'], ans:1,
+      explain:'【知识点】have been to vs have gone to<br><br>• <span class="right">has gone to</span> = 去了某地，人<strong>还在那</strong><br>• <span class="wrong">has been to</span> = 去过某地，人<strong>已回来</strong><br><br>题目说"人还在那" → 选 <span class="right">gone</span><br><br>【场景对比】<br>• 打电话找同事："Where is Tom?" → "He has <span class="right">gone</span> to the meeting."（人还在会议中）<br>• 聊旅游经历："I have <span class="right">been</span> to Japan twice."（去过日本两次，人已回来）<br><br>【记忆口诀】<br>gone = 去了（没回来）→ 人不在眼前<br>been = 去过（回来了）→ 人就在眼前',
+      tip:'记忆：been=去过（回来了）；gone=去了（没回来）' },
+    { id:'g4', cat:'grammar', type:'choice', badge:'语法',
+      q:'哪个是"提前计划好的将来"？', hint:'昨天就想好要做的事',
+      opts:['will + do','be going to + do','am/is/are + doing','have + done'], ans:1,
+      explain:'【知识点】三种将来时的区别<br><br>• <span class="right">be going to</span> = <strong>提前计划</strong>、打算好的将来（昨天就想好的）<br>• <span class="wrong">will</span> = <strong>临时决定</strong>、当场拍板（此刻决定的）<br>• <span class="wrong">be doing</span> = <strong>日程已敲定</strong>、日历标好的（位移类/会面类动词）<br><br>【场景对比】<br>• "I am going to study abroad next year." → 去年就开始计划了（be going to）<br>• "I will help you with that." → 刚才你求我，我才答应（will）<br>• "I am meeting my boss at 3 PM." → 日历上已排好（be doing）<br><br>【记忆口诀】<br>昨天想好的 → be going to<br>此刻决定的 → will<br>日历标好的 → be doing<br><br>【位移类动词】<br>meet/leave/come/go/fly/arrive → 常用be doing表将来',
+      tip:'一句话区分：昨天想好的→be going to | 此刻决定的→will | 日历标好的→be doing' },
+    { id:'g5', cat:'grammar', type:'choice', badge:'语法',
+      q:'"I will keep in touch with you." 这里will表示？', hint:'不是提前规划',
+      opts:['提前计划好的将来','临时决定/承诺','日程已敲定','过去持续的动作'], ans:1,
+      explain:'【知识点】will的两大场景<br><br>"我会和你保持联系"多是分别时<strong>临时承诺</strong>，不是提前规划的，所以用 <span class="right">will</span><br><br>【will vs be going to 对比】<br>• will：<br>  ✓ 临时决定/承诺（当场拍板）<br>  ✓ 对未来预测（不确定性）<br>• be going to：<br>  ✓ 提前计划（昨天想好的）<br>  ✓ 有迹象预示（看天空黑云 → It is going to rain）<br><br>【经典场景】<br>• "I will call you later." → 刚想起来，临时决定<br>• "I am going to call him at 5 PM." → 早就计划好了<br>• "I think it will rain tomorrow." → 对未来的预测（不确定）<br>• "Look at those clouds! It is going to rain." → 有迹象，马上要下雨了',
+      tip:'will两大场景：①临时决定/承诺 ②对未来预测' },
+    { id:'g6', cat:'grammar', type:'choice', badge:'语法',
+      q:'"Rachel ___ Diane next Friday." 日程已定。选？', hint:'已敲定的近期将来',
+      opts:['will meet','is going to meet','is meeting','has met'], ans:2,
+      explain:'【知识点】现在进行时表将来<br><br><span class="right">is meeting</span> = 现在进行时表将来<br><br>【适用范围】<br>位移类、会面类动词可用be doing表将来：<br>• meet（会面）<br>• leave（离开）<br>• come（来）<br>• go（去）<br>• fly（飞）<br>• arrive（到达）<br><br>【语义强度】<br>• be doing表将来 → <strong>日程完全敲定</strong>、时间地点都定了<br>• be going to → <strong>打算</strong>去做，但可能还没定具体时间<br>• will → <strong>临时决定</strong>或承诺<br><br>【例子对比】<br>✅ "Rachel <span class="right">is meeting</span> Diane next Friday." → 日程已排好（最强）<br>✅ "Rachel <span class="right">is going to meet</span> Diane." → 打算去见（计划）<br>✅ "Rachel <span class="right">will meet</span> Diane." → 承诺会去见（临时）',
+      tip:'be doing表将来：多用于位移类动词(meet/leave/come/go)，日程已定好' },
+    { id:'g7', cat:'grammar', type:'fill', badge:'语法',
+      q:'"I ___ been to Milan." — 我去过米兰。填助动词', hint:'主语是I',
+      ans:['have'], explain:'【知识点】have vs has 的主语搭配规则<br><br>主语I → 助动词用 <span class="right">have</span><br><br>【完整规则表】<br>• have：<br>  ✓ I / you / we / they<br>  ✓ 复数名词（students / books）<br>• has：<br>  ✓ he / she / it<br>  ✓ 单数人名（Tom / Rachel）<br>  ✓ 单数名词（student / book）<br><br>【易错点】<br>❌ She have been... → 错误！<br>✅ She <span class="right">has</span> been... → 正确<br><br>【缩写形式】<br>• I have = I have（不缩写）<br>• She has = She has（不缩写）<br>• He has = He has（不缩写）<br>注意：have/has一般不缩写（不同于would/can等）',
+      tip:'have vs has：I/you/we/they/复数→have；he/she/it/单数→has' },
+    { id:'g8', cat:'grammar', type:'fill', badge:'语法',
+      q:'"She\'s ___ to Australia." — 她去过澳大利亚。填过去分词', hint:'be → was → ?',
+      ans:['been'], explain:'【知识点】be动词的三态变化<br><br>She has = She has（完成式缩写）<br>have/has + <span class="right">been</span>（be的过去分词）<br><br>【be动词完整变化】<br>原形 → 过去式 → 过去分词<br>be → was/were → <span class="highlight">been</span><br><br>【不规则动词对比】<br>• go → went → gone<br>• eat → ate → eaten<br>• be → was/were → been<br><br>【常见错误】<br>❌ She has go... → 错误！必须用过去分词<br>❌ She has went... → 错误！went是过去式<br>✅ She has <span class="right">been</span>... → 正确！用过去分词<br><br>【记忆技巧】<br>现在完成时永远用过去分词：<br>have/has + <span class="highlight">过去分词</span><br>不是过去式！不是原形！',
+      tip:'' },
+    { id:'g9', cat:'grammar', type:'choice', badge:'语法',
+      q:'"We ___ dinner." — 我们吃过晚饭了（现在不饿）。选？', hint:'过去动作，结果留在当下',
+      opts:['have ate','have eaten','ate','are eating'], ans:1,
+      explain:'【知识点】现在完成时的含义与结构<br><br>现在完成时：have/has + 过去分词<br>eat → ate → <span class="right">eaten</span><br><br>【核心含义】<br>"吃过晚饭了→现在不饿"：过去动作<strong>影响当下</strong>→用现完<br><br>【现完 vs 一般过去时对比】<br>• 现完：强调<strong>对现在的影响</strong>（现在不饿）<br>• 一般过去时：只是<strong>叙述过去事件</strong>（单纯说吃过了）<br><br>【例子对比】<br>✅ We have <span class="right">eaten</span> dinner. → 吃过了，现在不饿<br>✅ We <span class="right">ate</span> dinner at 7 PM. → 叙述过去事件，带时间<br>❌ We have <span class="wrong">ate</span> dinner. → 错误！ate是过去式不是过去分词<br><br>【易错点】过去式 ≠ 过去分词<br>eat → ate(过去式) → eaten(过去分词)<br>现完必须用过去分词！',
+      tip:'' },
+    { id:'g10', cat:'grammar', type:'choice', badge:'语法',
+      q:'"I was running ___ I tripped." — 我正跑步这时绊倒了。填？', hint:'"正在做……这时突然……"',
+      opts:['while','when','after','before'], ans:1,
+      explain:'【知识点】was/were doing + when 句型<br><br>经典句型：<span class="right">was/were doing + when + 一般过去时</span><br>= 正在做……这时<strong>突然</strong>……<br><br>【when vs while 区别】<br>• <span class="right">when</span>：一个动作进行中，另一个<strong>突然插入</strong>（有"突然感"）<br>• <span class="wrong">while</span>：两个动作<strong>同时进行</strong>（平行，无"突然感"）<br><br>【例子对比】<br>✅ I was running <span class="right">when</span> I tripped. → 跑步时突然绊倒（突然）<br>✅ I was running <span class="right">while</span> she was walking. → 两人同时运动（平行）<br><br>【固定搭配】<br>• was doing + when + did → "突然"感<br>• was doing + while + was doing → "同时"感<br><br>【记忆口诀】<br>when = 突然插入的"这时"<br>while = 并行进行的"同时"',
+      tip:'was doing + when + did：过去进行时 + when = "突然"感' },
+
+    // === 条件句 ===
+    { id:'g11', cat:'grammar', type:'choice', badge:'语法',
+      q:'"If I ___ rich, I would buy a house." 填？', hint:'不太可能实现的假设',
+      opts:['am','was','were','will be'], ans:2,
+      explain:'【知识点】第二条件句（虚拟语气）<br><br>第二条件句(虚拟)：If + <span class="right">过去时</span>，would + do<br>含义：不太可能实现的假设<br><br>【关键规则】不管主语是谁，都用 <span class="highlight">were</span>（虚拟语气特例）<br>✅ If I <span class="right">were</span> rich...<br>✅ If she <span class="right">were</span> rich...<br>❌ If I <span class="wrong">was</span> rich...（口语中偶尔听到，但不标准）<br><br>【第一条件句 vs 第二条件句】<br>• 第一条件句：If + 一般现在时，will → <strong>真实可能</strong><br>  If it is sunny, we <span class="right">will</span> go out.（真的可能晴天）<br>• 第二条件句：If + 过去时，would → <strong>不太可能</strong><br>  If I <span class="right">were</span> rich, I <span class="right">would</span> buy a house.（不太可能变富）<br><br>【记忆口诀】<br>真实可能 → 现在时 + will<br>不太可能 → 过去时 + would + were',
+      tip:'第二条件句固定用were，不说"If I was rich"' },
+    { id:'g12', cat:'grammar', type:'choice', badge:'语法',
+      q:'"If it is sunny, we ___ go out." — 可能的将来。填？', hint:'第一条件句',
+      opts:['would','will','are going to','could'], ans:1,
+      explain:'【知识点】第一条件句（真实可能）<br><br>第一条件句(真实可能)：If + <span class="highlight">一般现在时</span>，<span class="right">will</span> + do<br><br>【两条条件句对比】<br>• 第一条件句：If + 现在时，<span class="right">will</span> → <strong>真实可能发生</strong><br>  If it <span class="right">is</span> sunny, we <span class="right">will</span> go out. → 天可能真的晴<br>• 第二条件句：If + 过去时，<span class="wrong">would</span> → <strong>不太可能发生</strong><br>  If I <span class="wrong">were</span> rich, I <span class="wrong">would</span> buy a house. → 不太可能变富<br><br>【关键区别】<br>• will → 对未来<strong>有信心</strong>的预测<br>• would → 对未来<strong>不确定</strong>的假设<br><br>【更多例子】<br>✅ If you <span class="right">study</span> hard, you <span class="right">will</span> pass. → 真的可能通过<br>✅ If I <span class="right">had</span> more time, I <span class="right">would</span> learn French. → 不太可能有时间<br><br>【记忆口诀】<br>真实 → 现在时 + will<br>虚拟 → 过去时 + would + were',
+      tip:'第一条件句=真实可能→will；第二条件句=不太可能→would' },
+
+    // === open/close vs turn on/off ===
+    { id:'g13', cat:'grammar', type:'judge', badge:'易错',
+      q:'"Open the light" 这句话对吗？', ans:false,
+      explain:'【知识点】open/close vs turn on/off<br><br>❌ 灯是通电设备，"开灯"应该用 <span class="right">turn on the light</span><br><br>【核心判断规则】有没有<strong>通电/水流</strong>？<br>• 有电/水流 → <span class="right">turn on/off</span>（开关控制通断）<br>• 纯物理开合 → <span class="wrong">open/close</span>（物理分离/合拢）<br><br>【turn on/off 适用】<br>• 灯/灯泡 → turn on/off the light<br>• 电视 → turn on/off the TV<br>• 手机 → turn on/off the phone<br>• 空调 → turn on/off the AC<br>• 水龙头 → turn on/off the tap<br>• 电脑 → turn on/off the computer<br><br>【open/close 适用】<br>• 门 → open/close the door<br>• 窗 → open/close the window<br>• 书 → open/close the book<br>• 盒子 → open/close the box<br><br>【记忆口诀】<br>有电有水 → turn on/off<br>纯物理 → open/close',
+      tip:'判断规则：有没有通电/水流？→ 有就用turn on/off，没有就用open/close' },
+    { id:'g14', cat:'grammar', type:'judge', badge:'易错',
+      q:'"Close the TV" 这句话对吗？', ans:false,
+      explain:'【知识点】电子设备必须用turn on/off<br><br>❌ 电视是电子设备，"关电视"应该用 <span class="right">turn off the TV</span><br><br>【为什么不能用close？】<br>close = 物理合拢（门关上、窗关上、书合上）<br>turn off = 切断电源/信号（电视断电、手机关机）<br><br>【更多例子】<br>• 关电脑 → <span class="right">turn off</span> the computer<br>• 关手机 → <span class="right">turn off</span> the phone<br>• 关门 → <span class="right">close</span> the door ✅（纯物理）<br>• 关窗 → <span class="right">close</span> the window ✅（纯物理）<br><br>【记忆口诀】<br>电子设备 → turn off<br>物理关闭 → close',
+      tip:'' },
+    { id:'g15', cat:'grammar', type:'judge', badge:'易错',
+      q:'"Open the tap"（开水龙头）这句话对吗？', ans:false,
+      explain:'【知识点】水龙头也用turn on/off<br><br>❌ 水龙头控制水流=开关，应该用 <span class="right">turn on the tap</span><br><br>【为什么不能用open？】<br>水龙头看似"拧开"，本质是<strong>开关控制水流</strong>→turn on！<br>开自来水 = 让水流出来 = turn on the tap<br><br>【水相关表达】<br>• 开水龙头 → <span class="right">turn on</span> the tap<br>• 关水龙头 → <span class="right">turn off</span> the tap<br>• 开淋浴 → <span class="right">turn on</span> the shower<br><br>【记忆口诀】<br>有水流 → turn on/off<br>拧旋钮式开关 → 都是turn on/off',
+      tip:'水龙头看似拧开，本质是开关控制水流→turn on the tap' },
+    { id:'g16', cat:'grammar', type:'choice', badge:'易错',
+      q:'"开空调"用英语怎么说？', opts:['open the AC','turn on the AC','close the AC','turn off the AC'], ans:1,
+      explain:'【知识点】空调通电 → turn on/off<br><br>空调通电→ <span class="right">turn on the AC</span><br><br>【所有家电设备统一规则】<br>只要是<strong>通电设备</strong>，开/关都是turn on/off：<br>• 空调 → turn on/off the AC<br>• 灯 → turn on/off the light<br>• 电视 → turn on/off the TV<br>• 手机 → turn on/off the phone<br>• 电脑 → turn on/off the computer<br>• 微波炉 → turn on/off the microwave<br><br>【记忆口诀】<br>有电 → turn on/off<br>没电 → open/close',
+      tip:'' },
+
+    // === 情态动词 ===
+    { id:'g17', cat:'grammar', type:'choice', badge:'语法',
+      q:'"You ___ park here." — 你不准在这里停车。选？', hint:'严禁、不准',
+      opts:['don\'t have to','mustn\'t','shouldn\'t','can\'t'], ans:1,
+      explain:'【知识点】mustn\'t vs don\'t have to<br><br><span class="right">mustn\'t</span> = 严禁、绝对不准（来了也不行）<br><span class="wrong">don\'t have to</span> = 不必（不来也行，来了也行）<br><br>【核心区别】两者含义<strong>完全相反</strong>！<br>• mustn\'t → <strong>禁止</strong>：不准做（做了就违规）<br>• don\'t have to → <strong>非强制</strong>：不做也行，做了也行<br><br>【场景对比】<br>• You <span class="right">mustn\'t</span> park here. = 不准停车（停了被罚）<br>• You <span class="right">don\'t have to</span> come early. = 不必早来（早来晚来都行）<br><br>【更多例子】<br>• You mustn\'t smoke here. = 这里禁止吸烟<br>• You don\'t have to wear a tie. = 不必戴领带（戴不戴都行）<br><br>【记忆口诀】<br>mustn\'t = 禁止红线<br>don\'t have to = 自由选择',
+      tip:'mustn\'t=严禁不准；don\'t have to=不必（非强制）' },
+    { id:'g18', cat:'grammar', type:'choice', badge:'语法',
+      q:'"You ___ come early." — 你不必早来。选？', hint:'不是禁止',
+      opts:['mustn\'t','don\'t have to','shouldn\'t','can\'t'], ans:1,
+      explain:'【知识点】don\'t have to = 非强制<br><br><span class="right">don\'t have to</span> = 不必（非强制，早来也行）<br><span class="wrong">mustn\'t</span> = 严禁不准（来了也不行）<br><br>【核心区别】含义<strong>完全相反</strong>！<br>• don\'t have to → <strong>可选择</strong>：不做也行，做了也行<br>• mustn\'t → <strong>禁止</strong>：绝对不准，做了违规<br><br>【场景对比】<br>• You <span class="right">don\'t have to</span> come early.<br>  = 你不必早来（但如果你想早来也OK）<br>• You <span class="right">mustn\'t</span> park here.<br>  = 不准停车（停了会被罚）<br><br>【中文翻译对比】<br>不必 ≠ 不准<br>不必 → 可以做也可以不做<br>不准 → 绝对不能做<br><br>【记忆口诀】<br>don\'t have to = 不必（自由）<br>mustn\'t = 禁止（红线）',
+      tip:'' },
+    { id:'g19', cat:'grammar', type:'choice', badge:'语法',
+      q:'"Would you mind ___ the window?" — 你介意开窗吗？填？', hint:'mind后接什么形式',
+      opts:['to open','opening','open','opened'], ans:1,
+      explain:'【知识点】mind + doing 固定搭配<br><br><span class="right">mind + doing</span> 是固定搭配！<br><span class="wrong">mind + to do</span> 是中式英语错误<br><br>【完整句型】<br>Would you mind <span class="highlight">opening</span> the window? ✅<br>Would you mind <span class="wrong">to open</span> the window? ❌<br><br>【更多mind + doing例子】<br>• Do you mind <span class="right">waiting</span> a moment? ✅<br>• I don\'t mind <span class="right">helping</span> you. ✅<br>• Would you mind <span class="right">closing</span> the door? ✅<br><br>【类似规则：只接doing的动词】<br>• enjoy + doing<br>• finish + doing<br>• suggest + doing<br>• avoid + doing<br>• consider + doing<br><br>【记忆口诀】<br>mind后面只有doing，没有to do！',
+      tip:'mind后必须接动名词doing，不能接to do！高频易错点' },
+    { id:'g20', cat:'grammar', type:'choice', badge:'语法',
+      q:'"I ___ a pen from you." — 我能从你借支笔吗？选？', hint:'借入=别人→我',
+      opts:['borrow','lend','loan','give'], ans:0,
+      explain:'【知识点】borrow vs lend 借入 vs 借出<br><br><span class="right">borrow</span> = 借入（从别人那里拿来）<br>borrow sth <span class="highlight">from</span> sb<br><span class="wrong">lend</span> = 借出（我把东西给别人）<br>lend sb sth / lend sth <span class="highlight">to</span> sb<br><br>【方向对比】<br>• borrow：东西从<strong>别人→我</strong>（我拿来用）<br>• lend：东西从<strong>我→别人</strong>（我给出去）<br><br>【介词搭配】<br>• borrow FROM → I borrowed a pen <span class="highlight">from</span> Tom.<br>• lend TO → I lent a pen <span class="highlight">to</span> Tom.<br><br>【更多例子】<br>• Can I <span class="right">borrow</span> your phone? = 能借你手机吗？（我要拿来用）<br>• I <span class="right">lent</span> my car to him. = 我把车借给他了（我给出去）<br><br>【记忆口诀】<br>borrow = 拿进来（from）<br>lend = 给出去（to）',
+      tip:'borrow=借入(from)；lend=借出(to)' },
+
+    // === -ed/-ing ===
+    { id:'g21', cat:'grammar', type:'choice', badge:'语法',
+      q:'"The movie was ___." — 电影令人失望。选？', hint:'描述事物本身',
+      opts:['disappointed','disappointing','disappoint','disappointment'], ans:1,
+      explain:'【知识点】-ed vs -ing 形容词辨析<br><br><span class="right">-ing</span> 描述<strong>事物本身的属性</strong> → "这部电影令人失望"<br><span class="wrong">-ed</span> 描述<strong>人的感受</strong> → "我对电影感到失望"<br><br>【核心规则】<br>• -ing → <strong>事物</strong>本身令人怎样（主动发出影响）<br>• -ed → <strong>人</strong>对事物的感受（被动接受影响）<br><br>【常见配对】<br>• boring / bored → 令人无聊 / 感到无聊<br>• exciting / excited → 令人兴奋 / 感到兴奋<br>• interesting / interested → 令人有趣 / 感到有趣<br>• surprising / surprised → 令人惊讶 / 感到惊讶<br>• disappointing / disappointed → 令人失望 / 感到失望<br><br>【例子对比】<br>✅ The movie is <span class="right">disappointing</span>. → 电影令人失望<br>✅ I am <span class="right">disappointed</span> with the movie. → 我对电影失望<br>❌ I am <span class="wrong">disappointing</span>. → 错！人不能"令人失望自己"<br><br>【记忆口诀】<br>-ing = 事物属性（东西令人）<br>-ed = 人感受（我觉得）',
+      tip:'-ed=人的感受(我感到)；-ing=事物属性(东西令人)' },
+    { id:'g22', cat:'grammar', type:'choice', badge:'语法',
+      q:'"I am ___ about the trip." — 我对旅行很兴奋。选？', hint:'描述人的感受',
+      opts:['excited','exciting','excite','excitement'], ans:0,
+      explain:'【知识点】-ed vs -ing 形容词<br><br><span class="right">-ed</span> 描述<strong>人的感受</strong> → "我感到兴奋"<br><span class="wrong">-ing</span> 描述<strong>事物</strong> → "旅行令人兴奋"<br><br>【判断规则】<br>• 主语是<strong>人</strong>(I/you/she) → 用 <span class="right">-ed</span><br>• 主语是<strong>事物</strong>(trip/movie/book) → 用 <span class="right">-ing</span><br><br>【完整对比表】<br>• I am <span class="right">excited</span>. → 我感到兴奋<br>• The trip is <span class="right">exciting</span>. → 旅行令人兴奋<br>• I am <span class="right">bored</span>. → 我感到无聊<br>• The movie is <span class="right">boring</span>. → 电影令人无聊<br>• I am <span class="right">surprised</span>. → 我感到惊讶<br>• The news is <span class="right">surprising</span>. → 新闻令人惊讶<br><br>【记忆口诀】<br>人→-ed（我感到怎样）<br>事物→-ing（东西令人怎样）',
+      tip:'' },
+
+    // === suggest ===
+    { id:'g23', cat:'grammar', type:'judge', badge:'易错',
+      q:'"I suggest to go to the park" 这句话对吗？', ans:false,
+      explain:'❌ <span class="wrong">suggest + to do</span> 是中式英语！<br>✅ <span class="right">suggest + doing</span> 或 <span class="right">suggest + 名词</span><br>I suggest <span class="highlight">going</span> to the park ✅',
+      tip:'suggest后不能接to do！只能接doing或名词' },
+    { id:'g24', cat:'grammar', type:'choice', badge:'易错',
+      q:'"I suggest ___ to the park." 填？', opts:['to go','going','go','went'], ans:1,
+      explain:'【知识点】suggest + doing（固定用法）<br><br><span class="right">suggest + doing</span> ✅ 正确<br><span class="wrong">suggest + to do</span> ❌ 中式英语<br><br>【为什么不能接to do？】<br>suggest的含义是"提出建议"，后面接的是<strong>建议的内容</strong><br>不是"建议某人去做"，所以不用to do<br><br>【完整用法总结】<br>✅ suggest + doing → I suggest <span class="right">going</span> to the park.<br>✅ suggest + 名词 → I suggest <span class="right">Paris</span> for vacation.<br>✅ suggest + that句 → I suggest <span class="right">that we go</span> to the park.<br>❌ suggest + to do → <span class="wrong">I suggest to go</span>... ❌ 永远错误<br><br>【记忆口诀】<br>suggest后三种选择：<br>doing / 名词 / that句<br>唯独不能接to do！',
+      tip:'' },
+
+    // === 频率副词 ===
+    { id:'g25', cat:'grammar', type:'choice', badge:'语法',
+      q:'频率副词从低到高排序正确的是？', opts:['always→often→sometimes→never','never→sometimes→often→always','seldom→rarely→usually→often','often→usually→always→sometimes'], ans:1,
+      explain:'【知识点】频率副词排序<br><br>正确排序：<span class="right">never(0%) → rarely → seldom → occasionally → sometimes → often → usually → always(100%)</span><br><br>【各词含义与百分比】<br>• always → 100%（总是）<br>• usually → 80-90%（通常）<br>• often → 60-70%（经常）<br>• sometimes → 30-50%（有时）<br>• occasionally → 20%（偶尔）<br>• seldom → 10%（很少）= rarely<br>• rarely → 5-10%（极少）<br>• never → 0%（从不）<br><br>【易混辨析】<br>seldom ≈ rarely → 都表示"很少"<br>occasionally → 比sometimes频率更低<br><br>【记忆口诀】<br>从未→极少→很少→偶尔→有时→经常→通常→总是<br>0→5→10→20→30→60→80→100',
+      tip:'' },
+    { id:'g26', cat:'grammar', type:'choice', badge:'语法',
+      q:'"We ___ fasten seat belts." — 我们很少系安全带。频率副词放哪？', hint:'实义动词前还是be动词后',
+      opts:['We seldom fasten ✅','We fasten seldom ✅','We are seldom fasten ✅','We seldom are fasten ✅'], ans:0,
+      explain:'【知识点】频率副词的位置规则<br><br>频率副词位置规则：<br><span class="right">实义动词<strong>前</strong></span>：We <span class="highlight">seldom</span> fasten ✅<br><span class="right">be动词<strong>后</strong></span>：I am <span class="highlight">usually</span> busy ✅<br><br>【完整规则表】<br>• 实义动词前：I <span class="right">always</span> get up early.<br>• be动词后：She <span class="right">is</span> often late.<br>• 助动词和实义动词之间：I have <span class="right">never</span> been there.<br>• can/will等情态动词后：You should <span class="right">always</span> check.<br><br>【错误位置】<br>❌ We fasten <span class="wrong">seldom</span>. → 不能放在动词后<br>❌ We <span class="wrong">seldom are</span> busy. → 不能放在be动词前<br><br>【记忆口诀】<br>实义动词→前面站<br>be动词→后面站<br>助动词→中间站',
+      tip:'频率副词：实义动词前，be动词后' },
+
+    // === used to ===
+    { id:'g27', cat:'grammar', type:'choice', badge:'语法',
+      q:'"I ___ drink alcohol, but now I quit." — 过去常喝酒。选？', hint:'已停止的习惯',
+      opts:['am used to','used to','use to','was used to'], ans:1,
+      explain:'【知识点】used to do vs be used to doing<br><br><span class="right">used to + do</span> = 过去常做，<strong>现已不做</strong><br><span class="wrong">be used to + doing</span> = 现在习惯于，<strong>仍在做</strong><br><br>【核心区别】<br>• used to do → <strong>过去习惯</strong>，现在已经停了<br>• be used to doing → <strong>现在习惯</strong>，仍然在做<br><br>【例子对比】<br>✅ I <span class="right">used to</span> drink alcohol. → 过去常喝酒（现在戒了）<br>✅ I <span class="right">am used to</span> waking up early. → 习惯早起（仍在做）<br><br>【时间对比】<br>• used to → 关注<strong>过去→现在的变化</strong>（不再做了）<br>• be used to → 关注<strong>当下的状态</strong>（习惯了）<br><br>【易错点】<br>❌ I am used to <span class="wrong">drink</span> coffee. → 错！be used to后接doing<br>✅ I am used to <span class="right">drinking</span> coffee. → 正确<br><br>【记忆口诀】<br>used to do = 过去习惯（已停）<br>be used to doing = 现在习惯（仍在）',
+      tip:'used to do=过去习惯（已停）；be used to doing=现在习惯（仍在）' },
+    { id:'g28', cat:'grammar', type:'choice', badge:'语法',
+      q:'"I am ___ waking up early." — 我习惯了早起。选？', hint:'仍在做的习惯',
+      opts:['used to','use to','used to doing','used to do'], ans:2,
+      explain:'【知识点】be used to doing = 现在习惯于<br><br><span class="right">am used to + doing</span> = 习惯于（仍在做）<br><span class="wrong">used to + do</span> = 过去常做（已停）<br><br>【对比表】<br>• I am used to <span class="right">drinking</span> coffee. → 现在习惯喝咖啡<br>• I <span class="wrong">used to</span> drink coffee. → 过去常喝咖啡（现在不喝了）<br><br>【be的变化】<br>• I <span class="right">am</span> used to... → 现在习惯<br>• She <span class="right">is</span> used to... → 现在习惯<br>• They <span class="right">are</span> used to... → 现在习惯<br><br>【易错点】<br>❌ I am used to <span class="wrong">drink</span> coffee. → 错！后接doing<br>✅ I am used to <span class="right">drinking</span> coffee. → 正确<br><br>【记忆口诀】<br>am/is/are used to + doing → 现在<br>used to + do → 过去（已停）',
+      tip:'' },
+
+    // === 介词 ===
+    { id:'g29', cat:'grammar', type:'choice', badge:'语法',
+      q:'"I pay ___ cash." — 用现金支付。填介词？', hint:'方式/手段',
+      opts:['in','on','by','with'], ans:2,
+      explain:'【知识点】支付方式的介词：by vs in<br><br><span class="right">by cash / by credit card</span> = 用...方式支付<br>也可说 pay <span class="highlight">in</span> cash（in表"沉浸在里面"）<br>两个都对，但by更常见<br><br>【by的用法】方式、手段<br>• <span class="right">by</span> cash → 用现金<br>• <span class="right">by</span> credit card → 用信用卡<br>• <span class="right">by</span> bus → 坐公交<br>• <span class="right">by</span> email → 通过邮件<br><br>【in的用法】沉浸在某种介质中<br>• pay <span class="right">in</span> cash → 用现金支付<br>• speak <span class="right">in</span> English → 用英语说<br>• write <span class="right">in</span> pencil → 用铅笔写<br><br>【不能用的介词】<br>❌ pay <span class="wrong">with</span> cash → 不标准<br>❌ pay <span class="wrong">on</span> cash → 错误<br><br>【记忆口诀】<br>支付方式 → by 或 in<br>by更常见，in也可以<br>其他介词不用',
+      tip:'' },
+    { id:'g30', cat:'grammar', type:'choice', badge:'语法',
+      q:'"Pass the salt ___ me." — 把盐递给我。填介词？', hint:'方向/传递',
+      opts:['for','to','at','with'], ans:1,
+      explain:'【知识点】介词 to vs for<br><br><span class="right">to</span> = 方向/传递：东西从A到B<br>Pass the salt <span class="highlight">to</span> me = 递给我<br><span class="wrong">for</span> = 目的/服务：为某人做<br><br>【to的用法】方向、传递、接收<br>• Give it <span class="right">to</span> me. → 给我（传递）<br>• Send the email <span class="right">to</span> her. → 发给她（方向）<br>• Pass the book <span class="right">to</span> him. → 递给他（传递）<br><br>【for的用法】目的、服务、为某人做<br>• I made dinner <span class="right">for</span> you. → 为你做晚餐（服务）<br>• This gift is <span class="right">for</span> her. → 这个礼物是给她的（目的）<br>• I bought a coffee <span class="right">for</span> him. → 为他买了咖啡（服务）<br><br>【对比辨析】<br>• Pass the salt <span class="right">to</span> me. → 递给我（方向传递）<br>• I cooked <span class="right">for</span> you. → 为你做饭（服务目的）<br><br>【记忆口诀】<br>to = 传递方向（东西到某人）<br>for = 服务目的（为某人做）',
+      tip:'传递给某人→to；为某人做→for' },
+    { id:'g52', cat:'grammar', type:'choice', badge:'语法',
+      q:'祈使句"请坐下"的正确表达是？', hint:'祈使句省略主语',
+      opts:['Sit down, please.','You sit down, please.','Please to sit down.','Sitting down, please.'],
+      ans:0,
+      explain:'<span class="right">Sit down, please.</span> 是标准祈使句。祈使句省略主语 you，直接用动词原形。<span class="wrong">You sit down</span> 是陈述句不是祈使句，<span class="wrong">Please to sit down</span> 多加了 to（祈使句不需要），<span class="wrong">Sitting down</span> 是现在分词不能作祈使句。<br><span class="highlight">结构</span>：动词原形开头 + please（可前可后）',
+      tip:'祈使句 = 动词原形开头，省略主语！' },
+    { id:'g53', cat:'grammar', type:'choice', badge:'语法',
+      q:'"Don\'t ____ late!" 空格处应填？', hint:'祈使句否定结构',
+      opts:['be','to be','being','is'],
+      ans:0,
+      explain:'<span class="right">be</span> — Don\'t 后直接接动词原形。Don\'t be late = 别迟到。<span class="wrong">to be</span> 是 Don\'t 后不能加 to，<span class="wrong">being</span> 是动名词，<span class="wrong">is</span> 是 be 的三单形式不能单独使用。<br><span class="highlight">结构</span>：Don\'t + 动词原形 = 否定祈使句',
+      tip:'否定祈使：Don\'t + 动词原形！' },
+  ],
+
+  vocab: [
+    // 租房
+    { id:'v1', cat:'vocab', type:'choice', badge:'词汇',
+      q:'"furnished" 是什么意思？', opts:['带家具的','押金','前台','设施'], ans:0,
+      explain:'【知识点】furnished vs unfurnished<br><br><span class="en">furnished</span> /ˈfɜːrnɪʃd/ = 带家具的<br>租房场景核心词！<br><br>【规则】furnished = 房子自带家具<br>反义词：<span class="wrong">unfurnished</span> = 不带家具<br><br>【例子对比】<br>✅ Is it <span class="right">furnished</span>? → 带家具吗？<br>✅ It is <span class="right">fully furnished</span>. → 全配家具<br>❌ It has furniture? → 中式英语！用Is it furnished<br><br>【租房词汇联想】<br>• furnished → 带家具的<br>• unfurnished → 不带家具的<br>• deposit → 押金<br>• landlord → 房东<br>• utilities → 水电费<br><br>【记忆口诀】<br>furnished = 带"furniture"的<br>租房问家具 → Is it furnished?', tip:'' },
+    { id:'v2', cat:'vocab', type:'type', badge:'词汇',
+      q:'押金', ans:['deposit'], explain:'<span class="en">deposit</span> /dɪˈpɒzɪt/ = 押金<br>How much is the deposit? = 押金多少？', tip:'' },
+    { id:'v3', cat:'vocab', type:'type', badge:'词汇',
+      q:'前台', ans:['receptionist'], explain:'<span class="en">receptionist</span> /rɪˈsepʃənɪst/ = 前台（人）', tip:'' },
+    { id:'v4', cat:'vocab', type:'type', badge:'词汇',
+      q:'设施', ans:['facility'], explain:'<span class="en">facility</span> /fəˈsɪlɪti/ → facilities = 设施（常用复数）', tip:'' },
+    // 运动
+    { id:'v5', cat:'vocab', type:'choice', badge:'词汇',
+      q:'"cardio" 是什么意思？', opts:['力量训练','有氧运动','教练','跑步机'], ans:1,
+      explain:'【知识点】cardio vs weight training<br><br><span class="en">cardio</span> /ˈkɑːrdioʊ/ = 有氧运动（心肺训练）<br>≠ <span class="wrong">weight training</span> = 力量训练（肌肉训练）<br><br>【易错点】健身两大分类要分清！<br>• cardio → 练心肺（跑步、游泳、骑车）<br>• weight training → 练肌肉（举铁、深蹲）<br><br>【例子对比】<br>✅ I do <span class="right">cardio</span> three times a week. → 每周有氧3次<br>✅ <span class="right">Running</span> is a great cardio workout. → 跑步是有氧运动<br>❌ I do cardio to build muscle. → 错！cardio练心肺不练肌肉<br><br>【常见cardio运动】<br>• running → 跑步<br>• swimming → 游泳<br>• cycling → 骑车<br>• jumping rope → 跳绳<br><br>【记忆口诀】<br>cardio = 心肺（跑跳游）<br>weight training = 肌肉（举铁蹲）', tip:'' },
+    { id:'v6', cat:'vocab', type:'type', badge:'词汇',
+      q:'跑步机', ans:['treadmill'], explain:'<span class="en">treadmill</span> /ˈtredmɪl/ = 跑步机', tip:'' },
+    // 购物
+    { id:'v7', cat:'vocab', type:'choice', badge:'词汇',
+      q:'"refund" 是什么意思？', opts:['折扣','退款','收据','划痕'], ans:1,
+      explain:'【知识点】refund vs discount vs receipt<br><br><span class="en">refund</span> /ˈriːfʌnd/ = 退款（把钱退回）<br>≠ <span class="wrong">discount</span> = 折扣（买时就便宜）<br>≠ <span class="wrong">receipt</span> = 收据（购物凭证）<br><br>【易错点】三个购物词别混淆！<br>• refund → 买了之后退钱<br>• discount → 买的时候打折<br>• receipt → 买完给的凭证<br><br>【例子对比】<br>✅ I would like a <span class="right">refund</span>. → 我要退款<br>✅ Is there any <span class="right">discount</span>? → 有折扣吗？<br>✅ Can I have the <span class="right">receipt</span>? → 能给收据吗？<br>❌ I want a refund for this scratch. → 退款理由要明确<br><br>【购物退款句型】<br>• I would like a refund. → 我要退款<br>• Can I get a refund? → 能退款吗？<br>• I want to return this. → 我想退货<br><br>【记忆口诀】<br>refund = 退<strong>钱</strong>（买后退）<br>discount = 打<strong>折</strong>（买时减）<br>receipt = 收<strong>据</strong>（凭证纸）', tip:'' },
+    { id:'v8', cat:'vocab', type:'choice', badge:'词汇',
+      q:'"brand new" 是什么意思？', opts:['二手的','全新的','划痕','折扣'], ans:1,
+      explain:'【知识点】brand new vs second-hand<br><br><span class="en">brand new</span> = 全新的、崭新的<br>≠ <span class="wrong">second-hand</span> = 二手的、旧的<br><br>【易错点】"brand"不是"品牌"！<br>brand new中的brand = "崭新的"<br>≠ brand = 品牌（如brand name）<br>同一个词，两个完全不同的意思！<br><br>【例子对比】<br>✅ It is <span class="right">brand new</span>. → 崭新的<br>✅ I bought a <span class="right">second-hand</span> phone. → 二手手机<br>❌ This phone is brand. → 错！brand new才是完整的<br><br>【购物描述词】<br>• brand new → 全新的<br>• second-hand → 二手的<br>• slightly used → 轻微使用的<br>• in good condition → 状况良好<br>• has a scratch → 有划痕<br><br>【记忆口诀】<br>brand new = 全新<br>second-hand = 二手<br>两个词要连着用！', tip:'' },
+    // 办公用品
+    { id:'v9', cat:'vocab', type:'type', badge:'词汇',
+      q:'订书机', ans:['stapler'], explain:'<span class="en">stapler</span> /ˈsteɪplər/ = 订书机<br>staple = 订书钉', tip:'' },
+    { id:'v10', cat:'vocab', type:'type', badge:'词汇',
+      q:'便利贴', ans:['sticky notes'], explain:'<span class="en">sticky notes</span> = 便利贴', tip:'' },
+    // 手机App
+    { id:'v11', cat:'vocab', type:'choice', badge:'词汇',
+      q:'"scan QR code" 是什么意思？', opts:['刷短视频','扫描二维码','点外卖','线上缴费'], ans:1,
+      explain:'【知识点】scan QR code 解析<br><br><span class="en">scan QR code</span> = 扫描二维码<br>QR = <span class="highlight">Quick Response</span>（快速响应）<br><br>【易错点】QR不是"二维码"的缩写！<br>QR = Quick Response → 技术标准名<br>"二维码"更准确的英文 = 2D barcode / QR code<br><br>【例子对比】<br>✅ Please <span class="right">scan the QR code</span>. → 请扫二维码<br>✅ <span class="right">Scan</span> to pay. → 扫码支付<br>❌ Please scan the barcode. → 条形码≠二维码<br><br>【手机App词汇】<br>• scan QR code → 扫二维码<br>• swipe → 刷/滑动<br>• tap → 点击<br>• scroll → 滑动浏览<br>• download → 下载<br>• update → 更新<br><br>【记忆口诀】<br>QR = Quick Response<br>scan QR code = 扫二维码', tip:'' },
+    // 外貌性格
+    { id:'v12', cat:'vocab', type:'choice', badge:'词汇',
+      q:'"punctual" 是什么意思？', opts:['苗条的','严厉的','准时的','可靠的'], ans:2,
+      explain:'【知识点】punctual vs slim vs strict vs reliable<br><br><span class="en">punctual</span> /ˈpʌŋktjuəl/ = 准时的<br>≠ <span class="wrong">slim</span> = 苗条的（体型）<br>≠ <span class="wrong">strict</span> = 严厉的（性格）<br>≠ <span class="wrong">reliable</span> = 可靠的（品质）<br><br>【易错点】四个性格外貌词别混淆！<br>• punctual → 时间上的准时<br>• slim → 身体上的苗条<br>• strict → 行为上的严厉<br>• reliable → 信任上的可靠<br><br>【例子对比】<br>✅ She is always <span class="right">punctual</span>. → 她总是准时<br>✅ She is <span class="right">slim</span>. → 她很苗条<br>✅ He is <span class="right">strict</span> with students. → 对学生很严<br>✅ She is <span class="right">reliable</span>. → 她很靠谱<br>❌ She is punctual about her weight. → 错！准时只指时间<br><br>【描述人的形容词分类】<br>外貌：slim/tall/short/beautiful<br>性格：punctual/strict/kind/honest<br>品质：reliable/trustworthy/responsible<br><br>【记忆口诀】<br>punctual = 准时（看时间）<br>slim = 苗条（看体型）<br>strict = 严厉（看行为）<br>reliable = 靠谱（看信任）', tip:'' },
+    // 情绪
+    { id:'v13', cat:'vocab', type:'choice', badge:'词汇',
+      q:'"furious" 是什么意思？', opts:['紧张的','有压力的','狂怒的','失望的'], ans:2,
+      explain:'【知识点】furious vs nervous vs stressed vs disappointed<br><br><span class="en">furious</span> /ˈfjʊəriəs/ = 狂怒的（极端愤怒）<br>≠ <span class="wrong">nervous</span> = 紧张的（焦虑不安）<br>≠ <span class="wrong">stressed</span> = 有压力的（长期压力）<br>≠ <span class="wrong">disappointed</span> = 失望的（期望落空）<br><br>【易错点】情绪词的强度等级！<br>愤怒等级：<br>angry → 生气的（一般）<br>furious → 狂怒的（极端）<br><br>【例子对比】<br>✅ She was <span class="right">furious</span> about the delay. → 对延误狂怒<br>✅ He is <span class="right">nervous</span> about the exam. → 对考试紧张<br>✅ She is <span class="right">stressed</span> from work. → 工作压力大<br>✅ I am <span class="right">disappointed</span> with the result. → 对结果失望<br>❌ She is furious about homework. → 作业不至于"狂怒"，用annoyed更合适<br><br>【情绪强度排序】<br>微 → 中 → 强<br>烦恼：annoyed → angry → furious<br>焦虑：worried → nervous → panicked<br>低落：sad → disappointed → devastated<br><br>【记忆口诀】<br>furious = 狂怒（最怒）<br>nervous = 紧张（焦虑）<br>stressed = 压力（持续）<br>disappointed = 失望（期望落空）', tip:'' },
+    // 职场
+    { id:'v14', cat:'vocab', type:'choice', badge:'词汇',
+      q:'"cross-department" 是什么意思？', opts:['紧急会议','跨部门的','考官','订阅'], ans:1,
+      explain:'【知识点】cross- 前缀的含义<br><br><span class="en">cross-department</span> = 跨部门的<br>cross- = 跨越、交叉的前缀<br><br>【易错点】cross-是前缀，不是独立词！<br>• cross-department → 跨部门<br>• cross-cultural → 跨文化<br>• cross-border → 跨境<br><br>【例子对比】<br>✅ We need <span class="right">cross-department</span> collaboration. → 需跨部门合作<br>✅ This is a <span class="right">cross-cultural</span> project. → 跨文化项目<br>✅ <span class="right">cross-border</span> trade → 跨境贸易<br>❌ We need cross department. → 错！连写cross-department<br><br>【职场相关词】<br>• cross-department → 跨部门<br>• collaborate → 合作<br>• urgent meeting → 紧急会议<br>• examiner → 考官<br>• subscription → 订阅<br><br>【记忆口诀】<br>cross- = 跨越<br>cross-department = 跨部门<br>cross-cultural = 跨文化<br>cross-border = 跨境', tip:'' },
+    // 旅行
+    { id:'v15', cat:'vocab', type:'choice', badge:'词汇',
+      q:'"hostel" 是什么意思？', opts:['汽车旅馆','青旅','民宿','乡村小旅馆'], ans:1,
+      explain:'【知识点】四种住宿类型辨析<br><br><span class="en">hostel</span> /ˈhɒstəl/ = 青旅（便宜、多人共享）<br>≠ <span class="wrong">motel</span> = 汽车旅馆（公路旁、开车入住）<br>≠ <span class="wrong">B&B</span> = 民宿（Bed & Breakfast，含早餐）<br>≠ <span class="wrong">inn</span> = 乡村小旅馆（传统、小规模）<br><br>【易错点】hostel ≠ hotel！<br>hostel = 青旅（多人间、便宜）<br>hotel = 酒店（单人间、较贵）<br>拼写只差一个字母，价格差很多！<br><br>【例子对比】<br>✅ I stayed at a <span class="right">hostel</span> in Europe. → 欧洲住青旅<br>✅ We found a cheap <span class="right">B&B</span>. → 找了便宜民宿<br>✅ The <span class="right">motel</span> is by the highway. → 汽车旅馆在高速旁<br>✅ The old <span class="right">inn</span> has great food. → 乡村小旅馆饭菜好<br>❌ I stayed at a hotel for $10. → 酒店$10？那应该是hostel<br><br>【住宿选择指南】<br>最便宜 → hostel（多人间）<br>性价比 → B&B（含早餐）<br>公路旁 → motel（开车方便）<br>传统感 → inn（小而温馨）<br>最舒适 → hotel（全套服务）<br><br>【记忆口诀】<br>hostel = 青旅（便宜多人间）<br>hotel = 酒店（贵单人房）<br>motel = 汽车+旅馆<br>B&B = 床+早餐<br>inn = 乡村小旅馆', tip:'' },
+  ],
+
+  phrase: [
+    { id:'p1', cat:'phrase', type:'choice', badge:'搭配',
+      q:'"get rid of" 是什么意思？', opts:['摆脱；处理掉','耗尽；用完','想出办法','情绪失控'], ans:0,
+      explain:'【知识点】get rid of vs run out of vs come up with vs freak out<br><br><span class="en">get rid of</span> = 摆脱、处理掉<br>≠ <span class="wrong">run out of</span> = 耗尽、用完<br>≠ <span class="wrong">come up with</span> = 想出办法<br>≠ <span class="wrong">freak out</span> = 情绪失控<br><br>【易错点】四个短语动词千万别混淆！<br>• get rid of → 强调"处理掉/扔掉/摆脱"<br>• run out of → 强调"用完了/不够了"<br>• come up with → 强调"想出来/提出"<br>• freak out → 强调"失控/崩溃"<br><br>【例子对比】<br>✅ I need to <span class="right">get rid of</span> old clothes. → 处理掉旧衣服<br>✅ We <span class="right">ran out of</span> milk. → 牛奶用完了<br>✅ She <span class="right">came up with</span> a good idea. → 想出好主意<br>✅ He <span class="right">freaked out</span> when he saw the bill. → 看到账单崩溃了<br><br>【记忆口诀】<br>get rid of → 摆掉扔掉<br>run out of → 用完耗尽<br>come up with → 想出提出<br>freak out → 失控崩溃', tip:'' },
+    { id:'p2', cat:'phrase', type:'choice', badge:'搭配',
+      q:'"beat around the bush" 是什么意思？', opts:['坚守立场','拐弯抹角','达成折中','压低报价'], ans:1,
+      explain:'【知识点】beat around the bush 习语<br><br><span class="en">beat around the bush</span> = 拐弯抹角、不直说<br>≠ <span class="wrong">stand one\'s ground</span> = 坚守立场<br>≠ <span class="wrong">reach a compromise</span> = 达成折中<br><br>【习语来源】打猎时敲打灌木丛周围，不敢直接进入<br>→ 比喻"不敢直接说正题"<br><br>【易错点】反义习语对比！<br>• beat around the bush → 不直说（回避）<br>• get to the point → 直说（坦率）<br><br>【例子对比】<br>✅ Stop <span class="right">beating around the bush</span>! → 别拐弯抹角了！<br>✅ Just <span class="right">get to the point</span>. → 直说吧<br>❌ He beat the bush. → 错！要beat around the bush<br><br>【职场/谈判习语】<br>• beat around the bush → 拐弯抹角<br>• stand one\'s ground → 坚守立场<br>• reach a compromise → 达成折中<br>• get to the point → 直说正题<br><br>【记忆口诀】<br>beat around the bush = 敲灌木周围（不进正题）<br>反义 → get to the point = 直说正题', tip:'' },
+    { id:'p3', cat:'phrase', type:'choice', badge:'搭配',
+      q:'"line up" 是什么意思？', opts:['插队','排队','赶走','大笑'], ans:1,
+      explain:'【知识点】line up vs cut the line<br><br><span class="en">line up</span> = 排队（正面行为）<br>≠ <span class="wrong">cut the line</span> = 插队（负面行为）<br><br>【易错点】排队和插队是相反行为！<br>• line up → 遵守规则排队<br>• cut the line → 不守规则插队<br><br>【例子对比】<br>✅ Please <span class="right">line up</span> here. → 请在这里排队<br>✅ Don\'t <span class="wrong">cut the line</span>! → 不要插队！<br>❌ Please queue up. → 也可以！英式英语用queue<br><br>【排队相关表达】<br>• line up → 排队（美式）<br>• queue up → 排队（英式）<br>• cut the line → 插队（美式）<br>• jump the queue → 插队（英式）<br>• wait in line → 排队等候<br><br>【记忆口诀】<br>排队 → line up（美式）/ queue up（英式）<br>插队 → cut the line（美式）/ jump the queue（英式）<br>line up是排队，cut the line是插队', tip:'' },
+    { id:'p4', cat:'phrase', type:'choice', badge:'搭配',
+      q:'"strike up a conversation" 是什么意思？', opts:['回电话','主动搭话','被占用','刷手机'], ans:1,
+      explain:'【知识点】strike up a conversation<br><br><span class="en">strike up a conversation</span> = 主动搭话、开启交谈<br>strike up = 开始、发起<br><br>【易错点】strike up ≠ start！<br>• strike up → 更口语化，强调"自然地开始"<br>• start → 更正式，强调"正式启动"<br><br>【例子对比】<br>✅ He <span class="right">struck up</span> a conversation with her. → 主动和她搭话<br>✅ Let\'s <span class="right">strike up</span> a chat. → 来聊聊<br>❌ He struck a conversation. → 错！strike up是完整短语<br><br>【社交场景词汇】<br>• strike up a conversation → 主动搭话<br>• call back → 回电话<br>• be occupied → 被占用/忙着<br>• scroll through phone → 刷手机<br><br>【记忆口诀】<br>strike up = 自然地发起<br>strike up a conversation = 主动搭话', tip:'' },
+    { id:'p5', cat:'phrase', type:'fill', badge:'搭配',
+      q:'"I can\'t wait ___ buy new stationery." — 我迫不及待去买文具。填介词', ans:['to'],
+      explain:'【知识点】can\'t wait to do sth<br><br><span class="en">can\'t wait <span class="highlight">to</span> do sth</span> = 迫不及待做某事<br><br>【易错点】wait后接to do，不接doing！<br>这是固定搭配，没有can\'t wait doing的形式<br><br>【规则对比】<br>✅ can\'t wait <span class="right">to</span> see you → 迫不及待见你<br>❌ can\'t wait <span class="wrong">seeing</span> you → 错！只能接to do<br><br>【例子对比】<br>✅ I can\'t wait <span class="right">to</span> buy new stationery. → 迫不及待买文具<br>✅ I can\'t wait <span class="right">to</span> try it. → 迫不及待试试<br>✅ I can\'t wait <span class="right">to</span> go home. → 迫不及待回家<br><br>【类似结构：只用to do】<br>• can\'t wait to do → 迫不及待<br>• want to do → 想要<br>• hope to do → 希望<br>• decide to do → 决定<br>• plan to do → 计划<br><br>【记忆口诀】<br>can\'t wait后只接to do<br>不接doing！<br>can\'t wait to = 迫不及待', tip:'can\'t wait to do = 迫不及待做' },
+    { id:'p6', cat:'phrase', type:'fill', badge:'搭配',
+      q:'"I\'ll ___ it." — 我买了。填动词', ans:['take'],
+      explain:'【知识点】I\'ll take it 购物句型<br><br><span class="en">I\'ll <span class="highlight">take</span> it</span> = 我买了（购物场景）<br><br>【易错点】"我买了"不是"I buy it"！<br>购物时决定购买 → I\'ll <span class="right">take</span> it ✅<br>不是 → I buy it ❌（语法不对，要用将来时）<br><br>【例子对比】<br>✅ <span class="right">I\'ll take it</span>. → 我买了<br>✅ <span class="right">I\'ll take</span> this one. → 我买这个<br>✅ <span class="right">I\'ll take</span> two. → 我买两个<br>❌ I buy it. → 错！决定购买要用I\'ll take<br><br>【购物成交表达】<br>• I\'ll take it → 我买了<br>• We have a deal → 成交<br>• I\'ll go with this one → 我选这个<br>• That works for me → 可以接受<br><br>【记忆口诀】<br>购物说"我买了" → I\'ll take it<br>不是I buy it！用将来时I\'ll', tip:'' },
+    { id:'p7', cat:'phrase', type:'choice', badge:'搭配',
+      q:'"give-and-take" 是什么意思？', opts:['底线条件','互相迁就','折中余地','僵局'], ans:1,
+      explain:'【知识点】give-and-take vs deal-breaker vs deadlock vs middle ground<br><br><span class="en">give-and-take</span> = 互相迁就、双方妥协<br>≠ <span class="wrong">deal-breaker</span> = 底线条件（不能妥协的点）<br>≠ <span class="wrong">deadlock</span> = 僵局（完全卡住）<br>≠ <span class="wrong">middle ground</span> = 折中余地（中间立场）<br><br>【易错点】四个谈判词含义不同！<br>• give-and-take → <strong>行动</strong>：双方都在妥协<br>• deal-breaker → <strong>底线</strong>：不可接受的条件<br>• deadlock → <strong>状态</strong>：谈不下去卡住了<br>• middle ground → <strong>位置</strong>：折中间立场<br><br>【例子对比】<br>✅ Negotiation requires <span class="right">give-and-take</span>. → 谈判需要互相妥协<br>✅ Salary is a <span class="right">deal-breaker</span> for me. → 工资是我的底线<br>✅ The talks reached a <span class="right">deadlock</span>. → 谈判陷入僵局<br>✅ Let\'s find <span class="right">middle ground</span>. → 找个折中方案<br><br>【记忆口诀】<br>give-and-take = 双方都让步<br>deal-breaker = 不能让步的底线<br>deadlock = 卡住了<br>middle ground = 中间立场', tip:'' },
+    { id:'p8', cat:'phrase', type:'choice', badge:'搭配',
+      q:'"buckle up" 是什么意思？', opts:['踩油门','系好安全带','按喇叭','深呼吸'], ans:1,
+      explain:'【知识点】buckle up vs honk vs push the gas pedal<br><br><span class="en">buckle up</span> = 系好安全带<br>≠ <span class="wrong">honk at sb</span> = 按喇叭<br>≠ <span class="wrong">push the gas pedal</span> = 踩油门<br><br>【易错点】三个驾驶动作别混淆！<br>• buckle up → 安全动作（系带）<br>• honk → 声音动作（鸣笛）<br>• push gas pedal → 驱动动作（加速）<br><br>【例子对比】<br>✅ Please <span class="right">buckle up</span> before driving. → 开车前系好安全带<br>✅ He <span class="right">honked</span> at the slow car. → 对慢车按喇叭<br>✅ <span class="right">Push the gas pedal</span> to speed up. → 踩油门加速<br><br>【buckle词源】<br>buckle = 扣环、卡扣<br>buckle up = 把卡扣系上 → 系安全带<br><br>【驾驶/出行词汇】<br>• buckle up → 系安全带<br>• honk at → 按喇叭<br>• gas pedal → 油门<br>• brake → 刹车<br>• seatbelt → 安全带<br>• deep breath → 深呼吸<br><br>【记忆口诀】<br>buckle up = 系安全带<br>honk = 按喇叭<br>gas pedal = 油门<br>buckle = 扣 → buckle up = 扣上安全带', tip:'' },
+    { id:'p9', cat:'phrase', type:'choice', badge:'搭配',
+      q:'"work-life balance" 是什么意思？', opts:['加班','工作与生活平衡','均衡饮食','规律作息'], ans:1,
+      explain:'【知识点】work-life balance vs work overtime vs balanced diet<br><br><span class="en">work-life balance</span> = 工作与生活平衡<br>≠ <span class="wrong">work overtime</span> = 加班<br>≠ <span class="wrong">balanced diet</span> = 均衡饮食<br>≠ <span class="wrong">routine</span> = 规律作息<br><br>【易错点】balance在不同场景意思不同！<br>• work-life balance → 工作<strong>与生活</strong>的平衡<br>• balanced diet → 饮食的<strong>营养</strong>平衡<br>两者都有balance但场景完全不同<br><br>【例子对比】<br>✅ I need better <span class="right">work-life balance</span>. → 需要更好的工作生活平衡<br>✅ She <span class="wrong">works overtime</span> every day. → 每天加班（这是反面）<br>✅ A <span class="right">balanced diet</span> is important. → 均衡饮食很重要<br>❌ I need better balanced diet for work. → 饮食平衡不是工作平衡！<br><br>【职场/健康词汇】<br>• work-life balance → 工作生活平衡<br>• work overtime → 加班<br>• balanced diet → 均衡饮食<br>• routine → 规律作息<br>• stress management → 压力管理<br><br>【记忆口诀】<br>work-life balance = 工作生活平衡<br>balanced diet = 饮食均衡<br>同一个balance，不同场景！', tip:'' },
+  ],
+
+  scene: [
+    { id:'s1', cat:'scene', type:'fill', badge:'场景',
+      q:'"Could you ___ pass the salt?" — 能递一下盐吗？填礼貌词', ans:['please'],
+      explain:'【知识点】英语礼貌请求句型<br><br>最礼貌请求：Could you <span class="highlight">please</span> + do?<br>比Can you更委婉<br><br>【礼貌等级排序】<br>最礼貌 → 最随意<br>① Could you please... → 最礼貌（正式场合）<br>② Would you please... → 很礼貌<br>③ Could you... → 礼貌（日常）<br>④ Can you... → 随意（熟人）<br><br>【例子对比】<br>✅ Could you <span class="right">please</span> pass the salt? → 最礼貌<br>✅ Could you pass the salt? → 礼貌<br>✅ Can you pass the salt? → 随意<br><br>【为什么Could比Can更礼貌？】<br>Could = can的过去式 → 语气更<strong>委婉</strong><br>相当于"请问能否..."而非"能不能..."<br><br>【记忆口诀】<br>最礼貌 → Could/Would/May + please<br>日常 → Could you<br>随意 → Can you', tip:'最礼貌：Could/Would/May + please' },
+    { id:'s2', cat:'scene', type:'choice', badge:'场景',
+      q:'表达"能降价吗？"最自然的方式？', opts:['Can you cheap?','Could you lower the price?','Discount please?','Make it less?'],
+      explain:'【知识点】购物议价句型<br><br><span class="right">Could you lower the price?</span> ✅ 自然礼貌<br><span class="wrong">Can you cheap?</span> ❌ 中式英语<br><br>【为什么"Can you cheap"错？】<br>cheap是<strong>形容词</strong>（便宜的），不能当<strong>动词</strong>用<br>英语中"降价"要说 <span class="right">lower the price</span><br><br>【正确表达方式】<br>① Could you <span class="right">lower</span> the price? → 能降价吗？（最礼貌）<br>② Can you give me a <span class="right">better</span> price? → 给个更优惠的价格？<br>③ Is there any <span class="right">discount</span>? → 有折扣吗？<br>④ How about <span class="right">20% off</span>? → 打八折？<br><br>【购物常用句型】<br>• I will take it. → 我买了<br>• Can I get a refund? → 能退款吗？<br>• Do you have anything cheaper? → 有便宜点的吗？<br><br>【记忆口诀】<br>降价 → lower the price<br>不是 → make it cheap', tip:'' },
+    { id:'s3', cat:'scene', type:'choice', badge:'场景',
+      q:'"带家具吗？" 怎么问？', opts:['Has furniture?','Is it furnished?','With furniture?','Furniture include?'],
+      explain:'【知识点】租房场景常用句型<br><br><span class="right">Is it furnished?</span> ✅ 带家具吗？<br><span class="en">furnished</span> = 带家具的，是租房标准用语<br><br>【租房常用词汇】<br>• furnished → 带家具的<br>• unfurnished → 不带家具的<br>• deposit → 押金<br>• landlord → 房东<br>• tenant → 租客<br>• lease → 租约<br>• rent → 租金<br><br>【租房常用问题】<br>• Is it furnished? → 带家具吗？<br>• How much is the deposit? → 押金多少？<br>• What is the rent per month? → 月租多少？<br>• Are utilities included? → 包水电吗？<br>• When is the lease up? → 租约到期？<br><br>【中式英语错误】<br>❌ Has furniture? → 错！要用Is it furnished?<br>❌ With furniture? → 错！<br>❌ Furniture include? → 错！<br><br>【记忆口诀】<br>租房问家具 → Is it furnished?', tip:'' },
+    { id:'s4', cat:'scene', type:'fill', badge:'场景',
+      q:'"I ___ a better price." — 我拿到了更优惠的价格。填动词', ans:['got'],
+      explain:'【知识点】get的过去式和购物场景<br><br><span class="en">get a better price</span> = 拿到更优惠价格<br>get → <span class="highlight">got</span>（过去式）<br><br>【get的三态变化】<br>get → got → got/gotten<br>过去式：got<br>过去分词：got（英式）/ gotten（美式）<br><br>【get在购物场景的用法】<br>• I <span class="right">got</span> a better price. → 拿到更优惠价格<br>• I <span class="right">got</span> a discount. → 拿到折扣<br>• I <span class="right">got</span> a refund. → 拿到退款<br><br>【get vs buy 区别】<br>• get → 更口语化，"得到/弄到"<br>• buy → 更正式，"购买"<br>购物时get更自然！<br><br>【记忆口诀】<br>get → got → got<br>购物用get更自然',       tip:'' },
+    { id:'s13', cat:'scene', type:'choice', badge:'场景',
+      q:'看到"禁止吸烟"的英文标识，正确的是？',
+      opts:['No smoking','Don\'t smoke','Not smoking','Smoking is not'],
+      ans:0,
+      explain:'<span class="right">No smoking</span> 是最标准的禁止标识语。No + 动名词(doing) = 禁止做某事。<span class="wrong">Don\'t smoke</span> 语法对但口语化，不用于正式标识。<span class="wrong">Not smoking</span> 语法残缺，<span class="wrong">Smoking is not</span> 句子不完整。<br><span class="highlight">同类型</span>：No parking 禁止停车 / No entry 禁止入内 / No photos 禁止拍照',
+      tip:'禁止标识 = No + doing！' },
+  ],
+
+  error: [
+    { id:'e1', cat:'error', type:'judge', badge:'易错',
+      q:'"I suggest to go there" 对吗？', ans:false,
+      explain:'【知识点】suggest的用法<br><br>❌ <span class="wrong">suggest + to do</span> 是中式英语！<br>✅ <span class="right">suggest + doing</span>（建议做某事）<br>✅ <span class="right">suggest + 名词</span>（建议某事/某地）<br><br>【正确用法】<br>✅ I suggest <span class="right">going</span> to the park. → 建议去公园<br>✅ I suggest <span class="right">Paris</span>. → 建议去巴黎<br>✅ She suggested <span class="right">waiting</span>. → 她建议等一等<br><br>【错误用法】<br>❌ I suggest <span class="wrong">to go</span> there. → 中式英语！<br>❌ He suggested <span class="wrong">to try</span> again. → 错误！<br><br>【类似规则：只接doing的动词】<br>• enjoy + doing ✅<br>• mind + doing ✅<br>• finish + doing ✅<br>• avoid + doing ✅<br>• consider + doing ✅<br><br>【记忆口诀】<br>suggest后永远不接to do！<br>只能接doing或名词',
+      tip:'suggest后永远不接to do！' },
+    { id:'e2', cat:'error', type:'judge', badge:'易错',
+      q:'"Open the light" 对吗？', ans:false,
+      explain:'【知识点】open/close vs turn on/off<br><br>❌ 开灯 = <span class="right">turn on the light</span><br>灯通电→turn on/off<br><span class="wrong">open/close</span> 只用于物理开合（门/窗/书）<br><br>【判断规则】有没有电/水流？<br>• 有 → turn on/off ✅<br>• 没有 → open/close ✅<br><br>【常见混淆词】<br>• 开灯 → <span class="right">turn on</span> the light（有电）<br>• 开门 → <span class="right">open</span> the door（纯物理）<br>• 开电视 → <span class="right">turn on</span> the TV（有电）<br>• 开窗 → <span class="right">open</span> the window（纯物理）<br>• 开水龙头 → <span class="right">turn on</span> the tap（有水流）<br>• 开空调 → <span class="right">turn on</span> the AC（有电）<br><br>【记忆口诀】<br>有电有水 → turn on/off<br>纯物理 → open/close',
+      tip:'有电/水流→turn on/off；纯物理→open/close' },
+    { id:'e3', cat:'error', type:'judge', badge:'易错',
+      q:'"I very like it" 对吗？', ans:false,
+      explain:'【知识点】very不能修饰动词<br><br>❌ <span class="wrong">very 不能修饰动词</span>！<br>✅ I <span class="right">really</span> like it<br>✅ I like it <span class="right">very much</span><br><br>【核心规则】<br>• very 只能修饰<strong>形容词/副词</strong><br>• very 不能直接放在<strong>动词</strong>前面<br><br>【正确用法】<br>✅ She is <span class="right">very</span> helpful. → very修饰形容词helpful<br>✅ He runs <span class="right">very</span> fast. → very修饰副词fast<br>✅ I <span class="right">really</span> like it. → really修饰动词like<br>✅ I like it <span class="right">very much</span>. → very much放在句末<br><br>【错误用法】<br>❌ I <span class="wrong">very</span> like it. → very不能修饰动词like<br>❌ She <span class="wrong">very</span> wants to go. → very不能修饰动词want<br>❌ He <span class="wrong">very</span> enjoys reading. → 错误<br><br>【替代方案】<br>• 动词前 → 用 <span class="right">really</span><br>• 动词后 → 用 <span class="right">very much</span><br><br>【记忆口诀】<br>very修饰形容词，不修饰动词<br>动词用really或very much',
+      tip:'very修饰形容词/副词，不修饰动词→用really或very much' },
+    { id:'e4', cat:'error', type:'judge', badge:'易错',
+      q:'"I have been there in 2019" 对吗？', ans:false,
+      explain:'【知识点】现在完成时不能搭配具体过去时间<br><br>❌ 现在完成时<strong>不能搭配具体过去时间</strong>！<br>✅ I <span class="right">was</span> there in 2019（一般过去时）<br>✅ I\'ve been there（不带过去时间）<br><br>【核心规则】<br>• 现在完成时 = have/has + 过去分词 → 强调<strong>对现在的影响</strong><br>• 不能加具体过去时间：in 2019 / yesterday / last week / last year<br><br>【为什么？】<br>现在完成时关注的是<strong>"结果对现在的影响"</strong><br>加了具体过去时间 → 就变成<strong>纯叙述过去事件</strong> → 用一般过去时<br><br>【例子对比】<br>✅ I <span class="right">have been</span> to Paris. → 去过巴黎（现在有经验）<br>❌ I <span class="wrong">have been</span> to Paris in 2020. → 错！加了过去时间<br>✅ I <span class="right">was</span> in Paris in 2020. → 正确！一般过去时<br><br>【硬禁忌词】<br>不能与现在完成时同现：<br>❌ in 2019 / yesterday / last week / last month / 3 days ago<br><br>【记忆口诀】<br>现完不带过去时间<br>有过去时间 → 用一般过去时',
+      tip:'现完硬禁忌：不能加in 2019/yesterday/last week等过去时间' },
+    { id:'e5', cat:'error', type:'judge', badge:'易错',
+      q:'"I haven\'t to come" 对吗？', ans:false,
+      explain:'【知识点】have to的否定形式<br><br>❌ <span class="wrong">haven\'t to</span> 不存在！<br>✅ I <span class="right">don\'t have to</span> come = 我不必来<br><br>【核心规则】<br>have to = 助动词have + 实义动词to<br>否定形式 = <span class="right">don\'t have to</span> / <span class="right">doesn\'t have to</span><br>不是 haven\'t to！<br><br>【为什么？】<br>have在这里是<strong>实义动词</strong>"必须"<br>不是助动词！所以否定要用<strong>do/does</strong><br><br>【完整否定表】<br>• I <span class="right">don\'t have to</span> come. ✅ 我不必来<br>• She <span class="right">doesn\'t have to</span> come. ✅ 她不必来<br>• They <span class="right">don\'t have to</span> come. ✅ 他们不必来<br>❌ I <span class="wrong">haven\'t to</span> come. → 不存在！<br><br>【与mustn\'t对比】<br>• don\'t have to = 不必（非强制）<br>• mustn\'t = 禁止不准（强制禁止）<br>含义完全相反！<br><br>【记忆口诀】<br>have to否定 = don\'t have to<br>不是haven\'t to！<br>don\'t have to ≠ mustn\'t',
+      tip:'have to否定=don\'t have to，不说haven\'t to' },
+    { id:'e6', cat:'error', type:'choice', badge:'易错',
+      q:'哪个是正确的？', opts:['I suggest to go','Open the TV','I really like it','I very like it'], ans:2,
+      explain:'【知识点】综合易错辨析<br><br><span class="right">I really like it ✅</span><br><br>【逐项分析】<br>❌ <span class="wrong">suggest + to do</span> → 中式英语！应改为suggest + doing<br>  I suggest <span class="right">going</span> there ✅<br><br>❌ <span class="wrong">open the TV</span> → 中式英语！应改为turn on the TV<br>  电视通电→ <span class="right">turn on</span> the TV ✅<br><br>❌ <span class="wrong">I very like it</span> → 中式英语！very不能修饰动词<br>  I <span class="right">really</span> like it ✅ / I like it <span class="right">very much</span> ✅<br><br>✅ <span class="right">I really like it</span> → really可以修饰动词，正确！<br><br>【三个中式英语根源】<br>① suggest + to do → 中文"建议去做"直译<br>② open + 电子设备 → 中文"打开"直译<br>③ very + 动词 → 中文"很喜欢"直译<br><br>【记忆口诀】<br>suggest → doing<br>电子设备 → turn on<br>very → 不修饰动词（用really）',
+      tip:'' },
+    { id:'e7', cat:'error', type:'judge', badge:'易错',
+      q:'"The movie is bored" 对吗？', ans:false,
+      explain:'【知识点】-ed vs -ing 形容词辨析<br><br>❌ <span class="wrong">bored</span> = 人感到无聊<br>✅ The movie is <span class="right">boring</span>（事物令人无聊）<br>✅ I am <span class="right">bored</span>（人感到无聊）<br><br>【核心规则】<br>• <span class="right">-ing</span> = 事物本身的<strong>属性</strong> → "令人怎样"<br>• <span class="right">-ed</span> = 人的<strong>感受</strong> → "我感到怎样"<br><br>【完整对比表】<br>事物→-ing 人→-ed<br>• boring 令人无聊 → bored 我感到无聊<br>• exciting 令人兴奋 → excited 我感到兴奋<br>• disappointing 令人失望 → disappointed 我感到失望<br>• surprising 令人惊讶 → surprised 我感到惊讶<br>• confusing 令人困惑 → confused 我感到困惑<br>• terrifying 令人恐惧 → terrified 我感到恐惧<br><br>【记忆口诀】<br>-ing = 东西令人怎样<br>-ed = 我感到怎样<br>事物→-ing 人→-ed',
+      tip:'-ed=人的感受；-ing=事物属性' },
+    { id:'e8', cat:'error', type:'choice', badge:'易错',
+      q:'"关手机" 用英语怎么说？', opts:['close the phone','turn off the phone','shut the phone','open the phone'], ans:1,
+      explain:'【知识点】电子设备的开/关<br><br>手机通电→ <span class="right">turn off the phone</span><br><span class="wrong">close</span> 只用于物理关闭<br><br>【核心判断规则】有没有电/水流？<br>• 有 → turn on/off ✅（控制通断）<br>• 没有 → open/close ✅（物理开合）<br><br>【所有电子设备】<br>• 手机 → turn on/off the phone<br>• 电视 → turn on/off the TV<br>• 电脑 → turn on/off the computer<br>• 灯 → turn on/off the light<br>• 空调 → turn on/off the AC<br><br>【纯物理的例子】<br>• 门 → open/close the door<br>• 窗 → open/close the window<br>• 书 → open/close the book<br><br>【记忆口诀】<br>电子设备 → turn on/off<br>物理开合 → open/close', tip:'' },
+
+    // ===== 新增：点餐词汇 =====
+    { id:'v16', cat:'vocab', type:'choice', badge:'词汇',
+      q:'"celery" 是什么蔬菜？', opts:['花菜','芹菜','菠菜','胡萝卜'], ans:1,
+      explain:'【知识点】蔬菜全系列<br><br>• <span class="right">celery</span> /ˈseləri/ = 芹菜<br>• cauliflower /ˈkɒlɪflaʊər/ = 花菜<br>• spinach /ˈspɪnɪtʃ/ = 菠菜<br>• carrot /ˈkærət/ = 胡萝卜<br><br>【易错发音】<br>• broccoli /ˈbrɒkəli/ = 西兰花 (cc→k音)<br>• cauliflower = 花+flower组合词<br>• mushroom /ˈmʌʃrʊm/ = 蘑菇<br><br>【记忆口诀】<br>celery→芹菜(丝状条形)<br>cauliflower→花菜(花+flower)<br>spinach→菠菜(s+pinach)', tip:'蔬菜三兄弟：celery芹菜, cauliflower花菜, spinach菠菜' },
+    { id:'v17', cat:'vocab', type:'choice', badge:'词汇',
+      q:'"donut" 是什么食物？', opts:['全麦面包','甜甜圈','酸奶','冰淇淋'], ans:1,
+      explain:'【知识点】点餐主食&甜品<br><br>• <span class="right">donut</span> /ˈdəʊnʌt/ = 甜甜圈<br>• whole-wheat bread = 全麦面包<br>• yogurt /ˈjəʊɡərt/ = 酸奶<br>• ice-cream = 冰淇淋<br>• dessert /dɪˈzɜːt/ = 甜点<br><br>【辨析】dessert vs desert<br>• dessert /dɪˈzɜːt/ = 甜点(有s发音)<br>• desert /ˈdezət/ = 沙漠(无s发音)<br><br>【点餐常用词】<br>• menu = 菜单<br>• order = 点餐<br>• special = 特色菜<br>• dish = 菜品', tip:'donut甜甜圈 vs dessert甜点 vs desert沙漠' },
+    { id:'v18', cat:'vocab', type:'choice', badge:'词汇',
+      q:'"seafood" 包含哪些？选最准确的解释', opts:['只有鱼','只有虾','鱼虾蟹贝等海洋可食生物','只有贝类'], ans:2,
+      explain:'【知识点】肉类&海鲜词汇<br><br>• <span class="right">seafood</span> = 海鲜(总称，包含鱼虾蟹贝)<br>• shrimp /ʃrɪmp/ = 虾<br>• crab /kræb/ = 螃蟹<br>• oyster /ˈɔɪstər/ = 牡蛎<br>• shellfish /ˈʃelfɪʃ/ = 贝类<br>• fish = 鱼肉<br><br>【肉类对照】<br>• beef /biːf/ = 牛肉<br>• chicken /ˈtʃɪkɪn/ = 鸡肉<br>• pork /pɔːk/ = 猪肉<br><br>【记忆口诀】<br>seafood = 海+food = 所有海洋食物<br>shellfish = shell+fish = 贝壳类', tip:'seafood是总称，包含fish/shrimp/crab/oyster/shellfish' },
+    { id:'v19', cat:'vocab', type:'type', badge:'词汇',
+      q:'"spicy" 的中文意思是？', ans:['辣的'],
+      explain:'【知识点】口味形容词<br><br>• <span class="right">spicy</span> /ˈspaɪsi/ = 辣的<br>• salty /ˈsɔːlti/ = 咸的<br>• sweet /swiːt/ = 甜的<br>• sour /ˈsaʊər/ = 酸的<br>• fried /fraɪd/ = 油炸的<br>• delicious /dɪˈlɪʃəs/ = 美味的<br>• fresh /freʃ/ = 新鲜的<br><br>【易错点】spicy ≠ hot<br>• spicy = 有辣椒的辣(调味辣)<br>• hot = 温度热 / 辣的(口语)<br>在餐厅说"I like spicy food"比hot更准确', tip:'口味5兄弟：spicy辣, salty咸, sweet甜, sour酸, fried油炸' },
+    { id:'v20', cat:'vocab', type:'choice', badge:'词汇',
+      q:'"flashlight" 是什么？', opts:['帐篷','手电筒','打火机','充电宝'], ans:1,
+      explain:'【知识点】露营装备词汇<br><br>• <span class="right">flashlight</span> /ˈflæʃlaɪt/ = 手电筒(美式)<br>• torch /tɔːrtʃ/ = 手电筒(英式)<br>• tent /tent/ = 帐篷<br>• lighter /ˈlaɪtər/ = 打火机<br>• power bank /ˈpaʊər bæŋk/ = 充电宝<br><br>【露营安全装备】<br>• hand sanitizer = 免洗洗手液<br>• wet wipes = 湿纸巾<br>• insect repellent = 驱虫剂<br>• first aid kit = 急救包<br><br>【英美差异】<br>flashlight(美) = torch(英) = 手电筒<br>elevator(美) = lift(英) = 电梯<br>subway(美) = tube(英) = 地铁', tip:'flashlight(美)=torch(英)=手电筒' },
+    { id:'v21', cat:'vocab', type:'choice', badge:'词汇',
+      q:'"stapler" 是什么办公用品？', opts:['回形针','订书机','长尾夹','剪刀'], ans:1,
+      explain:'【知识点】办公用品词汇<br><br>• <span class="right">stapler</span> /ˈsteɪplər/ = 订书机<br>• paper clip = 回形针<br>• binder clip = 长尾夹<br>• scissors /ˈsɪzərz/ = 剪刀<br><br>【办公室必备清单】<br>• rubber band = 橡皮筋<br>• tape = 胶带<br>• eraser = 橡皮<br>• sticky notes = 便利贴<br>• highlighter = 荧光笔<br>• envelope /ˈenvələʊp/ = 信封<br>• calculator = 计算器<br>• USB drive = U盘<br><br>【记忆技巧】<br>stapler = staple(订书钉) + er(器具) = 订书机', tip:'stapler订书机 vs paper clip回形针 vs binder clip长尾夹' },
+    { id:'v22', cat:'vocab', type:'choice', badge:'词汇',
+      q:'"blond hair" 是什么颜色头发？', opts:['深棕色','金色','红色','黑色'], ans:1,
+      explain:'【知识点】外貌描述词汇<br><br>• <span class="right">blond hair</span> /blɒnd/ = 金色头发<br>• dark brown hair = 深棕色头发<br>• curly /ˈkɜːli/ = 卷曲的<br>• straight /streɪt/ = 直的<br>• shoulder-length = 齐肩的<br><br>【面部描述】<br>• beard /bɪəd/ = 络腮胡<br>• mustache /məˈstɑːʃ/ = 上唇小胡子<br>• bald /bɔːld/ = 秃顶的<br><br>【体型描述】<br>• slim /slɪm/ = 苗条的<br>• middle-aged = 中年的<br>• good-looking = 好看的<br><br>【易错点】hair是不可数名词<br>❌ a blond hair ✅ blond hair', tip:'blond金色 vs curly卷曲 vs shoulder-length齐肩' },
+    { id:'v23', cat:'vocab', type:'choice', badge:'词汇',
+      q:'"solar panel" 是什么？', opts:['太阳能板','回收站','垃圾填埋场','电动车'], ans:0,
+      explain:'【知识点】环保主题词汇<br><br>• <span class="right">solar panel</span> /ˈsəʊlər/ = 太阳能板<br>• recycling depot /rɪˈsaɪklɪŋ/ = 回收站<br>• landfill /ˈlændfɪl/ = 垃圾填埋场<br>• e-bike = 电动车<br><br>【环保核心词】<br>• smog /smɒɡ/ = 雾霾<br>• carpool /ˈkɑːpuːl/ = 拼车<br>• extinct /ɪkˈstɪŋkt/ = 灭绝的<br>• endangered /ɪnˈdeɪndʒərd/ = 濒危的<br>• disposable = 一次性的<br>• single-use = 一次性的<br><br>【环保动作】<br>• install solar panels → 安装太阳能板<br>• clean up the beach → 清理海滩<br>• spread awareness → 普及环保意识', tip:'solar panel太阳能板 vs landfill垃圾填埋场' },
+
+    // ===== 新增：点餐搭配 =====
+    { id:'p10', cat:'phrase', type:'choice', badge:'搭配',
+      q:'点餐时服务员最常用的开场白是？', opts:['What do you want?','May I take your order?','Give me your order.','What is your name?'], ans:1,
+      explain:'【知识点】点餐场景搭配<br><br>服务员标准开场白：<span class="right">May I take your order?</span><br><br>【点餐完整流程】<br>1. May I take your order? → 我可以为您点餐吗？<br>2. I would like the ..., please. → 我想要……<br>3. What do you recommend? → 你推荐什么？<br>4. What is your special today? → 今日特色菜是什么？<br>5. Enjoy your meal. → 用餐愉快<br><br>【易错对比】<br>❌ What do you want? → 太直接，不礼貌<br>✅ May I take your order? → 服务员标准用语<br>✅ I would like... → 比 I want 更礼貌', tip:'点餐3步曲：May I take your order → I would like → Enjoy your meal' },
+    { id:'p11', cat:'phrase', type:'choice', badge:'搭配',
+      q:'"I suggest ___ wet wipes." 填什么？', opts:['to bring','bringing','bring','bringed'], ans:1,
+      explain:'【知识点】suggest用法详解<br><br><span class="right">suggest doing sth</span> = 建议做某事<br>❌ <span class="wrong">suggest to do</span> = 绝对错误！<br><br>【三大结构】<br>① suggest + doing<br>✅ I suggest <span class="right">bringing</span> wet wipes.<br>❌ I suggest <span class="wrong">to bring</span> wet wipes.<br><br>② suggest + (that) sb (should) do<br>✅ I suggest we <span class="right">(should) take</span> a raincoat.<br>→ 虚拟语气，should可省略<br><br>③ recommend用法同suggest<br>✅ I recommend <span class="right">eating</span> more vegetables.<br>❌ I recommend <span class="wrong">to eat</span> more vegetables.<br><br>【记忆口诀】<br>suggest/recommend → 后面只接doing！<br>绝不接to do！', tip:'铁律：suggest/recommend后只能接doing，不能接to do' },
+    { id:'p12', cat:'phrase', type:'choice', badge:'搭配',
+      q:'"go camping" vs "go to camp" 区别是？', opts:['没有区别，都可以','前者是休闲露营，后者是去夏令营','前者是去夏令营，后者是休闲露营','都不正确'], ans:1,
+      explain:'【知识点】go doing 结构<br><br><span class="right">go camping</span> = 去露营（休闲活动）<br><span class="wrong">go to camp</span> = 去夏令营（特指夏令营）<br><br>【go doing 结构规律】<br>go + doing = 去做某项休闲活动<br>• go swimming → 去游泳<br>• go hiking → 去徒步<br>• go fishing → 去钓鱼<br>• go shopping → 去购物<br>• go skiing → 去滑雪<br><br>【特殊搭配辨析】<br>✅ go to the forest to camp → 去森林露营(强调目的地)<br>❌ go to camp → 不是休闲露营<br><br>【记忆口诀】<br>休闲活动 → go + doing<br>夏令营 → go to camp', tip:'go doing = 休闲活动(go camping/swimming/hiking)' },
+
+    // ===== 新增：租车搭配 =====
+    { id:'p13', cat:'phrase', type:'choice', badge:'搭配',
+      q:'租车时"unlimited mileage"是什么意思？', opts:['限里程','不限里程','低油耗','高油耗'], ans:1,
+      explain:'【知识点】租车搭配<br><br><span class="right">unlimited mileage</span> = 不限里程<br><br>【租车核心搭配】<br>• hire a car / rent a car → 租车<br>• book it on the website → 网上预订<br>• unlimited mileage → 不限里程<br>• insurance cover → 保险保障<br>• deposit → 押金<br>• full tank → 满箱油<br>• low fuel consumption → 低油耗<br>• eco-friendly → 环保的<br><br>【租车对话关键句】<br>• "I would like to hire a car." → 我想租车<br>• "Return it with full tank." → 满油归还<br>• "Where do I pick it up?" → 去哪取车<br><br>【车型对照】<br>• sedan = 轿车<br>• SUV = 运动型多用途车<br>• van = 厢式货车<br>• convertible = 敞篷车', tip:'unlimited mileage不限里程 vs low fuel consumption低油耗' },
+    { id:'p14', cat:'phrase', type:'choice', badge:'搭配',
+      q:'"in case of" 后面接什么？', opts:['完整句子','名词/名词短语','动词原形','doing形式'], ans:1,
+      explain:'【知识点】in case of vs in case<br><br><span class="right">in case of</span> + 名词/名词短语 = 万一；以防<br>✅ In case of <span class="right">rain</span>, take a raincoat.<br><br><span class="wrong">in case</span> + 完整句子 = 万一；以防<br>✅ In case <span class="right">it rains</span>, take a raincoat.<br><br>【辨析对比】<br>• in case of + 名词 → In case of emergency<br>• in case + 句子 → In case it is an emergency<br><br>【相关搭配】<br>• protect sb from sth → 保护某人免受…<br>✅ A sun hat protects us <span class="right">from</span> the sun.<br><br>• There is no need to do → 没必要做<br>✅ There is no need to take too many snacks.<br><br>【记忆口诀】<br>in case of → 后接名词<br>in case → 后接句子', tip:'in case of+名词 vs in case+句子' },
+
+    // ===== 新增：频率副词 =====
+    { id:'g31', cat:'grammar', type:'choice', badge:'语法',
+      q:'频率副词位置：正确的是？', opts:['I seldom fasten my seat belt.','I fasten seldom my seat belt.','I fasten my seat belt seldom.','Seldom I fasten my seat belt.'], ans:0,
+      explain:'【知识点】频率副词位置规则<br><br><span class="right">频率副词放在实义动词前面</span><br>✅ I <span class="right">seldom</span> fasten my seat belt.<br><br>【两大规则】<br>① 实义动词前<br>✅ I <span class="right">often</span> go to the gym.<br>✅ She <span class="right">usually</span> eats breakfast.<br><br>② be动词后<br>✅ I am <span class="right">usually</span> busy.<br>✅ He is <span class="right">always</span> late.<br><br>【sometimes特殊】<br>sometimes可放在句首/句中/句尾<br>✅ Sometimes I walk.<br>✅ I sometimes walk.<br>✅ I walk sometimes.<br><br>【频率排序】<br>never(0%) → rarely(5%) → seldom(10%) → occasionally(15%) → sometimes(25%) → often(50%) → usually(70%) → always(90%)<br><br>【记忆口诀】<br>实义动词前，be动词后<br>sometimes三处均可', tip:'频率副词位置：实义动词前，be动词后' },
+    { id:'g32', cat:'grammar', type:'choice', badge:'语法',
+      q:'"Everyone ___ a phone." 填什么？', opts:['need','needs','needing','have needed'], ans:1,
+      explain:'【知识点】不定代词主谓一致<br><br><span class="right">everyone</span> 视作第三人称单数 → 谓语用 <span class="right">needs</span><br><br>【铁律】<br>everyone / nobody / somebody / everything / nothing → 全部视作三单<br><br>【例句对比】<br>✅ Everyone <span class="right">needs</span> a phone.<br>❌ Everyone <span class="wrong">need</span> a phone.<br>✅ Nobody <span class="right">knows</span> the answer.<br>❌ Nobody <span class="wrong">know</span> the answer.<br><br>【易错点】<br>虽然everyone指很多人，但语法上它就是一个"每个人"的概念<br>→ 谓语动词用三单形式<br><br>【相关语法】one of + 复数名词 + 单数谓语<br>✅ One of my friends <span class="right">is</span> tall.<br>❌ One of my friends <span class="wrong">are</span> tall.', tip:'不定代词(everyone/nobody/somebody)→三单谓语' },
+    { id:'g33', cat:'grammar', type:'choice', badge:'语法',
+      q:'"I used to ___ cardio every day." 填什么？', opts:['do','doing','did','does'], ans:0,
+      explain:'【知识点】used to do vs be used to doing<br><br><span class="right">used to do</span> = 过去常常做（现在不再做了）<br>→ to后接<b>动词原形</b><br><br>【两大结构辨析】<br>① used to do → 过去常常做（现已停止）<br>✅ I <span class="right">used to</span> do cardio every day.<br>= 我过去每天都做有氧（现在不做了）<br><br>② be used to doing → 习惯于做<br>✅ I <span class="right">am used to</span> eating early.<br>= 我习惯于早吃（现在还是这样）<br><br>【关键区别】<br>• used to → to后接<b>动词原形</b>(do)<br>• be used to → to后接<b>动名词</b>(doing)<br><br>【记忆口诀】<br>used to do → 过去做（现在不做了）<br>be used to doing → 习惯做（现在还在做）', tip:'used to do过去常做 vs be used to doing习惯于做' },
+    { id:'g34', cat:'grammar', type:'choice', badge:'语法',
+      q:'"The ___ , the ___ ." 表达"越…越…"，选正确的组合？', opts:['close, good','closer, better','closest, best','more close, more good'], ans:1,
+      explain:'【知识点】the + 比较级, the + 比较级<br><br><span class="right">The closer, the better.</span> = 越近越好<br><br>【结构规则】<br>the + <b>比较级</b>(不是最高级！), the + <b>比较级</b><br><br>【更多例句】<br>• The <span class="right">earlier</span>, the <span class="right">better</span>. → 越早越好<br>• The <span class="right">more</span> you practice, the <span class="right">better</span> you become. → 越练越强<br>• The <span class="right">faster</span>, the <span class="right">worse</span>. → 越快越差<br><br>【易错点】<br>❌ The closest, the best. → 错误！不是最高级<br>✅ The closer, the better. → 正确！必须用比较级<br><br>【记忆口诀】<br>the + 比较级, the + 比较级 = 越…越…<br>两个the，两个比较级', tip:'the+比较级,the+比较级 = 越…越…（不是最高级！）' },
+    { id:'g35', cat:'grammar', type:'judge', badge:'易错',
+      q:'判断对错："I suggest to bring a raincoat."', ans:false,
+      explain:'【知识点】suggest用法铁律<br><br>❌ <span class="wrong">I suggest to bring a raincoat.</span><br>✅ <span class="right">I suggest bringing a raincoat.</span><br><br>【三大结构】<br>① suggest + <span class="right">doing</span> ✅<br>② suggest + (that) sb (should) do ✅<br>③ suggest + <span class="wrong">to do</span> ❌ 绝对错误！<br><br>【同理】recommend用法一样<br>❌ I recommend <span class="wrong">to eat</span> more vegetables.<br>✅ I recommend <span class="right">eating</span> more vegetables.<br><br>【记忆口诀】<br>suggest/recommend → 后面只接doing！<br>绝不接to do！这是铁律！', tip:'铁律：suggest/recommend只能接doing' },
+
+    // ===== 新增：犯罪新闻句型 =====
+    { id:'s5', cat:'scene', type:'choice', badge:'场景',
+      q:'"I was minding my own business." 使用了什么时态？', opts:['一般过去时','过去进行时','现在完成时','一般现在时'], ans:1,
+      explain:'【知识点】过去进行时<br><br><span class="right">was minding</span> = 过去进行时<br>结构：was/were + doing<br><br>【经典句型】<br>was/were doing + <b>when</b> + 一般过去时<br>= 正在做……这时突然……<br><br>【例句对比】<br>✅ I <span class="right">was minding</span> my own business when I heard a yell.<br>= 我正做自己的事，这时听到一声大喊<br><br>✅ I <span class="right">was running</span> when I tripped and fell.<br>= 我正跑步，这时绊倒摔倒了<br><br>【when vs while】<br>• when → 突然插入（瞬间动作）<br>• while → 同时进行（持续动作）<br><br>【犯罪新闻核心搭配】<br>• mind one\'s own business = 少管闲事<br>• at the scene of a crime = 在犯罪现场<br>• trip and fall = 绊倒摔倒', tip:'was doing + when + did = 正在做…这时突然…' },
+    { id:'s6', cat:'scene', type:'choice', badge:'场景',
+      q:'问路时"across from"的意思是？', opts:['在…旁边','在…正对面','在…之间','在…前面'], ans:1,
+      explain:'【知识点】方位介词辨析<br><br><span class="right">across from</span> = 在…正对面 (= opposite)<br><br>【方位介词梯度】<br>near(大范围远距离) → close to(靠近) → next to(紧挨着) → across from(正对面)<br><br>【问路核心搭配】<br>• How can I get to ...? → 我该如何去…？<br>• go straight down + 路名 → 沿路一直走<br>• turn right onto + 街道 → 右转进入某街道<br>• turn right at the + 序数词 + crossing → 在第…路口右转<br>• be located in ... → 位于…<br><br>【介词铁律】<br>• direction 全部用 in (in this direction)<br>• 路名用 on (on First Avenue)<br>• 小地点用 at (at the corner)<br><br>【辨析】<br>in front of = 外部前面(车在楼前面)<br>next to = 紧挨着(邮局旁边)', tip:'方位梯度：near→close to→next to→across from' },
+
+    // ===== 新增：情绪表达 =====
+    { id:'p15', cat:'phrase', type:'choice', badge:'搭配',
+      q:'"It makes me ___." 表达"这让我有压力"，填什么？', opts:['stress','stressed','stressing','to stress'], ans:1,
+      explain:'【知识点】make + 人 + 形容词<br><br><span class="right">It makes me stressed.</span> = 这让我有压力<br><br>【结构规则】<br>make + 人 + <b>形容词</b>(不是副词！不是动词！)<br><br>【情绪表达矩阵】<br>• It makes me <span class="right">stressed</span>. → 有压力<br>• It makes me <span class="right">nervous</span>. → 紧张<br>• It makes me <span class="right">anxious</span>. → 稍微焦虑<br>• It makes me <span class="right">upset</span>. → 沮丧<br><br>【易错点】<br>❌ It makes me <span class="wrong">stress</span>. → 错！stress是名词/动词<br>✅ It makes me <span class="right">stressed</span>. → 对！stressed是形容词<br><br>【同理】feel + 形容词<br>✅ I feel <span class="right">confident</span>. → 自信<br>❌ I feel <span class="wrong">confidently</span>. → 错！feel后接形容词', tip:'make/feel + 人 + 形容词(不用副词不用动词)' },
+    { id:'p16', cat:'phrase', type:'choice', badge:'搭配',
+      q:'"run out of" 的意思是？', opts:['跑出…','耗尽；用完','跑向…','从…跑来'], ans:1,
+      explain:'【知识点】run系列搭配<br><br><span class="right">run out of</span> = 耗尽；用完<br><br>【run系列搭配表】<br>• run out of → 耗尽；用完<br>✅ I <span class="right">ran out of</span> money. → 我没钱了<br>• run away → 逃跑<br>• run after → 追赶<br>• get through → 度过；熬过<br><br>【同义表达】<br>I run out of money = I am <span class="right">broke</span>. → 我没钱了<br><br>【相关搭配】<br>• get rid of → 摆脱；戒除<br>✅ I want to <span class="right">get rid of</span> my bad habits.<br>• come up with an idea → 想出办法<br>✅ I <span class="right">came up with</span> a good idea.<br><br>【记忆口诀】<br>run out of = 用完了(耗尽)<br>broke = 没钱了(口语)', tip:'run out of耗尽/用完 = broke没钱(口语)' },
+
+    // ===== 新增：面试表达 =====
+    { id:'p17', cat:'phrase', type:'choice', badge:'搭配',
+      q:'"be in charge of" vs "be in the charge of" 区别是？', opts:['没区别','前者主动负责，后者被管','前者被管，后者主动负责','都不正确'], ans:1,
+      explain:'【知识点】in charge of vs in the charge of<br><br><span class="right">be in charge of</span> = 主动负责（人管事）<br><span class="right">be in the charge of</span> = 被管理（事被人管）<br><br>【例子对比】<br>✅ I am <span class="right">in charge of</span> the project. → 我负责这个项目<br>✅ The project is <span class="right">in the charge of</span> me. → 项目由我管理<br><br>【关键区别】有没有the<br>• 无the → 主动态，人管事<br>• 有the → 被动态，事被人管<br><br>【面试相关表达】<br>• a good fit → 很合适(性格合拍)<br>• well-suited → 非常适合(正式)<br>• qualified → 有资格的(硬实力)<br>• competent → 有能力的(能力靠谱)<br>• capable → 能干的(潜力)<br><br>【记忆口诀】<br>无the→人管事(主动负责)<br>有the→事被人管(被管理)', tip:'in charge of主动负责 vs in the charge of被管理(看有没有the)' },
+
+    // ===== 新增：犯罪新闻搭配 =====
+    { id:'e9', cat:'error', type:'judge', badge:'易错',
+      q:'判断对错："I wish him lucky."', ans:false,
+      explain:'【知识点】wish sb + 名词<br><br>❌ <span class="wrong">I wish him lucky.</span> → wish后不能接形容词！<br>✅ <span class="right">I wish him luck.</span> → wish后接名词<br><br>【结构规则】<br>wish sb. + <b>名词</b>（双宾语结构）<br>• I wish him luck. → 祝他好运<br>• I wish you success. → 祝你成功<br>• I wish her happiness. → 祝她幸福<br><br>【易错对比】<br>❌ I wish him <span class="wrong">lucky</span>. → lucky是形容词<br>✅ I wish him <span class="right">luck</span>. → luck是名词<br><br>【类似结构】wish sb sth<br>wish + 人(间接宾语) + 名词(直接宾语)<br>= 双宾语结构', tip:'wish sb + 名词(不能接形容词！)' },
+    { id:'e10', cat:'error', type:'judge', badge:'易错',
+      q:'判断对错："One of my friends are tall."', ans:false,
+      explain:'【知识点】one of + 复数名词 + 单数谓语<br><br>❌ <span class="wrong">One of my friends are tall.</span><br>✅ <span class="right">One of my friends is tall.</span><br><br>【铁律】<br>one of + 复数名词 + <b>单数谓语动词</b><br><br>【分析】<br>one of my friends → 主语核心词是 <span class="right">one</span><br>→ one是单数 → 谓语用 <span class="right">is</span><br><br>【更多例句】<br>✅ One of the students <span class="right">is</span> late.<br>❌ One of the students <span class="wrong">are</span> late.<br>✅ One of my strengths <span class="right">is</span> creativity.<br><br>【记忆口诀】<br>one of + 复数 + 单数谓语<br>核心词是one → 单数！', tip:'one of + 复数名词 + 单数谓语(is/has/needs)' },
+    { id:'e11', cat:'error', type:'judge', badge:'易错',
+      q:'判断对错："I go to there."', ans:false,
+      explain:'【知识点】there/here/home前不加to<br><br>❌ <span class="wrong">I go to there.</span><br>✅ <span class="right">I go there.</span><br><br>【铁律】<br>there / here / home / abroad 是<b>副词</b>，不是名词<br>→ 前面不需要介词to<br><br>【完整规则】<br>✅ go <span class="right">there</span> / come <span class="right">here</span> / go <span class="right">home</span> / go <span class="right">abroad</span><br>❌ go <span class="wrong">to there</span> / come <span class="wrong">to here</span> / go <span class="wrong">to home</span><br><br>【特例】<br>• go to the park → park是名词，需要to<br>• go to school → school是名词，需要to<br>• go home → home是副词，不需要to<br><br>【记忆口诀】<br>there/here/home/abroad → 前面不加to<br>park/school/office → 前面需要to', tip:'there/here/home/abroad是副词，前面不加to' },
+    { id:'e12', cat:'error', type:'judge', badge:'易错',
+      q:'判断对错："a blond hair"', ans:false,
+      explain:'【知识点】hair是不可数名词<br><br>❌ <span class="wrong">a blond hair</span> → hair不可数，不能加a<br>✅ <span class="right">blond hair</span> → 直接说，不加a<br><br>【hair用法规则】<br>• hair指"头发"(整体) → 不可数<br>✅ She has <span class="right">blond hair</span>. → 她有金色头发<br>❌ She has <span class="wrong">a blond hair</span>. → 错！<br><br>• hair指"一根头发" → 可数<br>✅ I found <span class="right">a hair</span> in my soup. → 我汤里发现一根头发<br><br>【常见不可数名词】<br>• bread → a loaf of bread(一条面包)<br>• money → some money<br>• information → some information<br>• advice → some advice<br><br>【记忆口诀】<br>hair整体→不可数(不加a)<br>hair一根→可数(可加a)', tip:'hair整体不可数，不能加a' },
+
+    // ===== 新增：露营搭配 =====
+    { id:'p18', cat:'phrase', type:'choice', badge:'搭配',
+      q:'"stick to" 在露营场景中表示什么？', opts:['粘住','坚持','拿起来','流进去'], ans:1,
+      explain:'【知识点】stick to vs stick out<br><br><span class="right">stick to</span> = 坚持（不放弃）<br>≠ <span class="wrong">stick out</span> = 突出、伸出<br><br>【露营搭配】<br>✅ Stick to <span class="right">the planned route</span>. → 坚持走计划路线<br>✅ Stick to <span class="right">the trail</span>. → 不要偏离步道<br><br>【stick系列】<br>• stick to → 坚持<br>• stick out → 突出<br>• stick together → 团结在一起<br><br>【记忆口诀】<br>stick to = 坚持不放弃<br>露营要stick to the trail', tip:'stick to=坚持(不偏离/不放弃)' },
+    { id:'p19', cat:'phrase', type:'choice', badge:'搭配',
+      q:'"pour into" 是什么意思？', opts:['倒出来','流进去','流出来','浸入'], ans:1,
+      explain:'【知识点】pour系列搭配<br><br><span class="right">pour into</span> = 流进去、涌入<br>≠ <span class="wrong">pour out</span> = 倒出来<br><br>【例句对比】<br>✅ Tourists <span class="right">pour into</span> the park every summer.<br>→ 游客夏天涌入公园<br>✅ She <span class="right">poured out</span> her feelings.<br>→ 她倾诉了自己的感受<br><br>【pour的其他用法】<br>• It is pouring rain. → 倾盆大雨<br>• pour a cup of tea → 倒杯茶<br><br>【记忆口诀】<br>pour into = 涌入(流进去)<br>pour out = 倒出(倾诉)<br>pouring rain = 倾盆大雨', tip:'pour into涌入 vs pour out倒出/倾诉' },
+    { id:'p20', cat:'phrase', type:'choice', badge:'搭配',
+      q:'"There is no need to do" 表示什么？', opts:['有必要做','没必要做','禁止做','想要做'], ans:1,
+      explain:'【知识点】there is no need to do<br><br><span class="right">There is no need to do sth</span> = 没必要做<br><br>【例句】<br>✅ There is no need to <span class="right">take</span> too many snacks.<br>→ 没必要带太多零食<br>✅ There is no need to <span class="right">worry</span>.<br>→ 没必要担心<br><br>【类似表达】<br>• no need → 没必要<br>• unnecessary → 不必要<br>• not necessary → 不必要<br><br>【辨析】<br>• There is no need to do → 没必要做（但不禁止）<br>• You mustn\'t do → 禁止做（绝对不行）<br><br>【记忆口诀】<br>There is no need to = 没必要（不禁止）<br>mustn\'t = 禁止（绝对不行）', tip:'There is no need to do=没必要做(不禁止)' },
+
+    // ===== 新增：租车对话场景 =====
+    { id:'s7', cat:'scene', type:'choice', badge:'场景',
+      q:'租车时，服务员问"Do you need any insurance cover?"，你想说"是的，请"，最自然的回答？', opts:['Yes, please.','Yes, I need.','Insurance yes.','Give me insurance.'], ans:0,
+      explain:'【知识点】租车对话场景<br><br>最自然回答：<span class="right">Yes, please.</span><br><br>【租车对话全流程】<br>1. I would like to hire a car. → 我想租车<br>2. What kind of car? → 您想要什么车型？<br>3. A sedan, please. → 轿车<br>4. Do you need any insurance cover? → 需要保险吗？<br>5. Yes, please. / No, thanks. → 要/不要<br>6. Return it with a full tank. → 满油归还<br><br>【易错点】<br>❌ Yes, I need. → 太正式，不自然<br>✅ Yes, please. → 礼貌自然<br><br>【租车关键词】<br>• hire/rent a car → 租车<br>• insurance cover → 保险保障<br>• unlimited mileage → 不限里程<br>• full tank → 满箱油<br>• deposit → 押金<br>• pick up → 取车<br><br>【记忆口诀】<br>Yes, please是最自然回答<br>租车流程：hire→choose→insurance→deposit→pick up', tip:'租车礼貌回答：Yes, please / No, thanks' },
+    { id:'s8', cat:'scene', type:'choice', badge:'场景',
+      q:'归还租车时，工作人员说"Return it with a full tank"，意思是？', opts:['空油归还','满油归还','不用加油','随便归还'], ans:1,
+      explain:'【知识点】租车归还规则<br><br><span class="right">Return it with a full tank</span> = 满油归还<br><br>【租车油量规则】<br>• full tank → 满箱油<br>✅ Return it <span class="right">with a full tank</span>. → 满油归还<br>✅ You need to <span class="right">refill</span> before returning. → 归还前加油<br><br>【加油相关表达】<br>• fill up → 加满<br>• gas station → 加油站<br>• refuel → 加油<br>• fuel gauge → 油量表<br><br>【租车归还清单】<br>1. 加满油<br>2. 清理车内<br>3. 检查刮痕<br>4. 归还钥匙<br>5. 拿回押金<br><br>【记忆口诀】<br>full tank = 满箱油<br>归还规则 = 满油归还', tip:'Return it with a full tank = 满油归还' },
+
+    // ===== 新增：犯罪新闻场景 =====
+    { id:'s9', cat:'scene', type:'choice', badge:'场景',
+      q:'新闻报道"at the scene of a crime"是什么意思？', opts:['在电影院','在犯罪现场','在体育赛场','在舞台上'], ans:1,
+      explain:'【知识点】犯罪新闻核心词汇<br><br><span class="right">at the scene of a crime</span> = 在犯罪现场<br><br>【scene的多种含义】<br>• scene of a crime → 犯罪现场<br>• movie scene → 电影场景<br>• sports scene → 体育场面<br>• stage scene → 舞台场景<br><br>【犯罪新闻关键词】<br>• witness → 证人<br>• suspect → 嫌疑人<br>• victim → 受害者<br>• evidence → 证据<br>• investigation → 调查<br>• guilty → 有罪的<br><br>【新闻搭配】<br>• mind one\'s own business → 少管闲事<br>• a sudden yell → 一声突然大喊<br>• trip and fall → 绊倒摔倒<br>• break into → 闯入<br><br>【记忆口诀】<br>scene of a crime = 犯罪现场<br>witness证人, suspect嫌疑人, victim受害者', tip:'at the scene of a crime=犯罪现场' },
+    { id:'s10', cat:'scene', type:'fill', badge:'场景',
+      q:'"I was minding my own business ___ I heard a yell." — 正做自己的事这时听到大喊。填连接词', ans:['when'],
+      explain:'【知识点】was doing + when + did<br><br>经典句型：<span class="right">was/were doing + when + 一般过去时</span><br>= 正在做……这时突然……<br><br>【完整句式】<br>I <span class="right">was minding</span> my own business <span class="highlight">when</span> I heard a yell.<br>= 我正管自己的事，这时听到一声大叫<br><br>【犯罪新闻常见时态】<br>• 过去进行时(was doing) → 描述背景<br>• 一般过去时(did) → 描述突发事件<br><br>【更多例句】<br>✅ She <span class="right">was walking</span> home when she saw the suspect.<br>✅ They <span class="right">were talking</span> when the alarm went off.<br><br>【when vs while】<br>when → 突然插入的瞬间<br>while → 同时进行的持续<br><br>【记忆口诀】<br>was doing + when + did<br>= 背景进行 + 突然插入', tip:'was doing + when + did = 正在做…这时突然…' },
+
+    // ===== 新增：环保主题 =====
+    { id:'v24', cat:'vocab', type:'choice', badge:'词汇',
+      q:'"carpool" 是什么意思？', opts:['洗车','拼车','租车','停车'], ans:1,
+      explain:'【知识点】环保出行词汇<br><br><span class="right">carpool</span> = 拼车（多人共乘一辆车）<br><br>【环保出行方式】<br>• carpool → 拼车<br>• take public transport → 坐公共交通<br>• ride an e-bike → 骑电动车<br>• walk → 步行<br>• cycle → 骑自行车<br><br>【carpool用法】<br>✅ We <span class="right">carpool</span> to work every day. → 每天拼车上班<br>✅ <span class="right">Carpooling</span> saves gas and reduces pollution.<br><br>【记忆口诀】<br>carpool = car + pool = 车池 = 拼车<br>环保出行首选carpool', tip:'carpool=拼车(多人共乘)' },
+    { id:'v25', cat:'vocab', type:'type', badge:'词汇',
+      q:'"smog" 的中文意思是？', ans:['雾霾'],
+      explain:'【知识点】环保问题词汇<br><br><span class="en">smog</span> = 雾霾<br><br>【词源】smoke + fog → smog<br>烟+雾=雾霾<br><br>【环保问题词】<br>• smog → 雾霾<br>• pollution → 污染<br>• global warming → 全球变暖<br>• carbon emissions → 碳排放<br>• deforestation → 滥砍滥伐<br>• landfill → 垃圾填埋场<br><br>【环保行动】<br>• reduce waste → 减少浪费<br>• recycle → 回收<br>• reuse → 重复使用<br>• spread awareness → 普及意识<br><br>【记忆口诀】<br>smog = smoke + fog = 雾霾<br>三大R：reduce回收reuse', tip:'smog=smoke+fog=雾霾' },
+    { id:'v26', cat:'vocab', type:'choice', badge:'词汇',
+      q:'"extinct" vs "endangered" 区别？', opts:['前者已灭绝，后者濒危','前者濒危，后者已灭绝','都表示濒危','都表示已灭绝'], ans:0,
+      explain:'【知识点】物种保护词汇<br><br><span class="right">extinct</span> = 已灭绝的（彻底消失）<br><span class="right">endangered</span> = 濒危的（快要消失但还有）<br><br>【严重程度】<br>endangered(濒危) → extinct(灭绝)<br>濒危 → 如果不保护 → 就会灭绝<br><br>【例句对比】<br>✅ Dinosaurs are <span class="right">extinct</span>. → 恐龙已灭绝<br>✅ Pandas are <span class="right">endangered</span>. → 熊猫濒危<br><br>【环保行动句型】<br>• We must protect endangered species.<br>• Install solar panels to reduce emissions.<br>• Clean up the beach every month.<br><br>【记忆口诀】<br>extinct = 灭绝(已消失)<br>endangered = 濒危(快消失)<br>灭绝 > 濒危', tip:'extinct已灭绝 vs endangered濒危' },
+
+    // ===== 新增：App功能搭配 =====
+    { id:'p21', cat:'phrase', type:'choice', badge:'搭配',
+      q:'手机App中"swipe"是什么动作？', opts:['点击','滑动','长按','双击'], ans:1,
+      explain:'【知识点】App操作动词<br><br><span class="right">swipe</span> = 滑动（手指划过屏幕）<br><br>【App操作动词对照】<br>• <span class="right">swipe</span> → 滑动（划屏）<br>• <span class="right">tap</span> → 点击（轻触）<br>• <span class="right">scroll</span> → 滚动浏览（上下划）<br>• <span class="right">press</span> → 按压（长按）<br>• <span class="right">drag</span> → 拖拽<br>• <span class="right">pinch</span> → 捏合缩放<br><br>【日常App场景】<br>• Swipe left to delete → 左滑删除<br>• Swipe right to like → 右滑喜欢<br>• Tap to open → 点击打开<br>• Scroll down for more → 往下滑看更多<br>• Scan QR code → 扫二维码<br><br>【记忆口诀】<br>swipe=滑动, tap=点击, scroll=滚动<br>scan=扫描, download=下载', tip:'swipe滑动, tap点击, scroll滚动, scan扫描' },
+
+    // ===== 新增：原因结果连接词 =====
+    { id:'p22', cat:'phrase', type:'choice', badge:'搭配',
+      q:'表达原因的连接词"due to"后面接什么？', opts:['完整句子','名词/名词短语','动词原形','doing形式'], ans:1,
+      explain:'【知识点】原因连接词<br><br><span class="right">due to</span> + 名词/名词短语 = 因为…<br><br>【原因连接词对比】<br>• <span class="right">due to</span> + 名词 → Due to <span class="right">the rain</span>, we stayed home.<br>• <span class="right">because</span> + 句子 → Because <span class="right">it was raining</span>, we stayed home.<br>• <span class="right">since</span> + 句子 → Since <span class="right">it rained</span>, we stayed home.<br><br>【结果连接词】<br>• <span class="right">therefore</span> → 因此（正式）<br>• <span class="right">so</span> → 所以（口语）<br>• <span class="right">as a result</span> → 结果<br>• <span class="right">consequently</span> → 因此<br><br>【例子对比】<br>✅ Due to <span class="right">the bad weather</span>, the flight was delayed.<br>✅ Because <span class="right">the weather was bad</span>, the flight was delayed.<br><br>【记忆口诀】<br>due to + 名词<br>because/since + 句子<br>therefore/so 表结果', tip:'due to+名词 vs because+句子' },
+
+    // ===== 新增：反身代词 =====
+    { id:'g36', cat:'grammar', type:'choice', badge:'语法',
+      q:'"I did it by ___ ." 填什么反身代词？', opts:['my','myself','meself','mine'], ans:1,
+      explain:'【知识点】反身代词<br><br><span class="right">myself</span> = 我自己<br><br>【反身代词对照表】<br>• I → <span class="right">myself</span><br>• you → <span class="right">yourself</span><br>• he → <span class="right">himself</span><br>• she → <span class="right">herself</span><br>• it → <span class="right">itself</span><br>• we → <span class="right">ourselves</span><br>• they → <span class="right">themselves</span><br><br>【常见搭配】<br>• by myself = 自己做（无他人帮忙）<br>✅ I did it <span class="right">by myself</span>. → 我自己做的<br>• enjoy oneself = 玩得开心<br>✅ Enjoy <span class="right">yourself</span>! → 祝你玩得开心<br>• hurt oneself = 伤到自己<br><br>【易错点】<br>❌ by <span class="wrong">my</span> → my是形容词不是代词<br>✅ by <span class="right">myself</span> → 反身代词才对<br><br>【记忆口诀】<br>反身代词 = 代词 + self/selves<br>I→myself, you→yourself, he→himself', tip:'反身代词=myself/yourself/himself/herself/ourselves/themselves' },
+
+    // ===== 新增：look系列 =====
+    { id:'g37', cat:'grammar', type:'choice', badge:'语法',
+      q:'"look after" vs "look for" 区别是？', opts:['前者寻找，后者照顾','前者照顾，后者寻找','都表示看','都表示寻找'], ans:1,
+      explain:'【知识点】look系列辨析<br><br><span class="right">look after</span> = 照顾、照料<br><span class="right">look for</span> = 寻找<br><br>【look家族全表】<br>• <span class="right">look after</span> → 照顾（照顾老人/小孩）<br>• <span class="right">look for</span> → 寻找（找东西/找人）<br>• <span class="right">look at</span> → 看（注视）<br>• <span class="right">look up</span> → 查阅（查单词/查信息）<br>• <span class="right">look forward to</span> → 期待<br>• <span class="right">look out</span> → 当心小心<br>• <span class="right">look into</span> → 调查<br><br>【例句对比】<br>✅ She <span class="right">looks after</span> the elderly. → 她照顾老人<br>✅ I am <span class="right">looking for</span> my keys. → 我在找钥匙<br>✅ <span class="right">Look out</span>! A car is coming! → 当心！车来了<br><br>【易错点】<br>look forward to + <span class="right">doing</span><br>✅ I look forward to <span class="right">meeting</span> you.<br>❌ I look forward to <span class="wrong">meet</span> you.<br><br>【记忆口诀】<br>look after=照顾, look for=寻找<br>look out=当心, look up=查阅<br>look forward to doing=期待', tip:'look after照顾, look for寻找, look out当心, look forward to doing期待' },
+
+    // ===== 新增：It takes句型 =====
+    { id:'g38', cat:'grammar', type:'choice', badge:'语法',
+      q:'"It takes 20 minutes ___ walk there." 填什么？', opts:['for','to','by','with'], ans:1,
+      explain:'【知识点】It takes + 时间 + to do<br><br><span class="right">It takes + 时间 + to do sth</span><br>= 做某事需要花…时间<br><br>【结构规则】<br>It takes + 时间/精力 + <span class="highlight">to</span> + 动词原形<br><br>【例句】<br>✅ It takes <span class="right">20 minutes to</span> walk there. → 走过去要20分钟<br>✅ It takes <span class="right">3 hours to</span> fly to London. → 飞伦敦要3小时<br>✅ It takes <span class="right">a lot of effort to</span> learn English. → 学英语要很多努力<br><br>【变体句型】<br>• It took me 2 hours to finish the report.<br>→ 我花了2小时完成报告（过去式）<br>• It will take us 5 days to travel there.<br>→ 我们旅行要5天（将来）<br><br>【易错点】<br>❌ It takes 20 minutes <span class="wrong">for</span> walking there.<br>✅ It takes 20 minutes <span class="right">to</span> walk there.<br><br>【记忆口诀】<br>It takes + 时间 + to do<br>注意用to不是for', tip:'It takes+时间+to do=花…时间做某事' },
+
+    // ===== 新增：keep on doing =====
+    { id:'g39', cat:'grammar', type:'choice', badge:'语法',
+      q:'"Keep on ___" 填什么？', opts:['try','trying','to try','tried'], ans:1,
+      explain:'【知识点】keep on doing<br><br><span class="right">keep on doing</span> = 继续做、不断做<br><br>【keep家族】<br>• <span class="right">keep on doing</span> → 继续做（强调反复/不停）<br>• <span class="right">keep doing</span> → 持续做（强调一直做）<br>• <span class="right">keep sb from doing</span> → 阻止某人做<br><br>【例句对比】<br>✅ Keep on <span class="right">trying</span>. → 继续努力<br>✅ She <span class="right">kept on</span> talking. → 她不停说话<br>✅ Keep <span class="right">walking</span>. → 继续走<br><br>【易错点】<br>❌ Keep on <span class="wrong">to try</span>. → 错！keep on后接doing<br>✅ Keep on <span class="right">trying</span>. → 正确！<br><br>【类似规则：只接doing的动词】<br>• keep on + doing<br>• enjoy + doing<br>• finish + doing<br>• suggest + doing<br>• avoid + doing<br><br>【记忆口诀】<br>keep on doing = 继续做<br>keep on后只能接doing', tip:'keep on doing=继续做(后接doing不接to do)' },
+
+    // ===== 新增：there be就近原则 =====
+    { id:'g40', cat:'grammar', type:'choice', badge:'语法',
+      q:'"There ___ a book and two pens on the desk." 填什么？', opts:['are','is','were','have'], ans:1,
+      explain:'【知识点】there be就近原则<br><br><span class="right">There is a book and two pens on the desk.</span><br><br>【就近原则】<br>there be句型中，谓语动词取决于<strong>最近的那个名词</strong><br><br>• a book（单数，最近）→ 用 <span class="right">is</span><br>• two pens（复数，远）→ 不影响谓语<br><br>【更多例句】<br>✅ There <span class="right">is</span> a teacher and 30 students in the room.<br>→ 最近的是a teacher(单数) → 用is<br>✅ There <span class="right">are</span> two pens and a book on the desk.<br>→ 最近的是two pens(复数) → 用are<br><br>【易错点】<br>❌ There <span class="wrong">are</span> a book and two pens. → 错！就近原则<br>✅ There <span class="right">is</span> a book and two pens. → 正确！<br><br>【there be vs have】<br>• there be → 存在（某地有某物）<br>• have → 拥有（某人拥有某物）<br>❌ There <span class="wrong">have</span> a book. → 错！<br><br>【记忆口诀】<br>there be就近原则<br>看最近的名词→单数用is，复数用are<br>there be不是have！', tip:'there be就近原则：看最近的名词定谓语' },
+
+    // ===== 新增：名词+to do后置定语 =====
+    { id:'g41', cat:'grammar', type:'choice', badge:'语法',
+      q:'"I have something ___ tell you." 填什么？', opts:['for','to','with','by'], ans:1,
+      explain:'【知识点】名词 + to do 后置定语<br><br><span class="right">名词 + to do</span> = ...的（东西/事情）<br><br>【结构规则】<br>to do作后置定语，修饰前面的名词<br>= "有…要做的（东西/事情）"<br><br>【例句】<br>✅ I have <span class="right">something to tell</span> you. → 我有事要告诉你<br>✅ She has <span class="right">a lot of work to do</span>. → 她有很多工作要做<br>✅ Is there <span class="right">anything to eat</span>? → 有什么吃的吗？<br>✅ He needs <span class="right">a place to stay</span>. → 他需要住的地方<br><br>【常见搭配】<br>• something to do → 有事要做<br>• nothing to say → 没什么要说<br>• a lot to learn → 很多要学<br>• a plan to follow → 计划要遵循<br><br>【易错点】<br>❌ I have something <span class="wrong">for telling</span> you.<br>✅ I have something <span class="right">to tell</span> you.<br><br>【记忆口诀】<br>名词+to do = ...的（后置定语）<br>something to tell = 要告诉的事', tip:'名词+to do后置定语=something to tell/anything to eat' },
+
+    // ===== 新增：unless =====
+    { id:'g42', cat:'grammar', type:'choice', badge:'语法',
+      q:'"I will not go ___ it is sunny." — 除非晴天我才去。填？', opts:['if','unless','whether','until'], ans:1,
+      explain:'【知识点】unless = if not<br><br><span class="right">unless</span> = <span class="right">if not</span>（除非=如果不）<br><br>【转换规则】<br>unless + 正面条件 = if + 否定条件<br>✅ I will not go <span class="right">unless</span> it is sunny.<br>= I will not go <span class="right">if it is not</span> sunny.<br>= 除非晴天，否则不去<br><br>【更多例句】<br>✅ You cannot enter <span class="right">unless</span> you have a ticket.<br>= You cannot enter <span class="right">if you do not have</span> a ticket.<br><br>✅ I will call you <span class="right">unless</span> I am busy.<br>= I will call you <span class="right">if I am not</span> busy.<br><br>【易错点】<br>unless本身已含否定意义→不与not连用<br>❌ <span class="wrong">unless not</span> → 双重否定，不正确<br><br>【记忆口诀】<br>unless = if not<br>除非 = 如果不<br>unless本身含否定，不再加not', tip:'unless=if not(除非=如果不)' },
+
+    // ===== 新增：面试表达更多 =====
+    { id:'p23', cat:'phrase', type:'choice', badge:'搭配',
+      q:'"skillful at" vs "skillful in" 区别？', opts:['前者技能类，后者学术/行业类','没有区别','前者学术类，后者技能类','都不正确'], ans:0,
+      explain:'【知识点】skillful at vs skillful in<br><br><span class="right">skillful at</span> = 擅长（技能类：at negotiation / at cooking）<br><span class="right">skillful in</span> = 擅长（学术/行业类：in mathematics / in marketing）<br><br>【判断规则】<br>• 具体技能/动作 → <span class="right">at</span><br>• 学术领域/行业 → <span class="right">in</span><br><br>【例句对比】<br>✅ She is skillful <span class="right">at</span> negotiation. → 擅长谈判(技能)<br>✅ He is skillful <span class="right">in</span> mathematics. → 擅长数学(学术)<br><br>【面试关键词】<br>• well-suited → 非常适合(性格合拍)<br>• qualified → 有资格的(硬实力)<br>• competent → 有能力的(能力靠谱)<br>• capable → 能干的(潜力)<br>• a good fit → 合适(综合)<br><br>【记忆口诀】<br>skillful at → 具体技能<br>skillful in → 学术领域<br>at动作 in领域', tip:'skillful at技能 vs skillful in学术/行业' },
+    { id:'p24', cat:'phrase', type:'choice', badge:'搭配',
+      q:'面试中说"I am a good fit for this role"表示什么？', opts:['我不适合','我非常适合','我勉强适合','我要退出'], ans:1,
+      explain:'【知识点】面试自我评价<br><br><span class="right">a good fit</span> = 非常合适（性格/能力与岗位匹配）<br><br>【面试自我评价梯度】<br>• a good fit → 合适（性格合拍，综合匹配）<br>• well-suited → 非常适合（正式说法）<br>• qualified → 有资格的（硬实力达标）<br>• competent → 有能力的（能力靠谱）<br>• capable → 能干的（有潜力）<br><br>【面试表达模板】<br>✅ I believe I am <span class="right">a good fit</span> for this role.<br>✅ I am <span class="right">well-suited</span> for this position.<br>✅ I am <span class="right">qualified</span> for this job.<br>✅ I am <span class="right">competent</span> in this area.<br><br>【面试常问问题】<br>• Why should we hire you?<br>• What are your strengths?<br>• What are your weaknesses?<br>• Where do you see yourself in 5 years?<br><br>【记忆口诀】<br>a good fit = 合适（综合匹配）<br>well-suited = 非常适合（正式）<br>qualified = 有资格（硬实力）', tip:'a good fit=综合合适, well-suited=非常适合, qualified=有资格' },
+
+    // ===== 新增：at all =====
+    { id:'g43', cat:'grammar', type:'choice', badge:'语法',
+      q:'"I do not like spicy food ___ all." 填什么？', opts:['in','at','with','by'], ans:1,
+      explain:'【知识点】at all = 一点也不<br><br><span class="right">not ... at all</span> = 一点也不、完全不<br><br>【用法规则】<br>at all 只用在否定句或疑问句<br>✅ I do not like spicy food <span class="right">at all</span>. → 一点也不喜欢辣食<br>✅ Do you like it <span class="right">at all</span>? → 你到底喜不喜欢？<br><br>【否定句搭配】<br>• not at all → 一点也不<br>• not ... in any way → 完全不<br>• not ... whatsoever → 一点也不<br><br>【肯定句不能用at all】<br>❌ I like it <span class="wrong">at all</span>. → 错！at all只配否定<br>✅ I like it <span class="right">very much</span>. → 正确<br><br>【记忆口诀】<br>not + at all = 一点也不<br>at all只配否定句和疑问句<br>肯定句用very much', tip:'not...at all=一点也不(只配否定句/疑问句)' },
+
+    // ===== 新增：so...that =====
+    { id:'g44', cat:'grammar', type:'choice', badge:'语法',
+      q:'"The movie was ___ boring that I fell asleep." 填什么？', opts:['very','so','too','such'], ans:1,
+      explain:'【知识点】so...that vs such...that<br><br><span class="right">so + 形容词/副词 + that</span> = 太…以至于…<br><span class="right">such + 名词(短语) + that</span> = 太…以至于…<br><br>【结构对比】<br>• so → 修饰<b>形容词/副词</b><br>✅ The movie was <span class="right">so</span> boring <span class="highlight">that</span> I fell asleep.<br><br>• such → 修饰<b>名词短语</b><br>✅ It was <span class="right">such</span> a boring movie <span class="highlight">that</span> I fell asleep.<br><br>【易错点】<br>❌ The movie was <span class="wrong">such</span> boring that I fell asleep.<br>→ such不能直接修饰形容词！<br><br>❌ It was <span class="wrong">so</span> a boring movie that I fell asleep.<br>→ so不能修饰名词短语！<br><br>【记忆口诀】<br>so + 形容词/副词 + that<br>such + 名词短语 + that<br>so修饰词，such修饰名词', tip:'so+形容词/副词+that vs such+名词短语+that' },
+
+    // ===== 新增：have not / no 用法 =====
+    { id:'g45', cat:'grammar', type:'choice', badge:'语法',
+      q:'not和no的区别是什么？', opts:['not否定动词，no否定名词','not否定名词，no否定动词','两者完全一样','not用于句首，no用于句尾'], ans:0,
+      explain:'【知识点】not vs no 的词性和用法<br><br><b>not</b> = 副词 → 只能否定<b>动词</b><br>✅ is <span class="right">not</span> / do <span class="right">not</span> / can <span class="right">not</span><br><br><b>no</b> = 形容词 → 直接修饰<b>名词</b><br>✅ <span class="right">no</span> friends / <span class="right">no</span> time / <span class="right">no</span> money<br><br>【关键区别】<br>• not放在动词前后 → I do <span class="right">not</span> know.<br>• no放在名词前面 → I have <span class="right">no</span> idea.<br><br>【错误用法】<br>❌ I have <span class="wrong">not</span> friends. → not不能修饰名词！<br>❌ He is <span class="wrong">no</span> happy. → no不能修饰形容词！<br><br>【记忆口诀】<br>not配动词（is not / do not）<br>no配名词（no time / no money）', tip:'not是副词否定动词，no是形容词否定名词' },
+
+    { id:'g46', cat:'grammar', type:'choice', badge:'语法',
+      q:'哪种表达是正确的？"他没有朋友"', opts:['He hasn\'t friends','He has no friends','He no has friends','He don\'t has friends'], ans:1,
+      explain:'【知识点】have的否定形式<br><br>❌ <span class="wrong">He hasn\'t friends</span> → not不能直接否定名词！<br>❌ <span class="wrong">He no has friends</span> → no不能用在动词前！<br>❌ <span class="wrong">He don\'t has friends</span> → doesn\'t后用动词原形have！<br><br>✅ <span class="right">He has no friends.</span> → no+名词（最简洁）<br>✅ <span class="right">He hasn\'t got any friends.</span> → 英式<br>✅ <span class="right">He doesn\'t have any friends.</span> → 美式<br><br>【三种正确方式】<br>① no + 名词 → have <span class="right">no</span> friends<br>② haven\'t got + any + 名词 → <span class="right">haven\'t got any</span> friends<br>③ don\'t/doesn\'t have + any + 名词 → <span class="right">doesn\'t have any</span> friends<br><br>【记忆口诀】<br>have否定三选一：<br>have no X / haven\'t got any X / don\'t have any X', tip:'have否定：have no / haven\'t got any / don\'t have any' },
+
+    { id:'g47', cat:'grammar', type:'choice', badge:'语法',
+      q:'"I haven\'t ___ time." 填什么使其正确？', opts:['','any','no','some'], ans:1,
+      explain:'【知识点】haven\'t got + any + 名词<br><br>❌ <span class="wrong">I haven\'t time.</span> → not不能直接否定名词time！<br>❌ <span class="wrong">I haven\'t no time.</span> → 双重否定！<br>❌ <span class="wrong">I haven\'t some time.</span> → some用于肯定句！<br><br>✅ <span class="right">I haven\'t got any time.</span> → 英式<br>✅ <span class="right">I don\'t have any time.</span> → 美式<br>✅ <span class="right">I have no time.</span> → 最简洁<br><br>【any的规则】<br>否定句和疑问句中用<b>any</b>，不用some<br>✅ I don\'t have <span class="right">any</span> time.<br>❌ I don\'t have <span class="wrong">some</span> time.<br><br>【记忆口诀】<br>haven\'t got + any + 名词<br>don\'t have + any + 名词<br>have + no + 名词', tip:'haven\'t got any + 名词(否定句用any不用some)' },
+
+    // ===== 新增：辨析法官题目 =====
+    { id:'e13', cat:'error', type:'judge', badge:'易错',
+      q:'判断对错："There are a book and two pens."', ans:false,
+      explain:'【知识点】there be就近原则<br><br>❌ <span class="wrong">There are a book and two pens.</span><br>✅ <span class="right">There is a book and two pens.</span><br><br>【就近原则】<br>there be句型中，谓语动词取决于<strong>最近的那个名词</strong><br><br>• a book（单数，最近）→ 用 <span class="right">is</span><br>• two pens（复数，远）→ 不影响谓语<br><br>【对比】<br>✅ There <span class="right">is</span> a book and two pens. → 最近=book(单数)<br>✅ There <span class="right">are</span> two pens and a book. → 最近=pens(复数)<br><br>【记忆口诀】<br>there be就近看最近<br>单数→is, 复数→are<br>不要看远处名词！', tip:'there be就近原则：看最近名词定谓语' },
+    { id:'e14', cat:'error', type:'judge', badge:'易错',
+      q:'判断对错："I look forward to meet you."', ans:false,
+      explain:'【知识点】look forward to doing<br><br>❌ <span class="wrong">I look forward to meet you.</span><br>✅ <span class="right">I look forward to meeting you.</span><br><br>【规则】<br>look forward to + <span class="right">doing</span><br>这里的to是<b>介词</b>，不是不定式标志！<br><br>【易错原因】<br>很多同学以为look forward to和want to一样<br>→ to后接动词原形 → 错误！<br><br>这里的to = 介词"朝着/对于"<br>→ 后面要接<b>动名词doing</b><br><br>【类似结构：to是介词】<br>• be used to <span class="right">doing</span><br>• look forward to <span class="right">doing</span><br>• object to <span class="right">doing</span><br><br>【记忆口诀】<br>look forward to + doing<br>to是介词不是不定式！<br>要接doing不接do', tip:'look forward to doing(to是介词！)' },
+    { id:'e15', cat:'error', type:'judge', badge:'易错',
+      q:'判断对错："I have something for telling you."', ans:false,
+      explain:'【知识点】名词+to do后置定语<br><br>❌ <span class="wrong">I have something for telling you.</span><br>✅ <span class="right">I have something to tell you.</span><br><br>【规则】<br>名词 + <span class="right">to do</span> 作后置定语<br>= "有…要做的（事/东西）"<br><br>【例句对比】<br>✅ I have <span class="right">something to tell</span> you. → 有事要告诉你<br>✅ She has <span class="right">a lot of work to do</span>. → 有很多工作要做<br>✅ Is there <span class="right">anything to eat</span>? → 有什么吃的？<br>❌ I have something <span class="wrong">for telling</span> you. → 错！<br><br>【记忆口诀】<br>名词+to do后置定语<br>something to tell = 要告诉的事<br>不用for doing！', tip:'名词+to do后置定语(不用for doing)' },
+    { id:'e16', cat:'error', type:'judge', badge:'易错',
+      q:'判断对错："Unless it is not sunny, I will go."', ans:false,
+      explain:'【知识点】unless本身含否定<br><br>❌ <span class="wrong">Unless it is not sunny, I will go.</span><br>✅ <span class="right">Unless it is sunny, I will not go.</span><br>= <span class="right">If it is not sunny, I will not go.</span><br><br>【规则】<br>unless = if not（本身已含否定意义）<br>→ 不再与not连用！<br><br>【正确用法】<br>✅ I will not go <span class="right">unless</span> it is sunny.<br>= 除非晴天我才去<br><br>【错误用法】<br>❌ <span class="wrong">unless not</span> → 双重否定<br><br>【记忆口诀】<br>unless = if not<br>本身含否定，不加not<br>双重否定是错误',       tip:'unless=if not(本身含否定，不加not)' },
+
+    // ===== 新增：have not / no 易错题 =====
+    { id:'e17', cat:'error', type:'judge', badge:'易错',
+      q:'判断对错："She hasn\'t friends."', ans:false,
+      explain:'【知识点】not不能否定名词<br><br>❌ <span class="wrong">She hasn\'t friends.</span><br>→ not是副词，不能直接否定名词friends！<br><br>✅ <span class="right">She has no friends.</span> → no+名词<br>✅ <span class="right">She hasn\'t got any friends.</span> → 英式<br>✅ <span class="right">She doesn\'t have any friends.</span> → 美式<br><br>【核心规则】<br>not = 副词 → 否定<b>动词</b>（is not / do not）<br>no = 形容词 → 否定<b>名词</b>（no friends / no time）<br><br>【记忆口诀】<br>not配动词，no配名词<br>hasn\'t后面不能直接加名词！', tip:'not不能否定名词，用no+名词或haven\'t got any' },
+
+    { id:'e18', cat:'error', type:'judge', badge:'易错',
+      q:'判断对错："I haven\'t money."', ans:false,
+      explain:'【知识点】haven\'t + 名词 是错误的<br><br>❌ <span class="wrong">I haven\'t money.</span><br>→ not不能直接否定名词money！<br><br>✅ <span class="right">I have no money.</span> → no+名词<br>✅ <span class="right">I haven\'t got any money.</span> → 英式<br>✅ <span class="right">I don\'t have any money.</span> → 美式<br><br>【同类错误】<br>❌ I haven\'t <span class="wrong">time</span>. → ✅ I have <span class="right">no</span> time.<br>❌ I haven\'t <span class="wrong">ideas</span>. → ✅ I have <span class="right">no</span> ideas.<br>❌ We haven\'t <span class="wrong">food</span>. → ✅ We have <span class="right">no</span> food.<br><br>【记忆口诀】<br>haven\'t/hasn\'t + 直接名词 = 错！<br>have + no + 名词 = 对！', tip:'haven\'t+直接名词=错误，用have no+名词' },
+
+    { id:'e19', cat:'error', type:'judge', badge:'易错',
+      q:'判断对错："There are no problems."', ans:true,
+      explain:'【知识点】no + 名词 = 正确用法<br><br>✅ <span class="right">There are no problems.</span><br>→ no是形容词，直接修饰名词problems → 正确！<br><br>✅ <span class="right">There aren\'t any problems.</span> → 也可以<br>→ not否定动词are，any修饰名词<br><br>【对比not vs no】<br>✅ There are <span class="right">no</span> problems. → no+名词<br>✅ There <span class="right">aren\'t</span> any problems. → not+动词+any<br>❌ There <span class="wrong">aren\'t</span> problems. → 缺any！<br>❌ There <span class="wrong">no are</span> problems. → 语序错误！<br><br>【记忆口诀】<br>no直接加名词 = 简洁正确<br>not + any + 名词 = 也可以<br>not直接加名词 = 错误！', tip:'no+名词=正确；not+any+名词=也可以；not直接+名词=错误' },
+  // MC15 狼来了 动物量词/牧羊人
+  { id:'v27', cat:'vocab', type:'choice', badge:'词汇',
+    q:'a ____ of sheep（一群绵羊）的正确量词是？',
+    opts:['flock','herd','pack','school'],
+    answer:0,
+    explain:'<span class="right">flock</span> 是羊/鸟群的专用量词。<span class="wrong">herd</span> 用于牛/鹿/象，<span class="wrong">pack</span> 用于狗/狼，<span class="wrong">school</span> 用于鱼群。<br><span class="highlight">口诀</span>：羊鸟用flock，牛鹿herd行，狗狼pack聚，鱼群school游。'
+  },
+  { id:'v28', cat:'vocab', type:'choice', badge:'词汇',
+    q:'"牧羊人"的英文是？',
+    opts:['saint','shepherd','swan','villager'],
+    answer:1,
+    explain:'<span class="right">shepherd</span> = 牧羊人（/ˈʃepəd/），来自 sheep（羊）+ herd（看管）。<span class="wrong">saint</span> = 圣人，<span class="wrong">swan</span> = 天鹅，<span class="wrong">villager</span> = 村民。<br><span class="highlight">口诀</span>：shepherd = sheep的看管人。'
+  },
+  // MC15 狼来了 短语
+  { id:'p25', cat:'phrase', type:'choice', badge:'搭配',
+    q:'"捉弄某人"的正确搭配是？',
+    opts:['play a trick on sb.','make a trick to sb.','do a trick for sb.','give a trick at sb.'],
+    answer:0,
+    explain:'<span class="right">play a trick on sb.</span> 是固定搭配。<span class="wrong">make/do/give</span> 都不对！<br><span class="highlight">同义</span>：fool sb. / trick sb. 也可以直接说"捉弄某人"。'
+  },
+  { id:'p26', cat:'phrase', type:'choice', badge:'搭配',
+    q:'"除了看着羊吃草，我无事可做"的正确表达是？',
+    opts:['There is nothing to do but watch sheep eat grass.','There is nothing to do but to watch sheep eat grass.','There is nothing doing but watch sheep eat grass.','There is no thing to do but watching sheep.'],
+    answer:0,
+    explain:'<span class="right">nothing to do but + 动词原形</span>，but 后不能加 to！<span class="wrong">to watch</span> 和 <span class="wrong">watching</span> 都是错的。<br><span class="highlight">结构</span>：There is nothing to do but do sth. = 除了…无事可做。'
+  },
+  // MC15 狼来了 语法
+  { id:'g48', cat:'grammar', type:'choice', badge:'语法',
+    q:'"No one believes a liar ____ he tells the truth." 空格处应填？',
+    opts:['even when','even','when','even though'],
+    answer:0,
+    explain:'<span class="right">even when</span> = 即使（引导让步状语从句），需要后接完整从句。<span class="wrong">even</span> 是副词不能引导从句，<span class="wrong">when</span> 缺少"即使"含义，<span class="wrong">even though</span> 虽可引导从句但少了时间含义。<br><span class="highlight">结构</span>：even when + 主语 + 动词 = 即使在…情况下。'
+  },
+  { id:'g49', cat:'grammar', type:'choice', badge:'语法',
+    q:'"They didn\'t find any wolf ____." 用什么来加强"完全不"的语气？',
+    opts:['at all','at once','at last','at least'],
+    answer:0,
+    explain:'<span class="right">not ... at all</span> 是固定否定加强结构 = 完全不/根本不。<span class="wrong">at once</span> = 立刻，<span class="wrong">at last</span> = 终于，<span class="wrong">at least</span> = 至少。<br><span class="highlight">口诀</span>：not at all 三字紧连，表示"一点也不"。'
+  },
+  // MC15 狼来了 场景
+  { id:'s11', cat:'scene', type:'choice', badge:'场景',
+    q:'看图描述时，"在图片中，我能看见一群羊在山上"怎么说？',
+    opts:['In the picture, I can see a flock of sheep on the hill.','On the picture, I see a group of sheep on hill.','In picture, I can see flock sheeps on the hill.','At the picture, I look a flock of sheep in hill.'],
+    answer:0,
+    explain:'<span class="right">In the picture, I can see...</span> 是标准图片描述句型。<span class="wrong">On/At the picture</span> 介词错；<span class="wrong">a group of sheep</span> 量词错应用 flock；<span class="wrong">sheeps</span> 是错误形式（sheep 单复同形）。<br><span class="highlight">句型</span>：In the picture, I can see + 名词短语。'
+  },
+  // MC15 狼来了 易错
+  { id:'e20', cat:'error', type:'choice', badge:'避坑',
+    q:'关于 sheep 的说法，哪项完全正确？',
+    opts:['sheep 单复数同形：1 sheep / 2 sheep / a flock of sheep','2 sheep 应该写成 2 sheeps','sheep 的复数形式是 sheeps','a flock of sheeps 是正确的'],
+    answer:0,
+    explain:'<span class="right">sheep 单复数同形</span>，无论 1 只还是 2 只都是 sheep！<span class="wrong">sheeps</span> 是中国人最常见的错误之一。<br><span class="highlight">同类型</span>：deer（鹿）、fish（鱼）也是单复数同形。<br><span class="highlight">口诀</span>：sheep, deer, fish 三个小伙伴，单复数长相一个样。'
+  },
+  // 看医生 - 词汇
+  { id:'v29', cat:'vocab', type:'choice', badge:'词汇',
+    q:'"头痛"的英文是？',
+    opts:['headache','stomachache','toothache','backache'],
+    answer:0,
+    explain:'<span class="right">headache</span> = head 头 + ache 痛 = 头痛。<span class="wrong">stomachache</span> = 胃痛，<span class="wrong">toothache</span> = 牙痛，<span class="wrong">backache</span> = 背痛。<br><span class="highlight">口诀</span>：身体部位 + ache = 某处持续痛。'
+  },
+  { id:'v30', cat:'vocab', type:'choice', badge:'词汇',
+    q:'The doctor wrote a ____ for antibiotics.（医生开了抗生素处方）选？',
+    opts:['prescription','appointment','injection','symptom'],
+    answer:0,
+    explain:'<span class="right">prescription</span> = 处方。<span class="wrong">appointment</span> = 预约，<span class="wrong">injection</span> = 注射，<span class="wrong">symptom</span> = 症状。<br><span class="highlight">记忆</span>：prescribe 是动词"开药"，prescription 是名词"处方"。'
+  },
+  // 看医生 - 搭配
+  { id:'p27', cat:'phrase', type:'choice', badge:'搭配',
+    q:'"吃药"的正确英文是？',
+    opts:['take medicine','eat medicine','drink medicine','have medicine'],
+    answer:0,
+    explain:'<span class="right">take medicine</span> 是唯一正确搭配！中文说"吃"药，英文用 take。<span class="wrong">eat medicine</span> 是典型中式英语。<br><span class="highlight">类似</span>：take a pill 吃药片 / take a tablet 吃药片。'
+  },
+  { id:'p28', cat:'phrase', type:'choice', badge:'搭配',
+    q:'"我想预约看医生"怎么说？',
+    opts:['I\'d like to make an appointment to see a doctor.','I want to book a doctor meeting.','I need to reserve a doctor time.','I\'d like to order a doctor visit.'],
+    answer:0,
+    explain:'<span class="right">make an appointment</span> 是标准"预约"搭配。<span class="wrong">book/reserve/order</span> 都可用于预约但搭配不对，"book a doctor"意思不通。<br><span class="highlight">固定搭配</span>：make an appointment with + 人 / to do + 事。'
+  },
+  // 看医生 - 语法
+  { id:'g50', cat:'grammar', type:'choice', badge:'语法',
+    q:'"You ____ see a doctor if the pain continues." 空格处应填？',
+    opts:['should','would','could','might'],
+    answer:0,
+    explain:'<span class="right">should</span> 表"应该"，是最直接的医学建议。<span class="wrong">would/could/might</span> 语气太弱或表可能性。给健康建议时用 should 最合适。<br><span class="highlight">结构</span>：should + 动词原形 = 应该做某事。'
+  },
+  { id:'g51', cat:'grammar', type:'choice', badge:'语法',
+    q:'"How long ____ you had this cough?" 正确的填空是？',
+    opts:['have','has','did','are'],
+    answer:0,
+    explain:'<span class="right">have</span> — How long 询问持续时间 + 主语 you + 现在完成时 have had。<span class="wrong">has</span> 用于三单，<span class="wrong">did</span> 构成一般过去时变疑问句需 have 变 have，<span class="wrong">are</span> 无法与 had 搭配。<br><span class="highlight">结构</span>：How long + have/has + 主语 + 过去分词 = …多久了？'
+  },
+  // 看医生 - 场景
+  { id:'s12', cat:'scene', type:'choice', badge:'场景',
+    q:'医生问"你怎么了？"最常用哪句？',
+    opts:['What\'s wrong?','What\'s your problem?','What happened?','Why are you here?'],
+    answer:0,
+    explain:'<span class="right">What\'s wrong?</span> 是医生最常用、最温和的问法。<span class="wrong">What\'s your problem?</span> 语气太冲（像在吵架），<span class="wrong">What happened?</span> 问发生了什么事（不特指病症），<span class="wrong">Why are you here?</span> 太直白无礼。<br><span class="highlight">同义</span>：What\'s the matter? / What seems to be the problem?'
+  },
+  // 看医生 - 易错
+  { id:'e21', cat:'error', type:'choice', badge:'避坑',
+    q:'关于"我头疼"的表达，哪项完全正确？',
+    opts:['I have a headache. / My head hurts.','I have headache. / My head is painful.','I am headache. / My head is pain.','I feel headache. / I have head pain.'],
+    answer:0,
+    explain:'<span class="right">I have a headache. / My head hurts.</span> 都是正确表达。<span class="wrong">have headache</span> 缺 a（headache 可数），<span class="wrong">My head is painful</span> 错误（painful 修饰事物非人），<span class="wrong">I am headache</span> 完全不通。<br><span class="highlight">核心</span>：have a + 病情名 / My + 部位 + hurts。'
+  },
+    { id:'e22', cat:'error', type:'choice', badge:'避坑',
+      q:'关于祈使句的说法，哪项完全正确？',
+      opts:['祈使句省略主语 you，直接用动词原形开头','祈使句必须有主语 you','祈使句否定用 Not','Let\'s 后面接动名词 doing'],
+      ans:0,
+      explain:'<span class="right">祈使句省略主语 you，直接用动词原形开头</span> 是完全正确的。<span class="wrong">必须有主语</span> 是错的（祈使句恰恰省略主语），<span class="wrong">否定用 Not</span> 应用 Don\'t 或 No+doing，<span class="wrong">Let\'s 接 doing</span> 应接动词原形。<br><span class="highlight">总结</span>：肯定：动词原形。否定：Don\'t + 原形。禁止：No + doing。提议：Let\'s + 原形。',
+      tip:'祈使句三要素：省主语、用原形、否定加 Don\'t' }
+  ]
+};
+
+// ============ STATE ============
+let totalScore = 0;
+let maxCombo = 0;
+let currentCombo = 0;
+let masteredSet = new Set();
+let currentMode = '';
+let currentCat = null; // null = all
+let questions = [];
+let qIndex = 0;
+let answered = false;
+let lives = 3;
+let timerInterval = null;
+let timeLeft = 0;
+let results = []; // { id, correct, userAns }
+
+// ============ CATEGORIES ============
+const CATS = [
+  { key:null, label:'🔄 全部', emoji:'🔄' },
+  { key:'grammar', label:'📖 语法', emoji:'📖' },
+  { key:'vocab', label:'🏷️ 词汇', emoji:'🏷️' },
+  { key:'phrase', label:'🔗 搭配', emoji:'🔗' },
+  { key:'scene', label:'💬 场景', emoji:'💬' },
+  { key:'error', label:'🚫 易错', emoji:'🚫' },
+];
+
+// ============ MODE CONFIG ============
+const MODE_CFG = {
+  speed: { total:20, timePer:15, lives:99, label:'⚡ 极速闯关' },
+  survival: { total:30, timePer:0, lives:3, label:'❤️ 生存挑战' },
+  fill: { total:10, timePer:0, lives:99, label:'📝 填空高手' },
+  type: { total:10, timePer:0, lives:99, label:'⌨️ 听写达人' },
+  judge: { total:10, timePer:0, lives:99, label:'⚖️ 辨析法官' },
+  exam: { total:50, timePer:0, lives:99, label:'📋 模拟考试' },
+};
+
+// ============ UTILS ============
+function shuffle(arr) {
+  for(let i=arr.length-1;i>0;i--) {
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast-msg';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+// ============ INIT ============
+function init() {
+  const bar = document.getElementById('catBar');
+  CATS.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-btn' + (c.key === null ? ' active' : '');
+    btn.textContent = c.label;
+    btn.onclick = () => {
+      currentCat = c.key;
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    };
+    bar.appendChild(btn);
+  });
+  updateHomeStats();
+}
+
+function updateHomeStats() {
+  document.getElementById('hScore').textContent = totalScore;
+  document.getElementById('hCombo').textContent = maxCombo;
+  const hMasterEl = document.getElementById('hMaster');
+  if(hMasterEl) hMasterEl.textContent = masteredSet.size;
+}
+
+// ============ START MODE ============
+function startMode(mode) {
+  currentMode = mode;
+  const cfg = MODE_CFG[mode];
+  lives = cfg.lives === 99 ? 999 : cfg.lives;
+  timeLeft = cfg.timePer > 0 ? cfg.total * cfg.timePer : 0;
+
+  // Build question list
+  let pool = [];
+  let srcCats = currentCat ? [currentCat] : Object.keys(Q);
+  srcCats.forEach(cat => { if(Q[cat]) pool = pool.concat(Q[cat]); });
+
+  // Filter by mode type
+  if(mode === 'fill') pool = pool.filter(q => q.type === 'fill');
+  if(mode === 'type') pool = pool.filter(q => q.type === 'type');
+  if(mode === 'judge') pool = pool.filter(q => q.type === 'judge');
+
+  if(pool.length < 3) {
+    showToast('该范围题目太少，请选择更多类别！');
+    return;
+  }
+
+  questions = shuffle(pool).slice(0, cfg.total);
+  qIndex = 0;
+  results = [];
+  answered = false;
+
+  // Show test page
+  showPage('test');
+  renderQuestion();
+  if(cfg.timePer > 0) startTimer();
+  else { document.getElementById('timerWrap').style.display='none'; document.getElementById('testTimer').textContent=''; }
+
+  // Lives display
+  const lr = document.getElementById('livesRow');
+  if(cfg.lives !== 99) { lr.style.display='flex'; renderLives(); }
+  else lr.style.display='none';
+}
+
+function renderLives() {
+  const lr = document.getElementById('livesRow');
+  lr.innerHTML = '';
+  const realLives = Math.min(lives, 3);
+  for(let i=0;i<3;i++) {
+    const h = document.createElement('span');
+    h.className = 'heart' + (i >= realLives ? ' lost' : '');
+    h.textContent = '❤️';
+    lr.appendChild(h);
+  }
+}
+
+function startTimer() {
+  const cfg = MODE_CFG[currentMode];
+  timeLeft = cfg.total * cfg.timePer;
+  document.getElementById('timerWrap').style.display='block';
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    const total = cfg.total * cfg.timePer;
+    const pct = (timeLeft / total * 100);
+    const fill = document.getElementById('timerFill');
+    fill.style.width = pct + '%';
+    fill.className = 'timer-fill' + (pct < 20 ? ' crit' : pct < 40 ? ' warn' : '');
+    document.getElementById('testTimer').textContent = timeLeft + 's';
+    if(timeLeft <= 0) { clearInterval(timerInterval); endTest(); }
+  }, 1000);
+}
+
+// ============ RENDER QUESTION ============
+function renderQuestion() {
+  if(qIndex >= questions.length || lives <= 0) { endTest(); return; }
+  answered = false;
+
+  const q = questions[qIndex];
+  const area = document.getElementById('qArea');
+  const cfg = MODE_CFG[currentMode];
+
+  // Info bar
+  document.getElementById('testInfo').textContent = cfg.label + ' · 第 ' + (qIndex+1) + '/' + questions.length + ' 题';
+
+  // Progress dots
+  const dots = document.getElementById('progressDots');
+  dots.innerHTML = '';
+  questions.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'p-dot' + (i < qIndex ? (results[i]?.correct ? ' done' : ' fail') : '') + (i === qIndex ? ' current' : '');
+    dots.appendChild(d);
+  });
+
+  // Badge
+  const badgeClass = {
+    '语法':'badge-grammar','词汇':'badge-vocab','搭配':'badge-phrase','场景':'badge-scene','易错':'badge-error'
+  }[q.badge] || 'badge-grammar';
+
+  let html = `<div class="q-type-badge ${badgeClass}">${q.badge}</div>`;
+
+  if(q.type === 'choice') {
+    html += `<div class="q-text">${q.q}</div>`;
+    if(q.hint) html += `<div class="q-hint">${q.hint}</div>`;
+    html += `<div class="opts-grid" id="optsGrid">`;
+    q.opts.forEach((opt, i) => {
+      html += `<div class="opt-btn" data-idx="${i}" onclick="handleChoice(${i})">${opt}</div>`;
+    });
+    html += `</div>`;
+    html += `<div id="explainWrap"></div>`;
+  } else if(q.type === 'fill') {
+    html += `<div class="fill-wrap">`;
+    html += `<div class="q-text">${q.q}</div>`;
+    if(q.hint) html += `<div class="q-hint">${q.hint}</div>`;
+    html += `<input class="fill-input" id="fillInput" placeholder="输入答案..." autocomplete="off">`;
+    html += `<div style="text-align:center"><button class="submit-btn" onclick="submitFill()">提交答案</button></div>`;
+    html += `<div id="explainWrap"></div>`;
+    html += `</div>`;
+  } else if(q.type === 'type') {
+    html += `<div class="type-wrap">`;
+    html += `<div class="type-prompt-big">${q.q}</div>`;
+    html += `<div class="q-hint">输入对应的英文</div>`;
+    html += `<input class="type-input" id="typeInput" placeholder="type here..." autocomplete="off">`;
+    html += `<div style="text-align:center"><button class="submit-btn" onclick="submitType()">提交答案</button></div>`;
+    html += `<div id="explainWrap"></div>`;
+    html += `</div>`;
+  } else if(q.type === 'judge') {
+    html += `<div class="q-text">${q.q}</div>`;
+    html += `<div class="opts-grid" style="grid-template-columns:1fr 1fr;">`;
+    html += `<div class="opt-btn" onclick="handleJudge(true)" style="font-size:18px;font-weight:700;">✅ 正确</div>`;
+    html += `<div class="opt-btn" onclick="handleJudge(false)" style="font-size:18px;font-weight:700;">❌ 错误</div>`;
+    html += `</div>`;
+    html += `<div id="explainWrap"></div>`;
+  }
+
+  area.innerHTML = html;
+
+  // Auto focus
+  setTimeout(() => {
+    const inp = document.getElementById('fillInput') || document.getElementById('typeInput');
+    if(inp) inp.focus();
+  }, 100);
+
+  // Keyboard handler for fill/type (Enter also submits)
+  if(q.type === 'fill' || q.type === 'type') {
+    const inpId = q.type === 'fill' ? 'fillInput' : 'typeInput';
+    const inp = document.getElementById(inpId);
+    inp.addEventListener('keydown', e => {
+      if(e.key === 'Enter' && !answered) {
+        if(q.type === 'fill') submitFill();
+        else submitType();
+      }
+    });
+  }
+}
+
+// ============ ANSWER HANDLERS ============
+function handleChoice(idx) {
+  if(answered) return;
+  answered = true;
+  const q = questions[qIndex];
+  const isCorrect = idx === q.ans;
+  const opts = document.querySelectorAll('#optsGrid .opt-btn');
+
+  opts.forEach((btn, i) => {
+    if(i === q.ans) btn.classList.add('correct');
+    else if(i === idx && !isCorrect) btn.classList.add('wrong');
+  });
+
+  if(isCorrect) {
+    addScore(10 + currentCombo * 2);
+    addCombo();
+    markMastered(q.id);
+    results.push({ id:q.id, correct:true, userAns:q.opts[idx] });
+  } else {
+    resetCombo();
+    results.push({ id:q.id, correct:false, userAns:q.opts[idx] });
+    if(currentMode === 'survival') { lives--; renderLives(); }
+  }
+  showExplain(q, isCorrect, q.opts[idx]);
+}
+
+function handleJudge(val) {
+  if(answered) return;
+  answered = true;
+  const q = questions[qIndex];
+  const isCorrect = val === q.ans;
+  const opts = document.querySelectorAll('.opt-btn');
+  opts.forEach(btn => {
+    const isTrueOpt = btn.textContent.includes('✅');
+    if(isTrueOpt && q.ans) btn.classList.add('correct');
+    else if(!isTrueOpt && !q.ans) btn.classList.add('correct');
+    if(isTrueOpt && !q.ans && val) btn.classList.add('wrong');
+    if(!isTrueOpt && q.ans && !val) btn.classList.add('wrong');
+  });
+
+  if(isCorrect) {
+    addScore(10 + currentCombo * 2);
+    addCombo();
+    markMastered(q.id);
+    results.push({ id:q.id, correct:true, userAns:val ? '✅' : '❌' });
+  } else {
+    resetCombo();
+    results.push({ id:q.id, correct:false, userAns:val ? '✅' : '❌' });
+    if(currentMode === 'survival') { lives--; renderLives(); }
+  }
+  showExplain(q, isCorrect, val ? '✅' : '❌');
+}
+
+// ============ FILL / TYPE SUBMIT ============
+function submitFill() {
+  if(answered) return;
+  answered = true;
+  const q = questions[qIndex];
+  const inp = document.getElementById('fillInput');
+  if(!inp) return;
+  const val = inp.value.trim().toLowerCase();
+  if(!val) { answered = false; return; } // 空答案不提交
+  const correctAns = q.ans.map(a => a.toLowerCase());
+  const isCorrect = correctAns.some(a => val === a);
+  inp.className = 'fill-input ' + (isCorrect ? 'correct' : 'wrong');
+  inp.disabled = true;
+  if(isCorrect) {
+    addScore(15 + currentCombo * 3);
+    addCombo();
+    markMastered(q.id);
+    results.push({ id:q.id, correct:true, userAns:val });
+  } else {
+    resetCombo();
+    results.push({ id:q.id, correct:false, userAns:val });
+    if(currentMode === 'survival' || currentMode === 'speed') { lives--; renderLives(); }
+  }
+  // Hide submit button
+  const sb = document.querySelector('.submit-btn');
+  if(sb) sb.style.display = 'none';
+  showExplain(q, isCorrect, val);
+}
+
+function submitType() {
+  if(answered) return;
+  answered = true;
+  const q = questions[qIndex];
+  const inp = document.getElementById('typeInput');
+  if(!inp) return;
+  const val = inp.value.trim().toLowerCase();
+  if(!val) { answered = false; return; } // 空答案不提交
+  const correctAns = q.ans.map(a => a.toLowerCase());
+  const isCorrect = correctAns.some(a => val === a);
+  inp.className = 'type-input ' + (isCorrect ? 'correct' : 'wrong');
+  inp.disabled = true;
+  if(isCorrect) {
+    addScore(15 + currentCombo * 3);
+    addCombo();
+    markMastered(q.id);
+    results.push({ id:q.id, correct:true, userAns:val });
+  } else {
+    resetCombo();
+    results.push({ id:q.id, correct:false, userAns:val });
+    if(currentMode === 'survival' || currentMode === 'speed') { lives--; renderLives(); }
+  }
+  // Hide submit button
+  const sb = document.querySelector('.submit-btn');
+  if(sb) sb.style.display = 'none';
+  showExplain(q, isCorrect, val);
+}
+
+// ============ EXPLAIN ============
+function showExplain(q, isCorrect, userAns) {
+  const wrap = document.getElementById('explainWrap');
+  let html = `<div class="explain-box">`;
+  html += `<div class="explain-title">${isCorrect ? '✅ 答对了！' : '❌ 答错了'} 解析：</div>`;
+  html += `<div class="explain-body">${q.explain}</div>`;
+  if(q.tip) html += `<div class="explain-tip">${q.tip}</div>`;
+  html += `</div>`;
+  html += `<div class="next-btn-wrap">`;
+  if(lives <= 0) {
+    html += `<button class="next-btn" onclick="endTest()">查看结果</button>`;
+  } else {
+    html += `<button class="next-btn" onclick="nextQuestion()">下一题 →</button>`;
+  }
+  html += `</div>`;
+  wrap.innerHTML = html;
+}
+
+function nextQuestion() {
+  qIndex++;
+  if(qIndex >= questions.length || lives <= 0) endTest();
+  else renderQuestion();
+}
+
+// ============ SCORE / COMBO ============
+function addScore(pts) {
+  totalScore += pts;
+  const el = document.createElement('div');
+  el.className = 'score-float';
+  el.style.left = '50%'; el.style.top = '30%';
+  el.style.color = pts > 0 ? '#10B981' : '#EF4444';
+  el.textContent = '+' + pts;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 800);
+}
+
+function addCombo() {
+  currentCombo++;
+  if(currentCombo > maxCombo) maxCombo = currentCombo;
+  if(currentCombo >= 3 && currentCombo % 3 === 0) {
+    const el = document.getElementById('comboPop');
+    el.textContent = currentCombo + '连击!';
+    el.className = 'combo-pop';
+    void el.offsetWidth;
+    el.className = 'combo-pop show';
+  }
+}
+
+function resetCombo() { currentCombo = 0; }
+function markMastered(id) { masteredSet.add(id); }
+
+// ============ END TEST ============
+function endTest() {
+  clearInterval(timerInterval);
+  const correct = results.filter(r => r.correct).length;
+  const wrong = results.filter(r => !r.correct).length;
+  const total = questions.length;
+  const pct = total > 0 ? Math.round(correct / Math.min(results.length, total) * 100) : 0;
+
+  let emoji, grade;
+  if(pct >= 90) { emoji='🥇'; grade='大师级'; }
+  else if(pct >= 70) { emoji='🥈'; grade='不错哦'; }
+  else if(pct >= 50) { emoji='🥉'; grade='继续加油'; }
+  else { emoji='💪'; grade='再练练'; }
+
+  // Weak points
+  const weakItems = results.filter(r => !r.correct);
+  let weakHtml = '';
+  if(weakItems.length > 0) {
+    weakHtml = `<div class="weak-section">
+      <div class="weak-title">⚠️ 需要加强的知识点（${weakItems.length}个）</div>
+      <div class="weak-list">`;
+    weakItems.forEach(r => {
+      const q = questions.find(qq => qq.id === r.id);
+      if(q) weakHtml += `<div style="margin-bottom:6px;padding:6px 8px;background:var(--danger-light);border-radius:6px;">
+        <span class="en">${q.q}</span><br>你的答案：${r.userAns}
+      </div>`;
+    });
+    weakHtml += `</div></div>`;
+  }
+
+  const card = document.getElementById('resultCard');
+  card.innerHTML = `
+    <div class="result-emoji">${emoji}</div>
+    <div class="result-score">${pct}%</div>
+    <div class="result-label">${grade}</div>
+    <div class="result-grid">
+      <div class="result-item"><div class="num" style="color:var(--success)">${correct}</div><div class="label">✅ 正确</div></div>
+      <div class="result-item"><div class="num" style="color:var(--danger)">${wrong}</div><div class="label">❌ 错误</div></div>
+      <div class="result-item"><div class="num" style="color:var(--accent)">${maxCombo}</div><div class="label">🔥 最高连击</div></div>
+    </div>
+    ${weakHtml}
+    <div class="result-btns">
+      <button class="btn-primary" onclick="startMode('${currentMode}')">再来一次</button>
+      <button class="btn-outline" onclick="goHome()">返回首页</button>
+    </div>
+  `;
+
+  showPage('result');
+  updateHomeStats();
+}
+
+// ============ NAVIGATION ============
+function showPage(page) {
+  document.getElementById('homePage').style.display = page === 'home' ? 'flex' : 'none';
+  document.getElementById('testPage').className = 'test-page' + (page === 'test' ? ' active' : '');
+  document.getElementById('resultPage').className = 'result-page' + (page === 'result' ? ' active' : '');
+}
+
+function goHome() {
+  clearInterval(timerInterval);
+  showPage('home');
+  updateHomeStats();
+}
+
+// ============ UTILS ============
+function shuffle(arr) {
+  for(let i = arr.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+  return arr;
+}
+
+init();
+
+// ============ 全局回车键 ============
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter') return;
+  // 如果焦点在输入框，让输入框先处理 Enter
+  var activeEl = document.activeElement;
+  if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
+    return;
+  }
+  // 在测试页面，如果已回答，按回车 = 下一题
+  var testPage = document.getElementById('testPage');
+  if (testPage && testPage.style.display !== 'none' && answered) {
+    nextQuestion();
+    return;
+  }
+  // 在结果页面，按回车 = 再来一次
+  var resultPage = document.getElementById('resultPage');
+  if (resultPage && resultPage.className.indexOf('active') !== -1) {
+    startMode(currentMode);
+    return;
+  }
+});
+</script>
+</body>
+</html>

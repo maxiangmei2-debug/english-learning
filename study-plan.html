@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学习计划</title>
+<style>
+:root {
+  --primary: #6366F1; --primary-light: #EEF2FF;
+  --success: #10B981; --success-light: #ECFDF5;
+  --accent: #F59E0B; --accent-light: #FFFBEB;
+  --danger: #EF4444; --danger-light: #FEF2F2;
+  --gray-50: #F9FAFB; --gray-100: #F3F4F6; --gray-200: #E5E7EB;
+  --gray-600: #4B5563; --gray-800: #1F2937; --gray-900: #111827;
+  --radius: 12px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--gray-50); color: var(--gray-800); line-height: 1.6;
+}
+
+/* Top bar */
+.top-bar {
+  background: linear-gradient(135deg, #6366F1, #8B5CF6);
+  color: white; padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px;
+  position: sticky; top: 0; z-index: 10;
+}
+.top-bar a { color: white; text-decoration: none; font-size: 14px; opacity: 0.9; }
+.top-bar a:hover { opacity: 1; }
+.top-bar h1 { font-size: 18px; font-weight: 700; flex: 1; text-align: center; }
+
+.container { max-width: 720px; margin: 0 auto; padding: 16px 16px 100px; }
+
+/* Stats */
+.stats { display: flex; gap: 10px; margin-bottom: 20px; }
+.stat-card {
+  flex: 1; background: white; border-radius: var(--radius);
+  padding: 16px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.stat-num { font-size: 28px; font-weight: 700; color: var(--primary); }
+.stat-label { font-size: 12px; color: var(--gray-600); margin-top: 2px; }
+
+/* Progress bar */
+.progress-section { margin-bottom: 20px; }
+.progress-header { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; color: var(--gray-600); }
+.progress-bar { height: 8px; background: var(--gray-200); border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), #8B5CF6); border-radius: 4px; transition: width 0.4s; }
+
+/* Today section */
+.today-section { margin-bottom: 24px; }
+.section-head { font-size: 16px; font-weight: 700; color: var(--gray-900); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+
+.today-card {
+  background: white; border-radius: var(--radius); box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  padding: 20px; margin-bottom: 12px; position: relative;
+  border-left: 4px solid var(--primary);
+}
+.today-card.done { border-left-color: var(--success); opacity: 0.7; }
+.today-card .unit-badge {
+  display: inline-block; padding: 2px 10px; border-radius: 10px;
+  font-size: 11px; font-weight: 600; color: white; background: var(--primary);
+  margin-bottom: 8px;
+}
+.today-card h3 { font-size: 17px; margin-bottom: 4px; }
+.today-card .time { font-size: 12px; color: var(--gray-600); margin-bottom: 8px; }
+.today-card .desc { font-size: 13px; color: var(--gray-600); line-height: 1.5; margin-bottom: 10px; }
+.today-card .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 7px 14px; border-radius: 8px; font-size: 13px;
+  font-weight: 500; text-decoration: none; cursor: pointer;
+  border: none; font-family: inherit; transition: all 0.2s;
+}
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: #4F46E5; }
+.btn-success { background: var(--success); color: white; }
+.btn-success:hover { background: #059669; }
+.btn-outline { background: white; color: var(--primary); border: 1.5px solid var(--primary); }
+
+/* Unit list */
+.unit-section { margin-bottom: 24px; }
+.unit-card {
+  background: white; border-radius: var(--radius); box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  padding: 16px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s;
+}
+.unit-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+.unit-card.active { border: 2px solid var(--primary); }
+.unit-card.locked { opacity: 0.5; }
+.unit-card .unit-header { display: flex; align-items: center; gap: 10px; }
+.unit-card .unit-icon { font-size: 28px; }
+.unit-card .unit-info { flex: 1; }
+.unit-card .unit-info h3 { font-size: 15px; margin-bottom: 2px; }
+.unit-card .unit-info .meta { font-size: 12px; color: var(--gray-600); }
+.unit-card .unit-status { font-size: 20px; }
+.unit-detail { display: none; padding: 12px 0 0 38px; }
+.unit-card.open .unit-detail { display: block; }
+.unit-detail .session {
+  display: flex; align-items: center; gap: 8px; padding: 8px 0;
+  border-bottom: 1px solid var(--gray-100); font-size: 13px;
+}
+.unit-detail .session:last-child { border-bottom: none; }
+.session-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+  background: var(--gray-200);
+}
+.session-dot.done { background: var(--success); }
+.session-dot.today { background: var(--primary); animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.session a { font-size: 12px; margin-left: auto; color: var(--primary); text-decoration: none; }
+
+/* Empty state */
+.empty { text-align: center; padding: 40px 20px; color: var(--gray-600); }
+.empty .icon { font-size: 48px; margin-bottom: 8px; }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+  background: var(--gray-900); color: white; padding: 10px 24px;
+  border-radius: 20px; font-size: 14px; z-index: 999;
+  animation: toastIn 0.3s;
+}
+@keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(10px); } }
+
+/* Mobile */
+@media (max-width: 540px) {
+  .container { padding: 12px 10px 100px; }
+  .stat-num { font-size: 22px; }
+  .stat-card { padding: 12px 8px; }
+  .today-card { padding: 14px; }
+  .today-card h3 { font-size: 15px; }
+  .btn { padding: 6px 12px; font-size: 12px; }
+  .unit-card .unit-icon { font-size: 22px; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="index.html">← 首页</a>
+  <h1>📋 学习计划</h1>
+  <span style="font-size:12px;opacity:0.7;">每天20分钟</span>
+</div>
+
+<div class="container">
+
+<!-- Stats -->
+<div class="stats">
+  <div class="stat-card"><div class="stat-num" id="statCompleted">0</div><div class="stat-label">已完成单元</div></div>
+  <div class="stat-card"><div class="stat-num" id="statSessions">0</div><div class="stat-label">完成课次</div></div>
+  <div class="stat-card"><div class="stat-num" id="statStreak">0</div><div class="stat-label">连续天数</div></div>
+</div>
+
+<!-- Progress -->
+<div class="progress-section" id="progressSection">
+  <div class="progress-header"><span>总进度</span><span id="progressPct">0%</span></div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<!-- Today's task -->
+<div class="today-section">
+  <div class="section-head">📌 今日任务</div>
+  <div id="todayContent"></div>
+</div>
+
+<!-- All units -->
+<div class="today-section">
+  <div class="section-head">📚 全部课程</div>
+  <div id="unitList"></div>
+</div>
+
+</div>
+
+<script>
+// ====== 课程数据 ======
+var CURRICULUM = [
+  { id: 'u1', phase: '基础语法', theme: '时态基础', icon: '⏰', desc: '一般现在时、一般过去时、一般将来时',
+    sessions: [
+      { label: '学习新知', time: '20分钟', desc: '阅读手册语法速查：三种基本时态的结构与辨析', actions: [{text:'打开手册',url:'handbook.html',icon:'📖'}] },
+      { label: '词汇练习', time: '20分钟', desc: '词汇大闯关 + 拼写训练营练习基础动词时态变化', actions: [{text:'大闯关',url:'vocab-game.html',icon:'🎮'},{text:'拼写',url:'spelling-trainer.html',icon:'✏️'}] },
+      { label: '测试巩固', time: '15分钟', desc: '英语测试达人：选择"语法"类别完成10题', actions: [{text:'测试达人',url:'test-master.html',icon:'📝'}] }
+    ]},
+  { id: 'u2', phase: '基础语法', theme: '完成时 & 进行时', icon: '🔄', desc: '现在完成时、过去进行时、现在进行时',
+    sessions: [
+      { label: '学习新知', time: '20分钟', desc: '阅读手册语法速查：完成时vs过去时，进行时用法', actions: [{text:'打开手册',url:'handbook.html',icon:'📖'}] },
+      { label: '词汇练习', time: '20分钟', desc: '搭配速记：have been to/gone to, for/since', actions: [{text:'大闯关',url:'vocab-game.html',icon:'🎮'},{text:'拼写',url:'spelling-trainer.html',icon:'✏️'}] },
+      { label: '测试巩固', time: '15分钟', desc: '英语测试达人：选择"语法"类别完成10题', actions: [{text:'测试达人',url:'test-master.html',icon:'📝'}] }
+    ]},
+  { id: 'u3', phase: '基础语法', theme: '情态动词', icon: '🎯', desc: 'should/must/can/might/would 用法与区别',
+    sessions: [
+      { label: '学习新知', time: '20分钟', desc: '阅读手册语法速查：情态动词 + 原形，表达建议/能力/可能', actions: [{text:'打开手册',url:'handbook.html',icon:'📖'}] },
+      { label: '场景练习', time: '20分钟', desc: '场景句型：用情态动词练习看病建议、礼貌请求', actions: [{text:'场景句型',url:'handbook.html#scene',icon:'💬'},{text:'大闯关',url:'vocab-game.html',icon:'🎮'}] },
+      { label: '测试巩固', time: '15分钟', desc: '英语测试达人：选择"语法 + 场景"类别完成10题', actions: [{text:'测试达人',url:'test-master.html',icon:'📝'}] }
+    ]},
+  { id: 'u4', phase: '基础语法', theme: '从句入门', icon: '🔗', desc: '宾语从句、定语从句、状语从句基础',
+    sessions: [
+      { label: '学习新知', time: '20分钟', desc: '阅读手册语法速查：that/which/who引导从句', actions: [{text:'打开手册',url:'handbook.html',icon:'📖'}] },
+      { label: '复习速记', time: '15分钟', desc: '速记卡片：翻转复习从句引导词和结构', actions: [{text:'速记卡片',url:'handbook.html#review',icon:'🃏'}] },
+      { label: '测试巩固', time: '15分钟', desc: '英语测试达人：选择"语法"类别完成10题', actions: [{text:'测试达人',url:'test-master.html',icon:'📝'}] }
+    ]},
+  { id: 'u5', phase: '生活场景', theme: '租房 & 购物', icon: '🏠', desc: '租房生活、商场购物、讨价还价',
+    sessions: [
+      { label: '学习新知', time: '20分钟', desc: '阅读手册主题词汇：租房生活词汇 + 购物场景句型', actions: [{text:'打开手册',url:'handbook.html',icon:'📖'}] },
+      { label: '词汇练习', time: '20分钟', desc: '词汇大闯关：选择"租房""购物"主题配对练习', actions: [{text:'大闯关',url:'vocab-game.html',icon:'🎮'},{text:'拼写',url:'spelling-trainer.html',icon:'✏️'}] },
+      { label: '测试巩固', time: '15分钟', desc: '英语测试达人：选择"词汇 + 搭配"类别完成10题', actions: [{text:'测试达人',url:'test-master.html',icon:'📝'}] }
+    ]},
+  { id: 'u6', phase: '生活场景', theme: '点餐 & 旅行', icon: '🍽️', desc: '餐厅点餐、酒店入住、交通出行',
+    sessions: [
+      { label: '学习新知', time: '20分钟', desc: '阅读手册：点餐主题词汇 + 旅行场景句型', actions: [{text:'打开手册',url:'handbook.html',icon:'📖'}] },
+      { label: '词汇练习', time: '20分钟', desc: '大闯关 + 拼写：点餐、旅行、露营主题', actions: [{text:'大闯关',url:'vocab-game.html',icon:'🎮'},{text:'拼写',url:'spelling-trainer.html',icon:'✏️'}] },
+      { label: '测试巩固', time: '15分钟', desc: '英语测试达人：选择"词汇 + 场景"类别完成10题', actions: [{text:'测试达人',url:'test-master.html',icon:'📝'}] }
+    ]},
+  { id: 'u7', phase: '生活场景', theme: '看医生 & 健康', icon: '🏥', desc: '描述症状、预约看病、身体部位与疼痛',
+    sessions: [
+      { label: '学习新知', time: '20分钟', desc: '阅读手册：看医生主题词汇 + 搭配 + 句型', actions: [{text:'打开手册',url:'handbook.html',icon:'📖'}] },
+      { label: '词汇练习', time: '20分钟', desc: '大闯关 + 拼写：看医生主题', actions: [{text:'大闯关',url:'vocab-game.html',icon:'🎮'},{text:'拼写',url:'spelling-trainer.html',icon:'✏️'}] },
+      { label: '测试巩固', time: '15分钟', desc: '英语测试达人：选择"健康"相关类别完成10题', actions: [{text:'测试达人',url:'test-master.html',icon:'📝'}] }
+    ]},
+  { id: 'u8', phase: '生活场景', theme: '外貌 & 情绪', icon: '😊', desc: '描述人物外貌、性格特征、情绪表达',
+    sessions: [
+      { label: '学习新知', time: '20分钟', desc: '阅读手册：外貌性格词汇 + 情绪表达搭配', actions: [{text:'打开手册',url:'handbook.html',icon:'📖'}] },
+      { label: '词汇练习', time: '20分钟', desc: '大闯关 + 拼写：外貌、情绪主题词汇', actions: [{text:'大闯关',url:'vocab-game.html',icon:'🎮'},{text:'拼写',url:'spelling-trainer.html',icon:'✏️'}] },
+      { label: '测试巩固', time: '15分钟', desc: '英语测试达人：选择"词汇 + 易错"类别完成10题', actions: [{text:'测试达人',url:'test-master.html',icon:'📝'}] }
+    ]},
+  { id: 'u9', phase: '进阶表达', theme: '职场 & 面试', icon: '💼', desc: '职场沟通、面试问答、邮件表达',
+    sessions: [
+      { label: '学习新知', time: '20分钟', desc: '阅读手册：职场面试词汇 + 句型 + 易错清单', actions: [{text:'打开手册',url:'handbook.html',icon:'📖'}] },
+      { label: '场景练习', time: '20分钟', desc: '场景句型：面试问答模拟 + 大闯关练习', actions: [{text:'场景句型',url:'handbook.html#scene',icon:'💬'},{text:'大闯关',url:'vocab-game.html',icon:'🎮'}] },
+      { label: '测试巩固', time: '15分钟', desc: '英语测试达人：选择"场景 + 搭配"类别完成10题', actions: [{text:'测试达人',url:'test-master.html',icon:'📝'}] }
+    ]},
+  { id: 'u10', phase: '进阶表达', theme: '新闻 & 环保', icon: '🌍', desc: '阅读新闻、环保话题、社会现象表达',
+    sessions: [
+      { label: '学习新知', time: '20分钟', desc: '阅读手册：环保/新闻主题词汇 + 高级句型', actions: [{text:'打开手册',url:'handbook.html',icon:'📖'}] },
+      { label: '词汇练习', time: '20分钟', desc: '大闯关 + 拼写：新闻环保主题', actions: [{text:'大闯关',url:'vocab-game.html',icon:'🎮'},{text:'拼写',url:'spelling-trainer.html',icon:'✏️'}] },
+      { label: '测试巩固', time: '15分钟', desc: '英语测试达人：选择全部类别完成15题综合测试', actions: [{text:'测试达人',url:'test-master.html',icon:'📝'}] }
+    ]},
+  { id: 'u11', phase: '进阶表达', theme: '狼来了 & 故事叙述', icon: '🐺', desc: '动物量词、故事时态、让步状语从句',
+    sessions: [
+      { label: '学习新知', time: '20分钟', desc: '阅读手册MC15：动物量词、状语从句、图片描述句型', actions: [{text:'打开手册',url:'handbook.html',icon:'📖'}] },
+      { label: '词汇练习', time: '20分钟', desc: '速记卡片 + 大闯关：狼来了主题词汇搭配', actions: [{text:'速记卡片',url:'handbook.html#review',icon:'🃏'},{text:'大闯关',url:'vocab-game.html',icon:'🎮'}] },
+      { label: '测试巩固', time: '15分钟', desc: '英语测试达人：选择"狼来了"相关类别完成10题', actions: [{text:'测试达人',url:'test-master.html',icon:'📝'}] }
+    ]},
+  { id: 'u12', phase: '进阶表达', theme: '祈使句 & 综合复习', icon: '📢', desc: '祈使句全部用法 + 综合复习前11单元',
+    sessions: [
+      { label: '学习新知', time: '20分钟', desc: '阅读手册：祈使句详解（肯定/否定/let\'s/no doing）', actions: [{text:'打开手册',url:'handbook.html',icon:'📖'}] },
+      { label: '综合练习', time: '20分钟', desc: '速记卡片全部翻转 + 拼写训练营综合练习', actions: [{text:'速记卡片',url:'handbook.html#review',icon:'🃏'},{text:'拼写',url:'spelling-trainer.html',icon:'✏️'}] },
+      { label: '最终测试', time: '15分钟', desc: '英语测试达人：极速闯关模式，选择全部类别', actions: [{text:'测试达人',url:'test-master.html',icon:'📝'}] }
+    ]}
+];
+
+// ====== 进度管理 ======
+var LS_KEY = 'study_plan_progress';
+function loadProgress() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; }
+  catch(e) { return {}; }
+}
+function saveProgress(p) {
+  localStorage.setItem(LS_KEY, JSON.stringify(p));
+}
+
+// Structure: { u1: [0,1,2], u2: [0], ... }  // array of completed session indices
+// Also: { lastDate: '2026-06-30' } for streak tracking
+
+function isSessionDone(unitId, sessionIdx) {
+  var p = loadProgress();
+  return p[unitId] && p[unitId].indexOf(sessionIdx) >= 0;
+}
+function markSessionDone(unitId, sessionIdx) {
+  var p = loadProgress();
+  if (!p[unitId]) p[unitId] = [];
+  if (p[unitId].indexOf(sessionIdx) < 0) p[unitId].push(sessionIdx);
+  p.lastDate = new Date().toISOString().slice(0,10);
+  saveProgress(p);
+  renderAll();
+}
+function resetProgress() {
+  if(confirm('确定要重置全部学习进度吗？此操作不可恢复。')) {
+    localStorage.removeItem(LS_KEY);
+    renderAll();
+  }
+}
+
+// ====== 计算 ======
+function getStats() {
+  var p = loadProgress();
+  var completedUnits = 0, completedSessions = 0;
+  CURRICULUM.forEach(function(u) {
+    var done = (p[u.id] || []).length;
+    completedSessions += done;
+    if (done === u.sessions.length) completedUnits++;
+  });
+  var totalSessions = 0;
+  CURRICULUM.forEach(function(u) { totalSessions += u.sessions.length; });
+
+  // Streak
+  var streak = 0;
+  var today = new Date();
+  for (var i = 0; i < 365; i++) {
+    var d = new Date(today);
+    d.setDate(d.getDate() - i);
+    var ds = d.toISOString().slice(0,10);
+    if (p.lastDate === ds || Object.values(p).some(function(arr) { return arr.length > 0; })) {
+      // Check if any session was done on this date - simplified: just check lastDate
+    }
+  }
+  // Simple streak: count consecutive days backward from lastDate
+  if (p.lastDate) {
+    var lastD = new Date(p.lastDate);
+    var checkD = new Date(today);
+    while (true) {
+      var cds = checkD.toISOString().slice(0,10);
+      if (cds === p.lastDate || (checkD < today && checkD >= lastD)) {
+        // Day within range - simplified streak logic
+        streak++;
+        checkD.setDate(checkD.getDate() - 1);
+        if (streak > 365) break;
+      } else break;
+    }
+  }
+  // Better streak: check actual daily activity
+  streak = 0;
+  for (var j = 0; j < 365; j++) {
+    var chkD = new Date(today);
+    chkD.setDate(chkD.getDate() - j);
+    var chkDs = chkD.toISOString().slice(0,10);
+    // Check if any activity on this date
+    var hasActivity = false;
+    if (p.lastDate === chkDs) hasActivity = true;
+    if (hasActivity || j === 0) {
+      if (j === 0) streak = p.lastDate === chkDs ? 1 : 0;
+      else if (hasActivity) streak++;
+      else break;
+    }
+  }
+
+  return {
+    completedUnits: completedUnits,
+    completedSessions: completedSessions,
+    totalSessions: totalSessions,
+    totalUnits: CURRICULUM.length,
+    streak: streak || (p.lastDate ? 1 : 0)
+  };
+}
+
+function getTodayUnit() {
+  var p = loadProgress();
+  for (var i = 0; i < CURRICULUM.length; i++) {
+    var u = CURRICULUM[i];
+    var done = (p[u.id] || []).length;
+    if (done < u.sessions.length) return { unit: u, sessionIdx: done, session: u.sessions[done] };
+  }
+  return null; // all done!
+}
+
+// ====== 渲染 ======
+function renderAll() {
+  renderStats();
+  renderToday();
+  renderUnits();
+}
+function renderStats() {
+  var s = getStats();
+  document.getElementById('statCompleted').textContent = s.completedUnits + '/' + s.totalUnits;
+  document.getElementById('statSessions').textContent = s.completedSessions + '/' + s.totalSessions;
+  document.getElementById('statStreak').textContent = s.streak + '天';
+  var pct = Math.round(s.completedSessions / s.totalSessions * 100);
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+function renderToday() {
+  var today = getTodayUnit();
+  var el = document.getElementById('todayContent');
+  if (!today) {
+    el.innerHTML = '<div class="empty"><div class="icon">🎉</div><h3>全部完成！</h3><p>恭喜完成12单元系统课程！<br>可以继续用各工具复习巩固。</p><br><button class="btn btn-outline" onclick="resetProgress()">重新开始</button></div>';
+    return;
+  }
+  var u = today.unit, s = today.session;
+  var totalDone = 0;
+  CURRICULUM.forEach(function(x) { totalDone += (loadProgress()[x.id]||[]).length; });
+
+  var html = '<div class="today-card">';
+  html += '<span class="unit-badge">' + u.phase + ' · 第 ' + (CURRICULUM.indexOf(u)+1) + ' 单元</span>';
+  html += '<h3>' + u.icon + ' ' + u.theme + ' — ' + s.label + '</h3>';
+  html += '<div class="time">⏱ ' + s.time + '</div>';
+  html += '<div class="desc">' + s.desc + '</div>';
+  html += '<div class="actions">';
+  s.actions.forEach(function(a) {
+    html += '<a class="btn btn-primary" href="' + a.url + '" target="_self">' + a.icon + ' ' + a.text + '</a>';
+  });
+  html += '<button class="btn btn-success" onclick="markSessionDone(\'' + u.id + '\',' + today.sessionIdx + ')">✅ 完成打卡</button>';
+  html += '</div></div>';
+
+  // Show next session hint
+  if (today.sessionIdx + 1 < u.sessions.length) {
+    var nextS = u.sessions[today.sessionIdx + 1];
+    html += '<div style="font-size:12px;color:var(--gray-600);padding:6px 0;">📅 下次课：' + nextS.label + ' (' + nextS.time + ')</div>';
+  } else if (CURRICULUM.indexOf(u) + 1 < CURRICULUM.length) {
+    var nextU = CURRICULUM[CURRICULUM.indexOf(u) + 1];
+    html += '<div style="font-size:12px;color:var(--gray-600);padding:6px 0;">📅 下一单元：' + nextU.icon + ' ' + nextU.theme + '</div>';
+  }
+
+  el.innerHTML = html;
+}
+function renderUnits() {
+  var p = loadProgress();
+  var today = getTodayUnit();
+  var html = '';
+  CURRICULUM.forEach(function(u, i) {
+    var done = (p[u.id] || []).length;
+    var allDone = done >= u.sessions.length;
+    var isToday = today && today.unit.id === u.id;
+    var cls = 'unit-card';
+    if (isToday) cls += ' active';
+    if (i > 0 && !allDone && !isToday) {
+      var prevDone = (p[CURRICULUM[i-1].id]||[]).length >= CURRICULUM[i-1].sessions.length;
+      if (!prevDone && !isToday) cls += ' locked';
+    }
+
+    html += '<div class="' + cls + '" onclick="toggleUnit(this)">';
+    html += '<div class="unit-header">';
+    html += '<div class="unit-icon">' + u.icon + '</div>';
+    html += '<div class="unit-info">';
+    html += '<h3>' + u.phase + ' · ' + u.theme + '</h3>';
+    html += '<div class="meta">' + u.desc + ' | ' + done + '/' + u.sessions.length + ' 课完成</div>';
+    html += '</div>';
+    html += '<div class="unit-status">' + (allDone ? '✅' : isToday ? '📍' : (i > 0 ? '' : '🔓')) + '</div>';
+    html += '</div>';
+
+    // Sessions detail
+    html += '<div class="unit-detail">';
+    u.sessions.forEach(function(s, si) {
+      var sDone = isSessionDone(u.id, si);
+      var sToday = isToday && today.sessionIdx === si;
+      var dotCls = 'session-dot' + (sDone ? ' done' : '') + (sToday ? ' today' : '');
+      html += '<div class="session">';
+      html += '<div class="' + dotCls + '"></div>';
+      html += '<span>' + s.label + ' (' + s.time + ')</span>';
+      if (sToday && !sDone) {
+        html += '<button class="btn btn-success" style="margin-left:auto;font-size:11px;padding:4px 10px;" onclick="event.stopPropagation();markSessionDone(\'' + u.id + '\',' + si + ')">✅ 打卡</button>';
+      }
+      s.actions.forEach(function(a) {
+        html += '<a href="' + a.url + '" target="_self" style="font-size:11px;margin-left:4px;">' + a.text + '</a>';
+      });
+      html += '</div>';
+    });
+    html += '</div></div>';
+  });
+  document.getElementById('unitList').innerHTML = html;
+
+  // Open today's unit
+  if (today) {
+    var cards = document.querySelectorAll('.unit-card');
+    cards.forEach(function(c) {
+      if (c.classList.contains('active')) c.classList.add('open');
+    });
+  }
+}
+
+function toggleUnit(el) {
+  if (el.classList.contains('locked')) return;
+  el.classList.toggle('open');
+}
+
+// ====== Init ======
+renderAll();
+</script>
+</body>
+</html>

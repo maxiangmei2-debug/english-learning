@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>词汇大闯关</title>
+<style>
+  :root {
+    --primary: #6366F1;
+    --primary-light: #EEF2FF;
+    --success: #10B981;
+    --success-light: #ECFDF5;
+    --danger: #EF4444;
+    --danger-light: #FEF2F2;
+    --accent: #F59E0B;
+    --accent-light: #FFFBEB;
+    --gray-50: #F9FAFB;
+    --gray-100: #F3F4F6;
+    --gray-200: #E5E7EB;
+    --gray-300: #D1D5DB;
+    --gray-600: #4B5563;
+    --gray-700: #374151;
+    --gray-800: #1F2937;
+    --radius: 12px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: var(--gray-800);
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 24px 16px 16px;
+    color: white;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .header p { font-size: 14px; opacity: 0.85; }
+
+  /* Stats bar */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 12px;
+    color: white;
+    font-size: 14px;
+  }
+  .stat { display: flex; align-items: center; gap: 6px; }
+  .stat-icon { font-size: 18px; }
+  .stat-val { font-weight: 700; font-size: 18px; }
+
+  /* Main container */
+  .container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 16px 24px;
+  }
+
+  /* Mode selector */
+  .mode-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .mode-btn {
+    flex-shrink: 0;
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: 2px solid rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    white-space: nowrap;
+  }
+  .mode-btn:hover { background: rgba(255,255,255,0.3); }
+  .mode-btn.active {
+    background: white;
+    color: var(--primary);
+    border-color: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  /* Topic selector */
+  .topic-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .topic-btn {
+    padding: 6px 14px;
+    border-radius: 16px;
+    border: 1.5px solid var(--gray-200);
+    background: white;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .topic-btn:hover { border-color: var(--primary); color: var(--primary); }
+  .topic-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+
+  /* Game area */
+  .game-area {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    min-height: 400px;
+  }
+
+  /* ====== MODE 1: 闪电配对 ====== */
+  .match-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  .match-card {
+    aspect-ratio: 1;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    padding: 6px;
+    word-break: break-word;
+    user-select: none;
+  }
+  .match-card.en-card {
+    background: var(--primary-light);
+    color: var(--primary);
+    border: 2px solid transparent;
+  }
+  .match-card.zh-card {
+    background: var(--accent-light);
+    color: #92400E;
+    border: 2px solid transparent;
+  }
+  .match-card.selected {
+    border-color: var(--primary);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+  }
+  .match-card.matched {
+    opacity: 0.4;
+    transform: scale(0.95);
+    cursor: default;
+    pointer-events: none;
+  }
+  .match-card.wrong {
+    animation: shake 0.4s;
+    border-color: var(--danger);
+  }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+
+  /* ====== MODE 2: 打字冲刺 ====== */
+  .type-area { text-align: center; }
+  .type-prompt {
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 20px 0 8px;
+  }
+  .type-hint {
+    font-size: 14px;
+    color: var(--gray-600);
+    margin-bottom: 20px;
+  }
+  .type-input {
+    width: 100%;
+    max-width: 400px;
+    padding: 14px 20px;
+    border: 3px solid var(--gray-200);
+    border-radius: 12px;
+    font-size: 20px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .type-input:focus { border-color: var(--primary); }
+  .type-input.correct { border-color: var(--success); background: var(--success-light); }
+  .type-input.wrong { border-color: var(--danger); background: var(--danger-light); }
+  .type-feedback {
+    margin-top: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    min-height: 24px;
+  }
+  .type-progress {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .type-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--gray-200);
+    transition: all 0.3s;
+  }
+  .type-dot.done { background: var(--success); }
+  .type-dot.fail { background: var(--danger); }
+  .type-dot.current { background: var(--primary); transform: scale(1.3); }
+
+  /* Timer bar */
+  .timer-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--gray-100);
+    border-radius: 3px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .timer-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--success), var(--accent));
+    transition: width 0.1s linear;
+  }
+  .timer-fill.danger { background: var(--danger); }
+
+  /* ====== MODE 3: 生存模式 ====== */
+  .survival-word {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--primary);
+    text-align: center;
+    margin: 24px 0 8px;
+  }
+  .survival-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .survival-opt {
+    padding: 16px;
+    border-radius: 12px;
+    border: 2px solid var(--gray-200);
+    background: white;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+  .survival-opt:hover { border-color: var(--primary); background: var(--primary-light); }
+  .survival-opt.correct-ans {
+    border-color: var(--success);
+    background: var(--success-light);
+    color: #065F46;
+    animation: pop 0.3s;
+  }
+  .survival-opt.wrong-ans {
+    border-color: var(--danger);
+    background: var(--danger-light);
+    color: #991B1B;
+  }
+  @keyframes pop {
+    50% { transform: scale(1.05); }
+  }
+  .lives {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  .heart { font-size: 22px; transition: all 0.3s; }
+  .heart.lost { opacity: 0.2; transform: scale(0.8); }
+
+  /* Result screen */
+  .result-screen {
+    text-align: center;
+    padding: 30px 0;
+  }
+  .result-score {
+    font-size: 64px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary), #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .result-label { font-size: 16px; color: var(--gray-600); margin-bottom: 20px; }
+  .result-detail {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  .result-item {
+    text-align: center;
+    padding: 12px 20px;
+    border-radius: 12px;
+    background: var(--gray-50);
+  }
+  .result-item .num { font-size: 24px; font-weight: 700; }
+  .result-item .label { font-size: 12px; color: var(--gray-600); }
+  .result-btns { display: flex; gap: 10px; justify-content: center; }
+  .btn-primary {
+    padding: 12px 32px;
+    border-radius: 25px;
+    border: none;
+    background: var(--primary);
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .btn-primary:hover { transform: scale(1.03); }
+  .btn-outline {
+    padding: 12px 32px;
+    border-radius: 25px;
+    border: 2px solid var(--gray-300);
+    background: white;
+    color: var(--gray-700);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .btn-outline:hover { transform: scale(1.03); }
+
+  /* Combo */
+  .combo-display {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--accent);
+    pointer-events: none;
+    z-index: 999;
+    text-shadow: 0 2px 12px rgba(245,158,11,0.4);
+  }
+  .combo-display.show {
+    animation: comboPop 0.8s forwards;
+  }
+  @keyframes comboPop {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+    30% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+    100% { transform: translate(-50%, -80%) scale(0.8); opacity: 0; }
+  }
+
+  /* Score float */
+  .score-float {
+    position: fixed;
+    pointer-events: none;
+    font-size: 20px;
+    font-weight: 700;
+    z-index: 998;
+    animation: floatUp 0.8s forwards;
+  }
+  @keyframes floatUp {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-60px); }
+  }
+</style>
+</head>
+<body>
+<a href="index.html" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+
+<div class="header">
+  <h1>🎯 词汇大闯关</h1>
+  <p>3种玩法，100+词汇，边玩边记</p>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><span class="stat-icon">🏆</span><span class="stat-val" id="totalScore">0</span></div>
+  <div class="stat"><span class="stat-icon">🔥</span><span class="stat-val" id="comboCount">0</span>连击</div>
+  <div class="stat"><span class="stat-icon">✅</span><span class="stat-val" id="masteredCount">0</span>已掌握</div>
+</div>
+
+<div class="container">
+  <div class="mode-bar">
+    <button class="mode-btn active" onclick="switchMode('match')">🃏 闪电配对</button>
+    <button class="mode-btn" onclick="switchMode('type')">⌨️ 打字冲刺</button>
+    <button class="mode-btn" onclick="switchMode('survival')">❤️ 生存挑战</button>
+  </div>
+
+  <div class="topic-bar" id="topicBar"></div>
+
+  <div class="game-area" id="gameArea">
+    <div style="text-align:center;padding:60px 0;color:var(--gray-600);">
+      选择主题，开始闯关！
+    </div>
+  </div>
+</div>
+
+<div class="combo-display" id="comboDisplay"></div>
+
+<script>
+// ============ VOCAB DATA ============
+const VOCAB = {
+  '🏠 租房生活': [
+    ['receptionist','前台'],['facility','设施'],['furnished','带家具的'],
+    ['deposit','押金'],['elevator','电梯'],['square meters','平方米'],
+    ['pedestrian','行人'],['pavement','人行道'],['rent','租金'],
+    ['subway','地铁'],['scooter','电动滑板车'],['license','驾照']
+  ],
+  '💪 运动健身': [
+    ['cardio','有氧运动'],['weight training','力量训练'],['trainer','教练'],
+    ['trainee','学员'],['gym','健身房'],['treadmill','跑步机'],
+    ['fitness freak','健身狂魔'],['couch potato','宅家懒人'],
+    ['rock climbing','攀岩'],['badminton','羽毛球'],['in great shape','身材好']
+  ],
+  '🛒 购物砍价': [
+    ['flea market','跳蚤市场'],['thrift store','二手店'],['stall','摊位'],
+    ['discount','折扣'],['credit card','信用卡'],['cash','现金'],
+    ['receipt','收据'],['refund','退款'],['condition','成色'],
+    ['scratch','划痕'],['brand new','全新的'],['counter offer','还价']
+  ],
+  '📎 办公用品': [
+    ['stapler','订书机'],['rubber band','橡皮筋'],['tape','胶带'],
+    ['scissors','剪刀'],['paper clip','回形针'],['binder clip','长尾夹'],
+    ['eraser','橡皮'],['highlighter','荧光笔'],['sticky notes','便利贴'],
+    ['fountain pen','钢笔'],['calculator','计算器'],['USB drive','U盘']
+  ],
+  '📱 手机App': [
+    ['scan QR code','扫描二维码'],['scroll through short videos','刷短视频'],
+    ['order takeouts','点外卖'],['shop online','网上购物'],
+    ['navigate','路线导航'],['pay the bills','线上缴费'],
+    ['make video calls','视频通话'],['post moments','发动态'],
+    ['get a ride','打车'],['limited storage','存储空间不足']
+  ],
+  '🎬 娱乐兴趣': [
+    ['classical','古典'],['jazz','爵士'],['rock','摇滚'],
+    ['hip-hop','嘻哈'],['folk','民谣'],['blues','蓝调'],
+    ['comedy','喜剧'],['horror','恐怖'],['thriller','惊悚'],
+    ['sci-fi','科幻'],['documentary','纪录片'],['reality shows','真人秀']
+  ],
+  '👤 外貌性格': [
+    ['blond hair','金发'],['curly','卷的'],['shoulder-length','齐肩的'],
+    ['bald','秃头的'],['slim','苗条的'],['middle-aged','中年的'],
+    ['punctual','准时的'],['reliable','可靠的'],['creative','有创意的'],
+    ['strict','严厉的'],['rude','粗鲁的'],['impatient','不耐烦的']
+  ],
+  '😰 情绪表达': [
+    ['nervous','紧张的'],['anxious','焦虑的'],['upset','沮丧的'],
+    ['stressed','有压力的'],['furious','狂怒的'],['disappointed','失望的'],
+    ['confident','自信的'],['inspired','受鼓舞的']
+  ],
+  '💼 职场沟通': [
+    ['participant','参与者'],['cross-department','跨部门的'],
+    ['urgent meeting','紧急会议'],['examiner','考官'],
+    ['subscribe','订阅'],['experience','经验'],['position','职位'],
+    ['a good fit','很合适'],['work overtime','加班'],['manage a team','管理团队']
+  ],
+  '✈️ 旅行住宿': [
+    ['motel','汽车旅馆'],['inn','乡村小旅馆'],['hostel','青旅'],
+    ['B&B','民宿'],['accommodation','住宿'],['package tour','旅行团'],
+    ['go backpacking','背包旅行'],['paid vacation','带薪休假'],['per night','每晚']
+  ],
+  '🤝 谈判协商': [
+    ['deal-breaker','底线条件'],['deadlock','僵局'],
+    ['stand one\'s ground','坚守立场'],['beat around the bush','拐弯抹角'],
+    ['reach a compromise','达成折中'],['middle ground','折中余地'],
+    ['give-and-take','互相迁就'],['mutual benefit','互利共赢'],
+    ['trade-off','权衡取舍'],['lowball','压低报价']
+  ],
+  // ===== 必背搭配 =====
+  '🔗 租房搭配': [
+    ['rent an apartment','租公寓'],['5 minutes\' walk','步行5分钟'],
+    ['by subway','乘地铁'],['the closer the better','越近越好'],
+    ['Could you lower the price?','能降价吗？'],['Is it furnished?','带家具吗？'],
+    ['How much is the deposit?','押金多少？']
+  ],
+  '🔗 购物搭配': [
+    ['get a better price','拿到更优惠价格'],['give a 10% discount','打9折'],
+    ['pay in cash','用现金付'],['pay by credit card','用信用卡付'],
+    ['make a counter offer','还价'],['can\'t go that low','不能降那么低'],
+    ['in excellent condition','成色极好'],['as good as new','几乎全新'],
+    ['I\'ll take it','我买了'],['We have a deal','成交']
+  ],
+  '🔗 动作短语': [
+    ['mind one\'s own business','少管闲事'],['trip and fall','绊倒摔倒'],
+    ['get kicked off','被赶下车'],['get stuck','被卡住'],
+    ['run out of','耗尽；用完'],['get rid of','摆脱；处理掉'],
+    ['come up with an idea','想出办法'],['get through','度过；熬过'],
+    ['freak out','情绪失控'],['help sb out','帮某人解围'],
+    ['keep in touch with','保持联系'],['put one\'s feet up','翘脚休息']
+  ],
+  '🔗 职场搭配': [
+    ['be in charge of','负责、主管'],['on the same page','意见一致'],
+    ['kill the time','打发时间'],['scrolling the phone','刷手机'],
+    ['work overtime','加班'],['follow instructions','听从指令'],
+    ['be good at doing sth','擅长做某事'],['be skillful at','熟练于'],
+    ['effective communication','有效沟通'],['Sorry to bother you','抱歉打扰'],
+    ['Don\'t mention it','不客气']
+  ],
+  '🔗 办公搭配': [
+    ['keep ... together','捆扎整理'],['bind the report','装订文件'],
+    ['blow up balloons','吹气球'],['a couple of','一些；几个'],
+    ['bring ... back','把...带回']
+  ],
+  '🔗 问路搭配': [
+    ['turn right on First Avenue','在第一大道右转'],['turn left at the corner','在拐角左转'],
+    ['next to the post office','在邮局旁边'],['across from the bank','在银行对面'],
+    ['between A and B','在A和B之间']
+  ],
+  // ===== MC9&18&19&24新增搭配 =====
+  '🔗 乐园出行': [
+    ['line up','排队'],['cut the line','插队'],
+    ['the lines were so long','队伍排得很长'],['can\'t wait to do sth','迫不及待做某事'],
+    ['order food delivery','点外卖'],['You know what!','你猜怎么着！'],
+    ['I bet','我敢打赌'],['take it easy','放轻松、别紧张'],
+    ['travel for fun','休闲游玩旅行'],['travel for business','出差、商务旅行'],
+    ['Is there anything...?','有没有什么...？']
+  ],
+  '🔗 洗手间社交': [
+    ['strike up a conversation','主动搭话、开启交谈'],['on the side of the road','在路边'],
+    ['be taken','（隔间、座位）被占用'],['call you back','稍后给你回电话'],
+    ['keep doing sth','持续不停地做某事'],['To be honest','说实话'],
+    ['a bit','稍微、有点儿'],['What the hell?','搞什么鬼？']
+  ],
+  '🔗 寓言医药': [
+    ['laugh one\'s head off','开怀大笑、笑到不行'],['drive ... off','把...赶走、驱散'],
+    ['There\'s nothing to do but','除了...之外别无选择'],['a flock of','一群（鸟类）'],
+    ['a herd of','一群（牛羊牲畜）'],['a school of fish','一群鱼'],
+    ['OTC','非处方药（Over the Counter）']
+  ],
+  '🔗 健康作息': [
+    ['regular schedule for sleeping','规律睡眠作息'],['have brunch','吃早午饭'],
+    ['skip meals','不吃饭、节食'],['scroll my phone','刷手机'],
+    ['balanced diet','均衡饮食'],['strict diet','严格控制饮食'],
+    ['midnight munchies','夜宵、半夜加餐'],['work-life balance','工作与生活平衡'],
+    ['junk food','垃圾食品'],['cheer myself up','让自己开心、自我调节情绪'],
+    ['used to do sth','过去常常做某事（现已不做）'],['quit drinking/smoking','戒酒、戒烟'],
+    ['stay up late','熬夜'],['fall asleep again','再次睡着'],
+    ['get fully charged','恢复精力、满血复活'],['take a nap','午休、小睡一会儿'],
+    ['sleep safe and sound','睡得安稳踏实'],['part of my routine','日常习惯的一部分'],
+    ['social activities','社交活动']
+  ],
+  // ===== 新增：点餐词汇 =====
+  '🍽️ 点餐词汇': [
+    ['menu','菜单'],['order','点餐'],['dish','菜品'],['special','特色菜'],
+    ['donut','甜甜圈'],['whole-wheat bread','全麦面包'],['yogurt','酸奶'],
+    ['ice-cream','冰淇淋'],['dessert','甜点'],['rice','米饭'],['noodles','面条'],
+    ['beef','牛肉'],['chicken','鸡肉'],['pork','猪肉'],['seafood','海鲜'],
+    ['shrimp','虾'],['crab','螃蟹'],['oyster','牡蛎'],['shellfish','贝类'],
+    ['celery','芹菜'],['broccoli','西兰花'],['cauliflower','花菜'],
+    ['carrot','胡萝卜'],['spinach','菠菜'],['cabbage','卷心菜'],
+    ['onion','洋葱'],['mushroom','蘑菇'],['peas','豌豆'],
+    ['soup','汤'],['soda','汽水'],['delicious','美味的'],
+    ['spicy','辣的'],['sour','酸的'],['fried','油炸的']
+  ],
+  // ===== 新增：露营装备 =====
+  '🏕️ 露营装备': [
+    ['flashlight','手电筒(美)'],['torch','手电筒(英)'],
+    ['hand sanitizer','免洗洗手液'],['wet wipes','湿纸巾'],
+    ['insect repellent','驱虫剂'],['first aid kit','急救包'],
+    ['tent','帐篷'],['camera','相机'],['power bank','充电宝'],
+    ['trash bags','垃圾袋'],['blanket','毯子'],['lighter','打火机'],
+    ['emergency','紧急情况'],['raincoat','雨衣'],['sun hat','遮阳帽'],
+    ['T-shirt','T恤衫'],['sunglasses','太阳镜'],['sneakers','运动鞋'],
+    ['slippers','拖鞋'],['pajamas','睡衣'],['bottled water','瓶装水'],
+    ['mineral water','矿泉水'],['paper plates','纸盘'],['pan','平底锅'],
+    ['nephew','侄子'],['niece','侄女'],['weather forecast','天气预报']
+  ],
+  // ===== 新增：租车词汇 =====
+  '🚗 租车词汇': [
+    ['rental','租赁'],['vehicle','车辆'],['sedan','轿车'],
+    ['SUV','运动型多用途车'],['van','厢式货车'],['convertible','敞篷车'],
+    ['hatchback','掀背车'],['deposit','押金'],['insurance cover','保险保障'],
+    ['unlimited mileage','不限里程'],['engine','发动机'],['petrol','汽油(英)'],
+    ['gas','汽油(美)'],['full tank','满箱油'],['driving licence','驾照'],
+    ['steering wheel','方向盘'],['handbrake','手刹'],['gear shift','换挡杆'],
+    ['fuel gauge','油表'],['car jack','千斤顶'],['eco-friendly','环保的']
+  ],
+  // ===== 新增：犯罪新闻 =====
+  '📰 犯罪新闻': [
+    ['newsman','新闻记者'],['scene','现场'],['crime','犯罪'],
+    ['robber','抢劫犯'],['police','警察'],['co-worker','同事'],
+    ['vending machine','自动售货机'],['bench','长椅'],
+    ['yell','大喊'],['grab','抓住'],['fight','打斗'],
+    ['trip','绊倒'],['fall','摔倒'],['step','踩'],
+    ['lie','躺'],['kick','踢'],['hurt','受伤'],
+    ['apologize','道歉'],['mind','顾及']
+  ],
+  // ===== 新增：环保主题 =====
+  '🌍 环保主题': [
+    ['solar panel','太阳能板'],['carpool','拼车'],['smog','雾霾'],
+    ['landfill','垃圾填埋场'],['recycling depot','回收站'],
+    ['e-bike','电动车'],['oil spill','石油泄漏'],['penguin','企鹅'],
+    ['poison','毒药'],['extinct','灭绝的'],['endangered','濒危的'],
+    ['disposable','一次性的'],['single-use','一次性的'],['install','安装']
+  ],
+  // ===== 新增：竞赛经历 =====
+  '🏆 竞赛经历': [
+    ['competition','比赛'],['competitor','竞争者'],['outstrip','超过'],
+    ['ahead','领先'],['positive thinking','积极思考'],
+    ['confident','自信的'],['disappointed','失望的'],['furious','狂怒的']
+  ],
+  // ===== 新增：频率副词 =====
+  '📊 频率副词': [
+    ['never','从不'],['rarely','很少'],['seldom','不常'],
+    ['occasionally','偶尔'],['sometimes','有时'],['often','经常'],
+    ['usually','通常'],['always','总是']
+  ],
+  // ===== 新增：品牌面试 =====
+  '🎯 面试表达': [
+    ['qualified','有资格的'],['competent','有能力的'],['capable','能干的'],
+    ['trustworthy','值得信赖的'],['innovative','创新的'],['stylish','时髦的'],
+    ['brand','品牌'],['quality','质量'],['variety','多样性'],['rival','竞争对手']
+  ],
+  '🔗 驾驶考试': [
+    ['buckle up','系好安全带'],['honk at sb','对着某人按喇叭'],
+    ['pass the driving test','通过驾照考试'],['rent a car','租车'],
+    ['push the gas pedal','踩油门'],['rev the car engine','轰油门'],
+    ['hands on the wheel','手握方向盘'],['drive too slow','开车速度过慢'],
+    ['turn without looking','转弯不观察路况'],['take a deep breath','深呼吸'],
+    ['fall asleep','睡着'],['make sb feel less nervous','让某人放松、缓解紧张'],
+    ['farm equipment','农用器械'],['talk to oneself','自言自语'],
+    ['Forbidden City','紫禁城'],['White House','白宫'],
+    ['Tiananmen Square','天安门广场']
+  ],
+  // ===== 新增：have not / no 否定表达 =====
+  '🚫 否定表达': [
+    ['have no friends','没有朋友'],['have no time','没有时间'],
+    ['have no money','没有钱'],['have no idea','不知道/没办法'],
+    ['have no problem','没问题'],['haven\'t got any','一点也没有(英式)'],
+    ['don\'t have any','一点也没有(美式)'],['doesn\'t have any','一点也没有(三单)'],
+    ['not...at all','完全不'],['no one','没有人'],
+    ['nothing','什么也没有'],['nowhere','哪里也没有'],
+    ['not only...but also','不仅…而且'],['no longer','不再'],
+    ['not anymore','不再'],['no wonder','难怪']
+  ],
+  // ===== 新增：狼来了主题词汇 =====
+  '🐺 狼来了': [
+    ['shepherd','牧羊人'],['flock','（羊/鸟）一群'],['villager','村民'],
+    ['liar','说谎的人'],['naughty','调皮的'],['shout','呼喊'],
+    ['ignore','忽视'],['trick','欺骗/捉弄'],['responsibility','责任'],
+    ['argue','争吵'],['swan','天鹅'],['hill','小山'],
+    ['annoying','令人烦躁的'],['saint','圣人']
+  ],
+  // ===== 新增：看医生 & 身体疼痛 =====
+  '🏥 看医生': [
+    ['headache','头痛'],['stomachache','胃痛/肚子痛'],['toothache','牙痛'],
+    ['backache','背痛'],['fever','发烧'],['cough','咳嗽'],
+    ['sore throat','喉咙痛'],['runny nose','流鼻涕'],['dizzy','头晕的'],
+    ['nauseous','恶心的'],['swollen','肿胀的'],['prescription','处方'],
+    ['appointment','预约'],['symptom','症状'],['injection','注射/打针'],
+    ['recover','康复']
+  ],
+  '🗣️ 祈使句': [
+    ['sit down', '请坐'],
+    ['stand up', '起立'],
+    ['be quiet', '安静'],
+    ['hurry up', '快点'],
+    ['watch out', '小心/当心'],
+    ['take care', '保重'],
+    ['come in', '进来'],
+    ['go ahead', '继续/请便'],
+    ['slow down', '慢点'],
+    ['cheer up', '振作起来/开心点'],
+    ['hold on', '等一下/坚持住'],
+    ['calm down', '冷静'],
+    ['wake up', '醒醒'],
+    ['give up', '放弃'],
+  ]
+};
+
+// ============ STATE ============
+let currentMode = 'match';
+let currentTopic = null;
+let score = 0;
+let combo = 0;
+let mastered = new Set();
+
+// ============ INIT ============
+function init() {
+  const bar = document.getElementById('topicBar');
+  const allBtn = document.createElement('button');
+  allBtn.className = 'topic-btn active';
+  allBtn.textContent = '🔄 随机混搭';
+  allBtn.onclick = () => selectTopic(null, allBtn);
+  bar.appendChild(allBtn);
+
+  Object.keys(VOCAB).forEach(topic => {
+    const btn = document.createElement('button');
+    btn.className = 'topic-btn';
+    btn.textContent = topic;
+    btn.onclick = () => selectTopic(topic, btn);
+    bar.appendChild(btn);
+  });
+}
+
+function selectTopic(topic, btn) {
+  currentTopic = topic;
+  document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  startGame();
+}
+
+function switchMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  if (currentTopic !== undefined) startGame();
+}
+
+function getVocabList() {
+  if (currentTopic) return [...VOCAB[currentTopic]];
+  let all = [];
+  Object.values(VOCAB).forEach(v => all = all.concat(v));
+  return all;
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function addScore(pts, x, y) {
+  score += pts;
+  document.getElementById('totalScore').textContent = score;
+  if (x !== undefined) {
+    const el = document.createElement('div');
+    el.className = 'score-float';
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    el.style.color = pts > 0 ? '#10B981' : '#EF4444';
+    el.textContent = (pts > 0 ? '+' : '') + pts;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 800);
+  }
+}
+
+function addCombo() {
+  combo++;
+  document.getElementById('comboCount').textContent = combo;
+  if (combo >= 3 && combo % 3 === 0) {
+    const el = document.getElementById('comboDisplay');
+    el.textContent = combo + '连击!';
+    el.className = 'combo-display';
+    void el.offsetWidth;
+    el.className = 'combo-display show';
+  }
+}
+
+function resetCombo() {
+  combo = 0;
+  document.getElementById('comboCount').textContent = 0;
+}
+
+function markMastered(en) {
+  mastered.add(en);
+  document.getElementById('masteredCount').textContent = mastered.size;
+}
+
+function startGame() {
+  if (currentMode === 'match') startMatch();
+  else if (currentMode === 'type') startType();
+  else if (currentMode === 'survival') startSurvival();
+}
+
+// ============ MODE 1: 闪电配对 ============
+function startMatch() {
+  const list = shuffle(getVocabList()).slice(0, 6);
+  const cards = [];
+  list.forEach(([en, zh], i) => {
+    cards.push({ text: en, type: 'en', pairId: i });
+    cards.push({ text: zh, type: 'zh', pairId: i });
+  });
+  shuffle(cards);
+
+  const area = document.getElementById('gameArea');
+  area.innerHTML = '<div class="timer-bar"><div class="timer-fill" id="matchTimer"></div></div>' +
+    '<div class="match-grid" id="matchGrid"></div>';
+
+  const grid = document.getElementById('matchGrid');
+  cards.forEach((c, idx) => {
+    const div = document.createElement('div');
+    div.className = 'match-card ' + (c.type === 'en' ? 'en-card' : 'zh-card');
+    div.textContent = c.text;
+    div.dataset.pairId = c.pairId;
+    div.dataset.idx = idx;
+    div.onclick = () => handleMatchClick(div, c);
+    grid.appendChild(div);
+  });
+
+  let selected = null;
+  let matched = 0;
+  let totalPairs = list.length;
+  let timeLeft = 60;
+  const timerEl = document.getElementById('matchTimer');
+
+  const timer = setInterval(() => {
+    timeLeft--;
+    timerEl.style.width = (timeLeft / 60 * 100) + '%';
+    if (timeLeft < 15) timerEl.className = 'timer-fill danger';
+    if (timeLeft <= 0) { clearInterval(timer); endMatch(matched, totalPairs, false); }
+  }, 1000);
+
+  function handleMatchClick(div, card) {
+    if (div.classList.contains('matched') || div.classList.contains('selected')) return;
+    div.classList.add('selected');
+
+    if (!selected) {
+      selected = { div, card };
+    } else {
+      if (selected.card.pairId === card.pairId && selected.card.type !== card.type) {
+        // match!
+        selected.div.classList.add('matched');
+        div.classList.add('matched');
+        selected.div.classList.remove('selected');
+        div.classList.remove('selected');
+        matched++;
+        addScore(10 + combo * 2);
+        addCombo();
+        markMastered(list[card.pairId][0]);
+        selected = null;
+        if (matched === totalPairs) { clearInterval(timer); endMatch(matched, totalPairs, true); }
+      } else {
+        // wrong
+        selected.div.classList.add('wrong');
+        div.classList.add('wrong');
+        resetCombo();
+        setTimeout(() => {
+          selected.div.classList.remove('selected', 'wrong');
+          div.classList.remove('selected', 'wrong');
+          selected = null;
+        }, 500);
+      }
+    }
+  }
+}
+
+function endMatch(matched, total, won) {
+  const area = document.getElementById('gameArea');
+  const emoji = won ? '🎉' : '⏰';
+  area.innerHTML = `<div class="result-screen">
+    <div style="font-size:64px;margin-bottom:12px;">${emoji}</div>
+    <div class="result-score">${matched}/${total}</div>
+    <div class="result-label">${won ? '全部配对成功！' : '时间到了！'}</div>
+    <div class="result-detail">
+      <div class="result-item"><div class="num" style="color:var(--success)">${matched}</div><div class="label">配对成功</div></div>
+      <div class="result-item"><div class="num" style="color:var(--danger)">${total - matched}</div><div class="label">未完成</div></div>
+    </div>
+    <div class="result-btns">
+      <button class="btn-primary" onclick="startGame()">再来一局</button>
+      <button class="btn-outline" onclick="switchMode('type')">试打字模式</button>
+    </div>
+  </div>`;
+}
+
+// ============ MODE 2: 打字冲刺 ============
+let typeState = {};
+
+function startType() {
+  const list = shuffle(getVocabList()).slice(0, 10);
+  typeState = { list, current: 0, correct: 0, wrong: 0, retryMode: false, retryIndex: -1 };
+
+  renderTypeQuestion();
+}
+
+function renderTypeQuestion() {
+  const s = typeState;
+  if (s.current >= s.list.length) { endType(); return; }
+
+  const [en, zh] = s.list[s.current];
+  const isRetry = s.retryMode && s.retryIndex === s.current;
+  const area = document.getElementById('gameArea');
+  area.innerHTML = `<div class="type-area">
+    <div class="type-progress" id="typeDots"></div>
+    <div class="type-hint" style="margin-top:12px;">请输入英文</div>
+    <div class="type-prompt">${zh}</div>
+    <div class="type-hint">${isRetry ? '🔄 再输入一次加深印象！' : '👉 输入对应的英文单词'}</div>
+    <input class="type-input" id="typeInput" placeholder="type here..." autocomplete="off" autofocus>
+    <div class="type-feedback" id="typeFeedback"></div>
+  </div>`;
+
+  // dots
+  const dots = document.getElementById('typeDots');
+  s.list.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'type-dot' + (i < s.current ? (s.list[i][2] ? ' done' : ' fail') : '') + (i === s.current ? ' current' : '');
+    dots.appendChild(d);
+  });
+
+  const input = document.getElementById('typeInput');
+  input.focus();
+
+  let answered = false;
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !answered) {
+      answered = true;
+      const val = input.value.trim().toLowerCase();
+      const correct = en.toLowerCase();
+      const fb = document.getElementById('typeFeedback');
+
+      if (val === correct) {
+        input.className = 'type-input correct';
+        fb.innerHTML = '<span style="color:var(--success)">✅ 正确！</span>';
+        s.correct++;
+        s.list[s.current][2] = true;
+        addScore(15 + combo * 3);
+        addCombo();
+        markMastered(en);
+        // 如果是重试模式答对了，额外加分
+        if (s.retryMode && s.retryIndex === s.current) {
+          addScore(5);
+          fb.innerHTML = '<span style="color:var(--success)">✅ 重试正确！+5分</span>';
+          s.retryMode = false;
+        }
+        s.current++;
+        setTimeout(renderTypeQuestion, 800);
+      } else {
+        input.className = 'type-input wrong';
+        s.wrong++;
+        s.list[s.current][2] = false;
+        resetCombo();
+        // 判断是否是重试模式
+        if (s.retryMode && s.retryIndex === s.current) {
+          // 重试也错了，停留显示答案，然后进入下一题
+          fb.innerHTML = `<span style="color:var(--danger)">❌ 再试还是不对 😅<br>正确答案：<strong>${en}</strong></span>`;
+          input.disabled = true;
+          s.retryMode = false;
+          s.current++;
+          setTimeout(renderTypeQuestion, 3000);
+        } else {
+          // 第一次错：显示正确答案，停留3秒让用户看清楚，然后进入重试模式
+          fb.innerHTML = `<span style="color:var(--danger)">❌ 正确答案：<strong>${en}</strong><br>👀 记住它，3秒后你再输入一次！</span>`;
+          input.disabled = true;
+          s.retryMode = true;
+          s.retryIndex = s.current;
+          // 3秒后重新渲染同一题，让用户再输入一遍
+          setTimeout(renderTypeQuestion, 3000);
+        }
+      }
+    }
+  });
+}
+
+function endType() {
+  const s = typeState;
+  const area = document.getElementById('gameArea');
+  const pct = Math.round(s.correct / s.list.length * 100);
+  let grade = pct >= 90 ? '🥇 大师级' : pct >= 70 ? '🥈 不错哦' : pct >= 50 ? '🥉 继续加油' : '💪 再练练';
+  area.innerHTML = `<div class="result-screen">
+    <div style="font-size:64px;margin-bottom:12px;">${grade}</div>
+    <div class="result-score">${pct}%</div>
+    <div class="result-label">正确率</div>
+    <div class="result-detail">
+      <div class="result-item"><div class="num" style="color:var(--success)">${s.correct}</div><div class="label">正确</div></div>
+      <div class="result-item"><div class="num" style="color:var(--danger)">${s.wrong}</div><div class="label">错误</div></div>
+    </div>
+    <div class="result-btns">
+      <button class="btn-primary" onclick="startGame()">再来一局</button>
+      <button class="btn-outline" onclick="switchMode('survival')">试生存模式</button>
+    </div>
+  </div>`;
+}
+
+// ============ MODE 3: 生存挑战 ============
+let survState = {};
+
+function startSurvival() {
+  const list = shuffle(getVocabList());
+  survState = { list, current: 0, lives: 3, correct: 0, wrong: 0 };
+  renderSurvival();
+}
+
+function renderSurvival() {
+  const s = survState;
+  if (s.current >= s.list.length || s.lives <= 0) { endSurvival(); return; }
+
+  const [en, zh] = s.list[s.current];
+
+  // Generate 3 wrong options
+  const allZh = getVocabList().map(v => v[1]);
+  let options = [zh];
+  while (options.length < 4) {
+    const rand = allZh[Math.floor(Math.random() * allZh.length)];
+    if (!options.includes(rand)) options.push(rand);
+  }
+  shuffle(options);
+
+  const area = document.getElementById('gameArea');
+  let heartsHtml = '';
+  for (let i = 0; i < 3; i++) {
+    heartsHtml += `<span class="heart${i >= s.lives ? ' lost' : ''}">❤️</span>`;
+  }
+
+  area.innerHTML = `<div class="lives">${heartsHtml}</div>
+    <div style="text-align:center;font-size:13px;color:var(--gray-600);margin-bottom:4px;">第 ${s.current + 1} 题</div>
+    <div class="survival-word">${en}</div>
+    <div style="text-align:center;font-size:14px;color:var(--gray-600);">这个词是什么意思？</div>
+    <div class="survival-options" id="survOpts"></div>`;
+
+  const optsEl = document.getElementById('survOpts');
+  let answered = false;
+  options.forEach(opt => {
+    const div = document.createElement('div');
+    div.className = 'survival-opt';
+    div.textContent = opt;
+    div.onclick = () => {
+      if (answered) return;
+      answered = true;
+      if (opt === zh) {
+        div.classList.add('correct-ans');
+        s.correct++;
+        addScore(10 + combo * 2);
+        addCombo();
+        markMastered(en);
+      } else {
+        div.classList.add('wrong-ans');
+        s.lives--;
+        s.wrong++;
+        resetCombo();
+        // highlight correct
+        optsEl.querySelectorAll('.survival-opt').forEach(d => {
+          if (d.textContent === zh) d.classList.add('correct-ans');
+        });
+      }
+      s.current++;
+      survivalTimeout = setTimeout(renderSurvival, 900);
+    };
+    optsEl.appendChild(div);
+  });
+}
+
+function endSurvival() {
+  const s = survState;
+  const won = s.lives > 0;
+  const area = document.getElementById('gameArea');
+  area.innerHTML = `<div class="result-screen">
+    <div style="font-size:64px;margin-bottom:12px;">${won ? '🏆' : '💀'}</div>
+    <div class="result-score">${s.correct}</div>
+    <div class="result-label">${won ? '存活！闯关成功！' : '挑战结束'}</div>
+    <div class="result-detail">
+      <div class="result-item"><div class="num" style="color:var(--success)">${s.correct}</div><div class="label">答对</div></div>
+      <div class="result-item"><div class="num" style="color:var(--danger)">${s.wrong}</div><div class="label">答错</div></div>
+      <div class="result-item"><div class="num" style="color:var(--accent)">${'❤️'.repeat(Math.max(0, s.lives))}</div><div class="label">剩余生命</div></div>
+    </div>
+    <div class="result-btns">
+      <button class="btn-primary" onclick="startGame()">再来一局</button>
+      <button class="btn-outline" onclick="switchMode('match')">试配对模式</button>
+    </div>
+  </div>`;
+}
+
+init();
+
+// ====== 全局回车键 ======
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter') return;
+  // 输入框不拦截
+  var el = document.activeElement;
+  if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA')) return;
+
+  // 结果页面：按回车重新开始当前模式
+  var resultArea = document.getElementById('gameArea');
+  var resultScreen = resultArea ? resultArea.querySelector('.result-screen') : null;
+  if (resultScreen && resultScreen.offsetParent !== null) {
+    var btns = resultScreen.querySelectorAll('button');
+    for (var i = 0; i < btns.length; i++) {
+      if (btns[i].style.display !== 'none' && btns[i].offsetParent !== null) {
+        btns[i].click();
+        return;
+      }
+    }
+  }
+
+  // 生存模式：如果已回答（选项变灰），加速进入下一题
+  var marked = document.querySelector('.survival-opt.correct-ans, .survival-opt.wrong-ans');
+  if (marked && currentMode === 'survival') {
+    // 清除 setTimeout，立即渲染下一题
+    clearTimeout(survivalTimeout);
+    renderSurvival();
+  }
+});
+
+// 生存模式计时器引用（供回车加速使用）
+var survivalTimeout;
+</script>
+</body>
+</html>

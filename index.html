@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英语学习中心</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+h1{font-size:32px;color:#fff;margin-bottom:8px}
+.sub{font-size:14px;color:rgba(255,255,255,.7);margin-bottom:32px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:560px;width:100%}
+.card{display:block;text-decoration:none;background:#fff;border-radius:20px;padding:28px 20px;box-shadow:0 10px 40px rgba(0,0,0,.12);transition:transform .2s,box-shadow .2s;text-align:center}
+.card:hover{transform:translateY(-4px);box-shadow:0 15px 50px rgba(0,0,0,.18)}
+.icon{font-size:44px;margin-bottom:12px}
+.name{font-size:17px;font-weight:700;color:#2d3748}
+.desc{font-size:12px;color:#718096;margin-top:8px;line-height:1.6}
+@media(max-width:560px){.grid{grid-template-columns:1fr}h1{font-size:26px}}
+.card.plan{grid-column:1/-1;background:linear-gradient(135deg,#6366F1,#8B5CF6);color:#fff;border:2px solid rgba(255,255,255,.3)}
+.card.plan .name{color:#fff}
+.card.plan .desc{color:rgba(255,255,255,.8)}
+.card.plan:hover{transform:translateY(-4px) scale(1.02);border-color:rgba(255,255,255,.5)}
+</style>
+</head>
+<body>
+<h1>📚 英语学习中心</h1>
+<p class="sub">点击卡片进入对应学习工具</p>
+<div class="grid">
+  <a class="card" href="handbook.html">
+    <div class="icon">📖</div><div class="name">英语学习手册</div>
+    <div class="desc">语法速查 · 主题词汇 · 必背搭配<br>场景句型 · 易错清单 · 速记卡片</div>
+  </a>
+  <a class="card" href="vocab-game.html">
+    <div class="icon">🎮</div><div class="name">词汇大闯关</div>
+    <div class="desc">闪电配对 · 打字冲刺 · 生存挑战<br>17个主题 140+ 词汇</div>
+  </a>
+  <a class="card" href="test-master.html">
+    <div class="icon">📝</div><div class="name">英语测试达人</div>
+    <div class="desc">极速闯关 · 生存挑战 · 填空高手<br>听写达人 · 辨析法官 · 模拟考试</div>
+  </a>
+  <a class="card" href="spelling-trainer.html">
+    <div class="icon">✏️</div><div class="name">词汇拼写训练营</div>
+    <div class="desc">看英猜中 · 看中拼英<br>混合闯关 · 拼写全练</div>
+  </a>
+  <a class="card plan" href="study-plan.html">
+    <div class="icon">📋</div><div class="name">学习计划</div>
+    <div class="desc">每天20分钟 · 系统性学习<br>12单元3阶段 · 打卡追踪进度</div>
+  </a>
+</div>
+</body>
+</html>
