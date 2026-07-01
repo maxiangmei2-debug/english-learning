@@ -34,6 +34,8 @@
     background: var(--gray-50);
     color: var(--gray-800);
     line-height: 1.6;
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 
   /* Nav */
@@ -106,6 +108,7 @@
     padding: 24px;
     margin-bottom: 20px;
     transition: box-shadow 0.2s;
+    overflow-x: auto;
   }
   .card:hover { box-shadow: var(--shadow-md); }
   .card-title {
@@ -147,10 +150,11 @@
     border-bottom: 1px solid var(--gray-100);
     vertical-align: top;
     line-height: 1.4;
+    word-break: break-word;
   }
   /* 词汇类表格：英文列宽一点 */
-  .study-table td:first-child:not(.en) { min-width: 100px; }
-  .study-table td.en { min-width: 80px; }
+  .study-table td:first-child:not(.en) { min-width: 80px; }
+  .study-table td.en { min-width: 70px; }
   /* 语法类表格：用法列窄，例句列宽且可换行 */
   .study-table td:last-child { max-width: 500px; word-wrap: break-word; }
   .study-table tr:hover td { background: var(--gray-50); }
@@ -170,6 +174,8 @@
     margin: 6px 0;
     font-size: 14px;
     line-height: 1.5;
+    max-width: 100%;
+    overflow-x: auto;
   }
   .example-box .en { font-size: 15px; }
 
@@ -182,6 +188,8 @@
     font-size: 13px;
     color: #92400E;
     line-height: 1.4;
+    max-width: 100%;
+    overflow-x: auto;
   }
   .tip-box::before { content: "💡 "; }
 
@@ -193,6 +201,8 @@
     margin: 6px 0;
     font-size: 13px;
     line-height: 1.4;
+    max-width: 100%;
+    overflow-x: auto;
   }
   .error-box::before { content: "⚠️ "; }
 
@@ -339,25 +349,18 @@
     .section-title { font-size: 18px; margin-bottom: 14px; padding-bottom: 8px; }
 
     /* Cards */
-    .card { padding: 14px; margin-bottom: 14px; border-radius: 10px; }
+    .card { padding: 14px; margin-bottom: 14px; border-radius: 10px; overflow-x: auto; }
     .card-title { font-size: 15px; margin-bottom: 10px; flex-wrap: wrap; }
 
     /* Grids */
     .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 14px; }
 
-    /* Inline grids inside cards - force single column on mobile */
-    .card div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; gap: 8px !important; }
-
-    /* Tables - critical: add scroll wrapper */
-    .study-table { font-size: 12px; min-width: 480px; }
-    .study-table th, .study-table td { padding: 5px 6px; }
+    /* Tables - allow horizontal scroll inside card */
+    .study-table { font-size: 12px; min-width: 0; width: 100%; }
+    .study-table th, .study-table td { padding: 5px 6px; word-break: break-word; }
+    .study-table td:first-child:not(.en) { min-width: 60px; }
+    .study-table td.en { min-width: 50px; }
     .study-table td:last-child { max-width: none; }
-
-    /* Table scroll hint */
-    .card::after {
-      content: '';
-      display: block;
-    }
 
     /* Search */
     .search-box { max-width: 100%; margin-bottom: 16px; }
@@ -371,13 +374,13 @@
     .flip-card-front, .flip-card-back { padding: 12px; }
 
     /* Tip/error boxes */
-    .tip-box, .error-box { font-size: 12px; padding: 6px 10px; }
+    .tip-box, .error-box { font-size: 12px; padding: 6px 10px; max-width: 100%; overflow-x: auto; }
 
     /* Tags */
     .tag { font-size: 11px; padding: 3px 8px; }
 
     /* Example */
-    .example-box { font-size: 13px; padding: 6px 10px; }
+    .example-box { font-size: 13px; padding: 6px 10px; max-width: 100%; }
 
     /* Back button */
     .back-link-mobile { display: inline-flex; }
@@ -389,18 +392,19 @@
     /* Badge */
     .badge { font-size: 10px; padding: 1px 6px; }
 
-    /* Inline style overrides for mobile */
-    .card span[style*="font-size:13px"], .card span[style*="font-size:15px"] { font-size: 12px !important; }
-    .card div[style*="font-size:15px"] { font-size: 13px !important; }
-    .card div[style*="font-size:13px"] { font-size: 12px !important; }
-    .card div[style*="font-size:14px"] { font-size: 13px !important; }
-    .card div[style*="border-radius:10px"], .card div[style*="border-radius: 10px"] { border-radius: 8px !important; padding: 10px !important; }
-    .card div[style*="padding:14px"], .card div[style*="padding: 14px"] { padding: 10px !important; }
-    .card div[style*="border-left-width:4px"], .card div[style*="border-left:4px"] { border-left-width: 3px !important; }
-    .card div[style*="margin-bottom:16px"], .card div[style*="margin-bottom: 16px"] { margin-bottom: 10px !important; }
-    .card div[style*="margin-bottom:10px"], .card div[style*="margin-bottom: 10px"] { margin-bottom: 6px !important; }
-    .card div[style*="gap:8px"], .card div[style*="gap: 8px"] { gap: 6px !important; }
-    .card span[style*="padding:4px 14px"], .card span[style*="padding:4px"], .card span[style*="padding: 4px"] { padding: 3px 10px !important; font-size: 11px !important; }
+    /* Force all inline grid layouts to single column on mobile */
+    .mobile-single-col { grid-template-columns: 1fr !important; }
+
+    /* Force inline flex layouts to wrap on mobile */
+    .mobile-flex-wrap { flex-wrap: wrap !important; }
+  }
+
+  /* Extra mobile breakpoint for very small screens */
+  @media (max-width: 380px) {
+    .card { padding: 10px; }
+    .study-table td { padding: 3px 4px; font-size: 11px; }
+    .study-table th { padding: 3px 4px; font-size: 11px; }
+    .card-title { font-size: 14px; }
   }
 
   /* Table horizontal scroll for all screens but especially mobile */
@@ -4581,6 +4585,87 @@ renderFlipCards(flipData);
       if (section) section.scrollIntoView({behavior:'smooth', block:'start'});
     }, 100);
   }
+})();
+
+// Mobile optimization: dynamically fix inline styles for narrow screens
+(function() {
+  function mobileOptimize() {
+    var isMobile = window.innerWidth <= 640;
+    if (!isMobile) {
+      // Remove mobile classes on desktop
+      document.querySelectorAll('.mobile-single-col').forEach(function(el) {
+        el.classList.remove('mobile-single-col');
+      });
+      document.querySelectorAll('.mobile-flex-wrap').forEach(function(el) {
+        el.classList.remove('mobile-flex-wrap');
+      });
+      return;
+    }
+
+    // Force all inline grid layouts to single column on mobile
+    document.querySelectorAll('.card div[style]').forEach(function(el) {
+      var s = el.getAttribute('style');
+      if (s && s.indexOf('grid-template-columns') >= 0 && s.indexOf('1fr 1fr') >= 0) {
+        el.classList.add('mobile-single-col');
+      }
+      // Force inline flex layouts without wrap to wrap on mobile
+      if (s && s.indexOf('display:flex') >= 0 && s.indexOf('flex-wrap') < 0 && s.indexOf('align-items') >= 0) {
+        el.classList.add('mobile-flex-wrap');
+      }
+    });
+
+    // Wrap bare study-table elements that don't have a table-scroll parent
+    document.querySelectorAll('table.study-table').forEach(function(table) {
+      var parent = table.parentElement;
+      if (!parent.classList.contains('table-scroll')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-scroll';
+        parent.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+
+    // Reduce inline font sizes on mobile
+    document.querySelectorAll('.card div[style], .card span[style]').forEach(function(el) {
+      var s = el.getAttribute('style');
+      if (!s) return;
+      // Reduce font sizes
+      if (s.indexOf('font-size:15px') >= 0) {
+        el.style.fontSize = '13px';
+      } else if (s.indexOf('font-size:14px') >= 0) {
+        el.style.fontSize = '13px';
+      } else if (s.indexOf('font-size:13px') >= 0) {
+        el.style.fontSize = '12px';
+      }
+      // Reduce padding
+      if (s.indexOf('padding:14px') >= 0 || s.indexOf('padding: 14px') >= 0) {
+        el.style.padding = '10px';
+      }
+      // Reduce border-left-width
+      if (s.indexOf('border-left-width:4px') >= 0 || s.indexOf('border-left:4px') >= 0) {
+        el.style.borderLeftWidth = '3px';
+      }
+      // Reduce border-radius
+      if (s.indexOf('border-radius:10px') >= 0 || s.indexOf('border-radius: 10px') >= 0) {
+        el.style.borderRadius = '8px';
+      }
+    });
+
+    // Reduce span padding (tags, badges)
+    document.querySelectorAll('.card span[style]').forEach(function(el) {
+      var s = el.getAttribute('style');
+      if (!s) return;
+      if (s.indexOf('padding:4px') >= 0 || s.indexOf('padding: 4px') >= 0) {
+        el.style.padding = '3px 10px';
+        el.style.fontSize = '11px';
+      }
+    });
+  }
+
+  // Run on load
+  mobileOptimize();
+  // Run on resize
+  window.addEventListener('resize', mobileOptimize);
 })();
 </script>
 
