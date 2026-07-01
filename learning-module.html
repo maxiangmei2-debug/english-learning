@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学习模块</title>
+<style>
+:root {
+  --primary: #6366F1; --primary-light: #EEF2FF;
+  --success: #10B981; --success-light: #ECFDF5;
+  --accent: #F59E0B; --accent-light: #FFFBEB;
+  --danger: #EF4444; --danger-light: #FEF2F2;
+  --gray-50: #F9FAFB; --gray-100: #F3F4F6; --gray-200: #E5E7EB;
+  --gray-300: #D1D5DB; --gray-600: #4B5563; --gray-700: #374151;
+  --gray-800: #1F2937; --gray-900: #111827;
+  --radius: 12px; --shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--gray-50); color: var(--gray-800); line-height: 1.6;
+  overflow-x: hidden; max-width: 100vw;
+}
+
+/* Top bar */
+.top-bar {
+  background: linear-gradient(135deg, #6366F1, #8B5CF6);
+  color: white; padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px;
+  position: sticky; top: 0; z-index: 10;
+}
+.top-bar a { color: white; text-decoration: none; font-size: 14px; opacity: 0.9; flex-shrink: 0; }
+.top-bar h1 { font-size: 17px; font-weight: 700; flex: 1; text-align: center; }
+.top-bar .badge { font-size: 11px; background: rgba(255,255,255,0.2); padding: 2px 10px; border-radius: 10px; }
+
+.container { max-width: 800px; margin: 0 auto; padding: 16px 16px 40px; }
+
+/* Module header */
+.module-header {
+  background: white; border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 20px; margin-bottom: 16px; text-align: center;
+  border-left: 4px solid var(--primary);
+}
+.module-header .phase { font-size: 12px; color: var(--primary); font-weight: 600; margin-bottom: 4px; }
+.module-header h2 { font-size: 20px; margin-bottom: 4px; }
+.module-header .desc { font-size: 13px; color: var(--gray-600); }
+
+/* Info bar */
+.info-bar {
+  display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;
+}
+.info-tag {
+  font-size: 11px; padding: 4px 10px; border-radius: 8px; font-weight: 600;
+  background: var(--primary-light); color: var(--primary);
+}
+.info-tag.highlight { background: var(--accent-light); color: #92400E; }
+
+/* Cards */
+.card {
+  background: white; border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 20px; margin-bottom: 14px; overflow-x: auto;
+}
+.card-title {
+  font-size: 17px; font-weight: 600; color: var(--gray-900);
+  margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+.card-title .badge {
+  font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; color: white;
+}
+.badge-grammar { background: var(--primary); }
+.badge-vocab { background: var(--success); }
+.badge-phrase { background: var(--accent); }
+.badge-error { background: var(--danger); }
+
+/* Tables */
+.study-table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 6px 0; }
+.study-table th {
+  background: var(--primary-light); color: var(--primary); font-weight: 600;
+  padding: 8px 10px; text-align: left; border-bottom: 2px solid var(--primary);
+}
+.study-table td {
+  padding: 6px 10px; border-bottom: 1px solid var(--gray-100);
+  vertical-align: top; line-height: 1.4; word-break: break-word;
+}
+.study-table tr:hover td { background: var(--gray-50); }
+.en { color: var(--primary); font-weight: 500; }
+.zh { color: var(--gray-600); }
+.highlight { background: var(--accent-light); padding: 1px 4px; border-radius: 3px; font-weight: 600; }
+
+/* Example box */
+.example-box {
+  background: var(--gray-50); border-left: 3px solid var(--primary);
+  border-radius: 0 8px 8px 0; padding: 8px 12px; margin: 6px 0;
+  font-size: 14px; line-height: 1.5; max-width: 100%; overflow-x: auto;
+}
+
+/* Tip box */
+.tip-box {
+  background: var(--accent-light); border-radius: 8px; padding: 8px 12px;
+  margin: 6px 0; font-size: 13px; color: #92400E; line-height: 1.4;
+  max-width: 100%; overflow-x: auto;
+}
+.tip-box::before { content: "💡 "; }
+
+/* Error box */
+.error-box {
+  background: var(--danger-light); border-radius: 8px; padding: 8px 12px;
+  margin: 6px 0; font-size: 13px; line-height: 1.4; max-width: 100%; overflow-x: auto;
+}
+.error-box::before { content: "⚠️ "; }
+
+/* Tags */
+.tag-group { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+.tag {
+  display: inline-block; padding: 4px 10px; border-radius: 6px;
+  font-size: 13px; font-weight: 500;
+}
+.tag-primary { background: var(--primary-light); color: var(--primary); }
+.tag-success { background: var(--success-light); color: var(--success); }
+.tag-accent { background: var(--accent-light); color: #92400E; }
+.tag-danger { background: var(--danger-light); color: var(--danger); }
+
+/* Grid */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.sub-title {
+  font-size: 15px; font-weight: 600; color: var(--gray-700);
+  margin: 10px 0 6px; padding-left: 10px;
+  border-left: 3px solid var(--accent); line-height: 1.4;
+}
+
+/* Section title */
+.section-label {
+  font-size: 12px; font-weight: 700; color: var(--primary);
+  text-transform: uppercase; letter-spacing: 1px;
+  margin-bottom: 8px; padding: 4px 0;
+  border-bottom: 1px dashed var(--gray-200);
+}
+
+/* Completion area */
+.complete-area {
+  text-align: center; padding: 24px 0; margin-top: 8px;
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 10px 24px; border-radius: 10px; font-size: 15px;
+  font-weight: 600; text-decoration: none; cursor: pointer;
+  border: none; font-family: inherit; transition: all 0.2s;
+}
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: #4F46E5; }
+
+/* Small tag pills inside cards */
+.sub-tag {
+  display: inline-block; padding: 2px 8px; border-radius: 10px;
+  font-size: 11px; font-weight: 600; color: white; margin-right: 4px;
+}
+.tag-purple { background: #8B5CF6; }
+.tag-green { background: var(--success); }
+.tag-orange { background: var(--accent); }
+.tag-red { background: var(--danger); }
+
+/* Progress dots */
+.dots { display: flex; gap: 6px; justify-content: center; margin: 10px 0; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gray-200); }
+.dot.active { background: var(--primary); }
+
+/* Mobile */
+@media (max-width: 640px) {
+  .container { padding: 12px 10px 40px; }
+  .card { padding: 14px; margin-bottom: 12px; border-radius: 10px; }
+  .card-title { font-size: 15px; flex-wrap: wrap; }
+  .grid-2 { grid-template-columns: 1fr; }
+  .study-table { font-size: 12px; }
+  .study-table th, .study-table td { padding: 5px 6px; }
+  .example-box { font-size: 13px; padding: 6px 10px; }
+  .tip-box, .error-box { font-size: 12px; padding: 6px 10px; }
+  .module-header h2 { font-size: 17px; }
+  .sub-title { font-size: 13px; }
+  .top-bar h1 { font-size: 15px; }
+}
+@media (max-width: 380px) {
+  .card { padding: 10px; }
+  .study-table td { padding: 3px 4px; font-size: 11px; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="study-plan.html">← 学习计划</a>
+  <h1 id="moduleTitle">学习模块</h1>
+  <span id="sessionBadge" class="badge">第1课</span>
+</div>
+
+<div class="container" id="moduleContent"></div>
+
+<script>
+// ====== Get module from URL ======
+function getParam(name) {
+  var m = location.search.match(new RegExp('[?&]'+name+'=([^&]*)'));
+  return m ? decodeURIComponent(m[1]) : null;
+}
+
+var unitId = getParam('unit') || 'u1';
+var sessionIdx = parseInt(getParam('session') || '0');
+
+// ====== Module data ======
+var MODULES = {
+  u1: {
+    phase: '基础语法', theme: '时态基础', icon: '⏰',
+    time: '20分钟', sessionLabel: '学习新知',
+    modules: [
+      // Grammar: 时态体系总览 (condensed)
+      {
+        type: 'grammar', title: '🕐 时态体系总览',
+        content: '<div style="margin-bottom:12px;"><span class="sub-tag tag-green">过去</span></div>'+
+          '<div class="grid-2" style="margin-bottom:12px;">'+
+          '<div style="background:#F5F3FF;border-radius:10px;padding:12px;border-left:3px solid #8B5CF6;">'+
+          '<div style="font-weight:700;font-size:14px;color:#6D28D9;margin-bottom:2px;">一般过去时</div>'+
+          '<div style="font-size:12px;color:var(--gray-600);">结构：<span class="en">did</span>（过去式）</div>'+
+          '<div style="font-size:12px;color:var(--gray-600);">过去完成的动作</div>'+
+          '<div style="font-size:13px;margin-top:4px;" class="en">I took part in a competition.</div></div>'+
+          '<div style="background:#F5F3FF;border-radius:10px;padding:12px;border-left:3px solid #8B5CF6;">'+
+          '<div style="font-weight:700;font-size:14px;color:#6D28D9;margin-bottom:2px;">过去进行时</div>'+
+          '<div style="font-size:12px;color:var(--gray-600);">结构：<span class="en">was/were + doing</span></div>'+
+          '<div style="font-size:12px;color:var(--gray-600);">过去某一刻正在做</div>'+
+          '<div style="font-size:13px;margin-top:4px;" class="en">I was minding my own business.</div></div></div>'+
+          '<div style="margin-bottom:12px;"><span class="sub-tag tag-purple">现在</span></div>'+
+          '<div class="grid-2" style="margin-bottom:12px;">'+
+          '<div style="background:var(--primary-light);border-radius:10px;padding:12px;border-left:3px solid var(--primary);">'+
+          '<div style="font-weight:700;font-size:14px;color:var(--primary);margin-bottom:2px;">一般现在时</div>'+
+          '<div style="font-size:12px;color:var(--gray-600);">结构：<span class="en">do / does</span></div>'+
+          '<div style="font-size:12px;color:var(--gray-600);">习惯、爱好、事实</div>'+
+          '<div style="font-size:13px;margin-top:4px;" class="en">I like jazz.</div></div>'+
+          '<div style="background:var(--primary-light);border-radius:10px;padding:12px;border-left:3px solid var(--primary);">'+
+          '<div style="font-weight:700;font-size:14px;color:var(--primary);margin-bottom:2px;">现在进行时</div>'+
+          '<div style="font-size:12px;color:var(--gray-600);">结构：<span class="en">am/is/are + doing</span></div>'+
+          '<div style="font-size:12px;color:var(--gray-600);">此时此刻正在做</div>'+
+          '<div style="font-size:13px;margin-top:4px;" class="en">I am drinking coffee.</div></div></div>'+
+          '<div style="margin-bottom:8px;"><span class="sub-tag tag-orange">将来</span></div>'+
+          '<div class="grid-2">'+
+          '<div style="background:var(--accent-light);border-radius:10px;padding:12px;border-left:3px solid var(--accent);">'+
+          '<div style="font-weight:700;font-size:14px;color:#92400E;margin-bottom:2px;">will do</div>'+
+          '<div style="font-size:12px;color:var(--gray-600);">临时决定 / 单纯将来</div>'+
+          '<div style="font-size:13px;margin-top:4px;" class="en">I will keep in touch.</div></div>'+
+          '<div style="background:var(--accent-light);border-radius:10px;padding:12px;border-left:3px solid var(--accent);">'+
+          '<div style="font-weight:700;font-size:14px;color:#92400E;margin-bottom:2px;">be going to</div>'+
+          '<div style="font-size:12px;color:var(--gray-600);">提前计划的将来</div>'+
+          '<div style="font-size:13px;margin-top:4px;" class="en">I\'m going to buy a new bag.</div></div></div>'+
+          '<div class="tip-box" style="margin-top:12px;"><strong>核心区分维度：</strong>过去完成 → 过去式 | 现在正在 → am/is/are doing | 将来打算 → will/going to</div>'
+      },
+      // Grammar: 三种将来时对比 (condensed)
+      {
+        type: 'grammar', title: '🚀 三种将来时快速区分',
+        content: '<div class="grid-2">'+
+          '<div style="background:var(--primary-light);border-radius:10px;padding:12px;border-left:3px solid var(--primary);">'+
+          '<div style="font-weight:700;font-size:14px;color:var(--primary);">be going to 表将来</div>'+
+          '<div style="font-size:12px;color:var(--gray-600);">提前计划好的将来</div>'+
+          '<div class="example-box" style="font-size:13px;">I\'m going to buy stationery.</div>'+
+          '<div style="font-size:11px;color:var(--gray-600);">昨天就想好的 → going to</div></div>'+
+          '<div style="background:#FEF3C7;border-radius:10px;padding:12px;border-left:3px solid var(--accent);">'+
+          '<div style="font-weight:700;font-size:14px;color:#92400E;">will 表将来</div>'+
+          '<div style="font-size:12px;color:var(--gray-600);">临时决定 / 未来预测</div>'+
+          '<div class="example-box" style="font-size:13px;">I will keep in touch.</div>'+
+          '<div style="font-size:11px;color:var(--gray-600);">此刻才决定的 → will</div></div>'+
+          '<div style="background:var(--success-light);border-radius:10px;padding:12px;border-left:3px solid var(--success);">'+
+          '<div style="font-weight:700;font-size:14px;color:var(--success);">be doing 表将来</div>'+
+          '<div style="font-size:12px;color:var(--gray-600);">日程已敲定（仅限位移动词）</div>'+
+          '<div class="example-box" style="font-size:13px;">Rachel is meeting Diane next Friday.</div>'+
+          '<div style="font-size:11px;color:var(--gray-600);">日历上标好的 → be doing</div></div></div>'+
+          '<div class="tip-box" style="margin-top:10px;">'+
+          '<strong>一句话区分：</strong>昨天就想好 → going to | 此刻才决定 → will | 日历已标好 → be doing</div>'
+      }
+    ]
+  },
+  u2: {
+    phase: '基础语法', theme: '完成时 & 进行时', icon: '🔄',
+    time: '20分钟', sessionLabel: '学习新知',
+    modules: [
+      {
+        type: 'grammar', title: '🎯 现在完成时 have/has + done',
+        content: '<div style="background:var(--primary-light);border-radius:10px;padding:14px;margin-bottom:10px;border-left:4px solid var(--primary);">'+
+          '<div style="font-size:15px;font-weight:600;color:var(--primary);margin-bottom:4px;">核心公式：have / has + 过去分词(done)</div>'+
+          '<div style="font-size:13px;">I have lived here for 3 years. / She has already finished it.</div></div>'+
+          '<div class="sub-title">三大核心用法</div>'+
+          '<table class="study-table">'+
+          '<tr><th style="width:20%;">用法</th><th style="width:40%;">含义</th><th style="width:40%;">例句</th></tr>'+
+          '<tr><td><strong>经验</strong></td><td>曾经做过（对目前有影响）</td><td class="en">I have been to Paris. 我去过巴黎。</td></tr>'+
+          '<tr><td><strong>持续</strong></td><td>从过去持续到现在</td><td class="en">I have lived here since 2019. 从2019住到现在。</td></tr>'+
+          '<tr><td><strong>结果</strong></td><td>刚刚完成，对现在产生影响</td><td class="en">I have lost my key. 我把钥匙弄丢了。（现在进不去）</td></tr>'+
+          '</table>'+
+          '<div class="sub-title">现在完成时 vs 一般过去时</div>'+
+          '<table class="study-table">'+
+          '<tr><th style="width:25%;"></th><th style="width:37.5%;">现在完成时</th><th style="width:37.5%;">一般过去时</th></tr>'+
+          '<tr><td><strong>时间感</strong></td><td>与现在有关</td><td>纯过去，与现在无关</td></tr>'+
+          '<tr><td><strong>标志词</strong></td><td>already, yet, ever, never, since, for</td><td>yesterday, last week, in 2019, ago</td></tr>'+
+          '<tr><td><strong>例句</strong></td><td class="en">I have been there. ✅</td><td class="en">I was there in 2019. ✅</td></tr>'+
+          '<tr><td><strong>❌ 错误</strong></td><td colspan="2">I have been there in 2019. ❌（有具体过去时间 → 一般过去时）</td></tr>'+
+          '</table>'+
+          '<div class="sub-title">关键标志词</div>'+
+          '<table class="study-table">'+
+          '<tr><th>标志词</th><th>含义</th><th>位置</th><th>例句</th></tr>'+
+          '<tr><td class="en">for + 一段时间</td><td>持续了多久</td><td>句末</td><td class="en">for 3 years / for six months</td></tr>'+
+          '<tr><td class="en">since + 时间点</td><td>自从...</td><td>句末</td><td class="en">since 2019 / since last March</td></tr>'+
+          '</table>'+
+          '<div class="sub-title">have been to vs have gone to</div>'+
+          '<div style="font-size:13px;line-height:1.8;">'+
+          '<span class="en">been to</span> = 去过（已回来）→ I\'ve been to Milan. ✅<br>'+
+          '<span class="en">gone to</span> = 去了（还在那）→ She\'s gone to HK. ✅</div>'
+      },
+      {
+        type: 'grammar', title: '⚡ be going to vs be doing（表将来）要点回顾',
+        content: '<div class="grid-2" style="margin-bottom:10px;">'+
+          '<div style="background:var(--success-light);border-radius:10px;padding:12px;border-left:3px solid var(--success);">'+
+          '<div style="font-weight:700;font-size:14px;color:var(--success);">✅ be going to：所有动词</div>'+
+          '<div style="font-size:12px;">He is going to cook dinner.</div></div>'+
+          '<div style="background:var(--danger-light);border-radius:10px;padding:12px;border-left:3px solid var(--danger);">'+
+          '<div style="font-weight:700;font-size:14px;color:var(--danger);">⚠️ be doing：仅出行/位移动词</div>'+
+          '<div style="font-size:12px;">go/come/leave/arrive/fly/travel/move</div></div></div>'+
+          '<div class="grid-2" style="margin-bottom:10px;">'+
+          '<div style="background:var(--success-light);border-radius:10px;padding:12px;border-left:3px solid var(--success);">'+
+          '<div style="font-weight:700;font-size:14px;color:var(--success);">🔒 be doing：100% 敲定</div>'+
+          '<div style="font-size:12px;">We\'re flying to Mexico tonight. 机票已买</div></div>'+
+          '<div style="background:var(--accent-light);border-radius:10px;padding:12px;border-left:3px solid var(--accent);">'+
+          '<div style="font-weight:700;font-size:14px;color:#92400E;">💭 be going to：只是打算</div>'+
+          '<div style="font-size:12px;">I\'m going to fly to Mexico someday. 只是想法</div></div></div>'+
+          '<div class="tip-box"><strong>口诀：</strong>眼见征兆 → going to | 行程定死 → be doing | 临时决定 → will</div>'
+      }
+    ]
+  },
+  u3: {
+    phase: '基础语法', theme: '情态动词', icon: '🎯',
+    time: '20分钟', sessionLabel: '学习新知',
+    modules: [
+      {
+        type: 'grammar', title: '⚡ 情态动词 must / have to 家族',
+        content: '<table class="study-table">'+
+          '<tr><th>情态动词</th><th>含义</th><th>语气强度</th><th>例句</th></tr>'+
+          '<tr><td class="en">must</td><td>必须（主观）</td><td>最强</td><td class="en">I must finish this today.</td></tr>'+
+          '<tr><td class="en">have to</td><td>不得不（客观）</td><td>强</td><td class="en">I have to wear a uniform.</td></tr>'+
+          '<tr><td class="en">should</td><td>应该（建议）</td><td>中</td><td class="en">You should see a doctor.</td></tr>'+
+          '<tr><td class="en">can</td><td>能够/可以</td><td>中</td><td class="en">Can I help you?</td></tr>'+
+          '<tr><td class="en">could</td><td>可以（更礼貌）</td><td>弱</td><td class="en">Could I have the menu?</td></tr>'+
+          '<tr><td class="en">may</td><td>也许/可以</td><td>弱</td><td class="en">May I come in?</td></tr>'+
+          '<tr><td class="en">might</td><td>也许（可能性更低）</td><td>最弱</td><td class="en">It might rain later.</td></tr>'+
+          '</table>'+
+          '<div class="tip-box">'+
+          '<strong>铁律：</strong>情态动词后面的动词<strong>永远是原形</strong>！<br>'+
+          '✅ She can <strong>swim</strong>. &nbsp; ❌ She can <strong>swims</strong>.</div>'
+      },
+      {
+        type: 'grammar', title: '💬 情态动词：请求 & 建议',
+        content: '<table class="study-table">'+
+          '<tr><th style="width:25%;">功能</th><th style="width:37.5%;">句型</th><th style="width:37.5%;">场景</th></tr>'+
+          '<tr><td><strong>请求许可</strong></td><td class="en">Can/Could/May I + 原形?</td><td>Can I use your phone? 能用手机吗？</td></tr>'+
+          '<tr><td><strong>礼貌请求</strong></td><td class="en">Could/Would you + 原形?</td><td>Could you help me? 能帮我一下吗？</td></tr>'+
+          '<tr><td><strong>提建议</strong></td><td class="en">You should/shouldn\'t + 原形</td><td>You should rest. 你应该休息。</td></tr>'+
+          '<tr><td><strong>表达必要</strong></td><td class="en">must / have to + 原形</td><td>I must go now. 我必须走了。</td></tr>'+
+          '</table>'+
+          '<div class="tip-box">'+
+          '<strong>礼貌等级：</strong>Could/May/Would（最礼貌）> Can（一般）> Must/Should（命令/建议）</div>'
+      }
+    ]
+  },
+  u4: {
+    phase: '基础语法', theme: '从句入门', icon: '🔗',
+    time: '20分钟', sessionLabel: '学习新知',
+    modules: [
+      {
+        type: 'grammar', title: '🌳 从句体系概览',
+        content: '<table class="study-table">'+
+          '<tr><th style="width:20%;">从句类型</th><th style="width:30%;">引导词</th><th style="width:25%;">充当成分</th><th style="width:25%;">例句</th></tr>'+
+          '<tr><td><strong>名词性从句</strong></td><td>that, what, who</td><td>主语/宾语/表语</td><td class="en">I think <strong>that</strong> he is right.</td></tr>'+
+          '<tr><td><strong>定语从句</strong></td><td>who, which, that</td><td>修饰名词</td><td class="en">The book <strong>that</strong> I read.</td></tr>'+
+          '<tr><td><strong>状语从句</strong></td><td>when, because, if, although</td><td>表时间/原因/条件</td><td class="en"><strong>If</strong> it rains, I\'ll stay home.</td></tr>'+
+          '</table>'+
+          '<div class="tip-box"><strong>核心规则：</strong>that/which 修饰物，who 修饰人，where 修饰地点。从句本身也是完整句子。</div>'
+      },
+      {
+        type: 'grammar', title: '🔀 if 引导四大条件句 快速总览',
+        content: '<table class="study-table">'+
+          '<tr><th>类型</th><th>从句时态</th><th>主句时态</th><th>可能性</th></tr>'+
+          '<tr><td><strong>零条件句</strong></td><td>一般现在时</td><td>一般现在时</td><td>100% 必然</td></tr>'+
+          '<tr><td><strong>第一条件句</strong></td><td>一般现在时</td><td>will/can/may + do</td><td>大概率</td></tr>'+
+          '<tr><td><strong>第二条件句</strong></td><td>一般过去时 did</td><td>would/could + do</td><td>几乎不可能</td></tr>'+
+          '<tr><td><strong>第三条件句</strong></td><td>had done</td><td>would have done</td><td>完全不可能</td></tr>'+
+          '</table>'+
+          '<div class="example-box">零：If you heat water, it <strong>boils</strong>.（无will）</div>'+
+          '<div class="example-box">一：If it rains, I <strong>will stay</strong> home.（未来计划）</div>'+
+          '<div class="example-box">二：If I <strong>were</strong> rich, I <strong>would travel</strong>.（现在空想）</div>'+
+          '<div class="example-box">三：If I <strong>had studied</strong>, I <strong>would have passed</strong>.（过去遗憾）</div>'+
+          '<div class="tip-box"><strong>口诀：</strong>永久道理无will → 零 | 未来计划主will → 一 | 现在空想从句did → 二 | 过去遗憾had done → 三</div>'
+      }
+    ]
+  },
+  u5: {
+    phase: '生活场景', theme: '租房 & 购物', icon: '🏠',
+    time: '20分钟', sessionLabel: '学习新知',
+    modules: [
+      {
+        type: 'vocab', title: '🏠 租房 & 生活 核心词汇',
+        content: '<table class="study-table">'+
+          '<tr><th>英文</th><th>中文</th><th>英文</th><th>中文</th></tr>'+
+          '<tr><td class="en">landlord</td><td>房东</td><td class="en">tenant</td><td>租客</td></tr>'+
+          '<tr><td class="en">deposit</td><td>押金</td><td class="en">utility bill</td><td>水电费</td></tr>'+
+          '<tr><td class="en">furnished</td><td>带家具的</td><td class="en">balcony</td><td>阳台</td></tr>'+
+          '<tr><td class="en">air conditioner</td><td>空调</td><td class="en">heater</td><td>暖气</td></tr>'+
+          '<tr><td class="en">neighborhood</td><td>社区；附近</td><td class="en">move in/out</td><td>搬进/出</td></tr>'+
+          '</table>'
+      },
+      {
+        type: 'vocab', title: '🛒 购物 & 砍价 核心词汇',
+        content: '<table class="study-table">'+
+          '<tr><th>英文</th><th>中文</th><th>英文</th><th>中文</th></tr>'+
+          '<tr><td class="en">discount</td><td>折扣</td><td class="en">on sale</td><td>打折中</td></tr>'+
+          '<tr><td class="en">bargain</td><td>讨价还价/便宜货</td><td class="en">receipt</td><td>收据</td></tr>'+
+          '<tr><td class="en">cashier</td><td>收银员</td><td class="en">fitting room</td><td>试衣间</td></tr>'+
+          '<tr><td class="en">size</td><td>尺码</td><td class="en">refund</td><td>退款</td></tr>'+
+          '<tr><td class="en">second-hand</td><td>二手的</td><td class="en">brand new</td><td>全新的</td></tr>'+
+          '</table>'
+      },
+      {
+        type: 'phrase', title: '🛒 购物砍价 核心句型',
+        content: '<div class="example-box">How much <strong>is</strong> this? 这个多少钱？</div>'+
+          '<div class="example-box">Can you <strong>give me a discount</strong>? 能打折吗？</div>'+
+          '<div class="example-box">Is this <strong>on sale</strong>? 这个在打折吗？</div>'+
+          '<div class="example-box">Can I <strong>try it on</strong>? 我能试穿吗？</div>'+
+          '<div class="example-box">I\'d like a <strong>refund</strong>, please. 我想退款。</div>'+
+          '<div class="error-box">❌ cheap price → ✅ low price（cheap修饰物品，low修饰价格）</div>'
+      }
+    ]
+  },
+  u6: {
+    phase: '生活场景', theme: '点餐 & 旅行', icon: '🍽️',
+    time: '20分钟', sessionLabel: '学习新知',
+    modules: [
+      {
+        type: 'vocab', title: '🍽️ 点餐用餐 核心词汇',
+        content: '<table class="study-table">'+
+          '<tr><th>英文</th><th>中文</th><th>英文</th><th>中文</th></tr>'+
+          '<tr><td class="en">menu</td><td>菜单</td><td class="en">appetizer</td><td>开胃菜</td></tr>'+
+          '<tr><td class="en">main course</td><td>主菜</td><td class="en">dessert</td><td>甜点</td></tr>'+
+          '<tr><td class="en">rare/medium/well-done</td><td>一分/五分/全熟</td><td class="en">tip</td><td>小费</td></tr>'+
+          '<tr><td class="en">reservation</td><td>预约</td><td class="en">bill/check</td><td>账单</td></tr>'+
+          '<tr><td class="en">vegetarian</td><td>素食的</td><td class="en">allergic</td><td>过敏的</td></tr>'+
+          '</table>'
+      },
+      {
+        type: 'vocab', title: '✈️ 旅行 & 住宿 核心词汇',
+        content: '<table class="study-table">'+
+          '<tr><th>英文</th><th>中文</th><th>英文</th><th>中文</th></tr>'+
+          '<tr><td class="en">check in</td><td>办理入住</td><td class="en">check out</td><td>退房</td></tr>'+
+          '<tr><td class="en">single/double room</td><td>单人/双人房</td><td class="en">suite</td><td>套房</td></tr>'+
+          '<tr><td class="en">boarding pass</td><td>登机牌</td><td class="en">departure</td><td>出发</td></tr>'+
+          '<tr><td class="en">luggage/baggage</td><td>行李</td><td class="en">delay</td><td>延误</td></tr>'+
+          '<tr><td class="en">one-way/round trip</td><td>单程/往返</td><td class="en">transfer</td><td>转机</td></tr>'+
+          '</table>'
+      },
+      {
+        type: 'phrase', title: '🍽️ 点餐场景 实用句型',
+        content: '<div class="example-box">I\'d like <strong>to make a reservation</strong> for two. 我想订两位。</div>'+
+          '<div class="example-box">Could I <strong>have the menu</strong>, please? 请给我菜单。</div>'+
+          '<div class="example-box">I\'ll have <strong>the grilled salmon</strong>. 我要烤三文鱼。</div>'+
+          '<div class="example-box"><strong>Check</strong>, please. 买单。</div>'+
+          '<div class="example-box">I\'m allergic <strong>to peanuts</strong>. 我对花生过敏。</div>'
+      }
+    ]
+  },
+  u7: {
+    phase: '生活场景', theme: '看医生 & 健康', icon: '🏥',
+    time: '20分钟', sessionLabel: '学习新知',
+    modules: [
+      {
+        type: 'vocab', title: '🧍 身体部位 核心词汇',
+        content: '<table class="study-table">'+
+          '<tr><td class="en">head</td><td>头</td><td class="en">stomach</td><td>胃/肚子</td>'+
+          '<td class="en">chest</td><td>胸口</td><td class="en">back</td><td>背</td></tr>'+
+          '<tr><td class="en">throat</td><td>喉咙</td><td class="en">arm/leg</td><td>手臂/腿</td>'+
+          '<td class="en">knee</td><td>膝盖</td><td class="en">ankle</td><td>脚踝</td></tr>'+
+          '</table>'
+      },
+      {
+        type: 'vocab', title: '🏥 看医生 & 症状 核心词汇',
+        content: '<table class="study-table">'+
+          '<tr><td class="en">headache</td><td>头痛</td><td class="en">fever</td><td>发烧</td>'+
+          '<td class="en">cough</td><td>咳嗽</td><td class="en">sore throat</td><td>喉咙痛</td></tr>'+
+          '<tr><td class="en">appointment</td><td>预约</td><td class="en">prescription</td><td>处方</td>'+
+          '<td class="en">symptom</td><td>症状</td><td class="en">medicine</td><td>药</td></tr>'+
+          '</table>'
+      },
+      {
+        type: 'grammar', title: '🏥 看医生常用语法',
+        content: '<div class="example-box">I <strong>have</strong> a headache. 我头痛。（have + 症状名词）</div>'+
+          '<div class="example-box">My throat <strong>hurts</strong>. 我喉咙痛。（部位 + hurts）</div>'+
+          '<div class="example-box">I\'ve been <strong>feeling</strong> dizzy. 我一直头晕。（现在完成进行时）</div>'+
+          '<div class="example-box">You <strong>should</strong> take this medicine. 你应该吃这个药。</div>'+
+          '<div class="tip-box"><strong>结构公式：</strong>have + 症状名词 = 某种症状 | 部位 + hurt(s) = 某处疼痛</div>'
+      }
+    ]
+  },
+  u8: {
+    phase: '生活场景', theme: '外貌 & 情绪', icon: '😊',
+    time: '20分钟', sessionLabel: '学习新知',
+    modules: [
+      {
+        type: 'vocab', title: '👤 外貌 & 性格 核心词汇',
+        content: '<table class="study-table">'+
+          '<tr><td class="en">tall / short</td><td>高/矮</td><td class="en">slim / overweight</td><td>苗条/超重</td></tr>'+
+          '<tr><td class="en">blond / curly / straight</td><td>金发/卷发/直发</td><td class="en">bald</td><td>秃头</td></tr>'+
+          '<tr><td class="en">friendly / shy</td><td>友好的/害羞的</td><td class="en">outgoing / quiet</td><td>外向的/安静的</td></tr>'+
+          '<tr><td class="en">patient / strict</td><td>耐心的/严格的</td><td class="en">generous / mean</td><td>慷慨的/小气的</td></tr>'+
+          '</table>'
+      },
+      {
+        type: 'vocab', title: '😰 情绪表达 核心词汇',
+        content: '<table class="study-table">'+
+          '<tr><td class="en">excited</td><td>兴奋的</td><td class="en">anxious</td><td>焦虑的</td>'+
+          '<td class="en">annoyed</td><td>恼怒的</td><td class="en">relieved</td><td>放心的</td></tr>'+
+          '<tr><td class="en">disappointed</td><td>失望的</td><td class="en">jealous</td><td>嫉妒的</td>'+
+          '<td class="en">grateful</td><td>感激的</td><td class="en">embarrassed</td><td>尴尬的</td></tr>'+
+          '</table>'
+      },
+      {
+        type: 'phrase', title: '😰 情绪表达句型',
+        content: '<div class="example-box">I\'m <strong>excited about</strong> the trip. 我对旅行很兴奋。</div>'+
+          '<div class="example-box">I\'m <strong>worried about</strong> the exam. 我担心考试。</div>'+
+          '<div class="example-box">I\'m <strong>fed up with</strong> the noise. 我受够了噪音。</div>'+
+          '<div class="example-box">I\'m <strong>looking forward to</strong> seeing you. 期待见到你。</div>'+
+          '<div class="tip-box"><strong>公式：</strong>be + 情绪形容词 + about/with/to + 原因</div>'
+      }
+    ]
+  },
+  u9: {
+    phase: '进阶表达', theme: '职场 & 面试', icon: '💼',
+    time: '20分钟', sessionLabel: '学习新知',
+    modules: [
+      {
+        type: 'vocab', title: '💼 职场 & 沟通 核心词汇',
+        content: '<table class="study-table">'+
+          '<tr><td class="en">resume/CV</td><td>简历</td><td class="en">interview</td><td>面试</td>'+
+          '<td class="en">colleague</td><td>同事</td><td class="en">deadline</td><td>截止日期</td></tr>'+
+          '<tr><td class="en">salary</td><td>薪资</td><td class="en">promotion</td><td>升职</td>'+
+          '<td class="en">overtime</td><td>加班</td><td class="en">quit/resign</td><td>辞职</td></tr>'+
+          '</table>'
+      },
+      {
+        type: 'phrase', title: '💼 职场常用句型',
+        content: '<div class="example-box">I\'d like to <strong>apply for</strong> the position. 我想申请这个职位。</div>'+
+          '<div class="example-box">I have experience <strong>in</strong> marketing. 我有市场营销经验。</div>'+
+          '<div class="example-box">I\'m <strong>responsible for</strong> managing the team. 我负责管理团队。</div>'+
+          '<div class="example-box">Could you <strong>give me a hand</strong> with this? 能帮我一下吗？</div>'+
+          '<div class="example-box">Let\'s <strong>schedule a meeting</strong> for next week. 我们下周安排个会议。</div>'+
+          '<div class="tip-box"><strong>职场礼貌三件套：</strong>I\'d like to... / Could you... / Would you mind...</div>'
+      }
+    ]
+  },
+  u10: {
+    phase: '进阶表达', theme: '新闻 & 环保', icon: '🌍',
+    time: '20分钟', sessionLabel: '学习新知',
+    modules: [
+      {
+        type: 'vocab', title: '🌍 环保主题 核心词汇',
+        content: '<table class="study-table">'+
+          '<tr><td class="en">environment</td><td>环境</td><td class="en">pollution</td><td>污染</td>'+
+          '<td class="en">recycle</td><td>回收</td><td class="en">global warming</td><td>全球变暖</td></tr>'+
+          '<tr><td class="en">carbon footprint</td><td>碳足迹</td><td class="en">renewable energy</td><td>可再生能源</td></tr>'+
+          '<tr><td class="en">endangered</td><td>濒危的</td><td class="en">sustainable</td><td>可持续的</td></tr>'+
+          '</table>'
+      },
+      {
+        type: 'vocab', title: '📰 犯罪新闻 核心词汇',
+        content: '<table class="study-table">'+
+          '<tr><td class="en">robbery</td><td>抢劫</td><td class="en">burglary</td><td>入室盗窃</td>'+
+          '<td class="en">suspect</td><td>嫌疑人</td><td class="en">witness</td><td>目击者</td></tr>'+
+          '<tr><td class="en">arrest</td><td>逮捕</td><td class="en">evidence</td><td>证据</td>'+
+          '<td class="en">investigation</td><td>调查</td><td class="en">sentence</td><td>判决</td></tr>'+
+          '</table>'
+      },
+      {
+        type: 'phrase', title: '📰 新闻英语 常用表达',
+        content: '<div class="example-box">According <strong>to</strong> the report... 根据报道...</div>'+
+          '<div class="example-box">The suspect <strong>was arrested</strong> yesterday. 嫌疑人昨天被捕。</div>'+
+          '<div class="example-box"><strong>It is reported that</strong>... 据报道...</div>'+
+          '<div class="example-box">Experts <strong>warn that</strong>... 专家警告说...</div>'+
+          '<div class="example-box">The government <strong>has announced</strong>... 政府已宣布...</div>'
+      }
+    ]
+  },
+  u11: {
+    phase: '进阶表达', theme: '狼来了 & 故事叙述', icon: '🐺',
+    time: '20分钟', sessionLabel: '学习新知',
+    modules: [
+      {
+        type: 'grammar', title: '🐺 动物量词与状语从句',
+        content: '<table class="study-table">'+
+          '<tr><th>动物</th><th>量词</th><th>例句</th></tr>'+
+          '<tr><td>鸟 birds</td><td class="en">a flock of</td><td class="en">a flock of birds</td></tr>'+
+          '<tr><td>牛羊</td><td class="en">a herd of</td><td class="en">a herd of cows</td></tr>'+
+          '<tr><td>鱼</td><td class="en">a school of</td><td class="en">a school of fish</td></tr>'+
+          '<tr><td>狼</td><td class="en">a pack of</td><td class="en">a pack of wolves</td></tr>'+
+          '</table>'+
+          '<div class="sub-title">让步状语从句</div>'+
+          '<div class="example-box"><strong>Although/Though</strong> he shouted, nobody came.<br>虽然他在喊，但没人来。</div>'+
+          '<div class="example-box"><strong>Even though</strong> it was raining, they went out.<br>即使下雨，他们还是出去了。</div>'+
+          '<div class="tip-box">although 和 but <strong>不能同时出现</strong>在一个句子里！❌ Although he was tired, but he kept working.</div>'
+      },
+      {
+        type: 'phrase', title: '🐺 狼来了 核心表达',
+        content: '<div class="example-box"><strong>Once upon a time</strong>, there was a shepherd boy. 从前有个牧童。</div>'+
+          '<div class="example-box">He cried <strong>for help</strong>. 他喊救命。</div>'+
+          '<div class="example-box">Nobody <strong>believed</strong> him. 没人信他。</div>'+
+          '<div class="example-box">Don\'t <strong>tell lies</strong>. 不要说谎。</div>'+
+          '<div class="example-box"><strong>At last</strong>, the wolf really came. 最后狼真的来了。</div>'+
+          '<div class="example-box"><strong>Every time</strong> he shouted, nobody came. 每当他喊，没人来。</div>'
+      }
+    ]
+  },
+  u12: {
+    phase: '进阶表达', theme: '祈使句 & 综合复习', icon: '📢',
+    time: '20分钟', sessionLabel: '学习新知',
+    modules: [
+      {
+        type: 'grammar', title: '📢 祈使句详解 四种类型',
+        content: '<table class="study-table">'+
+          '<tr><th style="width:20%;">类型</th><th style="width:30%;">结构</th><th style="width:25%;">用法</th><th style="width:25%;">例句</th></tr>'+
+          '<tr><td><strong>肯定祈使</strong></td><td>动词原形开头</td><td>命令/请求</td><td class="en"><strong>Close</strong> the door.</td></tr>'+
+          '<tr><td><strong>否定祈使</strong></td><td>Don\'t + 动词原形</td><td>禁止</td><td class="en"><strong>Don\'t be</strong> late.</td></tr>'+
+          '<tr><td><strong>Let\'s 祈使</strong></td><td>Let\'s + 动词原形</td><td>建议一起做</td><td class="en"><strong>Let\'s go</strong> shopping.</td></tr>'+
+          '<tr><td><strong>No doing</strong></td><td>No + 动名词</td><td>公示语禁止</td><td class="en"><strong>No smoking</strong>.</td></tr>'+
+          '</table>'+
+          '<div class="sub-title">祈使句 + and/or 结果</div>'+
+          '<div class="example-box"><strong>Study hard and</strong> you will pass.<br>努力学习，你就会通过。</div>'+
+          '<div class="example-box"><strong>Hurry up, or</strong> you\'ll be late.<br>快点，否则你会迟到。</div>'+
+          '<div class="error-box">❌祈使句<strong>没有主语</strong>！❌ You close the door.（这是陈述句，不是祈使句）</div>'
+      },
+      {
+        type: 'phrase', title: '📢 祈使句常用表达',
+        content: '<table class="study-table">'+
+          '<tr><th>场景</th><th>英文</th><th>中文</th></tr>'+
+          '<tr><td>提醒注意</td><td class="en">Watch out! / Be careful!</td><td>当心！</td></tr>'+
+          '<tr><td>礼貌请求</td><td class="en">Please have a seat.</td><td>请坐。</td></tr>'+
+          '<tr><td>邀请建议</td><td class="en">Let\'s grab a coffee.</td><td>我们去喝杯咖啡吧。</td></tr>'+
+          '<tr><td>公示语</td><td class="en">No parking. / Keep off the grass.</td><td>禁止停车/勿踏草地。</td></tr>'+
+          '</table>'
+      }
+    ]
+  }
+};
+
+// ====== Render module ======
+function renderModule() {
+  var mod = MODULES[unitId];
+  if (!mod) { document.getElementById('moduleContent').innerHTML = '<p>模块未找到</p>'; return; }
+
+  // Update top bar
+  document.getElementById('moduleTitle').textContent = mod.icon + ' ' + mod.theme;
+  var idx = parseInt(unitId.replace('u',''));
+  document.getElementById('sessionBadge').textContent = '第' + sessionIdx + '课';
+
+  var html = '';
+
+  // Module header
+  html += '<div class="module-header">';
+  html += '<div class="phase">' + mod.phase + ' · 第 ' + idx + ' 单元</div>';
+  html += '<h2>' + mod.icon + ' ' + mod.theme + ' — ' + mod.sessionLabel + '</h2>';
+  html += '<div class="desc">⏱ ' + mod.time + '</div>';
+  html += '</div>';
+
+  // Info bar
+  html += '<div class="info-bar">';
+  html += '<span class="info-tag highlight">📖 聚焦学习</span>';
+  html += '<span class="info-tag">共 ' + mod.modules.length + ' 张卡片</span>';
+  html += '</div>';
+
+  // Content cards
+  for (var i = 0; i < mod.modules.length; i++) {
+    var m = mod.modules[i];
+    var badgeClass = 'badge-' + m.type;
+    html += '<div class="card">';
+    html += '<div class="card-title">' + m.title + ' <span class="badge ' + badgeClass + '">' + m.type + '</span></div>';
+    html += m.content;
+    html += '</div>';
+  }
+
+  // Bottom navigation
+  html += '<div class="complete-area">';
+  html += '<a href="study-plan.html" class="btn btn-primary">← 返回学习计划打卡</a>';
+  html += '</div>';
+
+  document.getElementById('moduleContent').innerHTML = html;
+}
+
+renderModule();
+</script>
+
+</body>
+</html>
