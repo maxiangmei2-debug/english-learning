@@ -1108,6 +1108,12 @@ function showToast(msg) {
 }
 
 // 启动
+// URL param: ?topic=购物 → auto-select matching topic
+(function(){
+  var p = new URLSearchParams(location.search);
+  var t = p.get('topic');
+  if (t && TOPICS.indexOf(t)>=0) { currentTopic = t; }
+})();
 init();
 
 // ====== 全局回车键 ======

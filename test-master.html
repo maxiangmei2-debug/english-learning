@@ -1375,7 +1375,7 @@ function init() {
   const bar = document.getElementById('catBar');
   CATS.forEach(c => {
     const btn = document.createElement('button');
-    btn.className = 'cat-btn' + (c.key === null ? ' active' : '');
+    btn.className = 'cat-btn' + (c.key === currentCat ? ' active' : '');
     btn.textContent = c.label;
     btn.onclick = () => {
       currentCat = c.key;
@@ -1779,6 +1779,12 @@ function shuffle(arr) {
   return arr;
 }
 
+// URL param: ?cat=grammar → auto-select matching category
+(function(){
+  var p = new URLSearchParams(location.search);
+  var c = p.get('cat');
+  if (c) { currentCat = c; }
+})();
 init();
 
 // ============ 全局回车键 ============

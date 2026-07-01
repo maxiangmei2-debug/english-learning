@@ -1195,6 +1195,22 @@ function endSurvival() {
 
 init();
 
+// URL param: ?topic=租房生活 → auto-select matching theme
+(function(){
+  var p = new URLSearchParams(location.search);
+  var t = p.get('topic');
+  if (!t) return;
+  var keys = Object.keys(VOCAB);
+  for (var i=0; i<keys.length; i++) {
+    if (keys[i].indexOf(t)>=0) {
+      var btns = document.querySelectorAll('.topic-btn');
+      btns.forEach(function(b){ b.classList.remove('active'); });
+      if (btns[i+1]) { btns[i+1].classList.add('active'); selectTopic(keys[i], btns[i+1]); }
+      break;
+    }
+  }
+})();
+
 // ====== 全局回车键 ======
 document.addEventListener('keydown', function(e) {
   if (e.key !== 'Enter') return;
