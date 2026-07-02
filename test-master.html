@@ -1779,13 +1779,39 @@ function shuffle(arr) {
   return arr;
 }
 
-// URL param: ?cat=grammar → auto-select matching category
+init();
+// URL param: ?cat=grammar → auto-select category and auto-start 极速闯关
 (function(){
   var p = new URLSearchParams(location.search);
   var c = p.get('cat');
-  if (c) { currentCat = c; }
+  if (c) {
+    currentCat = c;
+    // Highlight the matching category button
+    document.querySelectorAll('.cat-btn').forEach(function(b){ b.classList.remove('active'); });
+    var catBtns = document.querySelectorAll('.cat-btn');
+    var catKeys = CATS.map(function(cat){ return cat.key; });
+    var idx = catKeys.indexOf(c);
+    if (idx >= 0 && catBtns[idx]) catBtns[idx].classList.add('active');
+    // Validate category exists
+    var validCats = CATS.map(function(cat){ return cat.key; });
+    if (validCats.indexOf(c) >= 0) {
+      var catLabel = '';
+      CATS.forEach(function(cat){ if(cat.key === c) catLabel = cat.label; });
+      // Auto-start 极速闯关 mode with the selected category
+      startMode('speed');
+      // Add a focus banner on the test page header area
+      var banner = document.createElement('div');
+      banner.id = 'focusBanner';
+      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · 极速闯关模式已自动启动 <a href="test-master.html" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
+      var testPage = document.getElementById('testPage');
+      if (testPage) {
+        var topBar = testPage.querySelector('.test-top-bar');
+        if (topBar) topBar.parentNode.insertBefore(banner, topBar);
+        else testPage.insertBefore(banner, testPage.firstChild);
+      }
+    }
+  }
 })();
-init();
 
 // ============ 全局回车键 ============
 document.addEventListener('keydown', function(e) {

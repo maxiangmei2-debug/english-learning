@@ -1246,11 +1246,25 @@ function showToast(msg) {
 }
 
 // 启动
-// URL param: ?topic=购物 → auto-select matching topic
+// URL param: ?topic=时态动词 → auto-select matching topic + show focus banner
 (function(){
   var p = new URLSearchParams(location.search);
   var t = p.get('topic');
-  if (t && TOPICS.indexOf(t)>=0) { currentTopic = t; }
+  if (t) {
+    if (TOPICS.indexOf(t) >= 0) {
+      currentTopic = t;
+      // Add focus banner on home page
+      var banner = document.createElement('div');
+      banner.id = 'focusBanner';
+      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:12px 16px;border-radius:10px;margin:12px 0;text-align:center;font-size:15px;font-weight:600;">🎯 聚焦练习：' + t + ' · 点击下方模式直接开始</div>';
+      var homePage = document.getElementById('homePage');
+      if (homePage) {
+        var hero = homePage.querySelector('.home-hero');
+        if (hero) hero.parentNode.insertBefore(banner, hero.nextSibling);
+        else homePage.insertBefore(banner, homePage.firstChild);
+      }
+    }
+  }
 })();
 init();
 
