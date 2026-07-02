@@ -147,6 +147,16 @@
   .q-text { font-size:18px; font-weight:700; margin-bottom:16px; line-height:1.5; }
   .q-hint { font-size:13px; color:var(--gray-500); margin-bottom:16px; }
 
+  /* Bookmark button */
+  .bm-btn {
+    display:inline-flex; align-items:center; gap:4px; padding:4px 12px;
+    border-radius:16px; border:1.5px solid #E5E7EB; background:white;
+    font-size:16px; cursor:pointer; transition:all 0.2s; touch-action:manipulation;
+    color:#9CA3AF; margin-left:0; vertical-align:middle;
+  }
+  .bm-btn:hover { border-color:#F59E0B; color:#F59E0B; background:#FFFBEB; }
+  .bm-btn.bookmarked { color:#F59E0B; border-color:#F59E0B; background:#FFFBEB; }
+
   /* Options */
   .opts-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .opt-btn {
@@ -351,6 +361,11 @@
       <div class="home-stat-val" id="hMaster">0</div>
       <div class="home-stat-label">已掌握</div>
     </div>
+    <div class="home-stat">
+      <div class="home-stat-icon">⭐</div>
+      <div class="home-stat-val" id="hBookmark">0</div>
+      <div class="home-stat-label">收藏</div>
+    </div>
   </div>
 
   <div class="mode-grid" id="modeGrid">
@@ -383,6 +398,11 @@
       <div class="mode-card-icon">📋</div>
       <div class="mode-card-title">模拟考试</div>
       <div class="mode-card-desc">50题全面测评</div>
+    </div>
+    <div class="mode-card" onclick="startMode('bookmark')" style="background:linear-gradient(135deg,#FEF3C7,#FFF7ED);border:2px solid #F59E0B;">
+      <div class="mode-card-icon">⭐</div>
+      <div class="mode-card-title" style="color:#92400E;">收藏练习</div>
+      <div class="mode-card-desc" style="color:#B45309;">只练收藏的题目</div>
     </div>
   </div>
 
@@ -1342,6 +1362,36 @@ let timerInterval = null;
 let timeLeft = 0;
 let results = []; // { id, correct, userAns }
 
+// ============ BOOKMARKS (localStorage) ============
+let bookmarkedSet = new Set();
+(function loadBookmarks() {
+  try {
+    var raw = localStorage.getItem('testmaster_bookmarks');
+    if (raw) {
+      var arr = JSON.parse(raw);
+      for (var i = 0; i < arr.length; i++) bookmarkedSet.add(arr[i]);
+    }
+  } catch(e) {}
+})();
+function saveBookmarks() {
+  try { localStorage.setItem('testmaster_bookmarks', JSON.stringify(Array.from(bookmarkedSet))); } catch(e) {}
+}
+window.toggleBookmark = function(id) {
+  if (bookmarkedSet.has(id)) {
+    bookmarkedSet.delete(id);
+  } else {
+    bookmarkedSet.add(id);
+  }
+  saveBookmarks();
+  updateHomeStats();
+  // Update the bookmark button on current question if visible
+  var bmBtn = document.getElementById('bmBtn');
+  if (bmBtn) {
+    bmBtn.textContent = bookmarkedSet.has(questions[qIndex]?.id) ? '⭐' : '☆';
+    bmBtn.style.color = bookmarkedSet.has(questions[qIndex]?.id) ? '#F59E0B' : '#9CA3AF';
+  }
+};
+
 // ============ CATEGORIES ============
 const CATS = [
   { key:null, label:'🔄 全部', emoji:'🔄' },
@@ -1360,6 +1410,7 @@ const MODE_CFG = {
   type: { total:10, timePer:0, lives:99, label:'⌨️ 听写达人' },
   judge: { total:10, timePer:0, lives:99, label:'⚖️ 辨析法官' },
   exam: { total:50, timePer:0, lives:99, label:'📋 模拟考试' },
+  bookmark: { total:99, timePer:0, lives:99, label:'⭐ 收藏练习' },
 };
 
 // ============ UTILS ============
@@ -1400,6 +1451,8 @@ function updateHomeStats() {
   document.getElementById('hCombo').textContent = maxCombo;
   const hMasterEl = document.getElementById('hMaster');
   if(hMasterEl) hMasterEl.textContent = masteredSet.size;
+  const hBmEl = document.getElementById('hBookmark');
+  if(hBmEl) hBmEl.textContent = bookmarkedSet.size;
 }
 
 // ============ START MODE ============
@@ -1411,20 +1464,40 @@ function startMode(mode) {
 
   // Build question list
   let pool = [];
-  let srcCats = currentCat ? [currentCat] : Object.keys(Q);
-  srcCats.forEach(cat => { if(Q[cat]) pool = pool.concat(Q[cat]); });
 
-  // Filter by mode type
-  if(mode === 'fill') pool = pool.filter(q => q.type === 'fill');
-  if(mode === 'type') pool = pool.filter(q => q.type === 'type');
-  if(mode === 'judge') pool = pool.filter(q => q.type === 'judge');
+  // Bookmark mode: filter by bookmarked IDs
+  if (mode === 'bookmark') {
+    var allCats = currentCat ? [currentCat] : Object.keys(Q);
+    allCats.forEach(function(cat) {
+      if (Q[cat]) {
+        for (var bi = 0; bi < Q[cat].length; bi++) {
+          if (bookmarkedSet.has(Q[cat][bi].id)) pool.push(Q[cat][bi]);
+        }
+      }
+    });
+    if (pool.length === 0) {
+      showToast('还没有收藏任何题目！先在练习中点击 ☆ 收藏吧');
+      return;
+    }
+    // Use all bookmarked questions (or limit to 99)
+    questions = shuffle(pool).slice(0, Math.min(pool.length, cfg.total));
+  } else {
+    let srcCats = currentCat ? [currentCat] : Object.keys(Q);
+    srcCats.forEach(cat => { if(Q[cat]) pool = pool.concat(Q[cat]); });
 
-  if(pool.length < 3) {
-    showToast('该范围题目太少，请选择更多类别！');
-    return;
+    // Filter by mode type
+    if(mode === 'fill') pool = pool.filter(q => q.type === 'fill');
+    if(mode === 'type') pool = pool.filter(q => q.type === 'type');
+    if(mode === 'judge') pool = pool.filter(q => q.type === 'judge');
+
+    if(pool.length < 3) {
+      showToast('该范围题目太少，请选择更多类别！');
+      return;
+    }
+
+    questions = shuffle(pool).slice(0, cfg.total);
   }
 
-  questions = shuffle(pool).slice(0, cfg.total);
   qIndex = 0;
   results = [];
   answered = false;
@@ -1432,7 +1505,7 @@ function startMode(mode) {
   // Show test page
   showPage('test');
   renderQuestion();
-  if(cfg.timePer > 0) startTimer();
+  if(cfg.timePer > 0 && cfg.total <= 99) startTimer();
   else { document.getElementById('timerWrap').style.display='none'; document.getElementById('testTimer').textContent=''; }
 
   // Lives display
@@ -1496,7 +1569,10 @@ function renderQuestion() {
     '语法':'badge-grammar','词汇':'badge-vocab','搭配':'badge-phrase','场景':'badge-scene','易错':'badge-error'
   }[q.badge] || 'badge-grammar';
 
-  let html = `<div class="q-type-badge ${badgeClass}">${q.badge}</div>`;
+  let isBookmarked = bookmarkedSet.has(q.id);
+  let bmClass = isBookmarked ? ' bookmarked' : '';
+  let bmIcon = isBookmarked ? '⭐' : '☆';
+  let html = `<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;"><div class="q-type-badge ${badgeClass}">${q.badge}</div><button class="bm-btn${bmClass}" id="bmBtn" onclick="window.toggleBookmark('${q.id}')" title="${isBookmarked?'取消收藏':'收藏此题'}">${bmIcon} 收藏</button></div>`;
 
   if(q.type === 'choice') {
     html += `<div class="q-text">${q.q}</div>`;
@@ -1791,8 +1867,13 @@ function endTest() {
         } else if(q.type === 'fill' || q.type === 'type') {
           correctDisplay = q.ans.join(' / ');
         }
-        weakHtml += `<div style="margin-bottom:6px;padding:6px 8px;background:var(--danger-light);border-radius:6px;">
-          <span class="en">${q.q}</span><br><span style="color:var(--danger)">你的答案：${r.userAns}</span><br><span style="color:var(--success)">✅ 正确答案：${correctDisplay}</span>
+        weakHtml += `<div style="margin-bottom:6px;padding:8px 8px;background:var(--danger-light);border-radius:6px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+            <div style="flex:1;">
+              <span class="en">${q.q}</span><br><span style="color:var(--danger)">你的答案：${r.userAns}</span><br><span style="color:var(--success)">✅ 正确答案：${correctDisplay}</span>
+            </div>
+            <button class="bm-btn${bookmarkedSet.has(q.id)?' bookmarked':''}" onclick="window.toggleBookmark('${q.id}');this.textContent=window.bookmarkedSet.has('${q.id}')?'⭐':'☆';this.className='bm-btn'+(window.bookmarkedSet.has('${q.id}')?' bookmarked':'');" style="flex-shrink:0;font-size:14px;padding:4px 10px;">${bookmarkedSet.has(q.id)?'⭐':'☆'}</button>
+          </div>
         </div>`;
       }
     });
@@ -1816,8 +1897,13 @@ function endTest() {
         } else if(q.type === 'fill' || q.type === 'type') {
           correctDisplay = q.ans.join(' / ');
         }
-        weakHtml += `<div style="margin-bottom:6px;padding:6px 8px;background:#FEF3C7;border-radius:6px;">
-          <span class="en">${q.q}</span><br><span style="color:var(--success)">✅ 正确答案：${correctDisplay}</span>
+        weakHtml += `<div style="margin-bottom:6px;padding:8px 8px;background:#FEF3C7;border-radius:6px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+            <div style="flex:1;">
+              <span class="en">${q.q}</span><br><span style="color:var(--success)">✅ 正确答案：${correctDisplay}</span>
+            </div>
+            <button class="bm-btn${bookmarkedSet.has(q.id)?' bookmarked':''}" onclick="window.toggleBookmark('${q.id}');this.textContent=window.bookmarkedSet.has('${q.id}')?'⭐':'☆';this.className='bm-btn'+(window.bookmarkedSet.has('${q.id}')?' bookmarked':'');" style="flex-shrink:0;font-size:14px;padding:4px 10px;">${bookmarkedSet.has(q.id)?'⭐':'☆'}</button>
+          </div>
         </div>`;
       }
     });
