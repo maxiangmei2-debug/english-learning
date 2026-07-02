@@ -2003,6 +2003,25 @@ init();
     if (idx >= 0 && catBtns[idx]) catBtns[idx].classList.add('active');
     // Validate category exists
     var validCats = CATS.map(function(cat){ return cat.key; });
+    // Add "← 学习计划" link next to the home link
+    var homeLink = document.querySelector('a[href*="学习中心"]');
+    if (homeLink) {
+      var spLink = document.createElement('a');
+      spLink.href = 'study-plan.html';
+      spLink.style.cssText = 'display:inline-block;margin:8px 4px;padding:6px 14px;background:#8B5CF6;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;';
+      spLink.textContent = '← 学习计划';
+      homeLink.parentNode.insertBefore(spLink, homeLink.nextSibling);
+    }
+    // Add study plan link in test-top bar too
+    var testTop = document.querySelector('.test-top');
+    if (testTop) {
+      var spBtn = document.createElement('button');
+      spBtn.className = 'test-back';
+      spBtn.style.cssText = 'background:#8B5CF6;';
+      spBtn.textContent = '← 学习计划';
+      spBtn.onclick = function() { window.location.href = 'study-plan.html'; };
+      testTop.appendChild(spBtn);
+    }
     if (validCats.indexOf(c) >= 0) {
       var catLabel = '';
       CATS.forEach(function(cat){ if(cat.key === c) catLabel = cat.label; });

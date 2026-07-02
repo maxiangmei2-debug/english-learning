@@ -1251,6 +1251,15 @@ function showToast(msg) {
   var p = new URLSearchParams(location.search);
   var t = p.get('topic');
   if (t) {
+    // Add "← 学习计划" link next to the home link
+    var homeLink = document.querySelector('a[href*="学习中心"]');
+    if (homeLink) {
+      var spLink = document.createElement('a');
+      spLink.href = 'study-plan.html';
+      spLink.style.cssText = 'display:inline-block;margin:8px 4px;padding:6px 14px;background:#8B5CF6;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;';
+      spLink.textContent = '← 学习计划';
+      homeLink.parentNode.insertBefore(spLink, homeLink.nextSibling);
+    }
     if (TOPICS.indexOf(t) >= 0) {
       currentTopic = t;
       // Add focus banner on home page

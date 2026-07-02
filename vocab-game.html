@@ -1230,17 +1230,32 @@ function endSurvival() {
 
 init();
 
-// URL param: ?topic=租房生活 → auto-select matching theme
+// URL param: ?topic=租房生活 → auto-select matching theme + show focus banner
 (function(){
   var p = new URLSearchParams(location.search);
   var t = p.get('topic');
   if (!t) return;
+  // Add "← 学习计划" link next to the home link
+  var homeLink = document.querySelector('a[href*="学习中心"]');
+  if (homeLink) {
+    var spLink = document.createElement('a');
+    spLink.href = 'study-plan.html';
+    spLink.style.cssText = 'display:inline-block;margin:8px 4px;padding:6px 14px;background:#8B5CF6;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;';
+    spLink.textContent = '← 学习计划';
+    homeLink.parentNode.insertBefore(spLink, homeLink.nextSibling);
+  }
   var keys = Object.keys(VOCAB);
   for (var i=0; i<keys.length; i++) {
     if (keys[i].indexOf(t)>=0) {
       var btns = document.querySelectorAll('.topic-btn');
       btns.forEach(function(b){ b.classList.remove('active'); });
       if (btns[i+1]) { btns[i+1].classList.add('active'); selectTopic(keys[i], btns[i+1]); }
+      // Add focus banner
+      var banner = document.createElement('div');
+      banner.id = 'focusBanner';
+      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:12px 16px;border-radius:10px;margin-bottom:12px;text-align:center;font-size:15px;font-weight:600;">🎯 聚焦练习：' + keys[i] + ' · 点击下方模式直接开始</div>';
+      var topicBar = document.getElementById('topicBar');
+      if (topicBar) topicBar.parentNode.insertBefore(banner, topicBar);
       break;
     }
   }
