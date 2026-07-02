@@ -1658,7 +1658,21 @@ function submitType() {
 // ============ EXPLAIN ============
 function showExplain(q, isCorrect, userAns) {
   const wrap = document.getElementById('explainWrap');
+  // Determine the correct answer display for wrong answers
+  let correctAnswerHtml = '';
+  if(!isCorrect) {
+    let correctDisplay = '';
+    if(q.type === 'choice') {
+      correctDisplay = q.opts[q.ans];
+    } else if(q.type === 'judge') {
+      correctDisplay = q.ans ? '✅ 正确' : '❌ 错误';
+    } else if(q.type === 'fill' || q.type === 'type') {
+      correctDisplay = q.ans.join(' / ');
+    }
+    correctAnswerHtml = `<div style="background:var(--success-light);padding:8px 12px;border-radius:8px;margin-bottom:8px;font-weight:600;color:var(--success);">✅ 正确答案：${correctDisplay}</div>`;
+  }
   let html = `<div class="explain-box">`;
+  html += correctAnswerHtml;
   html += `<div class="explain-title">${isCorrect ? '✅ 答对了！' : '❌ 答错了'} 解析：</div>`;
   html += `<div class="explain-body">${q.explain}</div>`;
   if(q.tip) html += `<div class="explain-tip">${q.tip}</div>`;
@@ -1729,9 +1743,20 @@ function endTest() {
       <div class="weak-list">`;
     weakItems.forEach(r => {
       const q = questions.find(qq => qq.id === r.id);
-      if(q) weakHtml += `<div style="margin-bottom:6px;padding:6px 8px;background:var(--danger-light);border-radius:6px;">
-        <span class="en">${q.q}</span><br>你的答案：${r.userAns}
-      </div>`;
+      if(q) {
+        // Determine the correct answer display
+        let correctDisplay = '';
+        if(q.type === 'choice') {
+          correctDisplay = q.opts[q.ans];
+        } else if(q.type === 'judge') {
+          correctDisplay = q.ans ? '✅ 正确' : '❌ 错误';
+        } else if(q.type === 'fill' || q.type === 'type') {
+          correctDisplay = q.ans.join(' / ');
+        }
+        weakHtml += `<div style="margin-bottom:6px;padding:6px 8px;background:var(--danger-light);border-radius:6px;">
+          <span class="en">${q.q}</span><br><span style="color:var(--danger)">你的答案：${r.userAns}</span><br><span style="color:var(--success)">✅ 正确答案：${correctDisplay}</span>
+        </div>`;
+      }
     });
     weakHtml += `</div></div>`;
   }
