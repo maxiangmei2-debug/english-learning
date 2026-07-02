@@ -1582,14 +1582,14 @@ function renderQuestion() {
       html += `<div class="opt-btn" data-idx="${i}" onclick="handleChoice(${i})">${opt}</div>`;
     });
     html += `</div>`;
-    html += `<div style="text-align:center;margin-top:10px;"><button class="skip-btn" onclick="window.skipQuestion()">跳过 | 下一题</button></div>`;
+    html += `<div style="text-align:center;margin-top:10px;"><button class="skip-btn">跳过 | 下一题</button></div>`;
     html += `<div id="explainWrap"></div>`;
   } else if(q.type === 'fill') {
     html += `<div class="fill-wrap">`;
     html += `<div class="q-text">${q.q}</div>`;
     if(q.hint) html += `<div class="q-hint">${q.hint}</div>`;
     html += `<input class="fill-input" id="fillInput" placeholder="输入答案..." autocomplete="off">`;
-    html += `<div style="text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button class="submit-btn" onclick="submitFill()">提交答案</button><button class="skip-btn" onclick="window.skipQuestion()">跳过 | 下一题</button></div>`;
+    html += `<div style="text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button class="submit-btn" onclick="submitFill()">提交答案</button><button class="skip-btn">跳过 | 下一题</button></div>`;
     html += `<div id="explainWrap"></div>`;
     html += `</div>`;
   } else if(q.type === 'type') {
@@ -1597,7 +1597,7 @@ function renderQuestion() {
     html += `<div class="type-prompt-big">${q.q}</div>`;
     html += `<div class="q-hint">输入对应的英文</div>`;
     html += `<input class="type-input" id="typeInput" placeholder="type here..." autocomplete="off">`;
-    html += `<div style="text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button class="submit-btn" onclick="submitType()">提交答案</button><button class="skip-btn" onclick="window.skipQuestion()">跳过 | 下一题</button></div>`;
+    html += `<div style="text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button class="submit-btn" onclick="submitType()">提交答案</button><button class="skip-btn">跳过 | 下一题</button></div>`;
     html += `<div id="explainWrap"></div>`;
     html += `</div>`;
   } else if(q.type === 'judge') {
@@ -1606,7 +1606,7 @@ function renderQuestion() {
     html += `<div class="opt-btn" onclick="handleJudge(true)" style="font-size:18px;font-weight:700;">✅ 正确</div>`;
     html += `<div class="opt-btn" onclick="handleJudge(false)" style="font-size:18px;font-weight:700;">❌ 错误</div>`;
     html += `</div>`;
-    html += `<div style="text-align:center;margin-top:10px;"><button class="skip-btn" onclick="window.skipQuestion()">跳过 | 下一题</button></div>`;
+    html += `<div style="text-align:center;margin-top:10px;"><button class="skip-btn">跳过 | 下一题</button></div>`;
     html += `<div id="explainWrap"></div>`;
   }
 
@@ -1617,16 +1617,6 @@ function renderQuestion() {
     const inp = document.getElementById('fillInput') || document.getElementById('typeInput');
     if(inp) inp.focus();
   }, 100);
-
-  // Skip button event listeners (more reliable than inline onclick)
-  var skipBtns = area.querySelectorAll('.skip-btn');
-  for (var si = 0; si < skipBtns.length; si++) {
-    skipBtns[si].addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      skipQuestion();
-    });
-  }
 
   // Keyboard handler for fill/type (Enter also submits)
   if(q.type === 'fill' || q.type === 'type') {
@@ -1790,20 +1780,16 @@ function nextQuestion() {
 }
 
 // ====== SKIP QUESTION ======
-window.skipQuestion = function skipQuestion() {
-  try {
-    if(answered) return;
-    answered = true;
-    if (!questions || qIndex >= questions.length) { endTest(); return; }
-    var q = questions[qIndex];
-    if (!q) { endTest(); return; }
-    results.push({ id:q.id, correct:false, userAns:'（已跳过）', skipped:true });
-    qIndex++;
-    if(qIndex >= questions.length || lives <= 0) endTest();
-    else renderQuestion();
-  } catch(e) {
-    alert('跳过失败，请刷新重试');
-  }
+var skipQuestion = function() {
+  if(answered) return;
+  answered = true;
+  if (!questions || qIndex >= questions.length) { endTest(); return; }
+  var q = questions[qIndex];
+  if (!q) { endTest(); return; }
+  results.push({ id:q.id, correct:false, userAns:'（已跳过）', skipped:true });
+  qIndex++;
+  if(qIndex >= questions.length || lives <= 0) endTest();
+  else renderQuestion();
 };
 
 // ============ SCORE / COMBO ============
@@ -2008,6 +1994,14 @@ document.addEventListener('keydown', function(e) {
     startMode(currentMode);
     return;
   }
+});
+// ====== GLOBAL EVENT DELEGATION for skip buttons ======
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('.skip-btn');
+  if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  skipQuestion();
 });
 </script>
 </body>
