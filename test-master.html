@@ -1506,14 +1506,14 @@ function renderQuestion() {
       html += `<div class="opt-btn" data-idx="${i}" onclick="handleChoice(${i})">${opt}</div>`;
     });
     html += `</div>`;
-    html += `<div style="text-align:center;margin-top:10px;"><button class="skip-btn">跳过 &gt; 下一题</button></div>`;
+    html += `<div style="text-align:center;margin-top:10px;"><button class="skip-btn" onclick="window.skipQuestion()">跳过 | 下一题</button></div>`;
     html += `<div id="explainWrap"></div>`;
   } else if(q.type === 'fill') {
     html += `<div class="fill-wrap">`;
     html += `<div class="q-text">${q.q}</div>`;
     if(q.hint) html += `<div class="q-hint">${q.hint}</div>`;
     html += `<input class="fill-input" id="fillInput" placeholder="输入答案..." autocomplete="off">`;
-    html += `<div style="text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button class="submit-btn" onclick="submitFill()">提交答案</button><button class="skip-btn">跳过 &gt; 下一题</button></div>`;
+    html += `<div style="text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button class="submit-btn" onclick="submitFill()">提交答案</button><button class="skip-btn" onclick="window.skipQuestion()">跳过 | 下一题</button></div>`;
     html += `<div id="explainWrap"></div>`;
     html += `</div>`;
   } else if(q.type === 'type') {
@@ -1521,7 +1521,7 @@ function renderQuestion() {
     html += `<div class="type-prompt-big">${q.q}</div>`;
     html += `<div class="q-hint">输入对应的英文</div>`;
     html += `<input class="type-input" id="typeInput" placeholder="type here..." autocomplete="off">`;
-    html += `<div style="text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button class="submit-btn" onclick="submitType()">提交答案</button><button class="skip-btn">跳过 &gt; 下一题</button></div>`;
+    html += `<div style="text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button class="submit-btn" onclick="submitType()">提交答案</button><button class="skip-btn" onclick="window.skipQuestion()">跳过 | 下一题</button></div>`;
     html += `<div id="explainWrap"></div>`;
     html += `</div>`;
   } else if(q.type === 'judge') {
@@ -1530,7 +1530,7 @@ function renderQuestion() {
     html += `<div class="opt-btn" onclick="handleJudge(true)" style="font-size:18px;font-weight:700;">✅ 正确</div>`;
     html += `<div class="opt-btn" onclick="handleJudge(false)" style="font-size:18px;font-weight:700;">❌ 错误</div>`;
     html += `</div>`;
-    html += `<div style="text-align:center;margin-top:10px;"><button class="skip-btn">跳过 &gt; 下一题</button></div>`;
+    html += `<div style="text-align:center;margin-top:10px;"><button class="skip-btn" onclick="window.skipQuestion()">跳过 | 下一题</button></div>`;
     html += `<div id="explainWrap"></div>`;
   }
 
