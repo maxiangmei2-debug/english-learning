@@ -113,6 +113,7 @@
   }
   .p-dot.done { background:var(--success); }
   .p-dot.fail { background:var(--danger); }
+  .p-dot.skip { background:#F59E0B; }
   .p-dot.current { background:white; transform:scale(1.4); }
 
   /* Timer bar */
@@ -196,6 +197,13 @@
     touch-action:manipulation;
   }
   .submit-btn:hover { transform:scale(1.03); }
+
+  .skip-btn {
+    display:inline-block; padding:8px 18px; border-radius:20px; border:1.5px dashed #9CA3AF;
+    background:transparent; color:#6B7280; font-size:13px; font-weight:500;
+    cursor:pointer; transition:all 0.15s; touch-action:manipulation;
+  }
+  .skip-btn:hover { border-color:var(--primary); color:var(--primary); background:#F5F3FF; }
 
   /* ====== Explanation ====== */
   .explain-box {
@@ -1479,7 +1487,7 @@ function renderQuestion() {
   dots.innerHTML = '';
   questions.forEach((_, i) => {
     const d = document.createElement('div');
-    d.className = 'p-dot' + (i < qIndex ? (results[i]?.correct ? ' done' : ' fail') : '') + (i === qIndex ? ' current' : '');
+    d.className = 'p-dot' + (i < qIndex ? (results[i]?.skipped ? ' skip' : results[i]?.correct ? ' done' : ' fail') : '') + (i === qIndex ? ' current' : '');
     dots.appendChild(d);
   });
 
@@ -1498,13 +1506,14 @@ function renderQuestion() {
       html += `<div class="opt-btn" data-idx="${i}" onclick="handleChoice(${i})">${opt}</div>`;
     });
     html += `</div>`;
+    html += `<div style="text-align:center;margin-top:10px;"><button class="skip-btn" onclick="skipQuestion()">跳过 → 下一题</button></div>`;
     html += `<div id="explainWrap"></div>`;
   } else if(q.type === 'fill') {
     html += `<div class="fill-wrap">`;
     html += `<div class="q-text">${q.q}</div>`;
     if(q.hint) html += `<div class="q-hint">${q.hint}</div>`;
     html += `<input class="fill-input" id="fillInput" placeholder="输入答案..." autocomplete="off">`;
-    html += `<div style="text-align:center"><button class="submit-btn" onclick="submitFill()">提交答案</button></div>`;
+    html += `<div style="text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button class="submit-btn" onclick="submitFill()">提交答案</button><button class="skip-btn" onclick="skipQuestion()">跳过 → 下一题</button></div>`;
     html += `<div id="explainWrap"></div>`;
     html += `</div>`;
   } else if(q.type === 'type') {
@@ -1512,7 +1521,7 @@ function renderQuestion() {
     html += `<div class="type-prompt-big">${q.q}</div>`;
     html += `<div class="q-hint">输入对应的英文</div>`;
     html += `<input class="type-input" id="typeInput" placeholder="type here..." autocomplete="off">`;
-    html += `<div style="text-align:center"><button class="submit-btn" onclick="submitType()">提交答案</button></div>`;
+    html += `<div style="text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button class="submit-btn" onclick="submitType()">提交答案</button><button class="skip-btn" onclick="skipQuestion()">跳过 → 下一题</button></div>`;
     html += `<div id="explainWrap"></div>`;
     html += `</div>`;
   } else if(q.type === 'judge') {
@@ -1521,6 +1530,7 @@ function renderQuestion() {
     html += `<div class="opt-btn" onclick="handleJudge(true)" style="font-size:18px;font-weight:700;">✅ 正确</div>`;
     html += `<div class="opt-btn" onclick="handleJudge(false)" style="font-size:18px;font-weight:700;">❌ 错误</div>`;
     html += `</div>`;
+    html += `<div style="text-align:center;margin-top:10px;"><button class="skip-btn" onclick="skipQuestion()">跳过 → 下一题</button></div>`;
     html += `<div id="explainWrap"></div>`;
   }
 
@@ -1693,6 +1703,18 @@ function nextQuestion() {
   else renderQuestion();
 }
 
+// ====== SKIP QUESTION ======
+function skipQuestion() {
+  if(answered) return;
+  answered = true;
+  const q = questions[qIndex];
+  results.push({ id:q.id, correct:false, userAns:'（已跳过）', skipped:true });
+  // Directly move to next question without showing explain
+  qIndex++;
+  if(qIndex >= questions.length || lives <= 0) endTest();
+  else renderQuestion();
+}
+
 // ============ SCORE / COMBO ============
 function addScore(pts) {
   totalScore += pts;
@@ -1724,9 +1746,11 @@ function markMastered(id) { masteredSet.add(id); }
 function endTest() {
   clearInterval(timerInterval);
   const correct = results.filter(r => r.correct).length;
-  const wrong = results.filter(r => !r.correct).length;
+  const wrong = results.filter(r => !r.correct && !r.skipped).length;
+  const skipped = results.filter(r => r.skipped).length;
   const total = questions.length;
-  const pct = total > 0 ? Math.round(correct / Math.min(results.length, total) * 100) : 0;
+  const attempted = correct + wrong;
+  const pct = attempted > 0 ? Math.round(correct / attempted * 100) : 0;
 
   let emoji, grade;
   if(pct >= 90) { emoji='🥇'; grade='大师级'; }
@@ -1734,8 +1758,8 @@ function endTest() {
   else if(pct >= 50) { emoji='🥉'; grade='继续加油'; }
   else { emoji='💪'; grade='再练练'; }
 
-  // Weak points
-  const weakItems = results.filter(r => !r.correct);
+  // Weak points (wrong only, not skipped)
+  const weakItems = results.filter(r => !r.correct && !r.skipped);
   let weakHtml = '';
   if(weakItems.length > 0) {
     weakHtml = `<div class="weak-section">
@@ -1744,7 +1768,6 @@ function endTest() {
     weakItems.forEach(r => {
       const q = questions.find(qq => qq.id === r.id);
       if(q) {
-        // Determine the correct answer display
         let correctDisplay = '';
         if(q.type === 'choice') {
           correctDisplay = q.opts[q.ans];
@@ -1761,6 +1784,31 @@ function endTest() {
     weakHtml += `</div></div>`;
   }
 
+  // Skipped section
+  const skippedItems = results.filter(r => r.skipped);
+  if(skippedItems.length > 0) {
+    weakHtml += `<div class="weak-section" style="margin-top:12px;">
+      <div class="weak-title" style="background:#FEF3C7;color:#92400E;">⏭️ 已跳过的题目（${skippedItems.length}个）</div>
+      <div class="weak-list">`;
+    skippedItems.forEach(r => {
+      const q = questions.find(qq => qq.id === r.id);
+      if(q) {
+        let correctDisplay = '';
+        if(q.type === 'choice') {
+          correctDisplay = q.opts[q.ans];
+        } else if(q.type === 'judge') {
+          correctDisplay = q.ans ? '✅ 正确' : '❌ 错误';
+        } else if(q.type === 'fill' || q.type === 'type') {
+          correctDisplay = q.ans.join(' / ');
+        }
+        weakHtml += `<div style="margin-bottom:6px;padding:6px 8px;background:#FEF3C7;border-radius:6px;">
+          <span class="en">${q.q}</span><br><span style="color:var(--success)">✅ 正确答案：${correctDisplay}</span>
+        </div>`;
+      }
+    });
+    weakHtml += `</div></div>`;
+  }
+
   const card = document.getElementById('resultCard');
   card.innerHTML = `
     <div class="result-emoji">${emoji}</div>
@@ -1769,6 +1817,7 @@ function endTest() {
     <div class="result-grid">
       <div class="result-item"><div class="num" style="color:var(--success)">${correct}</div><div class="label">✅ 正确</div></div>
       <div class="result-item"><div class="num" style="color:var(--danger)">${wrong}</div><div class="label">❌ 错误</div></div>
+      <div class="result-item"><div class="num" style="color:#F59E0B">${skipped}</div><div class="label">⏭️ 跳过</div></div>
       <div class="result-item"><div class="num" style="color:var(--accent)">${maxCombo}</div><div class="label">🔥 最高连击</div></div>
     </div>
     ${weakHtml}
