@@ -1660,6 +1660,16 @@ function renderQuestion() {
 
   area.innerHTML = html;
 
+  // Bind skip button via onclick attribute (most direct approach)
+  var skipBtns = area.querySelectorAll('.skip-btn');
+  for (var si = 0; si < skipBtns.length; si++) {
+    skipBtns[si].onclick = function(e) {
+      e.preventDefault();
+      skipQuestion();
+      return false;
+    };
+  }
+
   // Auto focus
   setTimeout(() => {
     const inp = document.getElementById('fillInput') || document.getElementById('typeInput');
@@ -2045,8 +2055,13 @@ document.addEventListener('keydown', function(e) {
 });
 // ====== GLOBAL EVENT DELEGATION for skip buttons ======
 document.addEventListener('click', function(e) {
-  var btn = e.target.closest('.skip-btn');
-  if (!btn) return;
+  // Manual closest() fallback
+  var el = e.target;
+  while (el && el !== document) {
+    if (el.classList && el.classList.contains('skip-btn')) break;
+    el = el.parentElement;
+  }
+  if (!el || el === document) return;
   e.preventDefault();
   e.stopPropagation();
   skipQuestion();
