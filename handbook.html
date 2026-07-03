@@ -3874,7 +3874,7 @@
       </table></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-keywords="情态动词 购物 砍价 could may 礼貌请求 问价">
       <div class="card-title">🛒 购物砍价全流程 <span class="badge badge-phrase">旅游必备</span></div>
       <div class="table-scroll"><table class="study-table">
         <tr><th>阶段</th><th>句型</th><th>解析</th></tr>
@@ -5211,7 +5211,7 @@ renderFlipCards(flipData);
     var kw = params['kw'];
     // 关键词扩展表（一个关键词匹配多种表述）
     var kwExpand = {
-      '情态动词': '情态 should must could would may can might 建议 请求 义务 看病',
+      '情态动词': '情态动词 情态 礼貌请求 看病建议',
       '从句': '从句 that which who if when what where why 引导 定语 状语 宾语 名词性',
       '职场面试': '职场 面试 工作 job interview 聂场 沟通',
       '狼来了': '狼来了 牧羊人 shepherd flock wolf wolves 羊 liar',
@@ -5233,7 +5233,18 @@ renderFlipCards(flipData);
           var combined = cardText + ' ' + cardKw;
           var matches = false;
           for (var j = 0; j < terms.length; j++) {
-            if (combined.indexOf(terms[j]) >= 0) { matches = true; break; }
+            var term = terms[j];
+            var found = false;
+            // 短英文词（≤4字符）用词边界正则，避免 can 匹配 because
+            if (/^[a-z]+$/.test(term) && term.length <= 4) {
+              try {
+                var safeTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                found = new RegExp('\\b' + safeTerm + '\\b', 'i').test(combined);
+              } catch(e) { found = combined.indexOf(term) >= 0; }
+            } else {
+              found = combined.indexOf(term) >= 0;
+            }
+            if (found) { matches = true; break; }
           }
           if (matches) {
             card.style.display = '';
@@ -5257,7 +5268,17 @@ renderFlipCards(flipData);
         var filtered = flipData.filter(function(item) {
           var text = ((item.front || '') + ' ' + (item.back || '')).toLowerCase();
           for (var j = 0; j < terms.length; j++) {
-            if (text.indexOf(terms[j]) >= 0) return true;
+            var term = terms[j];
+            var found = false;
+            if (/^[a-z]+$/.test(term) && term.length <= 4) {
+              try {
+                var safeTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                found = new RegExp('\\b' + safeTerm + '\\b', 'i').test(text);
+              } catch(e) { found = text.indexOf(term) >= 0; }
+            } else {
+              found = text.indexOf(term) >= 0;
+            }
+            if (found) return true;
           }
           return false;
         });
