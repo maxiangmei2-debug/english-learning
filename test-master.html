@@ -1492,24 +1492,6 @@ function init() {
     bar.appendChild(btn);
   });
   updateHomeStats();
-
-  // One-time delegated listener for skip buttons on qArea
-  // Eliminates reliance on inline onclick and avoids global delegation double-fire
-  var qa = document.getElementById('qArea');
-  if (qa) {
-    qa.addEventListener('click', function(e) {
-      var btn = e.target;
-      while (btn && btn !== qa) {
-        if (btn.hasAttribute && btn.getAttribute('data-action') === 'skip') break;
-        btn = btn.parentElement;
-      }
-      if (btn && btn !== qa && typeof skipQuestion === 'function') {
-        e.preventDefault();
-        e.stopPropagation();
-        skipQuestion();
-      }
-    });
-  }
 }
 
 function updateHomeStats() {
@@ -1677,6 +1659,14 @@ function renderQuestion() {
   }
 
   area.innerHTML = html;
+
+  // Bind skip button directly — querySelector + onclick, zero indirection
+  (function() {
+    var skipBtn = area.querySelector('.skip-btn');
+    if (skipBtn) {
+      skipBtn.onclick = function(e) { e.preventDefault(); skipQuestion(); };
+    }
+  })();
 
   // Auto focus
   setTimeout(() => {
