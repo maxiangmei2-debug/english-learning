@@ -1492,6 +1492,24 @@ function init() {
     bar.appendChild(btn);
   });
   updateHomeStats();
+
+  // One-time delegated listener for skip buttons on qArea
+  // Eliminates reliance on inline onclick and avoids global delegation double-fire
+  var qa = document.getElementById('qArea');
+  if (qa) {
+    qa.addEventListener('click', function(e) {
+      var btn = e.target;
+      while (btn && btn !== qa) {
+        if (btn.hasAttribute && btn.getAttribute('data-action') === 'skip') break;
+        btn = btn.parentElement;
+      }
+      if (btn && btn !== qa && typeof skipQuestion === 'function') {
+        e.preventDefault();
+        e.stopPropagation();
+        skipQuestion();
+      }
+    });
+  }
 }
 
 function updateHomeStats() {
@@ -1630,14 +1648,14 @@ function renderQuestion() {
       html += `<div class="opt-btn" data-idx="${i}" onclick="handleChoice(${i})">${opt}</div>`;
     });
     html += `</div>`;
-    html += '<div style="text-align:center;margin-top:10px;"><button type="button" class="skip-btn" onclick="skipQuestion()">跳过 | 下一题</button></div>';
+    html += '<div style="text-align:center;margin-top:10px;"><button type="button" class="skip-btn" data-action="skip">跳过 | 下一题</button></div>';
     html += `<div id="explainWrap"></div>`;
   } else if(q.type === 'fill') {
     html += `<div class="fill-wrap">`;
     html += `<div class="q-text">${q.q}</div>`;
     if(q.hint) html += `<div class="q-hint">${q.hint}</div>`;
     html += `<input class="fill-input" id="fillInput" placeholder="输入答案..." autocomplete="off">`;
-    html += '<div style="text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button class="submit-btn" onclick="submitFill()">提交答案</button><button type="button" class="skip-btn" onclick="skipQuestion()">跳过 | 下一题</button></div>';
+    html += '<div style="text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button class="submit-btn" onclick="submitFill()">提交答案</button><button type="button" class="skip-btn" data-action="skip">跳过 | 下一题</button></div>';
     html += `<div id="explainWrap"></div>`;
     html += `</div>`;
   } else if(q.type === 'type') {
@@ -1645,7 +1663,7 @@ function renderQuestion() {
     html += `<div class="type-prompt-big">${q.q}</div>`;
     html += `<div class="q-hint">输入对应的英文</div>`;
     html += `<input class="type-input" id="typeInput" placeholder="type here..." autocomplete="off">`;
-    html += '<div style="text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button class="submit-btn" onclick="submitType()">提交答案</button><button type="button" class="skip-btn" onclick="skipQuestion()">跳过 | 下一题</button></div>';
+    html += '<div style="text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button class="submit-btn" onclick="submitType()">提交答案</button><button type="button" class="skip-btn" data-action="skip">跳过 | 下一题</button></div>';
     html += `<div id="explainWrap"></div>`;
     html += `</div>`;
   } else if(q.type === 'judge') {
@@ -1654,7 +1672,7 @@ function renderQuestion() {
     html += `<div class="opt-btn" onclick="handleJudge(true)" style="font-size:18px;font-weight:700;">✅ 正确</div>`;
     html += `<div class="opt-btn" onclick="handleJudge(false)" style="font-size:18px;font-weight:700;">❌ 错误</div>`;
     html += `</div>`;
-    html += '<div style="text-align:center;margin-top:10px;"><button type="button" class="skip-btn" onclick="skipQuestion()">跳过 | 下一题</button></div>';
+    html += '<div style="text-align:center;margin-top:10px;"><button type="button" class="skip-btn" data-action="skip">跳过 | 下一题</button></div>';
     html += `<div id="explainWrap"></div>`;
   }
 
@@ -2061,19 +2079,6 @@ document.addEventListener('keydown', function(e) {
     startMode(currentMode);
     return;
   }
-});
-// ====== GLOBAL EVENT DELEGATION for skip buttons ======
-document.addEventListener('click', function(e) {
-  // Manual closest() fallback
-  var el = e.target;
-  while (el && el !== document) {
-    if (el.classList && el.classList.contains('skip-btn')) break;
-    el = el.parentElement;
-  }
-  if (!el || el === document) return;
-  e.preventDefault();
-  e.stopPropagation();
-  skipQuestion();
 });
 </script>
 </body>
