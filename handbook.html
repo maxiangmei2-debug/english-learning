@@ -4042,7 +4042,7 @@
       </table></div>
     </div>
 
-    <div class="card">
+    <div class="card" data-keywords="情态动词 could may 请求 borrow lend 借东西">
       <div class="card-title">🤝 借东西场景 <span class="badge badge-phrase">MC38</span></div>
       <div class="table-scroll"><table class="study-table">
         <tr><th>类别</th><th>句型</th><th>解析</th></tr>
@@ -4076,7 +4076,7 @@
     </div>
 
     <!-- ===== MC18&24新增场景句型 ===== -->
-    <div class="card">
+    <div class="card" data-keywords="情态动词 should must 建议 健康 plan 生活习惯">
       <div class="card-title">💪 健康生活计划句型 <span class="badge badge-phrase">MC18</span></div>
       <div class="table-scroll"><table class="study-table">
         <tr><th>类别</th><th>句型</th><th>解析</th></tr>
@@ -4638,7 +4638,7 @@
       </table></div>
     </div>
 
-    <div class="card" data-keywords="看医生 问诊 描述症状">
+    <div class="card" data-keywords="看医生 问诊 描述症状 情态动词 should 建议">
       <div class="card-title">🏥 看医生问诊 <span class="badge badge-phrase">健康</span></div>
       <div class="table-scroll"><table class="study-table">
         <tr><th>场景</th><th>句型</th><th>例句</th></tr>
@@ -5149,24 +5149,142 @@ function renderFlipCards(data) {
   }
 }
 
+// Current keyword filter terms for shuffle
+var _flipFilter = null;
+
 function shuffleCards() {
-  var shuffled = flipData.slice().sort(function() { return Math.random() - 0.5; });
+  var data = flipData;
+  if (_flipFilter && _flipFilter.length > 0) {
+    data = flipData.filter(function(item) {
+      var text = ((item.front || '') + ' ' + (item.back || '')).toLowerCase();
+      for (var j = 0; j < _flipFilter.length; j++) {
+        if (text.indexOf(_flipFilter[j]) >= 0) return true;
+      }
+      return false;
+    });
+    if (data.length === 0) data = flipData;
+  }
+  var shuffled = data.slice().sort(function() { return Math.random() - 0.5; });
   renderFlipCards(shuffled);
 }
 
 renderFlipCards(flipData);
 
-// Hash-based tab switching for focused navigation from study plan
+// ===== URL 参数处理：支持 ref=sp（返回学习计划）和 kw（关键词过滤）=====
 (function() {
+  // 解析 URL 参数
+  var params = {};
+  var search = window.location.search.replace('?','');
+  if (search) {
+    var pairs = search.split('&');
+    for (var i = 0; i < pairs.length; i++) {
+      var kv = pairs[i].split('=');
+      if (kv.length === 2) {
+        params[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1]);
+      }
+    }
+  }
+
   var hash = window.location.hash.replace('#','');
-  if (hash && ['grammar','vocab','phrase','scene','errors','review'].indexOf(hash) >= 0) {
-    switchTab(hash);
-    // Hide header when coming from study plan for focused view
+  var tabId = (hash && ['grammar','vocab','phrase','scene','errors','review'].indexOf(hash) >= 0) ? hash : null;
+
+  // === 处理 ref=sp：修改返回链接 → 学习计划 ===
+  if (params['ref'] === 'sp') {
+    var backLink = document.querySelector('.back-link');
+    if (backLink) {
+      backLink.href = 'study-plan.html';
+      var backLabel = backLink.querySelector('.back-label-desktop');
+      if (backLabel) backLabel.textContent = '返回学习计划';
+    }
+    // 聚焦视图：隐藏标题
     var hdr = document.querySelector('.header');
     if (hdr) hdr.style.display = 'none';
-    // Scroll to content after a small delay
+  }
+
+  // === 切换到目标 tab ===
+  if (tabId) {
+    switchTab(tabId);
+  }
+
+  // === 处理 kw：过滤卡片内容 ===
+  if (params['kw']) {
+    var kw = params['kw'];
+    // 关键词扩展表（一个关键词匹配多种表述）
+    var kwExpand = {
+      '情态动词': '情态 should must could would may can might 建议 请求 义务 看病',
+      '从句': '从句 that which who if when what where why 引导 定语 状语 宾语 名词性',
+      '职场面试': '职场 面试 工作 job interview 聂场 沟通',
+      '狼来了': '狼来了 牧羊人 shepherd flock wolf wolves 羊 liar',
+      '祈使句': '祈使句 命令 禁止 请求 建议'
+    };
+    var searchStr = kwExpand[kw] || kw;
+    var terms = searchStr.toLowerCase().split(/\s+/);
+
+    // 过滤当前 tab 的卡片
+    if (tabId) {
+      var section = document.getElementById(tabId);
+      if (section) {
+        var cards = section.querySelectorAll('.card');
+        var visibleCount = 0;
+        for (var i = 0; i < cards.length; i++) {
+          var card = cards[i];
+          var cardText = (card.textContent || '').toLowerCase();
+          var cardKw = (card.getAttribute('data-keywords') || '').toLowerCase();
+          var combined = cardText + ' ' + cardKw;
+          var matches = false;
+          for (var j = 0; j < terms.length; j++) {
+            if (combined.indexOf(terms[j]) >= 0) { matches = true; break; }
+          }
+          if (matches) {
+            card.style.display = '';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        }
+
+        // 如果零匹配，显示提示
+        if (visibleCount === 0 && cards.length > 0) {
+          var tip = document.createElement('div');
+          tip.style.cssText = 'text-align:center;padding:32px 16px;color:var(--gray-600);font-size:14px;';
+          tip.innerHTML = '<p style="font-size:32px;margin-bottom:8px;">🔍</p><p>当前筛选「<strong>' + kw + '</strong>」没有匹配的卡片</p><p style="font-size:12px;margin-top:4px;">试试浏览完整内容</p>';
+          section.appendChild(tip);
+        }
+      }
+
+      // 翻卡（review tab）额外过滤
+      if (tabId === 'review') {
+        var filtered = flipData.filter(function(item) {
+          var text = ((item.front || '') + ' ' + (item.back || '')).toLowerCase();
+          for (var j = 0; j < terms.length; j++) {
+            if (text.indexOf(terms[j]) >= 0) return true;
+          }
+          return false;
+        });
+        if (filtered.length > 0) {
+          _flipFilter = terms;
+          renderFlipCards(filtered);
+        }
+        // 如果翻卡也零匹配，不替换（保留全部显示，因为至少会有一些通用卡片）
+      }
+    }
+
+    // 在当前 section 标题处显示筛选标记
+    if (tabId) {
+      var st = document.querySelector('#' + tabId + ' .section-title');
+      if (st) {
+        var badge = document.createElement('span');
+        badge.style.cssText = 'font-size:13px;background:var(--primary-light);color:var(--primary);padding:2px 10px;border-radius:10px;font-weight:500;margin-left:auto;';
+        badge.textContent = '已筛选: ' + kw;
+        st.appendChild(badge);
+      }
+    }
+  }
+
+  // 滚动到内容区
+  if (tabId) {
     setTimeout(function() {
-      var section = document.getElementById(hash);
+      var section = document.getElementById(tabId);
       if (section) section.scrollIntoView({behavior:'smooth', block:'start'});
     }, 100);
   }
