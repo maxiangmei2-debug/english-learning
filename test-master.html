@@ -2838,6 +2838,9 @@ function renderQuestion() {
         if(e.key === 'Enter' && !answered) {
           e.preventDefault();
           e.stopPropagation();
+          e.stopImmediatePropagation();
+          // Block all nextQuestion calls for 400ms
+          _lastSubmit = Date.now();
           if(q.type === 'fill') submitFill();
           else if(q.type === 'type') submitType();
           else if(q.type === 'sent-dict') submitSentDict();
@@ -3315,6 +3318,7 @@ document.addEventListener('keydown', function(e) {
   // 在测试页面，如果已回答，按回车 = 下一题
   var testPage = document.getElementById('testPage');
   if (testPage && testPage.style.display !== 'none' && answered) {
+    if (Date.now() - _lastSubmit < 400) return; // debounce guard
     nextQuestion();
     return;
   }
