@@ -836,11 +836,45 @@ const WORDS = [
     explain:'until = 直到…才。I waited until he came. 我等到他来了。not...until = 直到…才(否定到肯定)' },
   { en:'unless', cn:'除非', ph:'/ʌnˈles/', topic:'从句引导词',
     options:['除非','如果','因为','虽然'],
-    explain:'unless = 除非 = if not。I won\'t go unless you come. 你不来我就不去。unless = if...not的替换' }
+    explain:'unless = 除非 = if not。I won\'t go unless you come. 你不来我就不去。unless = if...not的替换' },
+
+  // === MC16 药店问诊 ===
+  { en:'pharmacy', cn:'药店', topic:'药店看病', options:['hospital','clinic','supermarket','pharmacy'], explain:'pharmacy /ˈfɑːrməsi/ = 药店。英式pharmacy，美式drug store。Go to the pharmacy. 去药店。' },
+  { en:'capsule', cn:'胶囊', topic:'药店看病', options:['tablet','syrup','injection','capsule'], explain:'capsule /ˈkæpsjuːl/ = 胶囊。比tablet(药片)更易吞服。Take 2 capsules three times a day. 一日三次每次两粒。' },
+  { en:'diarrhea', cn:'腹泻', topic:'药店看病', options:['headache','fever','diarrhea','cough'], explain:'diarrhea /ˌdaɪəˈriːə/ = 腹泻。I have diarrhea. 我腹泻了。拼写注意：两个r，ea结尾。' },
+  { en:'backache', cn:'背痛', topic:'药店看病', options:['stomachache','backache','toothache','earache'], explain:'backache /ˈbækeɪk/ = 背痛。back(背部) + ache(疼痛)。I\'ve had a bad backache since yesterday. 我从昨天开始严重背痛。' },
+
+  // === MC22 职业 ===
+  { en:'accountant', cn:'会计', topic:'职业工作', options:['assistant','accountant','consultant','attendant'], explain:'accountant /əˈkaʊntənt/ = 会计。来自account(账目) + ant(人)。Manages company finances. 管理公司财务。' },
+  { en:'mechanic', cn:'技工', topic:'职业工作', options:['mechanic','machanic','mecanic','mechanist'], explain:'mechanic /məˈkænɪk/ = 技工。拼写易错：me-cha-nic，不要写成machanic。Repairs machines. 修理机器。' },
+  { en:'carpenter', cn:'木匠', topic:'职业工作', options:['carpenter','carpentor','carpinter','carpender'], explain:'carpenter /ˈkɑːrpəntər/ = 木匠。Builds/repairs things with wood. 制作维修木制品。' },
+  { en:'vendor', cn:'小贩', topic:'职业工作', options:['vendor','bendor','vender','wender'], explain:'vendor /ˈvendər/ = 小贩。Sells things outdoors. 户外售卖商品。注意v开头不是w。' },
+
+  // === MC32 面试 & 性格 ===
+  { en:'salary', cn:'薪资', topic:'面试求职', options:['salary','payment','income','allowance'], explain:'salary /ˈsæləri/ = 薪资（月薪/年薪）。What\'s the salary for this position? 这个岗位薪资多少？' },
+  { en:'punctual', cn:'守时的', topic:'性格描述', options:['punctual','punctuall','punctuel','punctural'], explain:'punctual /ˈpʌŋktʃuəl/ = 守时的。面试关键品质！拼写：punc-tu-al。I am always punctual. 我总是守时。' },
+  { en:'reliable', cn:'可靠的', topic:'性格描述', options:['reliable','relyable','reliabel','relyible'], explain:'reliable /rɪˈlaɪəbl/ = 可靠的。来自rely(依靠) + able(能够)。拼写：re-li-able。She is very reliable. 她很可靠。' },
+  { en:'cheerful', cn:'开朗乐观的', topic:'性格描述', options:['cheerful','chearful','chearfull','cherful'], explain:'cheerful /ˈtʃɪrfəl/ = 开朗乐观。来自cheer(欢呼) + ful(充满)。拼写：cheer-ful。She is cheerful. 她很开朗。' },
+  { en:'flexible', cn:'适应力强的', topic:'性格描述', options:['flexible','flexable','flexibal','fleksible'], explain:'flexible /ˈfleksəbl/ = 适应力强的、灵活的。来自flex(弯曲) + ible(能够)。拼写：flex-ible。' },
+  { en:'grumpy', cn:'脾气暴躁的', topic:'性格描述', options:['grumpy','grumpi','grumpie','grumpyy'], explain:'grumpy /ˈɡrʌmpi/ = 脾气暴躁的。面试别这么说自己！拼写：grump-y。' },
+
+  // === 短语动词 ===
+  { en:'pick up', cn:'接人/收拾', topic:'短语动词', options:['pick up','pick on','put up','pull up'], explain:'pick up = 接人/收拾/捡起。I will pick you up at six. 我六点去接你。名词可放末尾，代词放中间。' },
+  { en:'call off', cn:'取消', topic:'短语动词', options:['call off','call on','call out','call up'], explain:'call off = 取消（会议/计划）。The meeting was called off. 会议被取消了。被动语态不拆分。' },
+  { en:'tear up', cn:'撕碎', topic:'短语动词', options:['tear up','tear off','tear out','tear down'], explain:'tear up = 撕碎。Please tear up these advertisements. 请把这些广告撕掉。tear发音/ter/。' },
+  { en:'look for', cn:'寻找', topic:'短语动词', options:['look for','look after','look into','look at'], explain:'look for = 寻找。动介短语，不可拆分。Help me look for my keys. 帮我找钥匙。' },
+  { en:'look into', cn:'调查', topic:'短语动词', options:['look into','look after','look for','look over'], explain:'look into = 调查。The police are looking into that spy. 警察在调查那个间谍。动介短语不可拆。' },
+  { en:'strike up', cn:'开启（搭话）', topic:'短语动词', options:['strike up','start up','stir up','stand up'], explain:'strike up = 开启。strike up a conversation = 主动搭话。I was not the type to strike up conversations. 我不是那种会主动搭话的人。' },
+
+  // === MC25 & MC19 日常词汇 ===
+  { en:'optimistic', cn:'乐观的', topic:'日常生活', options:['optimistic','optimistick','optimestik','optimystic'], explain:'optimistic /ˌɒptɪˈmɪstɪk/ = 乐观的。反义词：pessimistic 悲观的。拼写：opti-mis-tic。' },
+  { en:'stranger', cn:'陌生人', topic:'日常生活', options:['stranger','stanger','strangier','strangor'], explain:'stranger /ˈstreɪndʒər/ = 陌生人。来自strange(奇怪的) + r(人)。Don\'t talk to strangers. 别和陌生人说话。' },
+  { en:'privacy', cn:'隐私', topic:'日常生活', options:['privacy','privicy','privasy','privacee'], explain:'privacy /ˈprɪvəsi/ = 隐私。来自private(私人的)。拼写：pri-va-cy。I value my privacy. 我重视隐私。' },
+  { en:'fortune teller', cn:'算命师', topic:'日常生活', options:['fortune teller','luck teller','future teller','fate teller'], explain:'fortune teller = 算命师。fortune=命运/财富，teller=讲述者。I don\'t believe fortune tellers. 我不相信算命的。' }
 ];
 
 // ====== 主题列表 ======
-const TOPICS = ['全部','租房','运动','购物','办公','手机','性格','情绪','职场','旅行','搭配','否定表达','狼来了','看医生','祈使句','坐飞机','交通出行','入住酒店','点餐用餐','问路方向','购物消费','出入境','简单聊天','时态动词','完成时搭配','情态搭配','从句引导词'];
+const TOPICS = ['全部','租房','运动','购物','办公','手机','性格','情绪','职场','旅行','搭配','否定表达','狼来了','看医生','祈使句','坐飞机','交通出行','入住酒店','点餐用餐','问路方向','购物消费','出入境','简单聊天','时态动词','完成时搭配','情态搭配','从句引导词','药店看病','职业工作','面试求职','性格描述','短语动词','日常生活'];
 
 // ====== 状态 ======
 let totalScore = 0;
