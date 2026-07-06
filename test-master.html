@@ -2906,12 +2906,12 @@ function handleJudge(val) {
 // ============ FILL / TYPE SUBMIT ============
 function submitFill() {
   if(answered) return;
-  answered = true;
   const q = questions[qIndex];
   const inp = document.getElementById('fillInput');
   if(!inp) return;
   const val = inp.value.trim().toLowerCase();
-  if(!val) { answered = false; return; } // 空答案不提交
+  if(!val) return; // 空答案不允许提交
+  answered = true;
   const correctAns = q.ans.map(a => a.toLowerCase());
   const isCorrect = correctAns.some(a => val === a);
   inp.className = 'fill-input ' + (isCorrect ? 'correct' : 'wrong');
@@ -2928,20 +2928,17 @@ function submitFill() {
     window.updateFreq(q.id, false);
     if(currentMode === 'survival' || currentMode === 'speed') { lives--; renderLives(); }
   }
-  // Hide submit button
-  const sb = document.querySelector('.submit-btn');
-  if(sb) sb.style.display = 'none';
   showExplain(q, isCorrect, val);
 }
 
 function submitType() {
   if(answered) return;
-  answered = true;
   const q = questions[qIndex];
   const inp = document.getElementById('typeInput');
   if(!inp) return;
   const val = inp.value.trim().toLowerCase();
-  if(!val) { answered = false; return; } // 空答案不提交
+  if(!val) return; // 空答案不允许提交
+  answered = true;
   const correctAns = q.ans.map(a => a.toLowerCase());
   const isCorrect = correctAns.some(a => val === a);
   inp.className = 'type-input ' + (isCorrect ? 'correct' : 'wrong');
@@ -2958,14 +2955,15 @@ function submitType() {
     window.updateFreq(q.id, false);
     if(currentMode === 'survival' || currentMode === 'speed') { lives--; renderLives(); }
   }
-  // Hide submit button
-  const sb = document.querySelector('.submit-btn');
-  if(sb) sb.style.display = 'none';
   showExplain(q, isCorrect, val);
 }
 
 // ============ EXPLAIN ============
 function showExplain(q, isCorrect, userAns) {
+  // Hide submit button fully
+  var sb = document.querySelector('.submit-btn');
+  if(sb) { sb.style.display = 'none'; if(sb.parentNode) sb.parentNode.style.display = 'none'; }
+
   const wrap = document.getElementById('explainWrap');
   // Determine the correct answer display for wrong answers
   let correctAnswerHtml = '';
@@ -2989,13 +2987,19 @@ function showExplain(q, isCorrect, userAns) {
   if(q.tip) html += `<div class="explain-tip">${q.tip}</div>`;
   html += `</div>`;
   html += `<div class="next-btn-wrap">`;
-  if(lives <= 0) {
-    html += `<button class="next-btn" onclick="endTest()">查看结果</button>`;
-  } else {
-    html += `<button class="next-btn" onclick="nextQuestion()">下一题 →</button>`;
-  }
+  html += `<button class="next-btn" id="nextBtn">${lives <= 0 ? '查看结果' : '下一题 →'}</button>`;
   html += `</div>`;
   wrap.innerHTML = html;
+
+  // Bind next button directly
+  var nextBtn = document.getElementById('nextBtn');
+  if (nextBtn) {
+    nextBtn.onclick = function() {
+      if (lives <= 0) endTest();
+      else nextQuestion();
+    };
+    nextBtn.focus();
+  }
 }
 
 function nextQuestion() {
@@ -3048,9 +3052,6 @@ function submitSentDict() {
   results.push({ id:q.id, correct:isCorrect, userAns:userAns });
   window.updateFreq(q.id, isCorrect);
 
-  // Hide submit button
-  var sb = document.querySelector('.submit-btn');
-  if(sb) sb.style.display = 'none';
   showExplain(q, isCorrect, userAns);
 }
 
@@ -3085,8 +3086,6 @@ function submitSentFill() {
   window.updateFreq(q.id, isCorrect);
 
   // Hide submit button
-  var sb = document.querySelector('.submit-btn');
-  if(sb) sb.style.display = 'none';
   showExplain(q, isCorrect, userAns);
 }
 
