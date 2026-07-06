@@ -2977,6 +2977,8 @@ function showExplain(q, isCorrect, userAns) {
       correctDisplay = q.ans ? '✅ 正确' : '❌ 错误';
     } else if(q.type === 'fill' || q.type === 'type') {
       correctDisplay = q.ans.join(' / ');
+    } else if(q.type === 'sent-dict' || q.type === 'sent-fill') {
+      correctDisplay = q.ans[0];
     }
     correctAnswerHtml = `<div style="background:var(--success-light);padding:8px 12px;border-radius:8px;margin-bottom:8px;font-weight:600;color:var(--success);">✅ 正确答案：${correctDisplay}</div>`;
   }
@@ -3019,16 +3021,15 @@ var skipQuestion = window.skipQuestion = function() {
 // ====== SENTENCE DICTATION SUBMIT ======
 function submitSentDict() {
   if(answered) return;
-  answered = true;
   var q = questions[qIndex];
   var input = document.getElementById('typeInput');
-  if (!input) { nextQuestion(); return; }
+  if (!input) return;
   var userAns = input.value.trim();
-  // Flexible matching: ignore case and punctuation differences
+  if(!userAns) return; // 空答案不允许提交
+
+  answered = true;
   var correctAns = q.ans[0];
   var isCorrect = normalizeSent(userAns) === normalizeSent(correctAns);
-  results.push({ id:q.id, correct:isCorrect, userAns:userAns || '(未作答)' });
-  window.updateFreq(q.id, isCorrect);
 
   if(isCorrect) {
     input.className = 'type-input correct';
@@ -3039,37 +3040,32 @@ function submitSentDict() {
     input.className = 'type-input wrong';
     addScore(-3);
     resetCombo();
-    // Show the correct answer in the input area
-    var aInput = document.getElementById('typeInput');
-    if (aInput) {
-      aInput.value = '';
-      aInput.placeholder = '✅ 正确: ' + correctAns;
-      aInput.disabled = true;
-    }
+    input.value = '';
+    input.placeholder = '✅ 正确: ' + correctAns;
+    if(currentMode === 'survival' || currentMode === 'speed') { lives--; renderLives(); }
   }
+  input.disabled = true;
+  results.push({ id:q.id, correct:isCorrect, userAns:userAns });
+  window.updateFreq(q.id, isCorrect);
 
-  var expHtml = '';
-  if(!isCorrect) {
-    expHtml = '<div class="explain-box"><div class="explain-title">' + (isCorrect ? '✅' : '❌') + ' ' + (isCorrect ? '回答正确！' : '答案错误') + '</div><div class="explain-body">你的答案：<span style="color:#EF4444;">' + (userAns || '(未作答)') + '</span><br>✅ 正确答案：<span class="right">' + correctAns + '</span><br>' + (q.explain || '') + '</div></div>';
-  } else {
-    expHtml = '<div class="explain-box"><div class="explain-title">✅ 回答正确！</div><div class="explain-body">' + (q.explain || '') + '</div></div>';
-  }
-  var dispArea = document.getElementById('explainWrap');
-  if (dispArea) dispArea.innerHTML = expHtml;
+  // Hide submit button
+  var sb = document.querySelector('.submit-btn');
+  if(sb) sb.style.display = 'none';
+  showExplain(q, isCorrect, userAns);
 }
 
 // ====== SENTENCE FILL-BLANK SUBMIT ======
 function submitSentFill() {
   if(answered) return;
-  answered = true;
   var q = questions[qIndex];
   var input = document.getElementById('fillInput');
-  if (!input) { nextQuestion(); return; }
+  if (!input) return;
   var userAns = input.value.trim();
+  if(!userAns) return; // 空答案不允许提交
+
+  answered = true;
   var correctAns = q.ans[0];
   var isCorrect = normalizeWord(userAns) === normalizeWord(correctAns);
-  results.push({ id:q.id, correct:isCorrect, userAns:userAns || '(未作答)' });
-  window.updateFreq(q.id, isCorrect);
 
   if(isCorrect) {
     input.className = 'fill-input correct';
@@ -3080,22 +3076,18 @@ function submitSentFill() {
     input.className = 'fill-input wrong';
     addScore(-3);
     resetCombo();
-    var fInput = document.getElementById('fillInput');
-    if (fInput) {
-      fInput.value = '';
-      fInput.placeholder = '✅ 正确: ' + correctAns;
-      fInput.disabled = true;
-    }
+    input.value = '';
+    input.placeholder = '✅ 正确: ' + correctAns;
+    if(currentMode === 'survival' || currentMode === 'speed') { lives--; renderLives(); }
   }
+  input.disabled = true;
+  results.push({ id:q.id, correct:isCorrect, userAns:userAns });
+  window.updateFreq(q.id, isCorrect);
 
-  var expHtml = '';
-  if(!isCorrect) {
-    expHtml = '<div class="explain-box"><div class="explain-title">❌ 答案错误</div><div class="explain-body">你的答案：<span style="color:#EF4444;">' + (userAns || '(未作答)') + '</span><br>✅ 正确答案：<span class="right">' + correctAns + '</span><br>' + (q.explain || '') + '</div></div>';
-  } else {
-    expHtml = '<div class="explain-box"><div class="explain-title">✅ 回答正确！</div><div class="explain-body">' + (q.explain || '') + '</div></div>';
-  }
-  var dispArea = document.getElementById('explainWrap');
-  if (dispArea) dispArea.innerHTML = expHtml;
+  // Hide submit button
+  var sb = document.querySelector('.submit-btn');
+  if(sb) sb.style.display = 'none';
+  showExplain(q, isCorrect, userAns);
 }
 
 // ====== NORMALIZATION HELPERS ======
