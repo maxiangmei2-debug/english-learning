@@ -212,6 +212,13 @@
   }
   .submit-btn:hover { transform:scale(1.03); }
 
+  .retry-btn {
+    display:inline-block; padding:8px 20px; border-radius:20px; border:none;
+    background:var(--primary); color:white; font-size:13px; font-weight:600;
+    cursor:pointer; transition:transform 0.15s; touch-action:manipulation;
+  }
+  .retry-btn:hover { transform:scale(1.03); }
+
   .skip-btn {
     display:inline-block; padding:8px 18px; border-radius:20px; border:1.5px dashed #9CA3AF;
     background:transparent; color:#6B7280; font-size:13px; font-weight:500;
@@ -3011,7 +3018,7 @@ function showExplain(q, isCorrect, userAns) {
       html += `<input id="retryInput" class="fill-input" placeholder="输入缺失的单词...">`;
     }
     html += `<div style="margin-top:8px;display:flex;gap:8px;align-items:center;">`;
-    html += `<button class="submit-btn" id="retryBtn" style="font-size:13px;padding:8px 20px;">核对</button>`;
+    html += `<button class="retry-btn" id="retryBtn" style="font-size:13px;padding:8px 20px;">核对</button>`;
     html += `<span id="retryMsg" style="font-size:13px;"></span>`;
     html += `</div></div>`;
   }
@@ -3166,8 +3173,9 @@ function normalizeWord(s) {
 }
 
 // ============ SCORE / COMBO ============
-function addScore(pts) {
 function escapeHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function addScore(pts) {
   totalScore += pts;
   const el = document.createElement('div');
   el.className = 'score-float';
