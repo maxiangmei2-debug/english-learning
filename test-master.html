@@ -2974,6 +2974,7 @@ function showExplain(q, isCorrect, userAns) {
   let correctAnswerHtml = '';
   if(!isCorrect) {
     let correctDisplay = '';
+    let userDisplay = userAns || '(未作答)';
     if(q.type === 'choice') {
       correctDisplay = q.opts[q.ans];
     } else if(q.type === 'judge') {
@@ -2983,7 +2984,11 @@ function showExplain(q, isCorrect, userAns) {
     } else if(q.type === 'sent-dict' || q.type === 'sent-fill') {
       correctDisplay = q.ans[0];
     }
-    correctAnswerHtml = `<div style="background:var(--success-light);padding:8px 12px;border-radius:8px;margin-bottom:8px;font-weight:600;color:var(--success);">✅ 正确答案：${correctDisplay}</div>`;
+    var showDiff = (q.type === 'sent-dict' || q.type === 'sent-fill');
+    correctAnswerHtml = '<div style="background:var(--danger-light);padding:8px 12px;border-radius:8px;margin-bottom:8px;">' +
+      '<div style="color:var(--danger);font-weight:600;">❌ 你的答案：' + escapeHtml(userDisplay) + '</div>' +
+      '<div style="color:var(--success);font-weight:600;margin-top:' + (showDiff ? '4px' : '0') + ';">✅ 正确答案：' + escapeHtml(correctDisplay) + '</div>' +
+      '</div>';
   }
   let html = `<div class="explain-box">`;
   html += correctAnswerHtml;
@@ -3052,8 +3057,9 @@ function submitSentDict() {
     input.className = 'type-input wrong';
     addScore(-3);
     resetCombo();
-    input.value = '';
-    input.placeholder = '✅ 正确: ' + correctAns;
+    // Keep user's wrong answer visible for comparison
+    input.value = userAns;
+    input.style.color = '#EF4444';
     if(currentMode === 'survival' || currentMode === 'speed') { lives--; renderLives(); }
   }
   input.disabled = true;
@@ -3085,8 +3091,9 @@ function submitSentFill() {
     input.className = 'fill-input wrong';
     addScore(-3);
     resetCombo();
-    input.value = '';
-    input.placeholder = '✅ 正确: ' + correctAns;
+    // Keep user's wrong answer visible for comparison
+    input.value = userAns;
+    input.style.color = '#EF4444';
     if(currentMode === 'survival' || currentMode === 'speed') { lives--; renderLives(); }
   }
   input.disabled = true;
@@ -3108,6 +3115,7 @@ function normalizeWord(s) {
 
 // ============ SCORE / COMBO ============
 function addScore(pts) {
+function escapeHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   totalScore += pts;
   const el = document.createElement('div');
   el.className = 'score-float';
