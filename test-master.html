@@ -2999,7 +2999,8 @@ function showExplain(q, isCorrect, userAns) {
       if (lives <= 0) endTest();
       else nextQuestion();
     };
-    nextBtn.focus();
+    // Delay focus to avoid same Enter triggering next click
+    setTimeout(function() { nextBtn.focus(); }, 100);
   }
 }
 
