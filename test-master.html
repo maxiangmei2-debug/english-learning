@@ -340,7 +340,7 @@
 </style>
 </head>
 <body>
-<a href="英语学习中心.html" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+<a href="index.html" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
 
 <!-- ====== 首页 ====== -->
 <div class="home-page" id="homePage">
@@ -3270,7 +3270,7 @@ init();
     var homeLink = document.querySelector('a[href*="学习中心"]');
     if (homeLink) {
       var spLink = document.createElement('a');
-      spLink.href = '学习计划.html';
+      spLink.href = 'study-plan.html';
       spLink.style.cssText = 'display:inline-block;margin:8px 4px;padding:6px 14px;background:#8B5CF6;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;';
       spLink.textContent = '← 学习计划';
       homeLink.parentNode.insertBefore(spLink, homeLink.nextSibling);
@@ -3282,7 +3282,7 @@ init();
       spBtn.className = 'test-back';
       spBtn.style.cssText = 'background:#8B5CF6;';
       spBtn.textContent = '← 学习计划';
-      spBtn.onclick = function() { window.location.href = '学习计划.html'; };
+      spBtn.onclick = function() { window.location.href = 'study-plan.html'; };
       testTop.appendChild(spBtn);
     }
     if (validCats.indexOf(c) >= 0) {
@@ -3293,7 +3293,7 @@ init();
       // Add a focus banner on the test page header area
       var banner = document.createElement('div');
       banner.id = 'focusBanner';
-      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · 极速闯关模式已自动启动 <a href="英语测试达人.html" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
+      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · 极速闯关模式已自动启动 <a href="test-master.html" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
       var testPage = document.getElementById('testPage');
       if (testPage) {
         var topBar = testPage.querySelector('.test-top-bar');
