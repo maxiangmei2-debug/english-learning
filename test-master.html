@@ -2774,52 +2774,56 @@ function renderQuestion() {
   if(q.type === 'choice' || q.type === 'sent-app') {
     html += `<div class="q-text">${q.q}</div>`;
     if(q.hint) html += `<div class="q-hint">${q.hint}</div>`;
+    html += '<div style="text-align:right;margin:0 0 8px 0;"><button type="button" class="skip-btn" data-action="skip">跳过 ⏭</button></div>';
     html += `<div class="opts-grid" id="optsGrid">`;
     q.opts.forEach((opt, i) => {
       html += `<div class="opt-btn" data-idx="${i}" onclick="handleChoice(${i})">${opt}</div>`;
     });
     html += `</div>`;
     html += `<div id="explainWrap"></div>`;
-    html += '<div style="text-align:center;margin-top:10px;"><button type="button" class="skip-btn" data-action="skip">跳过 | 下一题</button></div>';
   } else if(q.type === 'fill') {
     html += `<div class="fill-wrap">`;
     html += `<div class="q-text">${q.q}</div>`;
     if(q.hint) html += `<div class="q-hint">${q.hint}</div>`;
+    html += '<div style="text-align:right;margin:0 0 8px 0;"><button type="button" class="skip-btn" data-action="skip">跳过 ⏭</button></div>';
     html += `<input class="fill-input" id="fillInput" placeholder="输入答案..." autocomplete="off">`;
     html += `<div id="explainWrap"></div>`;
-    html += '<div style="text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button class="submit-btn" onclick="submitFill()">提交答案</button><button type="button" class="skip-btn" data-action="skip">跳过 | 下一题</button></div>';
+    html += '<div style="text-align:center;margin-top:10px;"><button class="submit-btn" onclick="submitFill()">提交答案</button></div>';
     html += `</div>`;
   } else if(q.type === 'type') {
     html += `<div class="type-wrap">`;
     html += `<div class="type-prompt-big">${q.q}</div>`;
     html += `<div class="q-hint">输入对应的英文</div>`;
+    html += '<div style="text-align:right;margin:0 0 8px 0;"><button type="button" class="skip-btn" data-action="skip">跳过 ⏭</button></div>';
     html += `<input class="type-input" id="typeInput" placeholder="type here..." autocomplete="off">`;
     html += `<div id="explainWrap"></div>`;
-    html += '<div style="text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button class="submit-btn" onclick="submitType()">提交答案</button><button type="button" class="skip-btn" data-action="skip">跳过 | 下一题</button></div>';
+    html += '<div style="text-align:center;margin-top:10px;"><button class="submit-btn" onclick="submitType()">提交答案</button></div>';
     html += `</div>`;
   } else if(q.type === 'judge') {
     html += `<div class="q-text">${q.q}</div>`;
+    html += '<div style="text-align:right;margin:0 0 8px 0;"><button type="button" class="skip-btn" data-action="skip">跳过 ⏭</button></div>';
     html += `<div class="opts-grid" style="grid-template-columns:1fr 1fr;">`;
     html += `<div class="opt-btn" onclick="handleJudge(true)" style="font-size:18px;font-weight:700;">✅ 正确</div>`;
     html += `<div class="opt-btn" onclick="handleJudge(false)" style="font-size:18px;font-weight:700;">❌ 错误</div>`;
     html += `</div>`;
     html += `<div id="explainWrap"></div>`;
-    html += '<div style="text-align:center;margin-top:10px;"><button type="button" class="skip-btn" data-action="skip">跳过 | 下一题</button></div>';
   } else if(q.type === 'sent-dict') {
     html += `<div class="type-wrap">`;
     html += `<div style="font-size:20px;font-weight:700;color:var(--gray-800);margin-bottom:8px;line-height:1.5;">${q.q}</div>`;
     html += `<div class="q-hint">请输入对应的英文句子</div>`;
+    html += '<div style="text-align:right;margin:0 0 8px 0;"><button type="button" class="skip-btn" data-action="skip">跳过 ⏭</button></div>';
     html += `<textarea id="typeInput" class="type-input" style="height:80px;text-align:left;font-size:15px;resize:vertical;" placeholder="在此输入英文..." autocomplete="off"></textarea>`;
     html += `<div id="explainWrap"></div>`;
-    html += '<div style="text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button class="submit-btn" onclick="submitSentDict()">提交答案</button><button type="button" class="skip-btn" data-action="skip">跳过 | 下一题</button></div>';
+    html += '<div style="text-align:center;margin-top:10px;"><button class="submit-btn" onclick="submitSentDict()">提交答案</button></div>';
     html += `</div>`;
   } else if(q.type === 'sent-fill') {
     html += `<div class="fill-wrap">`;
     html += `<div style="font-size:18px;font-weight:600;color:var(--gray-800);margin-bottom:12px;line-height:1.6;">${q.q}</div>`;
     if(q.hint) html += `<div class="q-hint">${q.hint}</div>`;
+    html += '<div style="text-align:right;margin:0 0 8px 0;"><button type="button" class="skip-btn" data-action="skip">跳过 ⏭</button></div>';
     html += `<input class="fill-input" id="fillInput" placeholder="输入缺失的单词..." autocomplete="off">`;
     html += `<div id="explainWrap"></div>`;
-    html += '<div style="text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button class="submit-btn" onclick="submitSentFill()">提交答案</button><button type="button" class="skip-btn" data-action="skip">跳过 | 下一题</button></div>';
+    html += '<div style="text-align:center;margin-top:10px;"><button class="submit-btn" onclick="submitSentFill()">提交答案</button></div>';
     html += `</div>`;
   }
 
