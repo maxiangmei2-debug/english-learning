@@ -2972,6 +2972,9 @@ function submitType() {
 
 // ============ EXPLAIN ============
 function showExplain(q, isCorrect, userAns) {
+  // Hide skip button since we're showing the answer now
+  var skipBtn = document.querySelector('.skip-btn');
+  if (skipBtn) skipBtn.style.display = 'none';
   const wrap = document.getElementById('explainWrap');
   // Determine the correct answer display for wrong answers
   let correctAnswerHtml = '';
