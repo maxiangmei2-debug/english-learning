@@ -340,7 +340,7 @@
 </style>
 </head>
 <body>
-<a href="index.html" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+<a href="英语学习中心.html" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
 
 <!-- ====== 首页 ====== -->
 <div class="home-page" id="homePage">
@@ -2774,7 +2774,6 @@ function renderQuestion() {
   if(q.type === 'choice' || q.type === 'sent-app') {
     html += `<div class="q-text">${q.q}</div>`;
     if(q.hint) html += `<div class="q-hint">${q.hint}</div>`;
-    html += '<div style="text-align:right;margin:0 0 8px 0;"><button type="button" class="skip-btn" data-action="skip">跳过 ⏭</button></div>';
     html += `<div class="opts-grid" id="optsGrid">`;
     q.opts.forEach((opt, i) => {
       html += `<div class="opt-btn" data-idx="${i}" onclick="handleChoice(${i})">${opt}</div>`;
@@ -2785,7 +2784,6 @@ function renderQuestion() {
     html += `<div class="fill-wrap">`;
     html += `<div class="q-text">${q.q}</div>`;
     if(q.hint) html += `<div class="q-hint">${q.hint}</div>`;
-    html += '<div style="text-align:right;margin:0 0 8px 0;"><button type="button" class="skip-btn" data-action="skip">跳过 ⏭</button></div>';
     html += `<input class="fill-input" id="fillInput" placeholder="输入答案..." autocomplete="off">`;
     html += `<div id="explainWrap"></div>`;
     html += '<div style="text-align:center;margin-top:10px;"><button class="submit-btn" onclick="submitFill()">提交答案</button></div>';
@@ -2794,14 +2792,12 @@ function renderQuestion() {
     html += `<div class="type-wrap">`;
     html += `<div class="type-prompt-big">${q.q}</div>`;
     html += `<div class="q-hint">输入对应的英文</div>`;
-    html += '<div style="text-align:right;margin:0 0 8px 0;"><button type="button" class="skip-btn" data-action="skip">跳过 ⏭</button></div>';
     html += `<input class="type-input" id="typeInput" placeholder="type here..." autocomplete="off">`;
     html += `<div id="explainWrap"></div>`;
     html += '<div style="text-align:center;margin-top:10px;"><button class="submit-btn" onclick="submitType()">提交答案</button></div>';
     html += `</div>`;
   } else if(q.type === 'judge') {
     html += `<div class="q-text">${q.q}</div>`;
-    html += '<div style="text-align:right;margin:0 0 8px 0;"><button type="button" class="skip-btn" data-action="skip">跳过 ⏭</button></div>';
     html += `<div class="opts-grid" style="grid-template-columns:1fr 1fr;">`;
     html += `<div class="opt-btn" onclick="handleJudge(true)" style="font-size:18px;font-weight:700;">✅ 正确</div>`;
     html += `<div class="opt-btn" onclick="handleJudge(false)" style="font-size:18px;font-weight:700;">❌ 错误</div>`;
@@ -2811,7 +2807,6 @@ function renderQuestion() {
     html += `<div class="type-wrap">`;
     html += `<div style="font-size:20px;font-weight:700;color:var(--gray-800);margin-bottom:8px;line-height:1.5;">${q.q}</div>`;
     html += `<div class="q-hint">请输入对应的英文句子</div>`;
-    html += '<div style="text-align:right;margin:0 0 8px 0;"><button type="button" class="skip-btn" data-action="skip">跳过 ⏭</button></div>';
     html += `<textarea id="typeInput" class="type-input" style="height:80px;text-align:left;font-size:15px;resize:vertical;" placeholder="在此输入英文..." autocomplete="off"></textarea>`;
     html += `<div id="explainWrap"></div>`;
     html += '<div style="text-align:center;margin-top:10px;"><button class="submit-btn" onclick="submitSentDict()">提交答案</button></div>';
@@ -2820,7 +2815,6 @@ function renderQuestion() {
     html += `<div class="fill-wrap">`;
     html += `<div style="font-size:18px;font-weight:600;color:var(--gray-800);margin-bottom:12px;line-height:1.6;">${q.q}</div>`;
     if(q.hint) html += `<div class="q-hint">${q.hint}</div>`;
-    html += '<div style="text-align:right;margin:0 0 8px 0;"><button type="button" class="skip-btn" data-action="skip">跳过 ⏭</button></div>';
     html += `<input class="fill-input" id="fillInput" placeholder="输入缺失的单词..." autocomplete="off">`;
     html += `<div id="explainWrap"></div>`;
     html += '<div style="text-align:center;margin-top:10px;"><button class="submit-btn" onclick="submitSentFill()">提交答案</button></div>';
@@ -2828,14 +2822,6 @@ function renderQuestion() {
   }
 
   area.innerHTML = html;
-
-  // Bind skip button directly — querySelector + onclick, zero indirection
-  (function() {
-    var skipBtn = area.querySelector('.skip-btn');
-    if (skipBtn) {
-      skipBtn.onclick = function(e) { e.preventDefault(); skipQuestion(); };
-    }
-  })();
 
   // Auto focus
   setTimeout(() => {
@@ -2976,9 +2962,6 @@ function submitType() {
 
 // ============ EXPLAIN ============
 function showExplain(q, isCorrect, userAns) {
-  // Hide skip button since we're showing the answer now
-  var skipBtn = document.querySelector('.skip-btn');
-  if (skipBtn) skipBtn.style.display = 'none';
   const wrap = document.getElementById('explainWrap');
   // Determine the correct answer display for wrong answers
   let correctAnswerHtml = '';
@@ -3287,7 +3270,7 @@ init();
     var homeLink = document.querySelector('a[href*="学习中心"]');
     if (homeLink) {
       var spLink = document.createElement('a');
-      spLink.href = 'study-plan.html';
+      spLink.href = '学习计划.html';
       spLink.style.cssText = 'display:inline-block;margin:8px 4px;padding:6px 14px;background:#8B5CF6;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;';
       spLink.textContent = '← 学习计划';
       homeLink.parentNode.insertBefore(spLink, homeLink.nextSibling);
@@ -3299,7 +3282,7 @@ init();
       spBtn.className = 'test-back';
       spBtn.style.cssText = 'background:#8B5CF6;';
       spBtn.textContent = '← 学习计划';
-      spBtn.onclick = function() { window.location.href = 'study-plan.html'; };
+      spBtn.onclick = function() { window.location.href = '学习计划.html'; };
       testTop.appendChild(spBtn);
     }
     if (validCats.indexOf(c) >= 0) {
@@ -3310,7 +3293,7 @@ init();
       // Add a focus banner on the test page header area
       var banner = document.createElement('div');
       banner.id = 'focusBanner';
-      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · 极速闯关模式已自动启动 <a href="test-master.html" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
+      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · 极速闯关模式已自动启动 <a href="英语测试达人.html" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
       var testPage = document.getElementById('testPage');
       if (testPage) {
         var topBar = testPage.querySelector('.test-top-bar');
