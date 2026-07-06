@@ -2836,6 +2836,7 @@ function renderQuestion() {
       inp.addEventListener('keydown', e => {
         if(e.key === 'Enter' && !answered) {
           e.preventDefault();
+          e.stopPropagation();
           if(q.type === 'fill') submitFill();
           else if(q.type === 'type') submitType();
           else if(q.type === 'sent-dict') submitSentDict();
