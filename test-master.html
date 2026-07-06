@@ -143,6 +143,10 @@
   .badge-phrase { background:var(--accent-light); color:#92400E; }
   .badge-scene { background:var(--purple-light); color:var(--purple); }
   .badge-error { background:var(--danger-light); color:var(--danger); }
+  .badge-sentence { background:#F3E8FF; color:#7C3AED; }
+  .badge-sent-dict { background:#F3E8FF; color:#7C3AED; }
+  .badge-sent-fill { background:#EDE9FE; color:#6D28D9; }
+  .badge-sent-app { background:#DDD6FE; color:#5B21B6; }
 
   .q-text { font-size:18px; font-weight:700; margin-bottom:16px; line-height:1.5; }
   .q-hint { font-size:13px; color:var(--gray-500); margin-bottom:16px; }
@@ -336,7 +340,7 @@
 </style>
 </head>
 <body>
-<a href="index.html" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+<a href="英语学习中心.html" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
 
 <!-- ====== 首页 ====== -->
 <div class="home-page" id="homePage">
@@ -403,6 +407,21 @@
       <div class="mode-card-icon">⭐</div>
       <div class="mode-card-title" style="color:#92400E;">收藏练习</div>
       <div class="mode-card-desc" style="color:#B45309;">只练收藏的题目</div>
+    </div>
+    <div class="mode-card" onclick="startMode('sent-dict')" style="background:linear-gradient(135deg,#EEF2FF,#F5F3FF);border:2px solid #8B5CF6;">
+      <div class="mode-card-icon">🔊</div>
+      <div class="mode-card-title">句子听写</div>
+      <div class="mode-card-desc">看中文，写英文</div>
+    </div>
+    <div class="mode-card" onclick="startMode('sent-fill')" style="background:linear-gradient(135deg,#F5F3FF,#EDE9FE);border:2px solid #A78BFA;">
+      <div class="mode-card-icon">✏️</div>
+      <div class="mode-card-title">句子填空</div>
+      <div class="mode-card-desc">补全缺失单词</div>
+    </div>
+    <div class="mode-card" onclick="startMode('sent-app')" style="background:linear-gradient(135deg,#EDE9FE,#DDD6FE);border:2px solid #C4B5FD;">
+      <div class="mode-card-icon">🎯</div>
+      <div class="mode-card-title">句子应用</div>
+      <div class="mode-card-desc">情景选句判断</div>
     </div>
   </div>
 
@@ -1496,53 +1515,1060 @@ const Q = {
       ans:false,
       explain:'【错误】<span class="wrong">look them for</span> 不可拆分<br><br>【知识点】look for 是动介短语，<strong>不可拆分</strong>。代词必须放在介词 for 后面。<br><br>• ✅ Help me <span class="right">look for them</span>.<br>• ❌ Help me <span class="wrong">look them for</span>.<br><br>【对比】pick up（动副可拆）：✅ pick you up / look for（动介不可拆）：✅ look for them',
       tip:'动介短语不可拆：look for them ✅ / look them for ❌' },
+  ],
+
+  sentence: [
+    { id:'sent1-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我找不到我的钥匙了，你能帮我找找吗？',
+      ans:['I can\'t find my keys. Can you help me look for them?'],
+      explain:'<span class="en">I can't find my keys. Can you help me look for them?</span><br><br>我找不到我的钥匙了，你能帮我找找吗？' },
+    { id:'sent2-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'你的房间很乱，请把衣服收拾好。',
+      ans:['Your room is messy. Please pick up your clothes.'],
+      explain:'<span class="en">Your room is messy. Please pick up your clothes.</span><br><br>你的房间很乱，请把衣服收拾好。' },
+    { id:'sent3-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'你去上学的时候，谁来照顾小狗？',
+      ans:['Who looks after the dog when you go to school?'],
+      explain:'<span class="en">Who looks after the dog when you go to school?</span><br><br>你去上学的时候，谁来照顾小狗？' },
+    { id:'sent4-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'老板因为生病取消了会议。',
+      ans:['The boss called off the meeting because he was sick.'],
+      explain:'<span class="en">The boss called off the meeting because he was sick.</span><br><br>老板因为生病取消了会议。' },
+    { id:'sent5-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我六点钟会去接你。',
+      ans:['I will pick you up at six o\'clock.'],
+      explain:'<span class="en">I will pick you up at six o'clock.</span><br><br>我六点钟会去接你。' },
+    { id:'sent6-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'请把这些广告撕掉。',
+      ans:['Please tear up these advertisements.'],
+      explain:'<span class="en">Please tear up these advertisements.</span><br><br>请把这些广告撕掉。' },
+    { id:'sent7-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'那个会议被取消了。',
+      ans:['That meeting was called off.'],
+      explain:'<span class="en">That meeting was called off.</span><br><br>那个会议被取消了。' },
+    { id:'sent8-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'在你工作的时候，谁照顾你的狗？',
+      ans:['Who looks after your dog while you are working?'],
+      explain:'<span class="en">Who looks after your dog while you are working?</span><br><br>在你工作的时候，谁照顾你的狗？' },
+    { id:'sent9-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我希望下周日我不用加班。',
+      ans:['I hope that I needn\'t work overtime next Sunday.'],
+      explain:'<span class="en">I hope that I needn't work overtime next Sunday.</span><br><br>我希望下周日我不用加班。' },
+    { id:'sent10-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我希望下周日我不用加班。',
+      ans:['I hope that I don\'t need to work overtime next Sunday.'],
+      explain:'<span class="en">I hope that I don't need to work overtime next Sunday.</span><br><br>我希望下周日我不用加班。' },
+    { id:'sent11-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'皮特，别再琢磨填字游戏了。',
+      ans:['Pete, forget about the crossword puzzle.'],
+      explain:'<span class="en">Pete, forget about the crossword puzzle.</span><br><br>皮特，别再琢磨填字游戏了。' },
+    { id:'sent12-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'皮特，你哪项工作成果最令你感到自豪？',
+      ans:['Pete, what work of yours are you most proud of?'],
+      explain:'<span class="en">Pete, what work of yours are you most proud of?</span><br><br>皮特，你哪项工作成果最令你感到自豪？' },
+    { id:'sent13-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我需要确认你是否有胜任这份工作的技能。',
+      ans:['I need to find out if you have the skills for this job.'],
+      explain:'<span class="en">I need to find out if you have the skills for this job.</span><br><br>我需要确认你是否有胜任这份工作的技能。' },
+    { id:'sent14-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'为什么大家都对我们按喇叭？',
+      ans:['Why is everyone honking at us?'],
+      explain:'<span class="en">Why is everyone honking at us?</span><br><br>为什么大家都对我们按喇叭？' },
+    { id:'sent15-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'你的安全带系好了吗？',
+      ans:['Is your seatbelt buckled?'],
+      explain:'<span class="en">Is your seatbelt buckled?</span><br><br>你的安全带系好了吗？' },
+    { id:'sent16-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'是的，过程并不顺利，但我经过练习后第二次就通过了！',
+      ans:['Yes, it did not go well, but I practiced and passed the second time!'],
+      explain:'<span class="en">Yes, it did not go well, but I practiced and passed the second time!</span><br><br>是的，过程并不顺利，但我经过练习后第二次就通过了！' },
+    { id:'sent17-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'他毕业后，23 岁就会在上海找到一份教师的好工作。',
+      ans:['After he graduates, he will get a good job as a teacher in Shanghai at the age of 23.'],
+      explain:'<span class="en">After he graduates, he will get a good job as a teacher in Shanghai at the age of 23.</span><br><br>他毕业后，23 岁就会在上海找到一份教师的好工作。' },
+    { id:'sent18-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我八点会去接你。',
+      ans:['I will pick you up at 8:00.'],
+      explain:'<span class="en">I will pick you up at 8:00.</span><br><br>我八点会去接你。' },
+    { id:'sent19-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'你在奥兰多待了很长时间了吗？',
+      ans:['Have you been in Orlando long?'],
+      explain:'<span class="en">Have you been in Orlando long?</span><br><br>你在奥兰多待了很长时间了吗？' },
+    { id:'sent20-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'他整日守着羊群，确保它们安全，不会走丢。',
+      ans:['All day long he watched the sheep to make sure they were safe and didn’t get lost.'],
+      explain:'<span class="en">All day long he watched the sheep to make sure they were safe and didn’t get lost.</span><br><br>他整日守着羊群，确保它们安全，不会走丢。' },
+    { id:'sent21-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'看那个男孩！他快要从树上掉下来了。',
+      ans:['Look at that boy! He’s going to fall off the tree.'],
+      explain:'<span class="en">Look at that boy! He’s going to fall off the tree.</span><br><br>看那个男孩！他快要从树上掉下来了。' },
+    { id:'sent22-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'请帮我留一个座位。',
+      ans:['Please reserve a seat for me.'],
+      explain:'<span class="en">Please reserve a seat for me.</span><br><br>请帮我留一个座位。' },
+    { id:'sent23-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'他出价 10 美元，但我表示：“我不能降到这么低的价格，因为这件物品品相极佳。” 最终，我提出了 12 美元的还价。',
+      ans:['He offered 10 dollars, but I said,"I can\'t go that low because it is in excellent condition." Finally, I made a counter offer of 12 dollars.'],
+      explain:'<span class="en">He offered 10 dollars, but I said,&quot;I can't go that low because it is in excellent condition.&quot; Finally, I made a counter offer of 12 dollars.</span><br><br>他出价 10 美元，但我表示：“我不能降到这么低的价格，因为这件物品品相极佳。” 最终，我提出了 12 美元的还价。' },
+    { id:'sent24-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我的朋友两年前在北京购得了这枚硬币，因此我从 2024 年起便拥有了它。这枚硬币目前状态依然十分良好。',
+      ans:['My friend bought it in Beijing two years ago, so I have had it since 2024. The coin is still in very good condition.'],
+      explain:'<span class="en">My friend bought it in Beijing two years ago, so I have had it since 2024. The coin is still in very good condition.</span><br><br>我的朋友两年前在北京购得了这枚硬币，因此我从 2024 年起便拥有了它。这枚硬币目前状态依然十分良好。' },
+    { id:'sent25-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'你想赚些外快，并且希望能淘到一些自己真正需要的超值二手好物。',
+      ans:['You wish to make some extra money, and you hope to find some amazing bargains on second-hand items you actually need.'],
+      explain:'<span class="en">You wish to make some extra money, and you hope to find some amazing bargains on second-hand items you actually need.</span><br><br>你想赚些外快，并且希望能淘到一些自己真正需要的超值二手好物。' },
+    { id:'sent26-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'一个周日的早晨，你决定去逛逛跳蚤市场，因为家里堆满了你不再使用的物品。',
+      ans:['It\'s a Sunday morning, you\'ve decided to visit a flea market, because your home is full of things you don\'t use anymore.'],
+      explain:'<span class="en">It's a Sunday morning, you've decided to visit a flea market, because your home is full of things you don't use anymore.</span><br><br>一个周日的早晨，你决定去逛逛跳蚤市场，因为家里堆满了你不再使用的物品。' },
+    { id:'sent27-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我认为他晚上应该多睡一会儿。',
+      ans:['I think he should get more sleep at night.'],
+      explain:'<span class="en">I think he should get more sleep at night.</span><br><br>我认为他晚上应该多睡一会儿。' },
+    { id:'sent28-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'嗯，你还有什么想做的事情吗？',
+      ans:['Well, is there anything you want to do?'],
+      explain:'<span class="en">Well, is there anything you want to do?</span><br><br>嗯，你还有什么想做的事情吗？' },
+    { id:'sent29-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'然而，就在他准备解开裤子的拉链时，他瞥见身旁坐着一名男子，于是便佯装自己的泳裤是一方手帕，并将其重新放回包里。',
+      ans:['However, just as he’s about to unzip his pants, he sees another man sitting very close to him, so he pretends that his swimming trunks are a handkerchief and puts them back into his bag.'],
+      explain:'<span class="en">However, just as he’s about to unzip his pants, he sees another man sitting very close to him, so he pretends that his swimming trunks are a handkerchief and puts them back into his bag.</span><br><br>然而，就在他准备解开裤子的拉链时，他瞥见身旁坐着一名男子，于是便佯装自己的泳裤是一方手帕，并将其重新放回包里。' },
+    { id:'sent30-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'之后，他费尽力气想把裤子从泳裤底下脱出来。',
+      ans:['Then, he tries very hard to pull his pants off from under the swimming trunks.'],
+      explain:'<span class="en">Then, he tries very hard to pull his pants off from under the swimming trunks.</span><br><br>之后，他费尽力气想把裤子从泳裤底下脱出来。' },
+    { id:'sent31-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我戴上了手表为了不迟到。',
+      ans:['I put on my watch in order not to be late.'],
+      explain:'<span class="en">I put on my watch in order not to be late.</span><br><br>我戴上了手表为了不迟到。' },
+    { id:'sent32-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我的侄子在学校没有朋友。',
+      ans:['My nephew has no friends at school.'],
+      explain:'<span class="en">My nephew has no friends at school.</span><br><br>我的侄子在学校没有朋友。' },
+    { id:'sent33-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我的手机上周弄坏了。',
+      ans:['My phone was broken last week.'],
+      explain:'<span class="en">My phone was broken last week.</span><br><br>我的手机上周弄坏了。' },
+    { id:'sent34-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'你距离最近的城镇大约有十公里远。',
+      ans:['You’ll be about ten kilometers from the nearest town.'],
+      explain:'<span class="en">You’ll be about ten kilometers from the nearest town.</span><br><br>你距离最近的城镇大约有十公里远。' },
+    { id:'sent35-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'首先，他把泳裤套在了裤子外面。',
+      ans:['First, he puts on his swimming trunks over his pants.'],
+      explain:'<span class="en">First, he puts on his swimming trunks over his pants.</span><br><br>首先，他把泳裤套在了裤子外面。' },
+    { id:'sent36-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'他穿着西装和领带，因此想换穿游泳短裤。',
+      ans:['He is wearing a suit and tie, so he wants to change into his swimming trunks.'],
+      explain:'<span class="en">He is wearing a suit and tie, so he wants to change into his swimming trunks.</span><br><br>他穿着西装和领带，因此想换穿游泳短裤。' },
+    { id:'sent37-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'此外，我建议他多喝水，少喝含糖饮料。',
+      ans:['Also, I suggest that he drink more water instead of sugary beverages.'],
+      explain:'<span class="en">Also, I suggest that he drink more water instead of sugary beverages.</span><br><br>此外，我建议他多喝水，少喝含糖饮料。' },
+    { id:'sent38-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'最后，他总算在穿着泳裤的情况下成功脱下了裤子。',
+      ans:['Finally, he manages to take off his pants while wearing his trunks.'],
+      explain:'<span class="en">Finally, he manages to take off his pants while wearing his trunks.</span><br><br>最后，他总算在穿着泳裤的情况下成功脱下了裤子。' },
+    { id:'sent39-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'你差点撞到那辆车！',
+      ans:['You almost hit that car!'],
+      explain:'<span class="en">You almost hit that car!</span><br><br>你差点撞到那辆车！' },
+    { id:'sent40-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'一开始一切都还算顺利。',
+      ans:['It started fine.'],
+      explain:'<span class="en">It started fine.</span><br><br>一开始一切都还算顺利。' },
+    { id:'sent41-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'距离这里有一小时的路程。',
+      ans:['It\'s an hour away.'],
+      explain:'<span class="en">It's an hour away.</span><br><br>距离这里有一小时的路程。' },
+    { id:'sent42-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我有主意了！',
+      ans:['I know what!'],
+      explain:'<span class="en">I know what!</span><br><br>我有主意了！' },
+    { id:'sent43-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'如果天气晴朗，我们就会去公园野餐。',
+      ans:['If it were sunny, we would have a picnic in the park.'],
+      explain:'<span class="en">If it were sunny, we would have a picnic in the park.</span><br><br>如果天气晴朗，我们就会去公园野餐。' },
+    { id:'sent44-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'天气预报说会下雨，所以我建议带上一把伞。',
+      ans:['The weather forecast says it will rain, so I suggest bringing an umbrella.'],
+      explain:'<span class="en">The weather forecast says it will rain, so I suggest bringing an umbrella.</span><br><br>天气预报说会下雨，所以我建议带上一把伞。' },
+    { id:'sent45-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'所有食材都粘在了锅底，还烧糊了。',
+      ans:['...and it all stuck to the bottom of the pan and burned.'],
+      explain:'<span class="en">...and it all stuck to the bottom of the pan and burned.</span><br><br>所有食材都粘在了锅底，还烧糊了。' },
+    { id:'sent46-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我建议我们在车里备一个急救包，以防突发状况。',
+      ans:['I suggest that we keep a first aid kit in the car in case of an emergency.'],
+      explain:'<span class="en">I suggest that we keep a first aid kit in the car in case of an emergency.</span><br><br>我建议我们在车里备一个急救包，以防突发状况。' },
+    { id:'sent47-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'租金每月 6500 元，你需要支付两个月租金作为押金。',
+      ans:['The rent is 6500 yuan per month and you need to pay two months\' rent as the deposit.'],
+      explain:'<span class="en">The rent is 6500 yuan per month and you need to pay two months' rent as the deposit.</span><br><br>租金每月 6500 元，你需要支付两个月租金作为押金。' },
+    { id:'sent48-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'骑车仅需十分钟就能到达公交站和地铁站。',
+      ans:['And it\'s only a 10 minutes’ bike ride to the bus stop and metro station.'],
+      explain:'<span class="en">And it's only a 10 minutes’ bike ride to the bus stop and metro station.</span><br><br>骑车仅需十分钟就能到达公交站和地铁站。' },
+    { id:'sent49-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'这套房子还配有电梯和小型健身房。',
+      ans:['It also comes with a lift and a small gym.'],
+      explain:'<span class="en">It also comes with a lift and a small gym.</span><br><br>这套房子还配有电梯和小型健身房。' },
+    { id:'sent50-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我们在婚礼上见到的新郎十分英俊。',
+      ans:['The groom that we met at the wedding is very handsome.'],
+      explain:'<span class="en">The groom that we met at the wedding is very handsome.</span><br><br>我们在婚礼上见到的新郎十分英俊。' },
+    { id:'sent51-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'尼古拉斯，你体育运动怎么样？',
+      ans:['How good are you at sports, Nicholas?'],
+      explain:'<span class="en">How good are you at sports, Nicholas?</span><br><br>尼古拉斯，你体育运动怎么样？' },
+    { id:'sent52-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'这是一枚金色纪念币。',
+      ans:['It is a gold commemorative coin.'],
+      explain:'<span class="en">It is a gold commemorative coin.</span><br><br>这是一枚金色纪念币。' },
+    { id:'sent53-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'所有水电杂费都包含在租金里。',
+      ans:['All utilities are included in the rent.'],
+      explain:'<span class="en">All utilities are included in the rent.</span><br><br>所有水电杂费都包含在租金里。' },
+    { id:'sent54-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我建议带上湿纸巾，清理黏腻的双手，它比纸盘子好用。',
+      ans:['I suggest bringing wet wipes because they are better than paper plates for cleaning sticky hands.'],
+      explain:'<span class="en">I suggest bringing wet wipes because they are better than paper plates for cleaning sticky hands.</span><br><br>我建议带上湿纸巾，清理黏腻的双手，它比纸盘子好用。' },
+    { id:'sent55-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'她有时会在上班时打瞌睡。',
+      ans:['She sometimes dozes off at work.'],
+      explain:'<span class="en">She sometimes dozes off at work.</span><br><br>她有时会在上班时打瞌睡。' },
+    { id:'sent56-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'这周末，我要去一座小湖边的山里露营。',
+      ans:['This weekend, I am going camping in the mountains near a small lake.'],
+      explain:'<span class="en">This weekend, I am going camping in the mountains near a small lake.</span><br><br>这周末，我要去一座小湖边的山里露营。' },
+    { id:'sent57-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'这个周末你要带着六岁和八岁的侄子、侄女，去小湖边的山里露营。',
+      ans:['You’re going camping for the weekend in the mountains by a small lake with your nephew and your niece (aged 6 and 8).'],
+      explain:'<span class="en">You’re going camping for the weekend in the mountains by a small lake with your nephew and your niece (aged 6 and 8).</span><br><br>这个周末你要带着六岁和八岁的侄子、侄女，去小湖边的山里露营。' },
+    { id:'sent58-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'味道尝起来不怎么样。',
+      ans:['It didn\'t taste too good.'],
+      explain:'<span class="en">It didn't taste too good.</span><br><br>味道尝起来不怎么样。' },
+    { id:'sent59-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'上公交车必须付钱。',
+      ans:['You\'ve got to pay when you get on a bus.'],
+      explain:'<span class="en">You've got to pay when you get on a bus.</span><br><br>上公交车必须付钱。' },
+    { id:'sent60-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我在长椅上休息的时候还有空闲时间。',
+      ans:['Well, I had time while I was resting on a bench.'],
+      explain:'<span class="en">Well, I had time while I was resting on a bench.</span><br><br>我在长椅上休息的时候还有空闲时间。' },
+    { id:'sent61-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我们很少在后座系安全带。',
+      ans:['We seldom fasten our seat belts in the back seat.'],
+      explain:'<span class="en">We seldom fasten our seat belts in the back seat.</span><br><br>我们很少在后座系安全带。' },
+    { id:'sent62-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我认为自己是客服岗位的最佳人选。',
+      ans:['I think I am the best choice for the Customer Service Staff job.'],
+      explain:'<span class="en">I think I am the best choice for the Customer Service Staff job.</span><br><br>我认为自己是客服岗位的最佳人选。' },
+    { id:'sent63-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我非常适合这份工作，因为我拥有客户服务经验，并且擅长遵守各项指令。',
+      ans:['I am a good fit because I have experience dealing with customers and I am good at following instructions.'],
+      explain:'<span class="en">I am a good fit because I have experience dealing with customers and I am good at following instructions.</span><br><br>我非常适合这份工作，因为我拥有客户服务经验，并且擅长遵守各项指令。' },
+    { id:'sent64-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'这些手机只有 8G 存储空间，我们只能从应用商店安装五个软件，所以必须挑选日常生活最实用的。',
+      ans:['Because these phones only have 8G of storage, we can only install five apps from the app store, so we must choose the best ones for daily life.'],
+      explain:'<span class="en">Because these phones only have 8G of storage, we can only install five apps from the app store, so we must choose the best ones for daily life.</span><br><br>这些手机只有 8G 存储空间，我们只能从应用商店安装五个软件，所以必须挑选日常生活最实用的。' },
+    { id:'sent65-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'他们已经委托你为他人设置一部手机。',
+      ans:['They have asked you to set up a phone for someone else.'],
+      explain:'<span class="en">They have asked you to set up a phone for someone else.</span><br><br>他们已经委托你为他人设置一部手机。' },
+    { id:'sent66-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'即使他很有钱，他也不会买那辆车。',
+      ans:['Even if he is very rich, he won\'t buy that car.'],
+      explain:'<span class="en">Even if he is very rich, he won't buy that car.</span><br><br>即使他很有钱，他也不会买那辆车。' },
+    { id:'sent67-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'闲暇时间，我喜欢跷着脚坐着，观看我最爱的电视节目。',
+      ans:['In my free time, I like to sit with my feet up and watch my favorite TV shows.'],
+      explain:'<span class="en">In my free time, I like to sit with my feet up and watch my favorite TV shows.</span><br><br>闲暇时间，我喜欢跷着脚坐着，观看我最爱的电视节目。' },
+    { id:'sent68-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'嘿，詹妮弗，你的身材保持得真好。',
+      ans:['Hey, Jennifer, you’re in great shape.'],
+      explain:'<span class="en">Hey, Jennifer, you’re in great shape.</span><br><br>嘿，詹妮弗，你的身材保持得真好。' },
+    { id:'sent69-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我每周在家做三次有氧运动，其余时间去游泳。',
+      ans:['I do aerobics at home three times a week, and the other days I go swimming.'],
+      explain:'<span class="en">I do aerobics at home three times a week, and the other days I go swimming.</span><br><br>我每周在家做三次有氧运动，其余时间去游泳。' },
+    { id:'sent70-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我的专业能力与亲和性格，让我非常适合加入你们的客服团队。',
+      ans:['My skills and friendly personality make me perfect for your customer service team.'],
+      explain:'<span class="en">My skills and friendly personality make me perfect for your customer service team.</span><br><br>我的专业能力与亲和性格，让我非常适合加入你们的客服团队。' },
+    { id:'sent71-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我不适合市场营销助理这份工作，因为我没有大学学历。',
+      ans:['I am not suitable for the Marketing Assistant job because I do not have a university degree.'],
+      explain:'<span class="en">I am not suitable for the Marketing Assistant job because I do not have a university degree.</span><br><br>我不适合市场营销助理这份工作，因为我没有大学学历。' },
+    { id:'sent72-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'总体而言，这五款应用非常实用，它们将极大便利每个人对智能手机的使用。',
+      ans:['Overall, these five apps are very helpful and will make using a smartphone much easier for everyone.'],
+      explain:'<span class="en">Overall, these five apps are very helpful and will make using a smartphone much easier for everyone.</span><br><br>总体而言，这五款应用非常实用，它们将极大便利每个人对智能手机的使用。' },
+    { id:'sent73-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'鲍勃，班里新来的那个女孩是什么样子的？',
+      ans:['So, Bob, what\'s the new girl in class like?'],
+      explain:'<span class="en">So, Bob, what's the new girl in class like?</span><br><br>鲍勃，班里新来的那个女孩是什么样子的？' },
+    { id:'sent74-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我高中毕业，拥有三年销售与行政办公工作经验。',
+      ans:['I graduated from high school and have three years of experience in sales and office work.'],
+      explain:'<span class="en">I graduated from high school and have three years of experience in sales and office work.</span><br><br>我高中毕业，拥有三年销售与行政办公工作经验。' },
+    { id:'sent75-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'有三位候选人正同时申请这三份工作。',
+      ans:['Three candidates are applying for all three jobs.'],
+      explain:'<span class="en">Three candidates are applying for all three jobs.</span><br><br>有三位候选人正同时申请这三份工作。' },
+    { id:'sent76-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'看！那个戴着黑帽子、穿着厚外套的人走过来了。',
+      ans:['Look! The man in a black hat and a heavy coat is coming.'],
+      explain:'<span class="en">Look! The man in a black hat and a heavy coat is coming.</span><br><br>看！那个戴着黑帽子、穿着厚外套的人走过来了。' },
+    { id:'sent77-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'那位留着卷曲长发的女孩是一位知名歌手。',
+      ans:['The girl with long curly hair is a famous singer.'],
+      explain:'<span class="en">The girl with long curly hair is a famous singer.</span><br><br>那位留着卷曲长发的女孩是一位知名歌手。' },
+    { id:'sent78-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'你看到那个穿着蓝色西装的高个子男人了吗？他是我的叔叔。',
+      ans:['Do you see that tall man in a blue suit? He is my uncle.'],
+      explain:'<span class="en">Do you see that tall man in a blue suit? He is my uncle.</span><br><br>你看到那个穿着蓝色西装的高个子男人了吗？他是我的叔叔。' },
+    { id:'sent79-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我想要认识她。',
+      ans:['I\'d like to meet her.'],
+      explain:'<span class="en">I'd like to meet her.</span><br><br>我想要认识她。' },
+    { id:'sent80-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'她就在那里，那个拎着手提包的女孩。',
+      ans:['There she is — the girl with a purse.'],
+      explain:'<span class="en">There she is — the girl with a purse.</span><br><br>她就在那里，那个拎着手提包的女孩。' },
+    { id:'sent81-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'这会有什么帮助？',
+      ans:['How is this going to help?'],
+      explain:'<span class="en">How is this going to help?</span><br><br>这会有什么帮助？' },
+    { id:'sent82-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我只需要借几样东西就行。',
+      ans:['I\'ll just have to borrow a couple of things.'],
+      explain:'<span class="en">I'll just have to borrow a couple of things.</span><br><br>我只需要借几样东西就行。' },
+    { id:'sent83-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'蕾切尔周五 9 点半要在图书馆和黛安见面。',
+      ans:['Rachel is meeting Diane at the library at 9:30 on Friday.'],
+      explain:'<span class="en">Rachel is meeting Diane at the library at 9:30 on Friday.</span><br><br>蕾切尔周五 9 点半要在图书馆和黛安见面。' },
+    { id:'sent84-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'你通常怎样和朋友们保持联系？',
+      ans:['How do you usually keep in touch with your friends?'],
+      explain:'<span class="en">How do you usually keep in touch with your friends?</span><br><br>你通常怎样和朋友们保持联系？' },
+    { id:'sent85-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'那个穿着红色 T 恤、拿着篮球的男孩？',
+      ans:['The boy in a red T-shirt with a basketball?'],
+      explain:'<span class="en">The boy in a red T-shirt with a basketball?</span><br><br>那个穿着红色 T 恤、拿着篮球的男孩？' },
+    { id:'sent86-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我的胆固醇状况与你无关！！',
+      ans:['My cholesterol is none of your business!!'],
+      explain:'<span class="en">My cholesterol is none of your business!!</span><br><br>我的胆固醇状况与你无关！！' },
+    { id:'sent87-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'这就是我们昨天遇见的那位女士。',
+      ans:['This is the woman we met yesterday.'],
+      explain:'<span class="en">This is the woman we met yesterday.</span><br><br>这就是我们昨天遇见的那位女士。' },
+    { id:'sent88-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'农妇看起来并不感兴趣。迈克拿出一大袋泥土，打开袋子把泥土全都倒在了地板上。',
+      ans:['The farmer’s wife didn’t look interested. Mike took out a big bag of dirt. He opened it and dumped it all over the floor.'],
+      explain:'<span class="en">The farmer’s wife didn’t look interested. Mike took out a big bag of dirt. He opened it and dumped it all over the floor.</span><br><br>农妇看起来并不感兴趣。迈克拿出一大袋泥土，打开袋子把泥土全都倒在了地板上。' },
+    { id:'sent89-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我受够你们两个了！！',
+      ans:['I am sick and tired of the both of you!!'],
+      explain:'<span class="en">I am sick and tired of the both of you!!</span><br><br>我受够你们两个了！！' },
+    { id:'sent90-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'你知道吗，你这人实在太无趣了。',
+      ans:['You know, you are really no fun at all.'],
+      explain:'<span class="en">You know, you are really no fun at all.</span><br><br>你知道吗，你这人实在太无趣了。' },
+    { id:'sent91-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'哦，安娜，我们去买一条新鲜的全麦有机面包吧！',
+      ans:['Oh, Anna, let\'s buy a fresh loaf of whole wheat, organic bread!'],
+      explain:'<span class="en">Oh, Anna, let's buy a fresh loaf of whole wheat, organic bread!</span><br><br>哦，安娜，我们去买一条新鲜的全麦有机面包吧！' },
+    { id:'sent92-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'我要点洋葱汤。',
+      ans:['I’ll have the onion soup.'],
+      explain:'<span class="en">I’ll have the onion soup.</span><br><br>我要点洋葱汤。' },
+    { id:'sent93-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'盖伊，我当时根本来不及害怕。',
+      ans:['I had no time to be afraid, Guy.'],
+      explain:'<span class="en">I had no time to be afraid, Guy.</span><br><br>盖伊，我当时根本来不及害怕。' },
+    { id:'sent94-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'如果你现在出发，你就能赶上公交车。',
+      ans:['If you leave now, you will catch the bus.'],
+      explain:'<span class="en">If you leave now, you will catch the bus.</span><br><br>如果你现在出发，你就能赶上公交车。' },
+    { id:'sent95-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'如果她努力学习，就会通过考试。',
+      ans:['If she studies hard, she will pass the exam.'],
+      explain:'<span class="en">If she studies hard, she will pass the exam.</span><br><br>如果她努力学习，就会通过考试。' },
+    { id:'sent96-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'反正钱已经花了，我只能觉得它很值。',
+      ans:['Since the money\'s already spent, I might as well think it\'s totally worth it.'],
+      explain:'<span class="en">Since the money's already spent, I might as well think it's totally worth it.</span><br><br>反正钱已经花了，我只能觉得它很值。' },
+    { id:'sent97-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'她在面试候选人方面经验丰富。',
+      ans:['She is very experienced in interviewing candidates.'],
+      explain:'<span class="en">She is very experienced in interviewing candidates.</span><br><br>她在面试候选人方面经验丰富。' },
+    { id:'sent98-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'第二轮议价中，我总共花了 50 美元买下一把吉他。',
+      ans:['In the second round, I spent 50 dollars in total to buy a guitar.'],
+      explain:'<span class="en">In the second round, I spent 50 dollars in total to buy a guitar.</span><br><br>第二轮议价中，我总共花了 50 美元买下一把吉他。' },
+    { id:'sent99-d', cat:'sentence', type:'sent-dict', badge:'句子听写',
+      q:'此外，我不适合销售团队主管岗位，因为我不喜欢加班，而这份工作需要长时间工作。',
+      ans:['Also, I am not a fit for Sales Team Leader because I do not like working overtime, and that job requires long hours.'],
+      explain:'<span class="en">Also, I am not a fit for Sales Team Leader because I do not like working overtime, and that job requires long hours.</span><br><br>此外，我不适合销售团队主管岗位，因为我不喜欢加班，而这份工作需要长时间工作。' },
+    { id:'sent1-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'I _____ find my keys. Can you help me look for them?',
+      hint:'中文：我找不到我的钥匙了，你能帮我找找吗？',
+      ans:['can\'t'],
+      explain:'<span class="en">I can't find my keys. Can you help me look for them?</span><br><br>我找不到我的钥匙了，你能帮我找找吗？<br><br>填空词：<span class="highlight">can\'t</span>' },
+    { id:'sent2-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ room is messy. Please pick up your clothes.',
+      hint:'中文：你的房间很乱，请把衣服收拾好。',
+      ans:['Your'],
+      explain:'<span class="en">Your room is messy. Please pick up your clothes.</span><br><br>你的房间很乱，请把衣服收拾好。<br><br>填空词：<span class="highlight">Your</span>' },
+    { id:'sent3-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'Who _____ after the dog when you go to school?',
+      hint:'中文：你去上学的时候，谁来照顾小狗？',
+      ans:['looks'],
+      explain:'<span class="en">Who looks after the dog when you go to school?</span><br><br>你去上学的时候，谁来照顾小狗？<br><br>填空词：<span class="highlight">looks</span>' },
+    { id:'sent4-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'The _____ called off the meeting because he was sick.',
+      hint:'中文：老板因为生病取消了会议。',
+      ans:['boss'],
+      explain:'<span class="en">The boss called off the meeting because he was sick.</span><br><br>老板因为生病取消了会议。<br><br>填空词：<span class="highlight">boss</span>' },
+    { id:'sent5-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'I _____ pick you up at six o\'clock.',
+      hint:'中文：我六点钟会去接你。',
+      ans:['will'],
+      explain:'<span class="en">I will pick you up at six o'clock.</span><br><br>我六点钟会去接你。<br><br>填空词：<span class="highlight">will</span>' },
+    { id:'sent6-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ tear up these advertisements.',
+      hint:'中文：请把这些广告撕掉。',
+      ans:['Please'],
+      explain:'<span class="en">Please tear up these advertisements.</span><br><br>请把这些广告撕掉。<br><br>填空词：<span class="highlight">Please</span>' },
+    { id:'sent7-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ meeting was called off.',
+      hint:'中文：那个会议被取消了。',
+      ans:['That'],
+      explain:'<span class="en">That meeting was called off.</span><br><br>那个会议被取消了。<br><br>填空词：<span class="highlight">That</span>' },
+    { id:'sent8-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'Who _____ after your dog while you are working?',
+      hint:'中文：在你工作的时候，谁照顾你的狗？',
+      ans:['looks'],
+      explain:'<span class="en">Who looks after your dog while you are working?</span><br><br>在你工作的时候，谁照顾你的狗？<br><br>填空词：<span class="highlight">looks</span>' },
+    { id:'sent9-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'I _____ that I needn\'t work overtime next Sunday.',
+      hint:'中文：我希望下周日我不用加班。',
+      ans:['hope'],
+      explain:'<span class="en">I hope that I needn't work overtime next Sunday.</span><br><br>我希望下周日我不用加班。<br><br>填空词：<span class="highlight">hope</span>' },
+    { id:'sent10-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'I _____ that I don\'t need to work overtime next Sunday.',
+      hint:'中文：我希望下周日我不用加班。',
+      ans:['hope'],
+      explain:'<span class="en">I hope that I don't need to work overtime next Sunday.</span><br><br>我希望下周日我不用加班。<br><br>填空词：<span class="highlight">hope</span>' },
+    { id:'sent11-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ forget about the crossword puzzle.',
+      hint:'中文：皮特，别再琢磨填字游戏了。',
+      ans:['Pete,'],
+      explain:'<span class="en">Pete, forget about the crossword puzzle.</span><br><br>皮特，别再琢磨填字游戏了。<br><br>填空词：<span class="highlight">Pete,</span>' },
+    { id:'sent12-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ what work of yours are you most proud of?',
+      hint:'中文：皮特，你哪项工作成果最令你感到自豪？',
+      ans:['Pete,'],
+      explain:'<span class="en">Pete, what work of yours are you most proud of?</span><br><br>皮特，你哪项工作成果最令你感到自豪？<br><br>填空词：<span class="highlight">Pete,</span>' },
+    { id:'sent13-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'I _____ to find out if you have the skills for this job.',
+      hint:'中文：我需要确认你是否有胜任这份工作的技能。',
+      ans:['need'],
+      explain:'<span class="en">I need to find out if you have the skills for this job.</span><br><br>我需要确认你是否有胜任这份工作的技能。<br><br>填空词：<span class="highlight">need</span>' },
+    { id:'sent14-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'Why is _____ honking at us?',
+      hint:'中文：为什么大家都对我们按喇叭？',
+      ans:['everyone'],
+      explain:'<span class="en">Why is everyone honking at us?</span><br><br>为什么大家都对我们按喇叭？<br><br>填空词：<span class="highlight">everyone</span>' },
+    { id:'sent15-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'Is _____ seatbelt buckled?',
+      hint:'中文：你的安全带系好了吗？',
+      ans:['your'],
+      explain:'<span class="en">Is your seatbelt buckled?</span><br><br>你的安全带系好了吗？<br><br>填空词：<span class="highlight">your</span>' },
+    { id:'sent16-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ it did not go well, but I practiced and passed the second time!',
+      hint:'中文：是的，过程并不顺利，但我经过练习后第二次就通过了！',
+      ans:['Yes,'],
+      explain:'<span class="en">Yes, it did not go well, but I practiced and passed the second time!</span><br><br>是的，过程并不顺利，但我经过练习后第二次就通过了！<br><br>填空词：<span class="highlight">Yes,</span>' },
+    { id:'sent17-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ he graduates, he will get a good job as a teacher in Shanghai at the age of 23.',
+      hint:'中文：他毕业后，23 岁就会在上海找到一份教师的好工作。',
+      ans:['After'],
+      explain:'<span class="en">After he graduates, he will get a good job as a teacher in Shanghai at the age of 23.</span><br><br>他毕业后，23 岁就会在上海找到一份教师的好工作。<br><br>填空词：<span class="highlight">After</span>' },
+    { id:'sent18-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'I _____ pick you up at 8:00.',
+      hint:'中文：我八点会去接你。',
+      ans:['will'],
+      explain:'<span class="en">I will pick you up at 8:00.</span><br><br>我八点会去接你。<br><br>填空词：<span class="highlight">will</span>' },
+    { id:'sent19-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ you been in Orlando long?',
+      hint:'中文：你在奥兰多待了很长时间了吗？',
+      ans:['Have'],
+      explain:'<span class="en">Have you been in Orlando long?</span><br><br>你在奥兰多待了很长时间了吗？<br><br>填空词：<span class="highlight">Have</span>' },
+    { id:'sent20-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'All day _____ he watched the sheep to make sure they were safe and didn’t get lost.',
+      hint:'中文：他整日守着羊群，确保它们安全，不会走丢。',
+      ans:['long'],
+      explain:'<span class="en">All day long he watched the sheep to make sure they were safe and didn’t get lost.</span><br><br>他整日守着羊群，确保它们安全，不会走丢。<br><br>填空词：<span class="highlight">long</span>' },
+    { id:'sent21-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ at that boy! He’s going to fall off the tree.',
+      hint:'中文：看那个男孩！他快要从树上掉下来了。',
+      ans:['Look'],
+      explain:'<span class="en">Look at that boy! He’s going to fall off the tree.</span><br><br>看那个男孩！他快要从树上掉下来了。<br><br>填空词：<span class="highlight">Look</span>' },
+    { id:'sent22-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ reserve a seat for me.',
+      hint:'中文：请帮我留一个座位。',
+      ans:['Please'],
+      explain:'<span class="en">Please reserve a seat for me.</span><br><br>请帮我留一个座位。<br><br>填空词：<span class="highlight">Please</span>' },
+    { id:'sent23-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'He _____ 10 dollars, but I said,"I can\'t go that low because it is in excellent condition." Finally, I made a counter offer of 12 dollars.',
+      hint:'中文：他出价 10 美元，但我表示：“我不能降到这么低的价格，因为这件物品品相极佳。” 最终，我提出了 12 美元的还价。',
+      ans:['offered'],
+      explain:'<span class="en">He offered 10 dollars, but I said,&quot;I can't go that low because it is in excellent condition.&quot; Finally, I made a counter offer of 12 dollars.</span><br><br>他出价 10 美元，但我表示：“我不能降到这么低的价格，因为这件物品品相极佳。” 最终，我提出了 12 美元的还价。<br><br>填空词：<span class="highlight">offered</span>' },
+    { id:'sent24-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'My _____ bought it in Beijing two years ago, so I have had it since 2024. The coin is still in very good condition.',
+      hint:'中文：我的朋友两年前在北京购得了这枚硬币，因此我从 2024 年起便拥有了它。这枚硬币目前状态依然十分良好。',
+      ans:['friend'],
+      explain:'<span class="en">My friend bought it in Beijing two years ago, so I have had it since 2024. The coin is still in very good condition.</span><br><br>我的朋友两年前在北京购得了这枚硬币，因此我从 2024 年起便拥有了它。这枚硬币目前状态依然十分良好。<br><br>填空词：<span class="highlight">friend</span>' },
+    { id:'sent25-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'You _____ to make some extra money, and you hope to find some amazing bargains on second-hand items you actually need.',
+      hint:'中文：你想赚些外快，并且希望能淘到一些自己真正需要的超值二手好物。',
+      ans:['wish'],
+      explain:'<span class="en">You wish to make some extra money, and you hope to find some amazing bargains on second-hand items you actually need.</span><br><br>你想赚些外快，并且希望能淘到一些自己真正需要的超值二手好物。<br><br>填空词：<span class="highlight">wish</span>' },
+    { id:'sent26-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ a Sunday morning, you\'ve decided to visit a flea market, because your home is full of things you don\'t use anymore.',
+      hint:'中文：一个周日的早晨，你决定去逛逛跳蚤市场，因为家里堆满了你不再使用的物品。',
+      ans:['It\'s'],
+      explain:'<span class="en">It's a Sunday morning, you've decided to visit a flea market, because your home is full of things you don't use anymore.</span><br><br>一个周日的早晨，你决定去逛逛跳蚤市场，因为家里堆满了你不再使用的物品。<br><br>填空词：<span class="highlight">It\'s</span>' },
+    { id:'sent27-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'I _____ he should get more sleep at night.',
+      hint:'中文：我认为他晚上应该多睡一会儿。',
+      ans:['think'],
+      explain:'<span class="en">I think he should get more sleep at night.</span><br><br>我认为他晚上应该多睡一会儿。<br><br>填空词：<span class="highlight">think</span>' },
+    { id:'sent28-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ is there anything you want to do?',
+      hint:'中文：嗯，你还有什么想做的事情吗？',
+      ans:['Well,'],
+      explain:'<span class="en">Well, is there anything you want to do?</span><br><br>嗯，你还有什么想做的事情吗？<br><br>填空词：<span class="highlight">Well,</span>' },
+    { id:'sent29-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ just as he’s about to unzip his pants, he sees another man sitting very close to him, so he pretends that his swimming trunks are a handkerchief and puts them back into his bag.',
+      hint:'中文：然而，就在他准备解开裤子的拉链时，他瞥见身旁坐着一名男子，于是便佯装自己的泳裤是一方手帕，并将其重新放回包里。',
+      ans:['However,'],
+      explain:'<span class="en">However, just as he’s about to unzip his pants, he sees another man sitting very close to him, so he pretends that his swimming trunks are a handkerchief and puts them back into his bag.</span><br><br>然而，就在他准备解开裤子的拉链时，他瞥见身旁坐着一名男子，于是便佯装自己的泳裤是一方手帕，并将其重新放回包里。<br><br>填空词：<span class="highlight">However,</span>' },
+    { id:'sent30-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ he tries very hard to pull his pants off from under the swimming trunks.',
+      hint:'中文：之后，他费尽力气想把裤子从泳裤底下脱出来。',
+      ans:['Then,'],
+      explain:'<span class="en">Then, he tries very hard to pull his pants off from under the swimming trunks.</span><br><br>之后，他费尽力气想把裤子从泳裤底下脱出来。<br><br>填空词：<span class="highlight">Then,</span>' },
+    { id:'sent31-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'I put on my _____ in order not to be late.',
+      hint:'中文：我戴上了手表为了不迟到。',
+      ans:['watch'],
+      explain:'<span class="en">I put on my watch in order not to be late.</span><br><br>我戴上了手表为了不迟到。<br><br>填空词：<span class="highlight">watch</span>' },
+    { id:'sent32-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'My _____ has no friends at school.',
+      hint:'中文：我的侄子在学校没有朋友。',
+      ans:['nephew'],
+      explain:'<span class="en">My nephew has no friends at school.</span><br><br>我的侄子在学校没有朋友。<br><br>填空词：<span class="highlight">nephew</span>' },
+    { id:'sent33-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'My _____ was broken last week.',
+      hint:'中文：我的手机上周弄坏了。',
+      ans:['phone'],
+      explain:'<span class="en">My phone was broken last week.</span><br><br>我的手机上周弄坏了。<br><br>填空词：<span class="highlight">phone</span>' },
+    { id:'sent34-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ be about ten kilometers from the nearest town.',
+      hint:'中文：你距离最近的城镇大约有十公里远。',
+      ans:['You’ll'],
+      explain:'<span class="en">You’ll be about ten kilometers from the nearest town.</span><br><br>你距离最近的城镇大约有十公里远。<br><br>填空词：<span class="highlight">You’ll</span>' },
+    { id:'sent35-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ he puts on his swimming trunks over his pants.',
+      hint:'中文：首先，他把泳裤套在了裤子外面。',
+      ans:['First,'],
+      explain:'<span class="en">First, he puts on his swimming trunks over his pants.</span><br><br>首先，他把泳裤套在了裤子外面。<br><br>填空词：<span class="highlight">First,</span>' },
+    { id:'sent36-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'He is _____ a suit and tie, so he wants to change into his swimming trunks.',
+      hint:'中文：他穿着西装和领带，因此想换穿游泳短裤。',
+      ans:['wearing'],
+      explain:'<span class="en">He is wearing a suit and tie, so he wants to change into his swimming trunks.</span><br><br>他穿着西装和领带，因此想换穿游泳短裤。<br><br>填空词：<span class="highlight">wearing</span>' },
+    { id:'sent37-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ I suggest that he drink more water instead of sugary beverages.',
+      hint:'中文：此外，我建议他多喝水，少喝含糖饮料。',
+      ans:['Also,'],
+      explain:'<span class="en">Also, I suggest that he drink more water instead of sugary beverages.</span><br><br>此外，我建议他多喝水，少喝含糖饮料。<br><br>填空词：<span class="highlight">Also,</span>' },
+    { id:'sent38-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ he manages to take off his pants while wearing his trunks.',
+      hint:'中文：最后，他总算在穿着泳裤的情况下成功脱下了裤子。',
+      ans:['Finally,'],
+      explain:'<span class="en">Finally, he manages to take off his pants while wearing his trunks.</span><br><br>最后，他总算在穿着泳裤的情况下成功脱下了裤子。<br><br>填空词：<span class="highlight">Finally,</span>' },
+    { id:'sent39-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'You _____ hit that car!',
+      hint:'中文：你差点撞到那辆车！',
+      ans:['almost'],
+      explain:'<span class="en">You almost hit that car!</span><br><br>你差点撞到那辆车！<br><br>填空词：<span class="highlight">almost</span>' },
+    { id:'sent40-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'It _____ fine.',
+      hint:'中文：一开始一切都还算顺利。',
+      ans:['started'],
+      explain:'<span class="en">It started fine.</span><br><br>一开始一切都还算顺利。<br><br>填空词：<span class="highlight">started</span>' },
+    { id:'sent41-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ an hour away.',
+      hint:'中文：距离这里有一小时的路程。',
+      ans:['It\'s'],
+      explain:'<span class="en">It's an hour away.</span><br><br>距离这里有一小时的路程。<br><br>填空词：<span class="highlight">It\'s</span>' },
+    { id:'sent42-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'I _____ what!',
+      hint:'中文：我有主意了！',
+      ans:['know'],
+      explain:'<span class="en">I know what!</span><br><br>我有主意了！<br><br>填空词：<span class="highlight">know</span>' },
+    { id:'sent43-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'If it _____ sunny, we would have a picnic in the park.',
+      hint:'中文：如果天气晴朗，我们就会去公园野餐。',
+      ans:['were'],
+      explain:'<span class="en">If it were sunny, we would have a picnic in the park.</span><br><br>如果天气晴朗，我们就会去公园野餐。<br><br>填空词：<span class="highlight">were</span>' },
+    { id:'sent44-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'The _____ forecast says it will rain, so I suggest bringing an umbrella.',
+      hint:'中文：天气预报说会下雨，所以我建议带上一把伞。',
+      ans:['weather'],
+      explain:'<span class="en">The weather forecast says it will rain, so I suggest bringing an umbrella.</span><br><br>天气预报说会下雨，所以我建议带上一把伞。<br><br>填空词：<span class="highlight">weather</span>' },
+    { id:'sent45-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'...and it all _____ to the bottom of the pan and burned.',
+      hint:'中文：所有食材都粘在了锅底，还烧糊了。',
+      ans:['stuck'],
+      explain:'<span class="en">...and it all stuck to the bottom of the pan and burned.</span><br><br>所有食材都粘在了锅底，还烧糊了。<br><br>填空词：<span class="highlight">stuck</span>' },
+    { id:'sent46-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'I _____ that we keep a first aid kit in the car in case of an emergency.',
+      hint:'中文：我建议我们在车里备一个急救包，以防突发状况。',
+      ans:['suggest'],
+      explain:'<span class="en">I suggest that we keep a first aid kit in the car in case of an emergency.</span><br><br>我建议我们在车里备一个急救包，以防突发状况。<br><br>填空词：<span class="highlight">suggest</span>' },
+    { id:'sent47-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'The rent is 6500 _____ per month and you need to pay two months\' rent as the deposit.',
+      hint:'中文：租金每月 6500 元，你需要支付两个月租金作为押金。',
+      ans:['yuan'],
+      explain:'<span class="en">The rent is 6500 yuan per month and you need to pay two months' rent as the deposit.</span><br><br>租金每月 6500 元，你需要支付两个月租金作为押金。<br><br>填空词：<span class="highlight">yuan</span>' },
+    { id:'sent48-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'And _____ only a 10 minutes’ bike ride to the bus stop and metro station.',
+      hint:'中文：骑车仅需十分钟就能到达公交站和地铁站。',
+      ans:['it\'s'],
+      explain:'<span class="en">And it's only a 10 minutes’ bike ride to the bus stop and metro station.</span><br><br>骑车仅需十分钟就能到达公交站和地铁站。<br><br>填空词：<span class="highlight">it\'s</span>' },
+    { id:'sent49-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'It _____ comes with a lift and a small gym.',
+      hint:'中文：这套房子还配有电梯和小型健身房。',
+      ans:['also'],
+      explain:'<span class="en">It also comes with a lift and a small gym.</span><br><br>这套房子还配有电梯和小型健身房。<br><br>填空词：<span class="highlight">also</span>' },
+    { id:'sent50-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'The _____ that we met at the wedding is very handsome.',
+      hint:'中文：我们在婚礼上见到的新郎十分英俊。',
+      ans:['groom'],
+      explain:'<span class="en">The groom that we met at the wedding is very handsome.</span><br><br>我们在婚礼上见到的新郎十分英俊。<br><br>填空词：<span class="highlight">groom</span>' },
+    { id:'sent51-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'How _____ are you at sports, Nicholas?',
+      hint:'中文：尼古拉斯，你体育运动怎么样？',
+      ans:['good'],
+      explain:'<span class="en">How good are you at sports, Nicholas?</span><br><br>尼古拉斯，你体育运动怎么样？<br><br>填空词：<span class="highlight">good</span>' },
+    { id:'sent52-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'It is a _____ commemorative coin.',
+      hint:'中文：这是一枚金色纪念币。',
+      ans:['gold'],
+      explain:'<span class="en">It is a gold commemorative coin.</span><br><br>这是一枚金色纪念币。<br><br>填空词：<span class="highlight">gold</span>' },
+    { id:'sent53-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'All _____ are included in the rent.',
+      hint:'中文：所有水电杂费都包含在租金里。',
+      ans:['utilities'],
+      explain:'<span class="en">All utilities are included in the rent.</span><br><br>所有水电杂费都包含在租金里。<br><br>填空词：<span class="highlight">utilities</span>' },
+    { id:'sent54-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'I _____ bringing wet wipes because they are better than paper plates for cleaning sticky hands.',
+      hint:'中文：我建议带上湿纸巾，清理黏腻的双手，它比纸盘子好用。',
+      ans:['suggest'],
+      explain:'<span class="en">I suggest bringing wet wipes because they are better than paper plates for cleaning sticky hands.</span><br><br>我建议带上湿纸巾，清理黏腻的双手，它比纸盘子好用。<br><br>填空词：<span class="highlight">suggest</span>' },
+    { id:'sent55-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'She _____ dozes off at work.',
+      hint:'中文：她有时会在上班时打瞌睡。',
+      ans:['sometimes'],
+      explain:'<span class="en">She sometimes dozes off at work.</span><br><br>她有时会在上班时打瞌睡。<br><br>填空词：<span class="highlight">sometimes</span>' },
+    { id:'sent56-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ weekend, I am going camping in the mountains near a small lake.',
+      hint:'中文：这周末，我要去一座小湖边的山里露营。',
+      ans:['This'],
+      explain:'<span class="en">This weekend, I am going camping in the mountains near a small lake.</span><br><br>这周末，我要去一座小湖边的山里露营。<br><br>填空词：<span class="highlight">This</span>' },
+    { id:'sent57-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ going camping for the weekend in the mountains by a small lake with your nephew and your niece (aged 6 and 8).',
+      hint:'中文：这个周末你要带着六岁和八岁的侄子、侄女，去小湖边的山里露营。',
+      ans:['You’re'],
+      explain:'<span class="en">You’re going camping for the weekend in the mountains by a small lake with your nephew and your niece (aged 6 and 8).</span><br><br>这个周末你要带着六岁和八岁的侄子、侄女，去小湖边的山里露营。<br><br>填空词：<span class="highlight">You’re</span>' },
+    { id:'sent58-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'It _____ taste too good.',
+      hint:'中文：味道尝起来不怎么样。',
+      ans:['didn\'t'],
+      explain:'<span class="en">It didn't taste too good.</span><br><br>味道尝起来不怎么样。<br><br>填空词：<span class="highlight">didn\'t</span>' },
+    { id:'sent59-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ got to pay when you get on a bus.',
+      hint:'中文：上公交车必须付钱。',
+      ans:['You\'ve'],
+      explain:'<span class="en">You've got to pay when you get on a bus.</span><br><br>上公交车必须付钱。<br><br>填空词：<span class="highlight">You\'ve</span>' },
+    { id:'sent60-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ I had time while I was resting on a bench.',
+      hint:'中文：我在长椅上休息的时候还有空闲时间。',
+      ans:['Well,'],
+      explain:'<span class="en">Well, I had time while I was resting on a bench.</span><br><br>我在长椅上休息的时候还有空闲时间。<br><br>填空词：<span class="highlight">Well,</span>' },
+    { id:'sent61-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'We _____ fasten our seat belts in the back seat.',
+      hint:'中文：我们很少在后座系安全带。',
+      ans:['seldom'],
+      explain:'<span class="en">We seldom fasten our seat belts in the back seat.</span><br><br>我们很少在后座系安全带。<br><br>填空词：<span class="highlight">seldom</span>' },
+    { id:'sent62-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'I _____ I am the best choice for the Customer Service Staff job.',
+      hint:'中文：我认为自己是客服岗位的最佳人选。',
+      ans:['think'],
+      explain:'<span class="en">I think I am the best choice for the Customer Service Staff job.</span><br><br>我认为自己是客服岗位的最佳人选。<br><br>填空词：<span class="highlight">think</span>' },
+    { id:'sent63-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'I am a good fit _____ I have experience dealing with customers and I am good at following instructions.',
+      hint:'中文：我非常适合这份工作，因为我拥有客户服务经验，并且擅长遵守各项指令。',
+      ans:['because'],
+      explain:'<span class="en">I am a good fit because I have experience dealing with customers and I am good at following instructions.</span><br><br>我非常适合这份工作，因为我拥有客户服务经验，并且擅长遵守各项指令。<br><br>填空词：<span class="highlight">because</span>' },
+    { id:'sent64-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ these phones only have 8G of storage, we can only install five apps from the app store, so we must choose the best ones for daily life.',
+      hint:'中文：这些手机只有 8G 存储空间，我们只能从应用商店安装五个软件，所以必须挑选日常生活最实用的。',
+      ans:['Because'],
+      explain:'<span class="en">Because these phones only have 8G of storage, we can only install five apps from the app store, so we must choose the best ones for daily life.</span><br><br>这些手机只有 8G 存储空间，我们只能从应用商店安装五个软件，所以必须挑选日常生活最实用的。<br><br>填空词：<span class="highlight">Because</span>' },
+    { id:'sent65-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ have asked you to set up a phone for someone else.',
+      hint:'中文：他们已经委托你为他人设置一部手机。',
+      ans:['They'],
+      explain:'<span class="en">They have asked you to set up a phone for someone else.</span><br><br>他们已经委托你为他人设置一部手机。<br><br>填空词：<span class="highlight">They</span>' },
+    { id:'sent66-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ if he is very rich, he won\'t buy that car.',
+      hint:'中文：即使他很有钱，他也不会买那辆车。',
+      ans:['Even'],
+      explain:'<span class="en">Even if he is very rich, he won't buy that car.</span><br><br>即使他很有钱，他也不会买那辆车。<br><br>填空词：<span class="highlight">Even</span>' },
+    { id:'sent67-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'In my _____ time, I like to sit with my feet up and watch my favorite TV shows.',
+      hint:'中文：闲暇时间，我喜欢跷着脚坐着，观看我最爱的电视节目。',
+      ans:['free'],
+      explain:'<span class="en">In my free time, I like to sit with my feet up and watch my favorite TV shows.</span><br><br>闲暇时间，我喜欢跷着脚坐着，观看我最爱的电视节目。<br><br>填空词：<span class="highlight">free</span>' },
+    { id:'sent68-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ Jennifer, you’re in great shape.',
+      hint:'中文：嘿，詹妮弗，你的身材保持得真好。',
+      ans:['Hey,'],
+      explain:'<span class="en">Hey, Jennifer, you’re in great shape.</span><br><br>嘿，詹妮弗，你的身材保持得真好。<br><br>填空词：<span class="highlight">Hey,</span>' },
+    { id:'sent69-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'I do _____ at home three times a week, and the other days I go swimming.',
+      hint:'中文：我每周在家做三次有氧运动，其余时间去游泳。',
+      ans:['aerobics'],
+      explain:'<span class="en">I do aerobics at home three times a week, and the other days I go swimming.</span><br><br>我每周在家做三次有氧运动，其余时间去游泳。<br><br>填空词：<span class="highlight">aerobics</span>' },
+    { id:'sent70-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'My _____ and friendly personality make me perfect for your customer service team.',
+      hint:'中文：我的专业能力与亲和性格，让我非常适合加入你们的客服团队。',
+      ans:['skills'],
+      explain:'<span class="en">My skills and friendly personality make me perfect for your customer service team.</span><br><br>我的专业能力与亲和性格，让我非常适合加入你们的客服团队。<br><br>填空词：<span class="highlight">skills</span>' },
+    { id:'sent71-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'I am not _____ for the Marketing Assistant job because I do not have a university degree.',
+      hint:'中文：我不适合市场营销助理这份工作，因为我没有大学学历。',
+      ans:['suitable'],
+      explain:'<span class="en">I am not suitable for the Marketing Assistant job because I do not have a university degree.</span><br><br>我不适合市场营销助理这份工作，因为我没有大学学历。<br><br>填空词：<span class="highlight">suitable</span>' },
+    { id:'sent72-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ these five apps are very helpful and will make using a smartphone much easier for everyone.',
+      hint:'中文：总体而言，这五款应用非常实用，它们将极大便利每个人对智能手机的使用。',
+      ans:['Overall,'],
+      explain:'<span class="en">Overall, these five apps are very helpful and will make using a smartphone much easier for everyone.</span><br><br>总体而言，这五款应用非常实用，它们将极大便利每个人对智能手机的使用。<br><br>填空词：<span class="highlight">Overall,</span>' },
+    { id:'sent73-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'So, _____ what\'s the new girl in class like?',
+      hint:'中文：鲍勃，班里新来的那个女孩是什么样子的？',
+      ans:['Bob,'],
+      explain:'<span class="en">So, Bob, what's the new girl in class like?</span><br><br>鲍勃，班里新来的那个女孩是什么样子的？<br><br>填空词：<span class="highlight">Bob,</span>' },
+    { id:'sent74-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'I _____ from high school and have three years of experience in sales and office work.',
+      hint:'中文：我高中毕业，拥有三年销售与行政办公工作经验。',
+      ans:['graduated'],
+      explain:'<span class="en">I graduated from high school and have three years of experience in sales and office work.</span><br><br>我高中毕业，拥有三年销售与行政办公工作经验。<br><br>填空词：<span class="highlight">graduated</span>' },
+    { id:'sent75-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ candidates are applying for all three jobs.',
+      hint:'中文：有三位候选人正同时申请这三份工作。',
+      ans:['Three'],
+      explain:'<span class="en">Three candidates are applying for all three jobs.</span><br><br>有三位候选人正同时申请这三份工作。<br><br>填空词：<span class="highlight">Three</span>' },
+    { id:'sent76-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ The man in a black hat and a heavy coat is coming.',
+      hint:'中文：看！那个戴着黑帽子、穿着厚外套的人走过来了。',
+      ans:['Look!'],
+      explain:'<span class="en">Look! The man in a black hat and a heavy coat is coming.</span><br><br>看！那个戴着黑帽子、穿着厚外套的人走过来了。<br><br>填空词：<span class="highlight">Look!</span>' },
+    { id:'sent77-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'The _____ with long curly hair is a famous singer.',
+      hint:'中文：那位留着卷曲长发的女孩是一位知名歌手。',
+      ans:['girl'],
+      explain:'<span class="en">The girl with long curly hair is a famous singer.</span><br><br>那位留着卷曲长发的女孩是一位知名歌手。<br><br>填空词：<span class="highlight">girl</span>' },
+    { id:'sent78-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'Do you see _____ tall man in a blue suit? He is my uncle.',
+      hint:'中文：你看到那个穿着蓝色西装的高个子男人了吗？他是我的叔叔。',
+      ans:['that'],
+      explain:'<span class="en">Do you see that tall man in a blue suit? He is my uncle.</span><br><br>你看到那个穿着蓝色西装的高个子男人了吗？他是我的叔叔。<br><br>填空词：<span class="highlight">that</span>' },
+    { id:'sent79-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'I\'d _____ to meet her.',
+      hint:'中文：我想要认识她。',
+      ans:['like'],
+      explain:'<span class="en">I'd like to meet her.</span><br><br>我想要认识她。<br><br>填空词：<span class="highlight">like</span>' },
+    { id:'sent80-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ she is — the girl with a purse.',
+      hint:'中文：她就在那里，那个拎着手提包的女孩。',
+      ans:['There'],
+      explain:'<span class="en">There she is — the girl with a purse.</span><br><br>她就在那里，那个拎着手提包的女孩。<br><br>填空词：<span class="highlight">There</span>' },
+    { id:'sent81-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'How is _____ going to help?',
+      hint:'中文：这会有什么帮助？',
+      ans:['this'],
+      explain:'<span class="en">How is this going to help?</span><br><br>这会有什么帮助？<br><br>填空词：<span class="highlight">this</span>' },
+    { id:'sent82-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ just have to borrow a couple of things.',
+      hint:'中文：我只需要借几样东西就行。',
+      ans:['I\'ll'],
+      explain:'<span class="en">I'll just have to borrow a couple of things.</span><br><br>我只需要借几样东西就行。<br><br>填空词：<span class="highlight">I\'ll</span>' },
+    { id:'sent83-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ is meeting Diane at the library at 9:30 on Friday.',
+      hint:'中文：蕾切尔周五 9 点半要在图书馆和黛安见面。',
+      ans:['Rachel'],
+      explain:'<span class="en">Rachel is meeting Diane at the library at 9:30 on Friday.</span><br><br>蕾切尔周五 9 点半要在图书馆和黛安见面。<br><br>填空词：<span class="highlight">Rachel</span>' },
+    { id:'sent84-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'How do you _____ keep in touch with your friends?',
+      hint:'中文：你通常怎样和朋友们保持联系？',
+      ans:['usually'],
+      explain:'<span class="en">How do you usually keep in touch with your friends?</span><br><br>你通常怎样和朋友们保持联系？<br><br>填空词：<span class="highlight">usually</span>' },
+    { id:'sent85-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'The boy in a red _____ with a basketball?',
+      hint:'中文：那个穿着红色 T 恤、拿着篮球的男孩？',
+      ans:['T-shirt'],
+      explain:'<span class="en">The boy in a red T-shirt with a basketball?</span><br><br>那个穿着红色 T 恤、拿着篮球的男孩？<br><br>填空词：<span class="highlight">T-shirt</span>' },
+    { id:'sent86-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'My _____ is none of your business!!',
+      hint:'中文：我的胆固醇状况与你无关！！',
+      ans:['cholesterol'],
+      explain:'<span class="en">My cholesterol is none of your business!!</span><br><br>我的胆固醇状况与你无关！！<br><br>填空词：<span class="highlight">cholesterol</span>' },
+    { id:'sent87-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ is the woman we met yesterday.',
+      hint:'中文：这就是我们昨天遇见的那位女士。',
+      ans:['This'],
+      explain:'<span class="en">This is the woman we met yesterday.</span><br><br>这就是我们昨天遇见的那位女士。<br><br>填空词：<span class="highlight">This</span>' },
+    { id:'sent88-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'The _____ wife didn’t look interested. Mike took out a big bag of dirt. He opened it and dumped it all over the floor.',
+      hint:'中文：农妇看起来并不感兴趣。迈克拿出一大袋泥土，打开袋子把泥土全都倒在了地板上。',
+      ans:['farmer’s'],
+      explain:'<span class="en">The farmer’s wife didn’t look interested. Mike took out a big bag of dirt. He opened it and dumped it all over the floor.</span><br><br>农妇看起来并不感兴趣。迈克拿出一大袋泥土，打开袋子把泥土全都倒在了地板上。<br><br>填空词：<span class="highlight">farmer’s</span>' },
+    { id:'sent89-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'I am _____ and tired of the both of you!!',
+      hint:'中文：我受够你们两个了！！',
+      ans:['sick'],
+      explain:'<span class="en">I am sick and tired of the both of you!!</span><br><br>我受够你们两个了！！<br><br>填空词：<span class="highlight">sick</span>' },
+    { id:'sent90-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'You _____ you are really no fun at all.',
+      hint:'中文：你知道吗，你这人实在太无趣了。',
+      ans:['know,'],
+      explain:'<span class="en">You know, you are really no fun at all.</span><br><br>你知道吗，你这人实在太无趣了。<br><br>填空词：<span class="highlight">know,</span>' },
+    { id:'sent91-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'Oh, _____ let\'s buy a fresh loaf of whole wheat, organic bread!',
+      hint:'中文：哦，安娜，我们去买一条新鲜的全麦有机面包吧！',
+      ans:['Anna,'],
+      explain:'<span class="en">Oh, Anna, let's buy a fresh loaf of whole wheat, organic bread!</span><br><br>哦，安娜，我们去买一条新鲜的全麦有机面包吧！<br><br>填空词：<span class="highlight">Anna,</span>' },
+    { id:'sent92-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ have the onion soup.',
+      hint:'中文：我要点洋葱汤。',
+      ans:['I’ll'],
+      explain:'<span class="en">I’ll have the onion soup.</span><br><br>我要点洋葱汤。<br><br>填空词：<span class="highlight">I’ll</span>' },
+    { id:'sent93-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'I had no _____ to be afraid, Guy.',
+      hint:'中文：盖伊，我当时根本来不及害怕。',
+      ans:['time'],
+      explain:'<span class="en">I had no time to be afraid, Guy.</span><br><br>盖伊，我当时根本来不及害怕。<br><br>填空词：<span class="highlight">time</span>' },
+    { id:'sent94-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'If you _____ now, you will catch the bus.',
+      hint:'中文：如果你现在出发，你就能赶上公交车。',
+      ans:['leave'],
+      explain:'<span class="en">If you leave now, you will catch the bus.</span><br><br>如果你现在出发，你就能赶上公交车。<br><br>填空词：<span class="highlight">leave</span>' },
+    { id:'sent95-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'If she _____ hard, she will pass the exam.',
+      hint:'中文：如果她努力学习，就会通过考试。',
+      ans:['studies'],
+      explain:'<span class="en">If she studies hard, she will pass the exam.</span><br><br>如果她努力学习，就会通过考试。<br><br>填空词：<span class="highlight">studies</span>' },
+    { id:'sent96-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ the money\'s already spent, I might as well think it\'s totally worth it.',
+      hint:'中文：反正钱已经花了，我只能觉得它很值。',
+      ans:['Since'],
+      explain:'<span class="en">Since the money's already spent, I might as well think it's totally worth it.</span><br><br>反正钱已经花了，我只能觉得它很值。<br><br>填空词：<span class="highlight">Since</span>' },
+    { id:'sent97-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'She is _____ experienced in interviewing candidates.',
+      hint:'中文：她在面试候选人方面经验丰富。',
+      ans:['very'],
+      explain:'<span class="en">She is very experienced in interviewing candidates.</span><br><br>她在面试候选人方面经验丰富。<br><br>填空词：<span class="highlight">very</span>' },
+    { id:'sent98-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'In the _____ round, I spent 50 dollars in total to buy a guitar.',
+      hint:'中文：第二轮议价中，我总共花了 50 美元买下一把吉他。',
+      ans:['second'],
+      explain:'<span class="en">In the second round, I spent 50 dollars in total to buy a guitar.</span><br><br>第二轮议价中，我总共花了 50 美元买下一把吉他。<br><br>填空词：<span class="highlight">second</span>' },
+    { id:'sent99-f', cat:'sentence', type:'sent-fill', badge:'句子填空',
+      q:'_____ I am not a fit for Sales Team Leader because I do not like working overtime, and that job requires long hours.',
+      hint:'中文：此外，我不适合销售团队主管岗位，因为我不喜欢加班，而这份工作需要长时间工作。',
+      ans:['Also,'],
+      explain:'<span class="en">Also, I am not a fit for Sales Team Leader because I do not like working overtime, and that job requires long hours.</span><br><br>此外，我不适合销售团队主管岗位，因为我不喜欢加班，而这份工作需要长时间工作。<br><br>填空词：<span class="highlight">Also,</span>' },
+    { id:'sent1-a', cat:'sentence', type:'sent-app', badge:'句子应用',
+      q:'以下哪个句子最合适？
+情景：你想问别人是否介意你开窗',
+      opts:['Would you mind opening the window?', 'Would you mind to open the window?', 'Do you mind to open the window?', 'You mind opening the window?'], ans:0,
+      explain:'<b>正确：</b><span class="en">Would you mind opening the window?</span><br><br><b>中文：</b>你想问别人是否介意你开窗' },
+    { id:'sent2-a', cat:'sentence', type:'sent-app', badge:'句子应用',
+      q:'以下哪个句子最合适？
+情景：你想建议去公园',
+      opts:['I suggest going to the park.', 'I suggest to go to the park.', 'I suggest go to the park.', 'I suggest went to the park.'], ans:0,
+      explain:'<b>正确：</b><span class="en">I suggest going to the park.</span><br><br><b>中文：</b>你想建议去公园' },
+    { id:'sent3-a', cat:'sentence', type:'sent-app', badge:'句子应用',
+      q:'以下哪个句子最合适？
+情景：你想说\'我过去常喝酒但现在戒了\'',
+      opts:['I used to drink alcohol, but now I quit.', 'I am used to drink alcohol.', 'I use to drink alcohol.', 'I was used to drink alcohol.'], ans:0,
+      explain:'<b>正确：</b><span class="en">I used to drink alcohol, but now I quit.</span><br><br><b>中文：</b>你想说\'我过去常喝酒但现在戒了\'' },
+    { id:'sent4-a', cat:'sentence', type:'sent-app', badge:'句子应用',
+      q:'以下哪个句子最合适？
+情景：你想说\'如果我是你，我会去\'',
+      opts:['If I were you, I would go.', 'If I am you, I will go.', 'If I was you, I would go.', 'If I were you, I will go.'], ans:0,
+      explain:'<b>正确：</b><span class="en">If I were you, I would go.</span><br><br><b>中文：</b>你想说\'如果我是你，我会去\'' },
+    { id:'sent5-a', cat:'sentence', type:'sent-app', badge:'句子应用',
+      q:'以下哪个句子最合适？
+情景：你想说\'电影令人失望\'',
+      opts:['The movie was disappointing.', 'The movie was disappointed.', 'I was disappointing.', 'The movie is disappoint.'], ans:0,
+      explain:'<b>正确：</b><span class="en">The movie was disappointing.</span><br><br><b>中文：</b>你想说\'电影令人失望\'' },
+    { id:'sent6-a', cat:'sentence', type:'sent-app', badge:'句子应用',
+      q:'以下哪个句子最合适？
+情景：你想说\'我不必早来\'',
+      opts:['I don\'t have to come early.', 'I mustn\'t come early.', 'I shouldn\'t come early.', 'I can\'t come early.'], ans:0,
+      explain:'<b>正确：</b><span class="en">I don't have to come early.</span><br><br><b>中文：</b>你想说\'我不必早来\'' },
+    { id:'sent7-a', cat:'sentence', type:'sent-app', badge:'句子应用',
+      q:'以下哪个句子最合适？
+情景：你想请求\'把盐递给我\'',
+      opts:['Pass the salt to me, please.', 'Pass the salt for me.', 'Pass the salt at me.', 'Pass the salt with me.'], ans:0,
+      explain:'<b>正确：</b><span class="en">Pass the salt to me, please.</span><br><br><b>中文：</b>你想请求\'把盐递给我\'' },
+    { id:'sent8-a', cat:'sentence', type:'sent-app', badge:'句子应用',
+      q:'以下哪个句子最合适？
+情景：你想说\'我习惯了早起\'',
+      opts:['I am used to waking up early.', 'I used to wake up early.', 'I am used to wake up early.', 'I use to waking up early.'], ans:0,
+      explain:'<b>正确：</b><span class="en">I am used to waking up early.</span><br><br><b>中文：</b>你想说\'我习惯了早起\'' },
+    { id:'sent9-a', cat:'sentence', type:'sent-app', badge:'句子应用',
+      q:'以下哪个句子最合适？
+情景：你想说\'小心！你差点撞到那辆车\'',
+      opts:['Watch out! You almost hit that car!', 'Watch out! You almost hitted that car!', 'Careful! You nearly hit that car.', 'Both A and C are correct.'], ans:0,
+      explain:'<b>正确：</b><span class="en">Watch out! You almost hit that car!</span><br><br><b>中文：</b>你想说\'小心！你差点撞到那辆车\'' },
+    { id:'sent10-a', cat:'sentence', type:'sent-app', badge:'句子应用',
+      q:'以下哪个句子最合适？
+情景：你想表达\'她上班时有时打瞌睡\'',
+      opts:['She sometimes dozes off at work.', 'She sometimes doze off at work.', 'She is sometimes dozing off at work.', 'She sometimes fall asleep at work.'], ans:0,
+      explain:'<b>正确：</b><span class="en">She sometimes dozes off at work.</span><br><br><b>中文：</b>你想表达\'她上班时有时打瞌睡\'' },
+    { id:'sent11-a', cat:'sentence', type:'sent-app', badge:'句子应用',
+      q:'以下哪个句子最合适？
+情景：你想说\'我们很少系安全带\'',
+      opts:['We seldom fasten our seat belts.', 'We fasten seldom our seat belts.', 'We are seldom fasten our seat belts.', 'We seldom are fasten our seat belts.'], ans:0,
+      explain:'<b>正确：</b><span class="en">We seldom fasten our seat belts.</span><br><br><b>中文：</b>你想说\'我们很少系安全带\'' },
+    { id:'sent12-a', cat:'sentence', type:'sent-app', badge:'句子应用',
+      q:'以下哪个句子最合适？
+情景：你想问\'你通常怎么和朋友保持联系\'',
+      opts:['How do you usually keep in touch with your friends?', 'How do you usually keep touch with your friends?', 'How are you usually keep in touch with your friends?', 'How you usually keep in touch with your friends?'], ans:0,
+      explain:'<b>正确：</b><span class="en">How do you usually keep in touch with your friends?</span><br><br><b>中文：</b>你想问\'你通常怎么和朋友保持联系\'' },
+    { id:'sent13-a', cat:'sentence', type:'sent-app', badge:'句子应用',
+      q:'以下哪个句子最合适？
+情景：你想说\'即使他很有钱，也不会买那辆车\'',
+      opts:['Even if he is very rich, he won\'t buy that car.', 'Even he is very rich, he won\'t buy that car.', 'Even if he is very rich, he doesn\'t buy that car.', 'Although he is very rich, he won\'t buy that car.'], ans:0,
+      explain:'<b>正确：</b><span class="en">Even if he is very rich, he won't buy that car.</span><br><br><b>中文：</b>你想说\'即使他很有钱，也不会买那辆车\'' },
+    { id:'sent14-a', cat:'sentence', type:'sent-app', badge:'句子应用',
+      q:'以下哪个句子最合适？
+情景：你想说\'租金每月6500元，需要两个月租金作为押金\'',
+      opts:['The rent is 6500 yuan per month and you need to pay two months\' rent as the deposit.', 'The rent is 6500 yuan per month and you need to pay two month rent as the deposit.', 'The rent is 6500 yuan each month and you need pay two months\' rent for deposit.', 'The rent is 6500 yuan one month, need two months rent deposit.'], ans:0,
+      explain:'<b>正确：</b><span class="en">The rent is 6500 yuan per month and you need to pay two months' rent as the deposit.</span><br><br><b>中文：</b>你想说\'租金每月6500元，需要两个月租金作为押金\'' },
+    { id:'sent15-a', cat:'sentence', type:'sent-app', badge:'句子应用',
+      q:'以下哪个句子最合适？
+情景：你想表达\'全部水电费都包含在租金里\'',
+      opts:['All utilities are included in the rent.', 'All utilities are included at the rent.', 'All utilities include in the rent.', 'All utilities is included in the rent.'], ans:0,
+      explain:'<b>正确：</b><span class="en">All utilities are included in the rent.</span><br><br><b>中文：</b>你想表达\'全部水电费都包含在租金里\'' },
+    { id:'sent16-a', cat:'sentence', type:'sent-app', badge:'句子应用',
+      q:'以下哪个句子最合适？
+情景：你想说\'这周末我要去山里露营\'',
+      opts:['This weekend, I am going camping in the mountains.', 'This weekend, I will going camping in the mountains.', 'This weekend, I go camping in the mountains.', 'This weekend, I am going camp in the mountains.'], ans:0,
+      explain:'<b>正确：</b><span class="en">This weekend, I am going camping in the mountains.</span><br><br><b>中文：</b>你想说\'这周末我要去山里露营\'' },
+    { id:'sent17-a', cat:'sentence', type:'sent-app', badge:'句子应用',
+      q:'以下哪个句子最合适？
+情景：你想说\'我空闲时喜欢翘着脚看电视\'',
+      opts:['In my free time, I like to sit with my feet up and watch TV.', 'In my free time, I like sitting with my foots up and watch TV.', 'At my free time, I like to sit with foots up watching TV.', 'In my free time, I like sitting my feet up to watch TV.'], ans:0,
+      explain:'<b>正确：</b><span class="en">In my free time, I like to sit with my feet up and watch TV.</span><br><br><b>中文：</b>你想说\'我空闲时喜欢翘着脚看电视\'' },
+    { id:'sent18-a', cat:'sentence', type:'sent-app', badge:'句子应用',
+      q:'以下哪个句子最合适？
+情景：你想说\'我高中毕业，有三年销售经验\'',
+      opts:['I graduated from high school and have three years of experience in sales.', 'I graduated high school and have three years experience in sales.', 'I am graduated from high school and have three years of experience in sales.', 'I graduate from high school and have three years experience at sales.'], ans:0,
+      explain:'<b>正确：</b><span class="en">I graduated from high school and have three years of experience in sales.</span><br><br><b>中文：</b>你想说\'我高中毕业，有三年销售经验\'' },
+    { id:'sent19-a', cat:'sentence', type:'sent-app', badge:'句子应用',
+      q:'以下哪个句子最合适？
+情景：你想说\'我建议带湿巾，比纸盘子好用\'',
+      opts:['I suggest bringing wet wipes because they are better than paper plates.', 'I suggest to bring wet wipes because they are better than paper plates.', 'I suggest bring wet wipes because they are better than paper plates.', 'I suggest brought wet wipes because they are better than paper plates.'], ans:0,
+      explain:'<b>正确：</b><span class="en">I suggest bringing wet wipes because they are better than paper plates.</span><br><br><b>中文：</b>你想说\'我建议带湿巾，比纸盘子好用\'' },
+    { id:'sent20-a', cat:'sentence', type:'sent-app', badge:'句子应用',
+      q:'以下哪个句子最合适？
+情景：你想问\'你在奥兰多待了很长时间吗\'',
+      opts:['Have you been in Orlando long?', 'Have you gone in Orlando long?', 'Are you been in Orlando long?', 'Do you been in Orlando long?'], ans:0,
+      explain:'<b>正确：</b><span class="en">Have you been in Orlando long?</span><br><br><b>中文：</b>你想问\'你在奥兰多待了很长时间吗\'' }
   ]
 };
 
-// ============ STATE ============
-let totalScore = 0;
-let maxCombo = 0;
-let currentCombo = 0;
-let masteredSet = new Set();
-let currentMode = '';
-let currentCat = null; // null = all
-let questions = [];
-let qIndex = 0;
-let answered = false;
-let lives = 3;
-let timerInterval = null;
-let timeLeft = 0;
-let results = []; // { id, correct, userAns }
-
-// ============ BOOKMARKS (localStorage) ============
-let bookmarkedSet = new Set();
-(function loadBookmarks() {
+// ============ FREQUENCY TRACKING (localStorage) ============
+var freqState = {};
+(function loadFreqState() {
   try {
-    var raw = localStorage.getItem('testmaster_bookmarks');
-    if (raw) {
-      var arr = JSON.parse(raw);
-      for (var i = 0; i < arr.length; i++) bookmarkedSet.add(arr[i]);
-    }
+    var raw = localStorage.getItem('testmaster_freq');
+    if (raw) freqState = JSON.parse(raw);
   } catch(e) {}
 })();
-function saveBookmarks() {
-  try { localStorage.setItem('testmaster_bookmarks', JSON.stringify(Array.from(bookmarkedSet))); } catch(e) {}
+function saveFreqState() {
+  try { localStorage.setItem('testmaster_freq', JSON.stringify(freqState)); } catch(e) {}
 }
-window.toggleBookmark = function(id) {
-  if (bookmarkedSet.has(id)) {
-    bookmarkedSet.delete(id);
+window.updateFreq = function(qId, isCorrect) {
+  if (!freqState[qId]) freqState[qId] = { c: 0, w: 0, streak: 0 };
+  if (isCorrect) {
+    freqState[qId].c = (freqState[qId].c || 0) + 1;
+    freqState[qId].streak = (freqState[qId].streak || 0) + 1;
   } else {
-    bookmarkedSet.add(id);
+    freqState[qId].w = (freqState[qId].w || 0) + 1;
+    freqState[qId].streak = 0;
   }
-  saveBookmarks();
-  updateHomeStats();
-  // Update the bookmark button on current question if visible
-  var bmBtn = document.getElementById('bmBtn');
-  if (bmBtn) {
-    bmBtn.textContent = bookmarkedSet.has(questions[qIndex]?.id) ? '⭐' : '☆';
-    bmBtn.style.color = bookmarkedSet.has(questions[qIndex]?.id) ? '#F59E0B' : '#9CA3AF';
-  }
+  saveFreqState();
 };
+function freqWeightedShuffle(arr) {
+  if (!arr || arr.length === 0) return arr;
+  var lowFreq = [];
+  var normal = [];
+  for (var i = 0; i < arr.length; i++) {
+    var fs = freqState[arr[i].id];
+    if (fs && fs.streak >= 5) { lowFreq.push(arr[i]); }
+    else { normal.push(arr[i]); }
+  }
+  normal = shuffleArr(normal);
+  lowFreq = shuffleArr(lowFreq);
+  var result = [];
+  var nIdx = 0, lIdx = 0;
+  while (nIdx < normal.length || lIdx < lowFreq.length) {
+    for (var j = 0; j < 4 && nIdx < normal.length; j++) { result.push(normal[nIdx++]); }
+    if (lIdx < lowFreq.length) { result.push(lowFreq[lIdx++]); }
+  }
+  return result;
+}
+function freqBoostWrong(arr) {
+  var boosted = [];
+  for (var i = 0; i < arr.length; i++) {
+    var fs = freqState[arr[i].id];
+    boosted.push(arr[i]);
+    if (fs && fs.w >= 2 && fs.streak < 2) { boosted.push(arr[i]); }
+  }
+  return boosted;
+}
+function shuffleArr(arr) {
+  for (var i = arr.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+  }
+  return arr;
+}
 
 // ============ CATEGORIES ============
 const CATS = [
@@ -1552,6 +2578,7 @@ const CATS = [
   { key:'phrase', label:'🔗 搭配', emoji:'🔗' },
   { key:'scene', label:'💬 场景', emoji:'💬' },
   { key:'error', label:'🚫 易错', emoji:'🚫' },
+  { key:'sentence', label:'📝 句子', emoji:'📝' },
 ];
 
 // ============ MODE CONFIG ============
@@ -1563,6 +2590,9 @@ const MODE_CFG = {
   judge: { total:10, timePer:0, lives:99, label:'⚖️ 辨析法官' },
   exam: { total:50, timePer:0, lives:99, label:'📋 模拟考试' },
   bookmark: { total:99, timePer:0, lives:99, label:'⭐ 收藏练习' },
+  'sent-dict': { total:15, timePer:30, lives:99, label:'🔊 句子听写' },
+  'sent-fill': { total:10, timePer:0, lives:99, label:'✏️ 句子填空' },
+  'sent-app': { total:10, timePer:0, lives:99, label:'🎯 句子应用' },
 };
 
 // ============ UTILS ============
@@ -1632,22 +2662,29 @@ function startMode(mode) {
       return;
     }
     // Use all bookmarked questions (or limit to 99)
-    questions = shuffle(pool).slice(0, Math.min(pool.length, cfg.total));
+    pool = freqBoostWrong(pool);
+    questions = freqWeightedShuffle(pool).slice(0, Math.min(pool.length, cfg.total));
   } else {
     let srcCats = currentCat ? [currentCat] : Object.keys(Q);
     srcCats.forEach(cat => { if(Q[cat]) pool = pool.concat(Q[cat]); });
 
     // Filter by mode type
-    if(mode === 'fill') pool = pool.filter(q => q.type === 'fill');
-    if(mode === 'type') pool = pool.filter(q => q.type === 'type');
-    if(mode === 'judge') pool = pool.filter(q => q.type === 'judge');
+    if(mode === 'fill') pool = pool.filter(function(q) { return q.type === 'fill' || q.type === 'sent-fill'; });
+    if(mode === 'type') pool = pool.filter(function(q) { return q.type === 'type' || q.type === 'sent-dict'; });
+    if(mode === 'judge') pool = pool.filter(function(q) { return q.type === 'judge'; });
+    if(mode === 'sent-dict') pool = pool.filter(function(q) { return q.type === 'sent-dict'; });
+    if(mode === 'sent-fill') pool = pool.filter(function(q) { return q.type === 'sent-fill'; });
+    if(mode === 'sent-app') pool = pool.filter(function(q) { return q.type === 'sent-app' || q.type === 'judge'; });
 
     if(pool.length < 3) {
       showToast('该范围题目太少，请选择更多类别！');
       return;
     }
 
-    questions = shuffle(pool).slice(0, cfg.total);
+    // Apply frequency boost for wrong questions
+    pool = freqBoostWrong(pool);
+    // Use frequency-weighted shuffle
+    questions = freqWeightedShuffle(pool).slice(0, cfg.total);
   }
 
   qIndex = 0;
@@ -1718,7 +2755,8 @@ function renderQuestion() {
 
   // Badge
   const badgeClass = {
-    '语法':'badge-grammar','词汇':'badge-vocab','搭配':'badge-phrase','场景':'badge-scene','易错':'badge-error'
+    '语法':'badge-grammar','词汇':'badge-vocab','搭配':'badge-phrase','场景':'badge-scene','易错':'badge-error',
+    '句子听写':'badge-sent-dict','句子填空':'badge-sent-fill','句子应用':'badge-sent-app','句子':'badge-sentence'
   }[q.badge] || 'badge-grammar';
 
   let isBookmarked = bookmarkedSet.has(q.id);
@@ -1726,7 +2764,7 @@ function renderQuestion() {
   let bmIcon = isBookmarked ? '⭐' : '☆';
   let html = `<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;"><div class="q-type-badge ${badgeClass}">${q.badge}</div><button class="bm-btn${bmClass}" id="bmBtn" onclick="window.toggleBookmark('${q.id}')" title="${isBookmarked?'取消收藏':'收藏此题'}">${bmIcon} 收藏</button></div>`;
 
-  if(q.type === 'choice') {
+  if(q.type === 'choice' || q.type === 'sent-app') {
     html += `<div class="q-text">${q.q}</div>`;
     if(q.hint) html += `<div class="q-hint">${q.hint}</div>`;
     html += `<div class="opts-grid" id="optsGrid">`;
@@ -1760,6 +2798,22 @@ function renderQuestion() {
     html += `</div>`;
     html += `<div id="explainWrap"></div>`;
     html += '<div style="text-align:center;margin-top:10px;"><button type="button" class="skip-btn" data-action="skip">跳过 | 下一题</button></div>';
+  } else if(q.type === 'sent-dict') {
+    html += `<div class="type-wrap">`;
+    html += `<div style="font-size:20px;font-weight:700;color:var(--gray-800);margin-bottom:8px;line-height:1.5;">${q.q}</div>`;
+    html += `<div class="q-hint">请输入对应的英文句子</div>`;
+    html += `<textarea id="typeInput" class="type-input" style="height:80px;text-align:left;font-size:15px;resize:vertical;" placeholder="在此输入英文..." autocomplete="off"></textarea>`;
+    html += `<div id="explainWrap"></div>`;
+    html += '<div style="text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button class="submit-btn" onclick="submitSentDict()">提交答案</button><button type="button" class="skip-btn" data-action="skip">跳过 | 下一题</button></div>';
+    html += `</div>`;
+  } else if(q.type === 'sent-fill') {
+    html += `<div class="fill-wrap">`;
+    html += `<div style="font-size:18px;font-weight:600;color:var(--gray-800);margin-bottom:12px;line-height:1.6;">${q.q}</div>`;
+    if(q.hint) html += `<div class="q-hint">${q.hint}</div>`;
+    html += `<input class="fill-input" id="fillInput" placeholder="输入缺失的单词..." autocomplete="off">`;
+    html += `<div id="explainWrap"></div>`;
+    html += '<div style="text-align:center;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button class="submit-btn" onclick="submitSentFill()">提交答案</button><button type="button" class="skip-btn" data-action="skip">跳过 | 下一题</button></div>';
+    html += `</div>`;
   }
 
   area.innerHTML = html;
@@ -1809,9 +2863,11 @@ function handleChoice(idx) {
     addCombo();
     markMastered(q.id);
     results.push({ id:q.id, correct:true, userAns:q.opts[idx] });
+    window.updateFreq(q.id, true);
   } else {
     resetCombo();
     results.push({ id:q.id, correct:false, userAns:q.opts[idx] });
+    window.updateFreq(q.id, false);
     if(currentMode === 'survival') { lives--; renderLives(); }
   }
   showExplain(q, isCorrect, q.opts[idx]);
@@ -1836,9 +2892,11 @@ function handleJudge(val) {
     addCombo();
     markMastered(q.id);
     results.push({ id:q.id, correct:true, userAns:val ? '✅' : '❌' });
+    window.updateFreq(q.id, true);
   } else {
     resetCombo();
     results.push({ id:q.id, correct:false, userAns:val ? '✅' : '❌' });
+    window.updateFreq(q.id, false);
     if(currentMode === 'survival') { lives--; renderLives(); }
   }
   showExplain(q, isCorrect, val ? '✅' : '❌');
@@ -1862,9 +2920,11 @@ function submitFill() {
     addCombo();
     markMastered(q.id);
     results.push({ id:q.id, correct:true, userAns:val });
+    window.updateFreq(q.id, true);
   } else {
     resetCombo();
     results.push({ id:q.id, correct:false, userAns:val });
+    window.updateFreq(q.id, false);
     if(currentMode === 'survival' || currentMode === 'speed') { lives--; renderLives(); }
   }
   // Hide submit button
@@ -1890,9 +2950,11 @@ function submitType() {
     addCombo();
     markMastered(q.id);
     results.push({ id:q.id, correct:true, userAns:val });
+    window.updateFreq(q.id, true);
   } else {
     resetCombo();
     results.push({ id:q.id, correct:false, userAns:val });
+    window.updateFreq(q.id, false);
     if(currentMode === 'survival' || currentMode === 'speed') { lives--; renderLives(); }
   }
   // Hide submit button
@@ -1952,6 +3014,98 @@ var skipQuestion = window.skipQuestion = function() {
   else renderQuestion();
 };
 
+
+// ====== SENTENCE DICTATION SUBMIT ======
+function submitSentDict() {
+  if(answered) return;
+  answered = true;
+  var q = questions[qIndex];
+  var input = document.getElementById('typeInput');
+  if (!input) { nextQuestion(); return; }
+  var userAns = input.value.trim();
+  // Flexible matching: ignore case and punctuation differences
+  var correctAns = q.ans[0];
+  var isCorrect = normalizeSent(userAns) === normalizeSent(correctAns);
+  results.push({ id:q.id, correct:isCorrect, userAns:userAns || '(未作答)' });
+  window.updateFreq(q.id, isCorrect);
+
+  if(isCorrect) {
+    input.className = 'type-input correct';
+    addScore(10);
+    addCombo();
+    markMastered(q.id);
+  } else {
+    input.className = 'type-input wrong';
+    addScore(-3);
+    resetCombo();
+    // Show the correct answer in the input area
+    var aInput = document.getElementById('typeInput');
+    if (aInput) {
+      aInput.value = '';
+      aInput.placeholder = '✅ 正确: ' + correctAns;
+      aInput.disabled = true;
+    }
+  }
+
+  var expHtml = '';
+  if(!isCorrect) {
+    expHtml = '<div class="explain-box"><div class="explain-title">' + (isCorrect ? '✅' : '❌') + ' ' + (isCorrect ? '回答正确！' : '答案错误') + '</div><div class="explain-body">你的答案：<span style="color:#EF4444;">' + (userAns || '(未作答)') + '</span><br>✅ 正确答案：<span class="right">' + correctAns + '</span><br>' + (q.explain || '') + '</div></div>';
+  } else {
+    expHtml = '<div class="explain-box"><div class="explain-title">✅ 回答正确！</div><div class="explain-body">' + (q.explain || '') + '</div></div>';
+  }
+  var dispArea = document.getElementById('explainWrap');
+  if (dispArea) dispArea.innerHTML = expHtml;
+}
+
+// ====== SENTENCE FILL-BLANK SUBMIT ======
+function submitSentFill() {
+  if(answered) return;
+  answered = true;
+  var q = questions[qIndex];
+  var input = document.getElementById('fillInput');
+  if (!input) { nextQuestion(); return; }
+  var userAns = input.value.trim();
+  var correctAns = q.ans[0];
+  var isCorrect = normalizeWord(userAns) === normalizeWord(correctAns);
+  results.push({ id:q.id, correct:isCorrect, userAns:userAns || '(未作答)' });
+  window.updateFreq(q.id, isCorrect);
+
+  if(isCorrect) {
+    input.className = 'fill-input correct';
+    addScore(10);
+    addCombo();
+    markMastered(q.id);
+  } else {
+    input.className = 'fill-input wrong';
+    addScore(-3);
+    resetCombo();
+    var fInput = document.getElementById('fillInput');
+    if (fInput) {
+      fInput.value = '';
+      fInput.placeholder = '✅ 正确: ' + correctAns;
+      fInput.disabled = true;
+    }
+  }
+
+  var expHtml = '';
+  if(!isCorrect) {
+    expHtml = '<div class="explain-box"><div class="explain-title">❌ 答案错误</div><div class="explain-body">你的答案：<span style="color:#EF4444;">' + (userAns || '(未作答)') + '</span><br>✅ 正确答案：<span class="right">' + correctAns + '</span><br>' + (q.explain || '') + '</div></div>';
+  } else {
+    expHtml = '<div class="explain-box"><div class="explain-title">✅ 回答正确！</div><div class="explain-body">' + (q.explain || '') + '</div></div>';
+  }
+  var dispArea = document.getElementById('explainWrap');
+  if (dispArea) dispArea.innerHTML = expHtml;
+}
+
+// ====== NORMALIZATION HELPERS ======
+function normalizeSent(s) {
+  // Remove punctuation, extra spaces, lowercase
+  return s.replace(/[.,!?;:'"()\-]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+}
+function normalizeWord(s) {
+  return s.replace(/[.,!?;:'"()]/g, '').trim().toLowerCase();
+}
+
 // ============ SCORE / COMBO ============
 function addScore(pts) {
   totalScore += pts;
@@ -2006,11 +3160,11 @@ function endTest() {
       const q = questions.find(qq => qq.id === r.id);
       if(q) {
         let correctDisplay = '';
-        if(q.type === 'choice') {
+        if(q.type === 'choice' || q.type === 'sent-app') {
           correctDisplay = q.opts[q.ans];
         } else if(q.type === 'judge') {
           correctDisplay = q.ans ? '✅ 正确' : '❌ 错误';
-        } else if(q.type === 'fill' || q.type === 'type') {
+        } else if(q.type === 'fill' || q.type === 'type' || q.type === 'sent-fill' || q.type === 'sent-dict') {
           correctDisplay = q.ans.join(' / ');
         }
         weakHtml += `<div style="margin-bottom:6px;padding:8px 8px;background:var(--danger-light);border-radius:6px;">
@@ -2036,11 +3190,11 @@ function endTest() {
       const q = questions.find(qq => qq.id === r.id);
       if(q) {
         let correctDisplay = '';
-        if(q.type === 'choice') {
+        if(q.type === 'choice' || q.type === 'sent-app') {
           correctDisplay = q.opts[q.ans];
         } else if(q.type === 'judge') {
           correctDisplay = q.ans ? '✅ 正确' : '❌ 错误';
-        } else if(q.type === 'fill' || q.type === 'type') {
+        } else if(q.type === 'fill' || q.type === 'type' || q.type === 'sent-fill' || q.type === 'sent-dict') {
           correctDisplay = q.ans.join(' / ');
         }
         weakHtml += `<div style="margin-bottom:6px;padding:8px 8px;background:#FEF3C7;border-radius:6px;">
@@ -2119,7 +3273,7 @@ init();
     var homeLink = document.querySelector('a[href*="学习中心"]');
     if (homeLink) {
       var spLink = document.createElement('a');
-      spLink.href = 'study-plan.html';
+      spLink.href = '学习计划.html';
       spLink.style.cssText = 'display:inline-block;margin:8px 4px;padding:6px 14px;background:#8B5CF6;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;';
       spLink.textContent = '← 学习计划';
       homeLink.parentNode.insertBefore(spLink, homeLink.nextSibling);
@@ -2131,7 +3285,7 @@ init();
       spBtn.className = 'test-back';
       spBtn.style.cssText = 'background:#8B5CF6;';
       spBtn.textContent = '← 学习计划';
-      spBtn.onclick = function() { window.location.href = 'study-plan.html'; };
+      spBtn.onclick = function() { window.location.href = '学习计划.html'; };
       testTop.appendChild(spBtn);
     }
     if (validCats.indexOf(c) >= 0) {
@@ -2142,7 +3296,7 @@ init();
       // Add a focus banner on the test page header area
       var banner = document.createElement('div');
       banner.id = 'focusBanner';
-      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · 极速闯关模式已自动启动 <a href="test-master.html" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
+      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · 极速闯关模式已自动启动 <a href="英语测试达人.html" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
       var testPage = document.getElementById('testPage');
       if (testPage) {
         var topBar = testPage.querySelector('.test-top-bar');
