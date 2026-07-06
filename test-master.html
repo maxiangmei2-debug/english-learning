@@ -2829,16 +2829,20 @@ function renderQuestion() {
     if(inp) inp.focus();
   }, 100);
 
-  // Keyboard handler for fill/type (Enter also submits)
-  if(q.type === 'fill' || q.type === 'type') {
-    const inpId = q.type === 'fill' ? 'fillInput' : 'typeInput';
-    const inp = document.getElementById(inpId);
-    inp.addEventListener('keydown', e => {
-      if(e.key === 'Enter' && !answered) {
-        if(q.type === 'fill') submitFill();
-        else submitType();
-      }
-    });
+  // Keyboard handler: Enter submits for all input types
+  if(q.type === 'fill' || q.type === 'type' || q.type === 'sent-dict' || q.type === 'sent-fill') {
+    const inp = document.getElementById('fillInput') || document.getElementById('typeInput');
+    if(inp) {
+      inp.addEventListener('keydown', e => {
+        if(e.key === 'Enter' && !answered) {
+          e.preventDefault();
+          if(q.type === 'fill') submitFill();
+          else if(q.type === 'type') submitType();
+          else if(q.type === 'sent-dict') submitSentDict();
+          else if(q.type === 'sent-fill') submitSentFill();
+        }
+      });
+    }
   }
 }
 
