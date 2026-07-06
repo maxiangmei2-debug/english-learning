@@ -2472,6 +2472,50 @@ const Q = {
   ]
 };
 
+// ============ STATE ============
+let totalScore = 0;
+let maxCombo = 0;
+let currentCombo = 0;
+let masteredSet = new Set();
+let currentMode = '';
+let currentCat = null; // null = all
+let questions = [];
+let qIndex = 0;
+let answered = false;
+let lives = 3;
+let timerInterval = null;
+let timeLeft = 0;
+let results = []; // { id, correct, userAns }
+
+// ============ BOOKMARKS (localStorage) ============
+let bookmarkedSet = new Set();
+(function loadBookmarks() {
+  try {
+    var raw = localStorage.getItem('testmaster_bookmarks');
+    if (raw) {
+      var arr = JSON.parse(raw);
+      for (var i = 0; i < arr.length; i++) bookmarkedSet.add(arr[i]);
+    }
+  } catch(e) {}
+})();
+function saveBookmarks() {
+  try { localStorage.setItem('testmaster_bookmarks', JSON.stringify(Array.from(bookmarkedSet))); } catch(e) {}
+}
+window.toggleBookmark = function(id) {
+  if (bookmarkedSet.has(id)) {
+    bookmarkedSet.delete(id);
+  } else {
+    bookmarkedSet.add(id);
+  }
+  saveBookmarks();
+  updateHomeStats();
+  var bmBtn = document.getElementById('bmBtn');
+  if (bmBtn) {
+    bmBtn.textContent = bookmarkedSet.has(questions[qIndex]?.id) ? '⭐' : '☆';
+    bmBtn.style.color = bookmarkedSet.has(questions[qIndex]?.id) ? '#F59E0B' : '#9CA3AF';
+  }
+};
+
 // ============ FREQUENCY TRACKING (localStorage) ============
 var freqState = {};
 (function loadFreqState() {
