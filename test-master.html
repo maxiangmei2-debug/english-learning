@@ -2482,6 +2482,7 @@ let currentCat = null; // null = all
 let questions = [];
 let qIndex = 0;
 let answered = false;
+let _lastSubmit = 0; // debounce guard for Enter double-fire
 let lives = 3;
 let timerInterval = null;
 let timeLeft = 0;
@@ -2999,12 +3000,14 @@ function showExplain(q, isCorrect, userAns) {
       if (lives <= 0) endTest();
       else nextQuestion();
     };
-    // Delay focus to avoid same Enter triggering next click
-    setTimeout(function() { nextBtn.focus(); }, 100);
   }
+
+  // Guard: block nextQuestion for 300ms after submitting (prevents Enter key double-fire)
+  _lastSubmit = Date.now();
 }
 
 function nextQuestion() {
+  if (Date.now() - _lastSubmit < 300) return; // debounce guard
   qIndex++;
   if(qIndex >= questions.length || lives <= 0) endTest();
   else renderQuestion();
