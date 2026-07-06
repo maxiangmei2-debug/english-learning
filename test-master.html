@@ -376,52 +376,32 @@
     <div class="mode-card" onclick="startMode('speed')">
       <div class="mode-card-icon">⚡</div>
       <div class="mode-card-title">极速闯关</div>
-      <div class="mode-card-desc">20题快答，每题15秒</div>
+      <div class="mode-card-desc">20题快答 · 每题15秒</div>
     </div>
     <div class="mode-card" onclick="startMode('survival')">
       <div class="mode-card-icon">❤️</div>
       <div class="mode-card-title">生存挑战</div>
-      <div class="mode-card-desc">3条命，答错扣命</div>
+      <div class="mode-card-desc">3条命 · 答错扣命</div>
     </div>
     <div class="mode-card" onclick="startMode('fill')">
-      <div class="mode-card-icon">📝</div>
-      <div class="mode-card-title">填空高手</div>
-      <div class="mode-card-desc">补全句子，精准用词</div>
-    </div>
-    <div class="mode-card" onclick="startMode('type')">
-      <div class="mode-card-icon">⌨️</div>
-      <div class="mode-card-title">听写达人</div>
-      <div class="mode-card-desc">看中文，打英文</div>
+      <div class="mode-card-icon">✍️</div>
+      <div class="mode-card-title">填空听写</div>
+      <div class="mode-card-desc">填词 + 拼写 + 句子听写</div>
     </div>
     <div class="mode-card" onclick="startMode('judge')">
       <div class="mode-card-icon">⚖️</div>
-      <div class="mode-card-title">辨析法官</div>
-      <div class="mode-card-desc">判断对错，抓中式英语</div>
+      <div class="mode-card-title">辨析判断</div>
+      <div class="mode-card-desc">判断对错 + 情景选句</div>
     </div>
-    <div class="mode-card" onclick="startMode('exam')">
-      <div class="mode-card-icon">📋</div>
-      <div class="mode-card-title">模拟考试</div>
-      <div class="mode-card-desc">50题全面测评</div>
+    <div class="mode-card" onclick="startMode('mixed')" style="background:linear-gradient(135deg,#E0E7FF,#C7D2FE);border:2px solid #6366F1;">
+      <div class="mode-card-icon">🌐</div>
+      <div class="mode-card-title">综合大挑战</div>
+      <div class="mode-card-desc">全题库 · 所有题型混搭</div>
     </div>
     <div class="mode-card" onclick="startMode('bookmark')" style="background:linear-gradient(135deg,#FEF3C7,#FFF7ED);border:2px solid #F59E0B;">
       <div class="mode-card-icon">⭐</div>
       <div class="mode-card-title" style="color:#92400E;">收藏练习</div>
-      <div class="mode-card-desc" style="color:#B45309;">只练收藏的题目</div>
-    </div>
-    <div class="mode-card" onclick="startMode('sent-dict')" style="background:linear-gradient(135deg,#EEF2FF,#F5F3FF);border:2px solid #8B5CF6;">
-      <div class="mode-card-icon">🔊</div>
-      <div class="mode-card-title">句子听写</div>
-      <div class="mode-card-desc">看中文，写英文</div>
-    </div>
-    <div class="mode-card" onclick="startMode('sent-fill')" style="background:linear-gradient(135deg,#F5F3FF,#EDE9FE);border:2px solid #A78BFA;">
-      <div class="mode-card-icon">✏️</div>
-      <div class="mode-card-title">句子填空</div>
-      <div class="mode-card-desc">补全缺失单词</div>
-    </div>
-    <div class="mode-card" onclick="startMode('sent-app')" style="background:linear-gradient(135deg,#EDE9FE,#DDD6FE);border:2px solid #C4B5FD;">
-      <div class="mode-card-icon">🎯</div>
-      <div class="mode-card-title">句子应用</div>
-      <div class="mode-card-desc">情景选句判断</div>
+      <div class="mode-card-desc" style="color:#B45309;">只练收藏的题</div>
     </div>
   </div>
 
@@ -2584,15 +2564,11 @@ const CATS = [
 // ============ MODE CONFIG ============
 const MODE_CFG = {
   speed: { total:20, timePer:15, lives:99, label:'⚡ 极速闯关' },
-  survival: { total:30, timePer:0, lives:3, label:'❤️ 生存挑战' },
-  fill: { total:10, timePer:0, lives:99, label:'📝 填空高手' },
-  type: { total:10, timePer:0, lives:99, label:'⌨️ 听写达人' },
-  judge: { total:10, timePer:0, lives:99, label:'⚖️ 辨析法官' },
-  exam: { total:50, timePer:0, lives:99, label:'📋 模拟考试' },
+  survival: { total:25, timePer:0, lives:3, label:'❤️ 生存挑战' },
+  fill: { total:12, timePer:0, lives:99, label:'✍️ 填空听写' },
+  judge: { total:10, timePer:0, lives:99, label:'⚖️ 辨析判断' },
+  mixed: { total:25, timePer:0, lives:99, label:'🌐 综合大挑战' },
   bookmark: { total:99, timePer:0, lives:99, label:'⭐ 收藏练习' },
-  'sent-dict': { total:15, timePer:30, lives:99, label:'🔊 句子听写' },
-  'sent-fill': { total:10, timePer:0, lives:99, label:'✏️ 句子填空' },
-  'sent-app': { total:10, timePer:0, lives:99, label:'🎯 句子应用' },
 };
 
 // ============ UTILS ============
@@ -2669,12 +2645,19 @@ function startMode(mode) {
     srcCats.forEach(cat => { if(Q[cat]) pool = pool.concat(Q[cat]); });
 
     // Filter by mode type
-    if(mode === 'fill') pool = pool.filter(function(q) { return q.type === 'fill' || q.type === 'sent-fill'; });
-    if(mode === 'type') pool = pool.filter(function(q) { return q.type === 'type' || q.type === 'sent-dict'; });
-    if(mode === 'judge') pool = pool.filter(function(q) { return q.type === 'judge'; });
-    if(mode === 'sent-dict') pool = pool.filter(function(q) { return q.type === 'sent-dict'; });
-    if(mode === 'sent-fill') pool = pool.filter(function(q) { return q.type === 'sent-fill'; });
-    if(mode === 'sent-app') pool = pool.filter(function(q) { return q.type === 'sent-app' || q.type === 'judge'; });
+    if(mode === 'speed') {
+      // 极速闯关：15秒限时，排除长句听写
+      pool = pool.filter(function(q) { return q.type !== 'sent-dict'; });
+    }
+    if(mode === 'fill') {
+      // 填空听写：merge fill + type + sent-fill + sent-dict
+      pool = pool.filter(function(q) { return q.type === 'fill' || q.type === 'type' || q.type === 'sent-fill' || q.type === 'sent-dict'; });
+    }
+    if(mode === 'judge') {
+      // 辨析判断：merge judge + sent-app
+      pool = pool.filter(function(q) { return q.type === 'judge' || q.type === 'sent-app'; });
+    }
+    // mixed mode: no filtering, all types from entire knowledge base
 
     if(pool.length < 3) {
       showToast('该范围题目太少，请选择更多类别！');
