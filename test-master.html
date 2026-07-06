@@ -2996,6 +2996,26 @@ function showExplain(q, isCorrect, userAns) {
   html += `<div class="explain-body">${q.explain}</div>`;
   if(q.tip) html += `<div class="explain-tip">${q.tip}</div>`;
   html += `</div>`;
+
+  // For sent-dict/sent-fill wrong: add retry practice area
+  var retryType = (!isCorrect && (q.type === 'sent-dict' || q.type === 'sent-fill')) ? q.type : null;
+  if (retryType) {
+    html += `<div id="retryWrap" style="margin-top:12px;padding:12px;background:var(--gray-50);border-radius:12px;border:2px dashed var(--gray-300);">`;
+    html += `<div style="font-size:13px;font-weight:700;color:var(--gray-600);margin-bottom:8px;">🔄 再练一遍，加深印象</div>`;
+    if (retryType === 'sent-dict') {
+      html += `<div style="font-size:15px;font-weight:600;color:var(--gray-800);margin-bottom:6px;">${escapeHtml(q.q)}</div>`;
+      html += `<textarea id="retryInput" class="type-input" style="height:60px;text-align:left;font-size:14px;resize:vertical;" placeholder="重新输入英文句子..."></textarea>`;
+    } else {
+      html += `<div style="font-size:15px;margin-bottom:6px;line-height:1.5;">${escapeHtml(q.q)}</div>`;
+      if (q.hint) html += `<div style="font-size:12px;color:var(--gray-500);margin-bottom:4px;">${q.hint}</div>`;
+      html += `<input id="retryInput" class="fill-input" placeholder="输入缺失的单词...">`;
+    }
+    html += `<div style="margin-top:8px;display:flex;gap:8px;align-items:center;">`;
+    html += `<button class="submit-btn" id="retryBtn" style="font-size:13px;padding:8px 20px;">核对</button>`;
+    html += `<span id="retryMsg" style="font-size:13px;"></span>`;
+    html += `</div></div>`;
+  }
+
   html += `<div class="next-btn-wrap">`;
   html += `<button class="next-btn" id="nextBtn">${lives <= 0 ? '查看结果' : '下一题 →'}</button>`;
   html += `</div>`;
@@ -3008,6 +3028,38 @@ function showExplain(q, isCorrect, userAns) {
       if (lives <= 0) endTest();
       else nextQuestion();
     };
+  }
+
+  // Bind retry practice if present
+  var retryBtn = document.getElementById('retryBtn');
+  var retryInput = document.getElementById('retryInput');
+  if (retryBtn && retryInput && retryType) {
+    var correctRetryAns = q.ans[0];
+    var doRetry = function() {
+      var v = retryInput.value.trim();
+      if (!v) return;
+      var ok = retryType === 'sent-dict'
+        ? normalizeSent(v) === normalizeSent(correctRetryAns)
+        : normalizeWord(v) === normalizeWord(correctRetryAns);
+      var msgEl = document.getElementById('retryMsg');
+      var wrapEl = document.getElementById('retryWrap');
+      if (ok) {
+        retryInput.className = (retryType === 'sent-dict' ? 'type-input' : 'fill-input') + ' correct';
+        retryInput.disabled = true;
+        retryBtn.style.display = 'none';
+        if (msgEl) msgEl.innerHTML = '✅ 完全正确！';
+        if (wrapEl) wrapEl.style.borderColor = 'var(--success)';
+      } else {
+        if (msgEl) msgEl.innerHTML = '<span style="color:var(--danger);">❌ 还不对，再试一次</span>';
+        retryInput.style.color = '#EF4444';
+        setTimeout(function() { retryInput.style.color = ''; }, 1000);
+      }
+    };
+    retryBtn.onclick = doRetry;
+    // Enter in retry input triggers check
+    retryInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); doRetry(); }
+    });
   }
 
   // Guard: block nextQuestion for 300ms after submitting (prevents Enter key double-fire)
