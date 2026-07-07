@@ -702,10 +702,10 @@ const Q = {
       q:'"Could you ___ pass the salt?" — 能递一下盐吗？填礼貌词', ans:['please'],
       explain:'【知识点】英语礼貌请求句型<br><br>最礼貌请求：Could you <span class="highlight">please</span> + do?<br>比Can you更委婉<br><br>【礼貌等级排序】<br>最礼貌 → 最随意<br>① Could you please... → 最礼貌（正式场合）<br>② Would you please... → 很礼貌<br>③ Could you... → 礼貌（日常）<br>④ Can you... → 随意（熟人）<br><br>【例子对比】<br>✅ Could you <span class="right">please</span> pass the salt? → 最礼貌<br>✅ Could you pass the salt? → 礼貌<br>✅ Can you pass the salt? → 随意<br><br>【为什么Could比Can更礼貌？】<br>Could = can的过去式 → 语气更<strong>委婉</strong><br>相当于"请问能否..."而非"能不能..."<br><br>【记忆口诀】<br>最礼貌 → Could/Would/May + please<br>日常 → Could you<br>随意 → Can you', tip:'最礼貌：Could/Would/May + please' },
     { id:'s2', cat:'scene', type:'choice', badge:'场景',
-      q:'表达"能降价吗？"最自然的方式？', opts:['Can you cheap?','Could you lower the price?','Discount please?','Make it less?'],
+      q:'表达"能降价吗？"最自然的方式？', opts:['Can you cheap?','Could you lower the price?','Discount please?','Make it less?'], ans:1,
       explain:'【知识点】购物议价句型<br><br><span class="right">Could you lower the price?</span> ✅ 自然礼貌<br><span class="wrong">Can you cheap?</span> ❌ 中式英语<br><br>【为什么"Can you cheap"错？】<br>cheap是<strong>形容词</strong>（便宜的），不能当<strong>动词</strong>用<br>英语中"降价"要说 <span class="right">lower the price</span><br><br>【正确表达方式】<br>① Could you <span class="right">lower</span> the price? → 能降价吗？（最礼貌）<br>② Can you give me a <span class="right">better</span> price? → 给个更优惠的价格？<br>③ Is there any <span class="right">discount</span>? → 有折扣吗？<br>④ How about <span class="right">20% off</span>? → 打八折？<br><br>【购物常用句型】<br>• I will take it. → 我买了<br>• Can I get a refund? → 能退款吗？<br>• Do you have anything cheaper? → 有便宜点的吗？<br><br>【记忆口诀】<br>降价 → lower the price<br>不是 → make it cheap', tip:'' },
     { id:'s3', cat:'scene', type:'choice', badge:'场景',
-      q:'"带家具吗？" 怎么问？', opts:['Has furniture?','Is it furnished?','With furniture?','Furniture include?'],
+      q:'"带家具吗？" 怎么问？', opts:['Has furniture?','Is it furnished?','With furniture?','Furniture include?'], ans:1,
       explain:'【知识点】租房场景常用句型<br><br><span class="right">Is it furnished?</span> ✅ 带家具吗？<br><span class="en">furnished</span> = 带家具的，是租房标准用语<br><br>【租房常用词汇】<br>• furnished → 带家具的<br>• unfurnished → 不带家具的<br>• deposit → 押金<br>• landlord → 房东<br>• tenant → 租客<br>• lease → 租约<br>• rent → 租金<br><br>【租房常用问题】<br>• Is it furnished? → 带家具吗？<br>• How much is the deposit? → 押金多少？<br>• What is the rent per month? → 月租多少？<br>• Are utilities included? → 包水电吗？<br>• When is the lease up? → 租约到期？<br><br>【中式英语错误】<br>❌ Has furniture? → 错！要用Is it furnished?<br>❌ With furniture? → 错！<br>❌ Furniture include? → 错！<br><br>【记忆口诀】<br>租房问家具 → Is it furnished?', tip:'' },
     { id:'s4', cat:'scene', type:'fill', badge:'场景',
       q:'"I ___ a better price." — 我拿到了更优惠的价格。填动词', ans:['got'],
@@ -2621,6 +2621,14 @@ function showToast(msg) {
 
 // ============ INIT ============
 function init() {
+  // Normalize bank: a batch of questions was written with `answer` instead of `ans`.
+  // Map answer -> ans once so the code (which reads q.ans) works for all of them.
+  Object.keys(Q).forEach(function(cat) {
+    (Q[cat] || []).forEach(function(qd) {
+      if (qd.ans === undefined && qd.answer !== undefined) qd.ans = qd.answer;
+    });
+  });
+
   const bar = document.getElementById('catBar');
   CATS.forEach(c => {
     const btn = document.createElement('button');
@@ -3173,7 +3181,7 @@ function normalizeWord(s) {
 }
 
 // ============ SCORE / COMBO ============
-function escapeHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escapeHtml(s) { if(s === null || s === undefined) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 function addScore(pts) {
   totalScore += pts;
