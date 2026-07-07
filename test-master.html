@@ -114,6 +114,17 @@
   .p-dot.done { background:var(--success); }
   .p-dot.fail { background:var(--danger); }
   .p-dot.skip { background:#F59E0B; }
+
+  /* 综合大挑战 维度覆盖条 */
+  .cover-row {
+    display:flex; flex-wrap:wrap; gap:6px; padding:6px 16px 10px; justify-content:center;
+    align-items:center;
+  }
+  .cover-label { font-size:12px; color:rgba(255,255,255,0.8); margin-right:4px; }
+  .cover-pill {
+    font-size:12px; padding:3px 10px; border-radius:999px; line-height:1;
+    background:rgba(255,255,255,0.18); color:#fff; border:1px solid rgba(255,255,255,0.25);
+  }
   .p-dot.current { background:white; transform:scale(1.4); }
 
   /* Timer bar */
@@ -430,6 +441,7 @@
   </div>
   <div class="lives-row" id="livesRow" style="display:none;"></div>
   <div class="progress-dots" id="progressDots"></div>
+  <div class="cover-row" id="coverRow" style="display:none;"></div>
   <div class="q-area" id="qArea"></div>
 </div>
 
@@ -2582,6 +2594,74 @@ function shuffleArr(arr) {
   return arr;
 }
 
+// ============ MIXED MODE: balanced multi-dimension coverage ============
+// 综合大挑战：每次都覆盖全部维度（分类），每类下限保底 + 按规模加权补足，同类不连排
+function buildMixedQuestions(total, catKeys) {
+  const counts = {};
+  catKeys.forEach(c => counts[c] = (Q[c] ? Q[c].length : 0));
+  const availCats = catKeys.filter(c => counts[c] > 0);
+  if (availCats.length === 0) return [];
+
+  // 1) 配额：每类至少 FLOOR 题，剩余按各分类题目总量加权分配（最大余数法保证精确等于 total）
+  const FLOOR = 2;
+  const quotas = {};
+  let used = 0;
+  availCats.forEach(c => { quotas[c] = Math.min(FLOOR, counts[c]); used += quotas[c]; });
+  let remain = Math.max(0, total - used);
+  if (remain > 0) {
+    const totalSize = availCats.reduce((s,c)=>s+counts[c],0);
+    const raw = availCats.map(c => ({ c, val: remain * counts[c] / totalSize }));
+    const base = raw.map(r => ({ c:r.c, q:Math.floor(r.val) }));
+    let assigned = base.reduce((s,b)=>s+b.q,0);
+    let left = remain - assigned;
+    raw.sort((a,b)=> (b.val - Math.floor(b.val)) - (a.val - Math.floor(a.val)));
+    for (let i=0; i<left; i++) base[i % base.length].q += 1;
+    base.forEach(b => { quotas[b.c] += b.q; });
+  }
+  // 不超过该分类实际题量
+  availCats.forEach(c => { if (quotas[c] > counts[c]) quotas[c] = counts[c]; });
+
+  const wrongScore = q => { const fs = freqState[q.id]; return fs && fs.w ? fs.w : 0; };
+
+  // 2) 每类挑选：常错题优先 + 题型尽量分散（轮转覆盖各 type）
+  const byCat = {};
+  const residual = {};
+  availCats.forEach(c => {
+    const pool = Q[c].slice().sort((a,b)=> wrongScore(b)-wrongScore(a) || Math.random()-0.5);
+    const queues = {};
+    [...new Set(pool.map(q=>q.type))].forEach(t => {
+      queues[t] = pool.filter(q=>q.type===t).sort((a,b)=> wrongScore(b)-wrongScore(a));
+    });
+    const tkeys = Object.keys(queues);
+    const picked = [];
+    let ti = 0;
+    while (picked.length < quotas[c] && tkeys.some(t=>queues[t].length)) {
+      const t = tkeys[ti % tkeys.length];
+      if (queues[t].length) picked.push(queues[t].shift());
+      ti++;
+    }
+    residual[c] = [];
+    tkeys.forEach(t => { residual[c] = residual[c].concat(queues[t]); });
+    byCat[c] = picked;
+  });
+
+  // 3) 跨分类轮转交叉，避免同一维度连排
+  const result = [];
+  let added = true;
+  while (added) {
+    added = false;
+    availCats.forEach(c => { if (byCat[c].length) { result.push(byCat[c].shift()); added = true; } });
+  }
+  // 不足则用各类剩余题补齐
+  let deficit = total - result.length;
+  while (deficit > 0) {
+    let filled = false;
+    availCats.forEach(c => { if (deficit>0 && residual[c].length) { result.push(residual[c].shift()); deficit--; filled=true; } });
+    if (!filled) break;
+  }
+  return result.slice(0, total);
+}
+
 // ============ CATEGORIES ============
 const CATS = [
   { key:null, label:'🔄 全部', emoji:'🔄' },
@@ -2697,18 +2777,28 @@ function startMode(mode) {
       // 辨析判断：merge judge + sent-app
       pool = pool.filter(function(q) { return q.type === 'judge' || q.type === 'sent-app'; });
     }
-    // mixed mode: no filtering, all types from entire knowledge base
+    if(mode === 'mixed') {
+      // 综合大挑战：保证每次覆盖全部维度；若用户只选了单分类则沿用原逻辑
+      if(currentCat) {
+        questions = freqWeightedShuffle(freqBoostWrong(pool)).slice(0, cfg.total);
+      } else {
+        questions = buildMixedQuestions(cfg.total, Object.keys(Q));
+      }
+    } else {
+      if(pool.length < 3) {
+        showToast('该范围题目太少，请选择更多类别！');
+        return;
+      }
 
-    if(pool.length < 3) {
-      showToast('该范围题目太少，请选择更多类别！');
-      return;
+      // Apply frequency boost for wrong questions
+      pool = freqBoostWrong(pool);
+      // Use frequency-weighted shuffle
+      questions = freqWeightedShuffle(pool).slice(0, cfg.total);
     }
-
-    // Apply frequency boost for wrong questions
-    pool = freqBoostWrong(pool);
-    // Use frequency-weighted shuffle
-    questions = freqWeightedShuffle(pool).slice(0, cfg.total);
   }
+
+  // 综合大挑战（全部维度）展示本次覆盖的维度分布
+  updateCoverBar(mode);
 
   qIndex = 0;
   results = [];
@@ -2724,6 +2814,20 @@ function startMode(mode) {
   const lr = document.getElementById('livesRow');
   if(cfg.lives !== 99) { lr.style.display='flex'; renderLives(); }
   else lr.style.display='none';
+}
+
+function updateCoverBar(mode) {
+  const el = document.getElementById('coverRow');
+  if (!el) return;
+  // 仅「综合大挑战 + 全部维度」显示覆盖条
+  if (mode !== 'mixed' || currentCat) { el.style.display = 'none'; el.innerHTML = ''; return; }
+  const catLabel = { grammar:'📖 语法', vocab:'🏷️ 词汇', phrase:'🔗 搭配', scene:'💬 场景', error:'🚫 易错', sentence:'📝 句子' };
+  const cnt = {};
+  questions.forEach(q => { if (q.cat) cnt[q.cat] = (cnt[q.cat] || 0) + 1; });
+  const parts = ['<span class="cover-label">本次涵盖</span>'];
+  Object.keys(catLabel).forEach(c => { if (cnt[c]) parts.push('<span class="cover-pill">' + catLabel[c] + ' ×' + cnt[c] + '</span>'); });
+  el.innerHTML = parts.join('');
+  el.style.display = 'flex';
 }
 
 function renderLives() {
