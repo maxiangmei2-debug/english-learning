@@ -870,11 +870,21 @@ const WORDS = [
   { en:'optimistic', cn:'乐观的', topic:'日常生活', options:['optimistic','optimistick','optimestik','optimystic'], explain:'optimistic /ˌɒptɪˈmɪstɪk/ = 乐观的。反义词：pessimistic 悲观的。拼写：opti-mis-tic。' },
   { en:'stranger', cn:'陌生人', topic:'日常生活', options:['stranger','stanger','strangier','strangor'], explain:'stranger /ˈstreɪndʒər/ = 陌生人。来自strange(奇怪的) + r(人)。Don\'t talk to strangers. 别和陌生人说话。' },
   { en:'privacy', cn:'隐私', topic:'日常生活', options:['privacy','privicy','privasy','privacee'], explain:'privacy /ˈprɪvəsi/ = 隐私。来自private(私人的)。拼写：pri-va-cy。I value my privacy. 我重视隐私。' },
-  { en:'fortune teller', cn:'算命师', topic:'日常生活', options:['fortune teller','luck teller','future teller','fate teller'], explain:'fortune teller = 算命师。fortune=命运/财富，teller=讲述者。I don\'t believe fortune tellers. 我不相信算命的。' }
+  { en:'fortune teller', cn:'算命师', topic:'日常生活', options:['fortune teller','luck teller','future teller','fate teller'], explain:'fortune teller = 算命师。fortune=命运/财富，teller=讲述者。I don\'t believe fortune tellers. 我不相信算命的。' },
+
+  // === 助动词与be动词（do/be 用法）===
+  { en:'do', cn:'（助动词）做；用于提问/否定', topic:'助动词与be动词', options:['do','does','did','done'], explain:'do 是助动词，句子有动作动词(I like)时，靠 do/does 来提问或否定：Do you like it? / I don\'t like it. 三单用 does，动词还原。' },
+  { en:'does', cn:'（三单助动词）', topic:'助动词与be动词', options:['does','do','done','dose'], explain:'does 是 do 的三单形式，主语 he/she/it 用。Does she like tea? 注意 does 后动词必须还原(like 不能加s)。' },
+  { en:'don\'t', cn:'不要（否定）', topic:'助动词与be动词', options:['don\'t','doesn\'t','do not','dont'], explain:'don\'t = do not，动作动词否定(非三单)：I don\'t like coffee. ⚠️ 情态动词前不能加 do：I can\'t swim（不是 I don\'t can）。' },
+  { en:'doesn\'t', cn:'（三单）不', topic:'助动词与be动词', options:['doesn\'t','don\'t','does not','dosent'], explain:'doesn\'t = does not，动作动词三单否定：He doesn\'t like it. 后接动词原形。' },
+  { en:'is', cn:'是（he/she/it）', topic:'助动词与be动词', options:['is','are','am','be'], explain:'is 是 be 动词三单，用于身份/状态/特征句：She is a doctor. 提问把 is 提前：Is she a doctor?（这类句不用 do）。' },
+  { en:'are', cn:'是（you/we/they）', topic:'助动词与be动词', options:['are','is','am','be'], explain:'are 是 be 动词复数/you，后接名词/形容词/介词短语：They are from China. / We are happy. 提问：Are you...?' },
+  { en:'be', cn:'是（原形/命令）', topic:'助动词与be动词', options:['be','is','are','been'], explain:'be 是 am/is/are 的原形。用在祈使否定 Don\'t be late. 和进行时/被动 be+doing/done。状态句用 be，动作句用 do。' },
+  { en:'can\'t', cn:'不能（情态否定）', topic:'助动词与be动词', options:['can\'t','don\'t','cannot','cant'], explain:'can\'t = can not，情态动词否定直接加 not，绝不加 do：I can\'t swim.（不是 I don\'t can）。已有 can/will → 都不用 do。' }
 ];
 
 // ====== 主题列表 ======
-const TOPICS = ['全部','租房','运动','购物','办公','手机','性格','情绪','职场','旅行','搭配','否定表达','狼来了','看医生','祈使句','坐飞机','交通出行','入住酒店','点餐用餐','问路方向','购物消费','出入境','简单聊天','时态动词','完成时搭配','情态搭配','从句引导词','药店看病','职业工作','面试求职','性格描述','短语动词','日常生活'];
+const TOPICS = ['全部','租房','运动','购物','办公','手机','性格','情绪','职场','旅行','搭配','否定表达','狼来了','看医生','祈使句','坐飞机','交通出行','入住酒店','点餐用餐','问路方向','购物消费','出入境','简单聊天','时态动词','完成时搭配','情态搭配','从句引导词','药店看病','职业工作','面试求职','性格描述','短语动词','日常生活','助动词与be动词'];
 
 // ====== 状态 ======
 let totalScore = 0;
