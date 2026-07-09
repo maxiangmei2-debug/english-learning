@@ -161,6 +161,15 @@
 
   .q-text { font-size:18px; font-weight:700; margin-bottom:16px; line-height:1.5; }
   .q-hint { font-size:13px; color:var(--gray-500); margin-bottom:16px; }
+  .q-history {
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px;
+    padding:6px 12px; margin-bottom:14px; font-size:13px; color:var(--gray-600);
+  }
+  .q-history .ok { color:var(--success); font-weight:600; }
+  .q-history .no { color:var(--danger); font-weight:600; }
+  .q-history .first { color:var(--gray-400); }
+  .q-history .acc { margin-left:auto; color:var(--gray-400); font-size:12px; }
 
   /* Bookmark button */
   .bm-btn {
@@ -6690,6 +6699,19 @@ function startTimer() {
 }
 
 // ============ RENDER QUESTION ============
+// 显示某题的历史答对/答错次数（来自 freqState）
+function renderHistoryHtml(q) {
+  const fs = freqState[q.id];
+  const c = (fs && fs.c) ? fs.c : 0;
+  const w = (fs && fs.w) ? fs.w : 0;
+  const total = c + w;
+  if (total === 0) {
+    return `<span class="first">📊 历史：首次出现，暂无记录</span>`;
+  }
+  const acc = Math.round(c / total * 100);
+  return `📊 历史：<span class="ok">✅ 答对 ${c}</span> &nbsp; <span class="no">❌ 答错 ${w}</span><span class="acc">正确率 ${acc}%</span>`;
+}
+
 function renderQuestion() {
   if(qIndex >= questions.length || lives <= 0) { endTest(); return; }
   answered = false;
@@ -6720,6 +6742,7 @@ function renderQuestion() {
   let bmClass = isBookmarked ? ' bookmarked' : '';
   let bmIcon = isBookmarked ? '⭐' : '☆';
   let html = `<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;"><div class="q-type-badge ${badgeClass}">${q.badge}</div><button class="bm-btn${bmClass}" id="bmBtn" onclick="window.toggleBookmark('${q.id}')" title="${isBookmarked?'取消收藏':'收藏此题'}">${bmIcon} 收藏</button></div>`;
+  html += `<div class="q-history" id="qHistory">${renderHistoryHtml(q)}</div>`;
 
   if(q.type === 'choice' || q.type === 'sent-app') {
     html += `<div class="q-text">${q.q}</div>`;
@@ -6969,6 +6992,10 @@ function showExplain(q, isCorrect, userAns) {
   html += `<button class="next-btn" id="nextBtn">${lives <= 0 ? '查看结果' : '下一题 →'}</button>`;
   html += `</div>`;
   wrap.innerHTML = html;
+
+  // 实时刷新该题历史统计（本次作答已计入 freqState）
+  var qh = document.getElementById('qHistory');
+  if (qh) qh.innerHTML = renderHistoryHtml(q);
 
   // Bind next button directly
   var nextBtn = document.getElementById('nextBtn');
