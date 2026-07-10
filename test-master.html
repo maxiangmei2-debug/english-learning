@@ -17499,13 +17499,18 @@ function saveFreqState() {
 }
 
 // ============ SPACED REPETITION (艾宾浩斯间隔重复) ============
-// 一道题连续答对 3 次即升一阶，按艾宾浩斯曲线推后下次出现；答错回到第 0 阶立即可练。
+// 升阶规则：box0 需连续答对 3 次才升一阶；box1~box6 每阶只需连续答对 2 次即可升一阶。
+// 间隔曲线（升到对应 box 后推后的天数）：box1=2天, box2=4天, box3=7天, box4=15天, box5=30天, box6=60天。
+// 在 box6（60天）再连续答对 2 次 → 标为「已掌握」，后续默认不再出现（除非在「已掌握」面板移出）。
+// 漏学顺延：due 为绝对时间戳，过期题任一天使用即立即可练，下次间隔从当天重算（天然满足）。
+// 答错：降 2 阶，立即可练，连对清零，并移出「已掌握」。
 const SRS_KEY = 'testmaster_srs';
-const SRS_REQUIRED_STREAK = 3; // 连续答对几次才升阶（延长复习间隔）
-// 各阶复习间隔（天）：box 越高，下次复习越远。box0 = 立即可练；最高档 box7 = 60 天
-// 走到最高档后再次连对 3 次 → 标为「已掌握」，后续默认不再出现（除非在「已掌握」面板移出）
-const SRS_INTERVAL_DAY = [0, 1, 2, 4, 7, 15, 30, 60];
-const SRS_MAX_BOX = SRS_INTERVAL_DAY.length - 1;
+const SRS_STREAK_FIRST = 3;   // box0 连续答对几次才升阶
+const SRS_STREAK_NEXT = 2;    // box1~box6 每阶连续答对几次才升阶（含升到「已掌握」）
+function reqStreakForBox(box) { return box <= 0 ? SRS_STREAK_FIRST : SRS_STREAK_NEXT; }
+// 升到 box(b+1) 时推后的天数：索引 = 当前 box（0..5）。box1=2, box2=4, box3=7, box4=15, box5=30, box6=60
+const SRS_INTERVAL_DAY = [2, 4, 7, 15, 30, 60];
+const SRS_MAX_BOX = SRS_INTERVAL_DAY.length; // 6（box6 = 60天，最高复习档，再连对即「已掌握」）
 const DAY_MS = 86400000;
 let srsState = {};
 (function loadSrs() {
@@ -17526,20 +17531,21 @@ function updateSrs(id, correct) {
   var fs = freqState[id];
   var streak = (fs && fs.streak) ? fs.streak : 0;
   if (correct) {
-    if (streak >= SRS_REQUIRED_STREAK) {
+    if (streak >= reqStreakForBox(s.box)) {
       if (s.box >= SRS_MAX_BOX) {
-        // 已在最高档（60天）且又连对 3 次 → 真正「已掌握」，后续默认不再出现
+        // 已在最高档（box6=60天）且又连对达标 → 真正「已掌握」，后续默认不再出现
         markMastered(id);
         s.box = SRS_MAX_BOX;
         s.due = Number.MAX_SAFE_INTEGER; // 不再排期（出题会排除 mastered）
       } else {
-        // 连续对满 3 次 → 升一阶并推后复习
+        // 连对达标 → 升一阶，并推后对应天数（间隔从今天起算，支持漏学顺延）
+        var interval = SRS_INTERVAL_DAY[Math.min(s.box, SRS_INTERVAL_DAY.length - 1)];
         s.box = s.box + 1;
-        s.due = Date.now() + SRS_INTERVAL_DAY[s.box] * DAY_MS;
+        s.due = Date.now() + interval * DAY_MS;
       }
       if (fs) fs.streak = 0; // 升阶后重置计数，进入下一轮
     } else {
-      // 还没连对满 3 次：保持当前阶位、立即可练（box 不重置，仅刷新 due 便于尽快再练）
+      // 还没连对达标：保持当前阶位、立即可练（box 不重置，仅刷新 due 便于尽快再练）
       s.due = Date.now();
     }
   } else {
@@ -17956,12 +17962,20 @@ function renderHistoryHtml(q) {
   let srsLine = '';
   if (s.box > 0) {
     const remain = (s.due || 0) - Date.now();
-    srsLine = remain > 0
-      ? ` &nbsp; <span class="acc">⏰ 已排期：${fmtRemain(remain)}后复习</span>`
-      : ` &nbsp; <span class="ok">⏰ 已到期，可复习</span>`;
+    if (remain > 0) {
+      srsLine = ` &nbsp; <span class="acc">⏰ 已排期：${fmtRemain(remain)}后复习</span>`;
+    } else {
+      // 已到期，可复习：展示连对进度（box6 为最后一档，再连对即标「已掌握」）
+      const st = fs && fs.streak ? fs.streak : 0;
+      if (s.box >= SRS_MAX_BOX) {
+        srsLine = ` &nbsp; <span class="ok">⏰ 已到期 · 连对 ${st}/${reqStreakForBox(s.box)} 次后标为已掌握</span>`;
+      } else {
+        srsLine = ` &nbsp; <span class="ok">⏰ 已到期 · 连对 ${st}/${reqStreakForBox(s.box)} 次后延长间隔</span>`;
+      }
+    }
   } else {
     const st = fs && fs.streak ? fs.streak : 0;
-    srsLine = ` &nbsp; <span class="acc">🔁 连对 ${st}/${SRS_REQUIRED_STREAK} 次后延长间隔</span>`;
+    srsLine = ` &nbsp; <span class="acc">🔁 连对 ${st}/${reqStreakForBox(s.box)} 次后延长间隔</span>`;
   }
   if (total === 0) {
     return `<span class="first">📊 历史：首次出现，暂无记录</span>${srsLine}`;
@@ -18906,7 +18920,9 @@ function applySyncData(data) {
         if (!r) return;
         // 取更高掌握度（box 更大），并按本机时间重算下次复习，避免跨设备时间差
         var box = Math.max((srsState[id]||{box:0}).box||0, r.box||0);
-        srsState[id] = { box: box, due: Date.now() + SRS_INTERVAL_DAY[Math.min(box, SRS_INTERVAL_DAY.length-1)] * DAY_MS };
+        // box0 = 立即可练；升到 box(b)：b>=1 时推后 SRS_INTERVAL_DAY[b-1] 天
+        var interval = box <= 0 ? 0 : SRS_INTERVAL_DAY[Math.min(box - 1, SRS_INTERVAL_DAY.length - 1)];
+        srsState[id] = { box: box, due: Date.now() + interval * DAY_MS };
       });
     }
     saveFreqState(); saveSeen(); saveBookmarks(); saveSrs(); saveMastered(); updateHomeStats();
