@@ -194,6 +194,20 @@
   }
   .bm-btn:hover { border-color:#F59E0B; color:#F59E0B; background:#FFFBEB; }
   .bm-btn.bookmarked { color:#F59E0B; border-color:#F59E0B; background:#FFFBEB; }
+  .master-btn {
+    display:inline-flex; align-items:center; gap:4px; padding:4px 12px;
+    border-radius:16px; border:1.5px solid #A7F3D0; background:#ECFDF5;
+    font-size:15px; cursor:pointer; transition:all 0.2s; touch-action:manipulation;
+    color:#059669; font-weight:600; margin-left:0; vertical-align:middle;
+  }
+  .master-btn:hover { border-color:#10B981; background:#D1FAE5; color:#047857; }
+  .master-btn.mastered { color:#9CA3AF; border-color:#E5E7EB; background:#F3F4F6; cursor:default; }
+  .master-mark-btn {
+    font-size:15px; font-weight:600; padding:12px 22px; border-radius:24px;
+    border:2px solid #A7F3D0; background:#ECFDF5; color:#059669; cursor:pointer;
+    transition:all 0.2s; touch-action:manipulation; margin-right:10px;
+  }
+  .master-mark-btn:hover { background:#D1FAE5; border-color:#10B981; color:#047857; }
 
   /* Options */
   .opts-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
@@ -17988,7 +18002,11 @@ function renderQuestion() {
   let isBookmarked = bookmarkedSet.has(q.id);
   let bmClass = isBookmarked ? ' bookmarked' : '';
   let bmIcon = isBookmarked ? '⭐' : '☆';
-  let html = `<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;"><div class="q-type-badge ${badgeClass}">${q.badge}</div><button class="bm-btn${bmClass}" id="bmBtn" onclick="window.toggleBookmark('${q.id}')" title="${isBookmarked?'取消收藏':'收藏此题'}">${bmIcon} 收藏</button></div>`;
+  let isMasteredQ = masteredSet.has(q.id);
+  let inMasteredMode = (typeof isMasteredMode !== 'undefined' && isMasteredMode);
+  let masterBtn = inMasteredMode ? '' :
+    `<button class="master-btn${isMasteredQ?' mastered':''}" onclick="window.manualMarkMastered()" title="标记为已掌握，这道题以后不再出现">${isMasteredQ?'✅ 已掌握':'✅ 标掌握'}</button>`;
+  let html = `<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;"><div class="q-type-badge ${badgeClass}">${q.badge}</div><div style="display:flex;gap:8px;align-items:center;">${masterBtn}<button class="bm-btn${bmClass}" id="bmBtn" onclick="window.toggleBookmark('${q.id}')" title="${isBookmarked?'取消收藏':'收藏此题'}">${bmIcon} 收藏</button></div></div>`;
   html += `<div class="q-history" id="qHistory">${renderHistoryHtml(q)}</div>`;
 
   if(q.type === 'choice' || q.type === 'sent-app') {
@@ -18242,6 +18260,9 @@ function showExplain(q, isCorrect, userAns) {
   }
 
   html += `<div class="next-btn-wrap">`;
+  if(!(typeof isMasteredMode !== 'undefined' && isMasteredMode)) {
+    html += `<button class="master-mark-btn" id="masterMarkBtn" onclick="window.manualMarkMastered()">✅ 标记已掌握</button>`;
+  }
   html += `<button class="next-btn" id="nextBtn">${lives <= 0 ? '查看结果' : '下一题 →'}</button>`;
   html += `</div>`;
   wrap.innerHTML = html;
@@ -18314,6 +18335,49 @@ var skipQuestion = window.skipQuestion = function() {
   if(qIndex >= questions.length || lives <= 0) endTest();
   else renderQuestion();
 };
+
+// ====== MANUAL MARK AS MASTERED ======
+// 用户主动标记某题"已掌握"：立刻加入 masteredSet，后续（非复习模式下）不再出现，
+// 并同步刷新首页"已掌握"计数。点题头按钮（未作答）或反馈区按钮（已作答）都会调用。
+window.manualMarkMastered = function() {
+  if(!questions || qIndex >= questions.length) return;
+  var q = questions[qIndex];
+  if(!q) return;
+  if(!masteredSet.has(q.id)) {
+    markMastered(q.id); // 加入 masteredSet + saveMastered() -> scheduleSync() 云同步
+    showMasterToast('✅ 已标记为掌握，以后不再出现');
+  }
+  // 实时刷新首页"已掌握 N 题"计数
+  var hMasterEl = document.getElementById('hMaster');
+  if(hMasterEl) hMasterEl.textContent = masteredSet.size;
+  if(answered) {
+    // 已在反馈区（本题结果已在 handlers 中记录）：直接进下一题
+    qIndex++;
+    if(qIndex >= questions.length || lives <= 0) endTest();
+    else renderQuestion();
+  } else {
+    // 未作答就从题头标记：记录为已掌握并跳过本题
+    results.push({ id:q.id, correct:true, userAns:'✅已掌握', mastered:true });
+    qIndex++;
+    if(qIndex >= questions.length || lives <= 0) endTest();
+    else renderQuestion();
+  }
+};
+
+// 轻量提示气泡
+function showMasterToast(msg) {
+  var t = document.getElementById('masterToast');
+  if(!t) {
+    t = document.createElement('div');
+    t.id = 'masterToast';
+    t.style.cssText = 'position:fixed;left:50%;top:16%;transform:translateX(-50%);background:rgba(16,185,129,.96);color:#fff;padding:10px 18px;border-radius:24px;font-size:14px;font-weight:600;z-index:300;box-shadow:0 6px 20px rgba(0,0,0,.25);transition:opacity .3s;pointer-events:none;';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(function(){ t.style.opacity = '0'; }, 1500);
+}
 
 
 // ====== SENTENCE DICTATION SUBMIT ======
