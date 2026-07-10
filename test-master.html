@@ -6474,6 +6474,58 @@ function saveFreqState() {
   scheduleSync();
 }
 
+// ============ SPACED REPETITION (艾宾浩斯间隔重复) ============
+// 一道题连续答对 3 次即升一阶，按艾宾浩斯曲线推后下次出现；答错回到第 0 阶立即可练。
+const SRS_KEY = 'testmaster_srs';
+const SRS_REQUIRED_STREAK = 3; // 连续答对几次才升阶（延长复习间隔）
+// 各阶复习间隔（分钟）：box 越高，下次复习越远。box0 = 立即可练
+const SRS_INTERVAL_MIN = [0, 5, 30, 720, 1440, 2880, 5760, 10080, 21600, 43200, 86400];
+let srsState = {};
+(function loadSrs() {
+  try { var raw = localStorage.getItem(SRS_KEY); if (raw) srsState = JSON.parse(raw); } catch(e) {}
+})();
+function saveSrs() {
+  try { localStorage.setItem(SRS_KEY, JSON.stringify(srsState)); } catch(e) {}
+  scheduleSync();
+}
+function getSrs(id) { if (!srsState[id]) srsState[id] = { box:0, due:0 }; return srsState[id]; }
+function readSrs(id) { return srsState[id] || { box:0, due:0 }; }
+function srsDueTs(id) { var s = readSrs(id); return s.due || 0; }
+function isSrsDue(id, now) { return srsDueTs(id) <= (now || Date.now()); }
+function srsWrongOf(q) { var fs = freqState[q.id]; return (fs && fs.w) ? fs.w : 0; }
+// 答对/答错后推进复习计划
+function updateSrs(id, correct) {
+  var s = getSrs(id);
+  var fs = freqState[id];
+  var streak = (fs && fs.streak) ? fs.streak : 0;
+  if (correct) {
+    if (streak >= SRS_REQUIRED_STREAK) {
+      // 连续对满 3 次 → 升一阶并推后复习
+      s.box = Math.min(s.box + 1, SRS_INTERVAL_MIN.length - 1);
+      s.due = Date.now() + SRS_INTERVAL_MIN[s.box] * 60000;
+      if (fs) fs.streak = 0; // 升阶后重置计数，进入下一轮
+    } else {
+      // 还没连对满 3 次：保持活跃（立即可练）
+      s.box = 0; s.due = Date.now();
+    }
+  } else {
+    // 答错：退回第 0 阶，立即重练
+    s.box = 0; s.due = Date.now();
+    if (fs) fs.streak = 0;
+  }
+  saveSrs();
+}
+// 毫秒 → 友好剩余时间
+function fmtRemain(ms) {
+  if (ms <= 0) return '现在';
+  var m = Math.round(ms / 60000);
+  if (m < 60) return m + ' 分钟';
+  var h = Math.round(ms / 3600000);
+  if (h < 24) return h + ' 小时';
+  var d = Math.round(ms / 86400000);
+  return d + ' 天';
+}
+
 // ============ RECENCY TRACKING (间隔重复 / 跨会话去重) ============
 const SEEN_KEY = 'testmaster_seen';
 const RECENT_WINDOW = 60; // 最近展示过的题数，期间降权、不优先抽取
@@ -6521,6 +6573,7 @@ window.updateFreq = function(qId, isCorrect) {
     freqState[qId].streak = 0;
   }
   saveFreqState();
+  updateSrs(qId, isCorrect);
 };
 function freqWeightedShuffle(arr) {
   if (!arr || arr.length === 0) return arr;
@@ -6560,9 +6613,19 @@ function shuffleArr(arr) {
 
 // ============ MIXED MODE: balanced multi-dimension coverage ============
 // 综合大挑战：每次都覆盖全部维度（分类），每类下限保底 + 按规模加权补足，同类不连排
-function buildMixedQuestions(total, catKeys, recentSet) {
+// 调度改用艾宾浩斯：到期题优先，不足再从最早到期的未到期题补
+function buildMixedQuestions(total, catKeys) {
+  const now = Date.now();
+  const dueByCat = {}, notDueByCat = {};
+  catKeys.forEach(c => { dueByCat[c] = []; notDueByCat[c] = []; });
+  catKeys.forEach(c => {
+    (Q[c] || []).forEach(q => {
+      if (isSrsDue(q.id, now)) dueByCat[c].push(q); else notDueByCat[c].push(q);
+    });
+  });
+
   const counts = {};
-  catKeys.forEach(c => counts[c] = (Q[c] ? Q[c].length : 0));
+  catKeys.forEach(c => { counts[c] = (Q[c] ? Q[c].length : 0); });
   const availCats = catKeys.filter(c => counts[c] > 0);
   if (availCats.length === 0) return [];
 
@@ -6585,34 +6648,12 @@ function buildMixedQuestions(total, catKeys, recentSet) {
   // 不超过该分类实际题量
   availCats.forEach(c => { if (quotas[c] > counts[c]) quotas[c] = counts[c]; });
 
-  // 优先级：常错题略优先；近期做过的强降权排后（间隔重复），保证先抽没做过的
-  const wrongScore = q => {
-    const fs = freqState[q.id];
-    const w = fs && fs.w ? fs.w : 0;
-    const r = recentSet && recentSet.has(q.id) ? 100000 : 0;
-    return w * 3 - r;
-  };
-
-  // 2) 每类挑选：常错题优先 + 题型尽量分散（轮转覆盖各 type）
+  // 2) 每类挑选：到期题优先（常错更优先），不足从最早到期的未到期题补
   const byCat = {};
-  const residual = {};
   availCats.forEach(c => {
-    const pool = Q[c].slice().sort((a,b)=> wrongScore(b)-wrongScore(a) || Math.random()-0.5);
-    const queues = {};
-    [...new Set(pool.map(q=>q.type))].forEach(t => {
-      queues[t] = pool.filter(q=>q.type===t).sort((a,b)=> wrongScore(b)-wrongScore(a));
-    });
-    const tkeys = Object.keys(queues);
-    const picked = [];
-    let ti = 0;
-    while (picked.length < quotas[c] && tkeys.some(t=>queues[t].length)) {
-      const t = tkeys[ti % tkeys.length];
-      if (queues[t].length) picked.push(queues[t].shift());
-      ti++;
-    }
-    residual[c] = [];
-    tkeys.forEach(t => { residual[c] = residual[c].concat(queues[t]); });
-    byCat[c] = picked;
+    const due = dueByCat[c].slice().sort((a,b)=> srsWrongOf(b) - srsWrongOf(a) + (Math.random()-0.5));
+    const notDue = notDueByCat[c].slice().sort((a,b)=> srsDueTs(a.id) - srsDueTs(b.id));
+    byCat[c] = due.concat(notDue).slice(0, quotas[c]);
   });
 
   // 3) 跨分类轮转交叉，避免同一维度连排
@@ -6622,14 +6663,35 @@ function buildMixedQuestions(total, catKeys, recentSet) {
     added = false;
     availCats.forEach(c => { if (byCat[c].length) { result.push(byCat[c].shift()); added = true; } });
   }
-  // 不足则用各类剩余题补齐
-  let deficit = total - result.length;
-  while (deficit > 0) {
-    let filled = false;
-    availCats.forEach(c => { if (deficit>0 && residual[c].length) { result.push(residual[c].shift()); deficit--; filled=true; } });
-    if (!filled) break;
-  }
   return result.slice(0, total);
+}
+
+// 非综合模式：到期题优先 + 常错优先，不足补未到期
+function pickDueQuestions(total, typeFilter) {
+  let srcCats = currentCat ? [currentCat] : Object.keys(Q);
+  let all = [];
+  srcCats.forEach(cat => { if (Q[cat]) Q[cat].forEach(q => all.push(q)); });
+  if (typeFilter) all = all.filter(typeFilter);
+  const now = Date.now();
+  const due = all.filter(q => isSrsDue(q.id, now));
+  const notDue = all.filter(q => !isSrsDue(q.id, now))
+                     .sort((a,b) => srsDueTs(a.id) - srsDueTs(b.id));
+  const scored = due.map(q => {
+    const fs = freqState[q.id];
+    const wrong = fs && fs.w ? fs.w : 0;
+    return { q: q, s: wrong * 3 + Math.random() };
+  }).sort((a,b) => b.s - a.s);
+  const chosen = [];
+  const used = new Set();
+  for (const x of scored) {
+    if (chosen.length >= total) break;
+    if (!used.has(x.q.id)) { chosen.push(x.q); used.add(x.q.id); }
+  }
+  for (const q of notDue) {
+    if (chosen.length >= total) break;
+    if (!used.has(q.id)) { chosen.push(q); used.add(q.id); }
+  }
+  return chosen.slice(0, total);
 }
 
 // ============ CATEGORIES ============
@@ -6710,65 +6772,37 @@ function startMode(mode) {
   lives = cfg.lives === 99 ? 999 : cfg.lives;
   timeLeft = cfg.timePer > 0 ? cfg.total * cfg.timePer : 0;
 
-  // Build question list
-  let pool = [];
-
-  // Bookmark mode: filter by bookmarked IDs
+  // ===== 选题：艾宾浩斯间隔重复调度 =====
+  let questions = [];
   if (mode === 'bookmark') {
+    // 收藏模式：不受 SRS 调度限制，按收藏练习
+    var bpool = [];
     var allCats = currentCat ? [currentCat] : Object.keys(Q);
     allCats.forEach(function(cat) {
       if (Q[cat]) {
         for (var bi = 0; bi < Q[cat].length; bi++) {
-          if (bookmarkedSet.has(Q[cat][bi].id)) pool.push(Q[cat][bi]);
+          if (bookmarkedSet.has(Q[cat][bi].id)) bpool.push(Q[cat][bi]);
         }
       }
     });
-    if (pool.length === 0) {
+    if (bpool.length === 0) {
       showToast('还没有收藏任何题目！先在练习中点击 ☆ 收藏吧');
       return;
     }
-    // Use all bookmarked questions (or limit to 99)
-    pool = freqBoostWrong(pool);
-    questions = freqWeightedShuffle(pool).slice(0, Math.min(pool.length, cfg.total));
+    questions = freqWeightedShuffle(freqBoostWrong(bpool)).slice(0, Math.min(bpool.length, cfg.total));
+  } else if (mode === 'mixed') {
+    // 综合大挑战：覆盖全部维度，到期题优先
+    questions = buildMixedQuestions(cfg.total, Object.keys(Q));
   } else {
-    let srcCats = currentCat ? [currentCat] : Object.keys(Q);
-    srcCats.forEach(cat => { if(Q[cat]) pool = pool.concat(Q[cat]); });
-
-    // Filter by mode type
-    if(mode === 'speed') {
-      // 极速闯关：15秒限时，排除长句听写
-      pool = pool.filter(function(q) { return q.type !== 'sent-dict'; });
-    }
-    if(mode === 'fill') {
-      // 填空听写：merge fill + type + sent-fill + sent-dict
-      pool = pool.filter(function(q) { return q.type === 'fill' || q.type === 'type' || q.type === 'sent-fill' || q.type === 'sent-dict'; });
-    }
-    if(mode === 'judge') {
-      // 辨析判断：merge judge + sent-app
-      pool = pool.filter(function(q) { return q.type === 'judge' || q.type === 'sent-app'; });
-    }
-    // 计算近期已做题集合（跨会话去重 / 间隔重复）
-    const recentSet = getRecentSeenSet();
-
-    if(mode === 'mixed') {
-      // 综合大挑战：保证每次覆盖全部维度；若用户只选了单分类则沿用原逻辑
-      if(currentCat) {
-        pool = dedupeById(freqBoostWrong(pool));
-        pool = prioritySort(pool, recentSet);
-        questions = shuffleArr(pool.slice(0, cfg.total));
-      } else {
-        questions = buildMixedQuestions(cfg.total, Object.keys(Q), recentSet);
-      }
-    } else {
-      if(pool.length < 3) {
-        showToast('该范围题目太少，请选择更多类别！');
-        return;
-      }
-
-      // 去重 + 常错优先 + 近期做过的降权（间隔重复，保证每场不重复、先抽没做过的）
-      pool = dedupeById(freqBoostWrong(pool));
-      pool = prioritySort(pool, recentSet);
-      questions = shuffleArr(pool.slice(0, cfg.total));
+    // 其它模式：艾宾浩斯调度（到期题优先，错的优先，不足补未到期）
+    let typeFilter = null;
+    if (mode === 'speed') typeFilter = q => q.type !== 'sent-dict';
+    if (mode === 'fill') typeFilter = q => q.type === 'fill' || q.type === 'type' || q.type === 'sent-fill' || q.type === 'sent-dict';
+    if (mode === 'judge') typeFilter = q => q.type === 'judge' || q.type === 'sent-app';
+    questions = pickDueQuestions(cfg.total, typeFilter);
+    if (questions.length < 3) {
+      showToast('该范围题目太少，请选择更多类别！');
+      return;
     }
   }
 
@@ -6844,11 +6878,22 @@ function renderHistoryHtml(q) {
   const c = (fs && fs.c) ? fs.c : 0;
   const w = (fs && fs.w) ? fs.w : 0;
   const total = c + w;
+  const s = readSrs(q.id);
+  let srsLine = '';
+  if (s.box > 0) {
+    const remain = (s.due || 0) - Date.now();
+    srsLine = remain > 0
+      ? ` &nbsp; <span class="acc">⏰ 已排期：${fmtRemain(remain)}后复习</span>`
+      : ` &nbsp; <span class="ok">⏰ 已到期，可复习</span>`;
+  } else {
+    const st = fs && fs.streak ? fs.streak : 0;
+    srsLine = ` &nbsp; <span class="acc">🔁 连对 ${st}/${SRS_REQUIRED_STREAK} 次后延长间隔</span>`;
+  }
   if (total === 0) {
-    return `<span class="first">📊 历史：首次出现，暂无记录</span>`;
+    return `<span class="first">📊 历史：首次出现，暂无记录</span>${srsLine}`;
   }
   const acc = Math.round(c / total * 100);
-  return `📊 历史：<span class="ok">✅ 答对 ${c}</span> &nbsp; <span class="no">❌ 答错 ${w}</span><span class="acc">正确率 ${acc}%</span>`;
+  return `📊 历史：<span class="ok">✅ 答对 ${c}</span> &nbsp; <span class="no">❌ 答错 ${w}</span><span class="acc">正确率 ${acc}%</span>${srsLine}`;
 }
 
 function renderQuestion() {
@@ -7513,6 +7558,7 @@ function collectSyncData() {
     v: 1,
     freqState: freqState,
     seenList: seenList,
+    srsState: srsState,
     bookmarks: (typeof bookmarkedSet !== 'undefined' && bookmarkedSet) ? Array.from(bookmarkedSet) : [],
     savedAt: Date.now()
   };
@@ -7541,7 +7587,16 @@ function applySyncData(data) {
     if (Array.isArray(data.bookmarks) && typeof bookmarkedSet !== 'undefined' && bookmarkedSet) {
       data.bookmarks.forEach(function(id){ bookmarkedSet.add(id); });
     }
-    saveFreqState(); saveSeen(); saveBookmarks(); updateHomeStats();
+    if (data.srsState && typeof data.srsState === 'object') {
+      Object.keys(data.srsState).forEach(function(id){
+        var r = data.srsState[id];
+        if (!r) return;
+        // 取更高掌握度（box 更大），并按本机时间重算下次复习，避免跨设备时间差
+        var box = Math.max((srsState[id]||{box:0}).box||0, r.box||0);
+        srsState[id] = { box: box, due: Date.now() + SRS_INTERVAL_MIN[Math.min(box, SRS_INTERVAL_MIN.length-1)] * 60000 };
+      });
+    }
+    saveFreqState(); saveSeen(); saveBookmarks(); saveSrs(); updateHomeStats();
   } finally { _syncing = false; }
 }
 function apiHeaders(token) {
