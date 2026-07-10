@@ -6955,6 +6955,7 @@ function renderQuestion() {
   const q = questions[qIndex];
   const area = document.getElementById('qArea');
   const cfg = MODE_CFG[currentMode];
+  const nameHintHtml = buildNameHint(q);
 
   // Info bar
   document.getElementById('testInfo').textContent = cfg.label + ' · 第 ' + (qIndex+1) + '/' + questions.length + ' 题';
@@ -6993,6 +6994,7 @@ function renderQuestion() {
     html += `<div class="fill-wrap">`;
     html += `<div class="q-text">${q.q}</div>`;
     if(q.hint) html += `<div class="q-hint">${q.hint}</div>`;
+    html += nameHintHtml;
     html += `<input class="fill-input" id="fillInput" placeholder="输入答案..." autocomplete="off">`;
     html += `<div id="explainWrap"></div>`;
     html += '<div style="text-align:center;margin-top:10px;"><button class="submit-btn" onclick="submitFill()">提交答案</button></div>';
@@ -7001,6 +7003,7 @@ function renderQuestion() {
     html += `<div class="type-wrap">`;
     html += `<div class="type-prompt-big">${q.q}</div>`;
     html += `<div class="q-hint">输入对应的英文</div>`;
+    html += nameHintHtml;
     html += `<input class="type-input" id="typeInput" placeholder="type here..." autocomplete="off">`;
     html += `<div id="explainWrap"></div>`;
     html += '<div style="text-align:center;margin-top:10px;"><button class="submit-btn" onclick="submitType()">提交答案</button></div>';
@@ -7016,6 +7019,7 @@ function renderQuestion() {
     html += `<div class="type-wrap">`;
     html += `<div style="font-size:20px;font-weight:700;color:var(--gray-800);margin-bottom:8px;line-height:1.5;">${q.q}</div>`;
     html += `<div class="q-hint">请输入对应的英文句子</div>`;
+    html += nameHintHtml;
     html += `<textarea id="typeInput" class="type-input" style="height:80px;text-align:left;font-size:15px;resize:vertical;" placeholder="在此输入英文..." autocomplete="off"></textarea>`;
     html += `<div id="explainWrap"></div>`;
     html += '<div style="text-align:center;margin-top:10px;"><button class="submit-btn" onclick="submitSentDict()">提交答案</button></div>';
@@ -7024,6 +7028,7 @@ function renderQuestion() {
     html += `<div class="fill-wrap">`;
     html += `<div style="font-size:18px;font-weight:600;color:var(--gray-800);margin-bottom:12px;line-height:1.6;">${q.q}</div>`;
     if(q.hint) html += `<div class="q-hint">${q.hint}</div>`;
+    html += nameHintHtml;
     html += `<input class="fill-input" id="fillInput" placeholder="输入缺失的单词..." autocomplete="off">`;
     html += `<div id="explainWrap"></div>`;
     html += '<div style="text-align:center;margin-top:10px;"><button class="submit-btn" onclick="submitSentFill()">提交答案</button></div>';
@@ -7124,7 +7129,7 @@ function submitFill() {
   if(!val) return; // 空答案不允许提交
   answered = true;
   const correctAns = q.ans.map(a => a.toLowerCase());
-  const isCorrect = correctAns.some(a => val === a);
+  const isCorrect = q.ans.some(a => canon(val) === canon(a));
   inp.className = 'fill-input ' + (isCorrect ? 'correct' : 'wrong');
   inp.disabled = true;
   if(isCorrect) {
@@ -7150,7 +7155,7 @@ function submitType() {
   if(!val) return; // 空答案不允许提交
   answered = true;
   const correctAns = q.ans.map(a => a.toLowerCase());
-  const isCorrect = correctAns.some(a => val === a);
+  const isCorrect = q.ans.some(a => canon(val) === canon(a));
   inp.className = 'type-input ' + (isCorrect ? 'correct' : 'wrong');
   inp.disabled = true;
   if(isCorrect) {
@@ -7306,7 +7311,7 @@ function submitSentDict() {
 
   answered = true;
   var correctAns = q.ans[0];
-  var isCorrect = normalizeSent(userAns) === normalizeSent(correctAns);
+  var isCorrect = canon(userAns) === canon(correctAns);
 
   if(isCorrect) {
     input.className = 'type-input correct';
@@ -7339,7 +7344,7 @@ function submitSentFill() {
 
   answered = true;
   var correctAns = q.ans[0];
-  var isCorrect = normalizeWord(userAns) === normalizeWord(correctAns);
+  var isCorrect = canon(userAns) === canon(correctAns);
 
   if(isCorrect) {
     input.className = 'fill-input correct';
@@ -7369,6 +7374,67 @@ function normalizeSent(s) {
 }
 function normalizeWord(s) {
   return s.replace(/[.,!?;:'"()]/g, '').trim().toLowerCase();
+}
+
+// ====== NAME SPELLING HINT + CONTRACTION-TOLERANT CHECK ======
+// 常见英文名/姓氏词典（含中文拼音姓氏），用于在题目中提示拼写
+const NAME_LIST = ["Tom","Mary","John","Mike","Anna","Bob","Lucy","Lisa","Sarah","David","Peter","Alice","Jack","Lily","Sam","Jane","Jim","Kate","Emma","Amy","Cindy","Betty","Helen","Susan","Nancy","Paul","Mark","Steve","Brian","Kevin","Chris","Tony","Andrew","Daniel","James","Robert","William","Michael","George","Henry","Charles","Thomas","Richard","Joseph","Eric","Ryan","Justin","Jason","Jeff","Gary","Larry","Harry","Tim","Sean","Oliver","Sophie","Julie","Grace","Rose","Tina","Diana","Fiona","Hannah","Laura","Linda","Maria","Mia","Nina","Rita","Sara","Wendy","Jessica","Emily","Olivia","Sophia","Chloe","Zoe","Ella","Eve","Ivy","Joy","Leo","Max","Ben","Dan","Ken","Ray","Ted","Vic","Carl","Don","Ed","Hal","Jan","Pat","Rob","Sue","Ann","Bea","Fay","Gail","Iris","Joan","Kay","Lynn","Meg","Nan","Pam","Rae","Sal","Thea","Vera","Winnie","Yvonne","Zara","Ali","Omar","Yusuf","Hassan","Layla","Noor","Fatima","Aisha","Chen","Li","Wang","Zhang","Liu","Yang","Zhao","Sun","Wu","Zhou","Xu","Hu","Guo","Lin","Huang","Zhu","Gao","Luo","He","Liang","Song","Deng","Feng","Han","Cao","Peng","Xiao","Ming","Hong","Ying","Juan","Fang","Mei","Jie","Lei","Tao","Wei","Jun","Hao","Yan","Ping","Qiang","Bin","Ting","Jing","Xin","Yong","Gang","Min","Xia","Ling","Hui","Jia","Yue","Rui","Kun","Bo","Fei","Long","Hua","Qing","Yu","Chun","Shu","Lan","Jin","Bao","Cai","De","Ding","Dong","Gu","Kang","Mao","Niu","Qian","Shao","Tan","Tang","Tong","Wen","Xiang","Xue","Yao","Yin","Zeng","Zheng","Zhong","Zou"];
+
+function extractNames(q) {
+  if(!q) return [];
+  const texts = [q.q];
+  if(Array.isArray(q.ans)) texts.push(q.ans.join(' '));
+  else if(q.ans != null) texts.push(String(q.ans));
+  const blob = texts.join(' ');
+  const tokens = blob.match(/[A-Za-z][A-Za-z’']*/g) || [];
+  const seen = {};
+  const out = [];
+  tokens.forEach(function(t){
+    const bare = t.replace(/[’']/g,'');
+    if(bare.length < 2) return;
+    const cap = bare.charAt(0).toUpperCase() + bare.slice(1).toLowerCase();
+    if(NAME_LIST.indexOf(cap) >= 0 && !seen[cap]) { seen[cap] = 1; out.push(cap); }
+  });
+  return out;
+}
+
+function buildNameHint(q) {
+  const names = extractNames(q);
+  if(!names.length) return '';
+  const items = names.map(function(n){
+    return '<b>' + escapeHtml(n) + '</b> → ' + n.split('').join('·');
+  }).join('&nbsp;&nbsp;');
+  return '<div style="background:#EEF2FF;color:#4338CA;border:1px solid #C7D2FE;border-radius:8px;padding:8px 10px;margin:8px 0;font-size:14px;line-height:1.6;">📝 名字拼写：' + items + '</div>';
+}
+
+// 缩写 ↔ 全写 双向兼容：you're=you are, don't=do not 等
+const CONTRACT_MAP = {
+  "i'm":"i am","you're":"you are","we're":"we are","they're":"they are",
+  "he's":"he is","she's":"she is","it's":"it is","that's":"that is","there's":"there is","what's":"what is","who's":"who is","here's":"here is","where's":"where is",
+  "don't":"do not","doesn't":"does not","didn't":"did not",
+  "isn't":"is not","aren't":"are not","wasn't":"was not","weren't":"were not",
+  "haven't":"have not","hasn't":"has not","hadn't":"had not",
+  "won't":"will not","wouldn't":"would not","shouldn't":"should not","couldn't":"could not","mustn't":"must not","shan't":"shall not",
+  "can't":"can not","cannot":"can not",
+  "let's":"let us",
+  "i've":"i have","you've":"you have","we've":"we have","they've":"they have",
+  "i'll":"i will","you'll":"you will","he'll":"he will","she'll":"she will","it'll":"it will","we'll":"we will","they'll":"they will","that'll":"that will","there'll":"there will",
+  "i'd":"i would","you'd":"you would","he'd":"he would","she'd":"she would","it'd":"it would","we'd":"we would","they'd":"they would",
+  "y'all":"you all"
+};
+
+function expandContractions(s) {
+  return s.replace(/\b[\w']+\b/g, function(m){ return CONTRACT_MAP[m] || m; });
+}
+
+// 统一的答案归一化：小写、展开缩写、去标点、规整空格
+function canon(s) {
+  if(s == null) return '';
+  s = String(s).toLowerCase().trim();
+  s = s.replace(/’/g, "'");
+  s = expandContractions(s);
+  s = s.replace(/[.,!?;:'"()\-_]/g, ' ').replace(/\s+/g, ' ').trim();
+  return s;
 }
 
 // ============ SCORE / COMBO ============
