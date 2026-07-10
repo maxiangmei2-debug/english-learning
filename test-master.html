@@ -161,6 +161,16 @@
 
   .q-text { font-size:18px; font-weight:700; margin-bottom:16px; line-height:1.5; }
   .q-hint { font-size:13px; color:var(--gray-500); margin-bottom:16px; }
+  .speak-btn {
+    display:inline-flex; align-items:center; justify-content:center;
+    width:34px; height:34px; margin:0 0 12px 2px; padding:0;
+    font-size:16px; line-height:1; cursor:pointer;
+    background:#EEF2FF; color:#4338CA; border:1px solid #C7D2FE; border-radius:50%;
+    vertical-align:middle; transition:transform .08s ease, background .15s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .speak-btn:hover { background:#E0E7FF; transform:scale(1.08); }
+  .speak-btn:active { transform:scale(0.94); }
   .q-history {
     display:flex; align-items:center; gap:10px; flex-wrap:wrap;
     background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px;
@@ -6785,6 +6795,14 @@ function init() {
     bar.appendChild(btn);
   });
   updateHomeStats();
+
+  // 预热语音列表（部分浏览器需等待 voiceschanged 事件才会填充嗓音）
+  if('speechSynthesis' in window) {
+    try {
+      window.speechSynthesis.getVoices();
+      window.speechSynthesis.onvoiceschanged = function() { window.speechSynthesis.getVoices(); };
+    } catch(e) {}
+  }
 }
 
 function updateHomeStats() {
@@ -6955,7 +6973,9 @@ function renderQuestion() {
   const q = questions[qIndex];
   const area = document.getElementById('qArea');
   const cfg = MODE_CFG[currentMode];
+  _speakCache = [];
   const nameHintHtml = buildNameHint(q);
+  const speakTxt = getSpeakText(q);
 
   // Info bar
   document.getElementById('testInfo').textContent = cfg.label + ' · 第 ' + (qIndex+1) + '/' + questions.length + ' 题';
@@ -6983,6 +7003,7 @@ function renderQuestion() {
 
   if(q.type === 'choice' || q.type === 'sent-app') {
     html += `<div class="q-text">${q.q}</div>`;
+    html += speakerBtn(speakTxt);
     if(q.hint) html += `<div class="q-hint">${q.hint}</div>`;
     html += `<div class="opts-grid" id="optsGrid">`;
     q.opts.forEach((opt, i) => {
@@ -6993,6 +7014,7 @@ function renderQuestion() {
   } else if(q.type === 'fill') {
     html += `<div class="fill-wrap">`;
     html += `<div class="q-text">${q.q}</div>`;
+    html += speakerBtn(speakTxt);
     if(q.hint) html += `<div class="q-hint">${q.hint}</div>`;
     html += nameHintHtml;
     html += `<input class="fill-input" id="fillInput" placeholder="输入答案..." autocomplete="off">`;
@@ -7002,6 +7024,7 @@ function renderQuestion() {
   } else if(q.type === 'type') {
     html += `<div class="type-wrap">`;
     html += `<div class="type-prompt-big">${q.q}</div>`;
+    html += speakerBtn(speakTxt);
     html += `<div class="q-hint">输入对应的英文</div>`;
     html += nameHintHtml;
     html += `<input class="type-input" id="typeInput" placeholder="type here..." autocomplete="off">`;
@@ -7010,6 +7033,7 @@ function renderQuestion() {
     html += `</div>`;
   } else if(q.type === 'judge') {
     html += `<div class="q-text">${q.q}</div>`;
+    html += speakerBtn(speakTxt);
     html += `<div class="opts-grid" style="grid-template-columns:1fr 1fr;">`;
     html += `<div class="opt-btn" onclick="handleJudge(true)" style="font-size:18px;font-weight:700;">✅ 正确</div>`;
     html += `<div class="opt-btn" onclick="handleJudge(false)" style="font-size:18px;font-weight:700;">❌ 错误</div>`;
@@ -7018,6 +7042,7 @@ function renderQuestion() {
   } else if(q.type === 'sent-dict') {
     html += `<div class="type-wrap">`;
     html += `<div style="font-size:20px;font-weight:700;color:var(--gray-800);margin-bottom:8px;line-height:1.5;">${q.q}</div>`;
+    html += speakerBtn(speakTxt);
     html += `<div class="q-hint">请输入对应的英文句子</div>`;
     html += nameHintHtml;
     html += `<textarea id="typeInput" class="type-input" style="height:80px;text-align:left;font-size:15px;resize:vertical;" placeholder="在此输入英文..." autocomplete="off"></textarea>`;
@@ -7027,6 +7052,7 @@ function renderQuestion() {
   } else if(q.type === 'sent-fill') {
     html += `<div class="fill-wrap">`;
     html += `<div style="font-size:18px;font-weight:600;color:var(--gray-800);margin-bottom:12px;line-height:1.6;">${q.q}</div>`;
+    html += speakerBtn(speakTxt);
     if(q.hint) html += `<div class="q-hint">${q.hint}</div>`;
     html += nameHintHtml;
     html += `<input class="fill-input" id="fillInput" placeholder="输入缺失的单词..." autocomplete="off">`;
@@ -7196,7 +7222,7 @@ function showExplain(q, isCorrect, userAns) {
     var showDiff = (q.type === 'sent-dict' || q.type === 'sent-fill');
     correctAnswerHtml = '<div style="background:var(--danger-light);padding:8px 12px;border-radius:8px;margin-bottom:8px;">' +
       '<div style="color:var(--danger);font-weight:600;">❌ 你的答案：' + escapeHtml(userDisplay) + '</div>' +
-      '<div style="color:var(--success);font-weight:600;margin-top:' + (showDiff ? '4px' : '0') + ';">✅ 正确答案：' + escapeHtml(correctDisplay) + '</div>' +
+      '<div style="color:var(--success);font-weight:600;margin-top:' + (showDiff ? '4px' : '0') + ';">✅ 正确答案：' + escapeHtml(correctDisplay) + ' ' + speakerBtn(getAnswerSpeakText(q)) + '</div>' +
       '</div>';
   }
   let html = `<div class="explain-box">`;
@@ -7396,6 +7422,86 @@ function extractNames(q) {
     if(NAME_LIST.indexOf(cap) >= 0 && !seen[cap]) { seen[cap] = 1; out.push(cap); }
   });
   return out;
+}
+
+// ============ 语音朗读（仅英文词汇/短语/句子） ============
+var _speakCache = [];
+// 去除中文字符与中文标点，仅保留英文/数字/标点/空格
+function extractEnglish(s) {
+  if(!s) return '';
+  // 只保留英文字母/数字/空格/常见英文标点，其余（含中文）全部删除
+  var eng = String(s).replace(/[^a-zA-Z0-9\s.,!?;:()'"\-]/g, ' ').replace(/\s+/g, ' ').trim();
+  return eng;
+}
+// 计算某题应朗读的英文文本（仅英文）
+function getSpeakText(q) {
+  if(!q) return '';
+  var t = q.type;
+  if(t === 'type' || t === 'sent-dict') {
+    // 题干可能是英文(英文→中文题)，也可能答案是英文(中文→英文题)；取其中的英文部分朗读
+    var eq = extractEnglish(q.q || '');
+    var ea = (q.ans && q.ans[0]) ? extractEnglish(q.ans[0]) : '';
+    return ea || eq || '';
+  }
+  if(t === 'fill' || t === 'sent-fill') {
+    var s = q.q || '';
+    if(q.ans && q.ans.length) s = s.replace(/_+/g, q.ans[0]);
+    return extractEnglish(s);
+  }
+  if(t === 'judge' || t === 'sent-app') {
+    return extractEnglish(q.q || '');
+  }
+  if(t === 'choice') {
+    var stem = q.q || '';
+    if(/_+/.test(stem)) {
+      var ansOpt = (q.opts && typeof q.ans === 'number') ? q.opts[q.ans] : '';
+      return extractEnglish(stem.replace(/_+/g, ansOpt));
+    }
+    var opt = (q.opts && typeof q.ans === 'number') ? q.opts[q.ans] : '';
+    if(opt && /[a-zA-Z]/.test(opt)) return extractEnglish(opt);
+    return extractEnglish(stem);
+  }
+  return '';
+}
+// 用浏览器内置 TTS 朗读英文（en-US）
+function speakEnglish(text) {
+  if(!text) return;
+  text = String(text).replace(/\s+/g, ' ').trim();
+  if(!text) return;
+  if(!('speechSynthesis' in window)) { if(window.showToast) showToast('当前浏览器不支持语音朗读'); return; }
+  try {
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US';
+    u.rate = 0.9;
+    u.pitch = 1.0;
+    var voices = window.speechSynthesis.getVoices();
+    if(voices && voices.length) {
+      var v = voices.filter(function(x){ return /en[-_]?US/i.test(x.lang); })[0] ||
+              voices.filter(function(x){ return /^en/i.test(x.lang); })[0];
+      if(v) u.voice = v;
+    }
+    window.speechSynthesis.speak(u);
+  } catch(e) {}
+}
+function speakFromCache(i) { if(_speakCache[i] != null) speakEnglish(_speakCache[i]); }
+// 生成小喇叭按钮（文本存入缓存，避免 onclick 里拼接字符串导致的转义问题）
+function speakerBtn(text) {
+  if(!text) return '';
+  var i = _speakCache.length;
+  _speakCache.push(text);
+  return '<button type="button" class="speak-btn" onclick="speakFromCache(' + i + ')" title="点击听发音">🔊</button>';
+}
+// 解析里「正确答案」对应的英文（再听一次）
+function getAnswerSpeakText(q) {
+  if(!q) return '';
+  if(q.type === 'choice') {
+    var o = (q.opts && typeof q.ans === 'number') ? q.opts[q.ans] : '';
+    return /[a-zA-Z]/.test(o) ? o : '';
+  }
+  if(q.type === 'judge') return '';
+  if(q.ans && q.ans.length) return q.ans[0];
+  return '';
 }
 
 function buildNameHint(q) {
