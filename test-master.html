@@ -171,6 +171,10 @@
   }
   .speak-btn:hover { background:#E0E7FF; transform:scale(1.08); }
   .speak-btn:active { transform:scale(0.94); }
+  .name-gloss {
+    color:#2563EB; font-weight:600; background:#EFF6FF; border:1px solid #BFDBFE;
+    padding:0 5px; border-radius:5px; margin:0 2px; font-style:normal; white-space:nowrap;
+  }
   .q-history {
     display:flex; align-items:center; gap:10px; flex-wrap:wrap;
     background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px;
@@ -7041,7 +7045,7 @@ function renderQuestion() {
     html += `<div id="explainWrap"></div>`;
   } else if(q.type === 'sent-dict') {
     html += `<div class="type-wrap">`;
-    html += `<div style="font-size:20px;font-weight:700;color:var(--gray-800);margin-bottom:8px;line-height:1.5;">${q.q}</div>`;
+    html += `<div style="font-size:20px;font-weight:700;color:var(--gray-800);margin-bottom:8px;line-height:1.5;">${annotateNamesCn(q.q)}</div>`;
     html += speakerBtn(speakTxt);
     html += `<div class="q-hint">请输入对应的英文句子</div>`;
     html += nameHintHtml;
@@ -7051,7 +7055,7 @@ function renderQuestion() {
     html += `</div>`;
   } else if(q.type === 'sent-fill') {
     html += `<div class="fill-wrap">`;
-    html += `<div style="font-size:18px;font-weight:600;color:var(--gray-800);margin-bottom:12px;line-height:1.6;">${q.q}</div>`;
+    html += `<div style="font-size:18px;font-weight:600;color:var(--gray-800);margin-bottom:12px;line-height:1.6;">${annotateNamesCn(q.q)}</div>`;
     html += speakerBtn(speakTxt);
     if(q.hint) html += `<div class="q-hint">${q.hint}</div>`;
     html += nameHintHtml;
@@ -7405,6 +7409,43 @@ function normalizeWord(s) {
 // ====== NAME SPELLING HINT + CONTRACTION-TOLERANT CHECK ======
 // 常见英文名/姓氏词典（含中文拼音姓氏），用于在题目中提示拼写
 const NAME_LIST = ["Tom","Mary","John","Mike","Anna","Bob","Lucy","Lisa","Sarah","David","Peter","Alice","Jack","Lily","Sam","Jane","Jim","Kate","Emma","Amy","Cindy","Betty","Helen","Susan","Nancy","Paul","Mark","Steve","Brian","Kevin","Chris","Tony","Andrew","Daniel","James","Robert","William","Michael","George","Henry","Charles","Thomas","Richard","Joseph","Eric","Ryan","Justin","Jason","Jeff","Gary","Larry","Harry","Tim","Sean","Oliver","Sophie","Julie","Grace","Rose","Tina","Diana","Fiona","Hannah","Laura","Linda","Maria","Mia","Nina","Rita","Sara","Wendy","Jessica","Emily","Olivia","Sophia","Chloe","Zoe","Ella","Eve","Ivy","Joy","Leo","Max","Ben","Dan","Ken","Ray","Ted","Vic","Carl","Don","Ed","Hal","Jan","Pat","Rob","Sue","Ann","Bea","Fay","Gail","Iris","Joan","Kay","Lynn","Meg","Nan","Pam","Rae","Sal","Thea","Vera","Winnie","Yvonne","Zara","Ali","Omar","Yusuf","Hassan","Layla","Noor","Fatima","Aisha","Chen","Li","Wang","Zhang","Liu","Yang","Zhao","Sun","Wu","Zhou","Xu","Hu","Guo","Lin","Huang","Zhu","Gao","Luo","Liang","Song","Deng","Feng","Han","Cao","Peng","Xiao","Ming","Hong","Ying","Juan","Fang","Mei","Jie","Lei","Tao","Wei","Jun","Hao","Yan","Ping","Qiang","Bin","Ting","Jing","Xin","Yong","Gang","Min","Xia","Ling","Hui","Jia","Yue","Rui","Kun","Bo","Fei","Hua","Qing","Yu","Chun","Shu","Lan","Jin","Bao","Cai","De","Ding","Dong","Gu","Kang","Mao","Niu","Qian","Shao","Tan","Tang","Tong","Wen","Xiang","Xue","Yao","Yin","Zeng","Zheng","Zhong","Zou"];
+
+// 中文译名 → 英文原名（用于句子听写/填空时把人名拼写直接标在中文后面）
+// 仅收录「多字」译名，避免单字译名（安/林/本/简…）误命中常见词（安全/森林/本来/简单…）
+const NAME_CN_MAP = {
+  "皮特":"Pete","尼古拉斯":"Nicholas","詹妮弗":"Jennifer","蕾切尔":"Rachel","黛安":"Diane","盖伊":"Guy",
+  "汤姆":"Tom","玛丽":"Mary","约翰":"John","迈克":"Mike","安娜":"Anna","鲍勃":"Bob","露西":"Lucy","丽莎":"Lisa",
+  "莎拉":"Sarah","大卫":"David","彼得":"Peter","爱丽丝":"Alice","杰克":"Jack","莉莉":"Lily","萨姆":"Sam","吉姆":"Jim",
+  "凯特":"Kate","艾玛":"Emma","艾米":"Amy","辛迪":"Cindy","贝蒂":"Betty","海伦":"Helen","苏珊":"Susan","南希":"Nancy",
+  "保罗":"Paul","马克":"Mark","史蒂夫":"Steve","布莱恩":"Brian","凯文":"Kevin","克里斯":"Chris","托尼":"Tony","安德鲁":"Andrew",
+  "丹尼尔":"Daniel","詹姆斯":"James","罗伯特":"Robert","威廉":"William","迈克尔":"Michael","乔治":"George","亨利":"Henry",
+  "查尔斯":"Charles","托马斯":"Thomas","理查德":"Richard","约瑟夫":"Joseph","埃里克":"Eric","瑞安":"Ryan","贾斯汀":"Justin",
+  "贾森":"Jason","杰夫":"Jeff","加里":"Gary","拉里":"Larry","哈里":"Harry","蒂姆":"Tim","肖恩":"Sean","奥利弗":"Oliver",
+  "索菲":"Sophie","朱莉":"Julie","格蕾丝":"Grace","罗丝":"Rose","蒂娜":"Tina","戴安娜":"Diana","菲奥娜":"Fiona","汉娜":"Hannah",
+  "劳拉":"Laura","琳达":"Linda","玛丽亚":"Maria","米娅":"Mia","尼娜":"Nina","丽塔":"Rita","萨拉":"Sara","温迪":"Wendy",
+  "杰西卡":"Jessica","艾米丽":"Emily","奥利维亚":"Olivia","索菲娅":"Sophia","克洛伊":"Chloe","佐伊":"Zoe","埃拉":"Ella",
+  "伊芙":"Eve","艾薇":"Ivy","乔伊":"Joy","利奥":"Leo","马克斯":"Max","特德":"Ted","维克":"Vic","卡尔":"Carl","埃德":"Ed",
+  "哈尔":"Hal","帕特":"Pat","罗伯":"Rob","艾里斯":"Iris","盖尔":"Gail","梅格":"Meg","帕姆":"Pam","萨尔":"Sal","西娅":"Thea",
+  "薇拉":"Vera","温妮":"Winnie","伊冯":"Yvonne","扎拉":"Zara"
+};
+// 把数据里出现、但原 NAME_LIST 没收录的人名补进去，让底部「名字拼写」提示框也能覆盖
+["Pete","Nicholas","Jennifer","Rachel","Diane","Guy"].forEach(function(n){ if(NAME_LIST.indexOf(n) < 0) NAME_LIST.push(n); });
+
+// 在中文题干里把人名标注出英文原名：蕾切尔 → 蕾切尔<span class="name-gloss">Rachel</span>
+// 长译名优先（避免 艾米 误拆 艾米丽），且已标注过的不再重复标注
+function annotateNamesCn(text) {
+  if(!text) return text;
+  let out = text;
+  const keys = Object.keys(NAME_CN_MAP).sort(function(a,b){ return b.length - a.length; });
+  keys.forEach(function(cn){
+    if(out.indexOf(cn) < 0) return;
+    const eng = NAME_CN_MAP[cn];
+    const esc = cn.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp(esc + '(?![(\\u0028<])', 'g');
+    out = out.replace(re, cn + '<span class="name-gloss">' + eng + '</span>');
+  });
+  return out;
+}
 
 function extractNames(q) {
   if(!q) return [];
