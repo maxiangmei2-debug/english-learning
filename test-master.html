@@ -6420,6 +6420,16 @@ let totalScore = 0;
 let maxCombo = 0;
 let currentCombo = 0;
 let masteredSet = new Set();
+(function loadMastered() {
+  try {
+    var raw = localStorage.getItem('testmaster_mastered');
+    if (raw) { var arr = JSON.parse(raw); for (var i = 0; i < arr.length; i++) masteredSet.add(arr[i]); }
+  } catch(e) {}
+})();
+function saveMastered() {
+  try { localStorage.setItem('testmaster_mastered', JSON.stringify(Array.from(masteredSet))); } catch(e) {}
+  scheduleSync();
+}
 let currentMode = '';
 let currentCat = null; // null = all
 let questions = [];
@@ -6500,18 +6510,21 @@ function updateSrs(id, correct) {
   var streak = (fs && fs.streak) ? fs.streak : 0;
   if (correct) {
     if (streak >= SRS_REQUIRED_STREAK) {
-      // 连续对满 3 次 → 升一阶并推后复习
+      // 连续对满 3 次 → 升一阶并推后复习，记为「已掌握」
       s.box = Math.min(s.box + 1, SRS_INTERVAL_MIN.length - 1);
       s.due = Date.now() + SRS_INTERVAL_MIN[s.box] * 60000;
       if (fs) fs.streak = 0; // 升阶后重置计数，进入下一轮
+      markMastered(id); // 真正掌握：连对 3 次才标记（不再是答对 1 次就 +1）
     } else {
       // 还没连对满 3 次：保持活跃（立即可练）
       s.box = 0; s.due = Date.now();
     }
   } else {
-    // 答错：退回第 0 阶，立即重练
-    s.box = 0; s.due = Date.now();
+    // 答错：降 2 阶（最低 0 阶），立即可练；连对计数清零，并移出「已掌握」
+    s.box = Math.max(0, s.box - 2);
+    s.due = Date.now();
     if (fs) fs.streak = 0;
+    if (masteredSet.has(id)) { masteredSet.delete(id); saveMastered(); }
   }
   saveSrs();
 }
@@ -7023,7 +7036,6 @@ function handleChoice(idx) {
   if(isCorrect) {
     addScore(10 + currentCombo * 2);
     addCombo();
-    markMastered(q.id);
     results.push({ id:q.id, correct:true, userAns:q.opts[idx] });
     window.updateFreq(q.id, true);
   } else {
@@ -7052,7 +7064,6 @@ function handleJudge(val) {
   if(isCorrect) {
     addScore(10 + currentCombo * 2);
     addCombo();
-    markMastered(q.id);
     results.push({ id:q.id, correct:true, userAns:val ? '✅' : '❌' });
     window.updateFreq(q.id, true);
   } else {
@@ -7080,7 +7091,6 @@ function submitFill() {
   if(isCorrect) {
     addScore(15 + currentCombo * 3);
     addCombo();
-    markMastered(q.id);
     results.push({ id:q.id, correct:true, userAns:val });
     window.updateFreq(q.id, true);
   } else {
@@ -7107,7 +7117,6 @@ function submitType() {
   if(isCorrect) {
     addScore(15 + currentCombo * 3);
     addCombo();
-    markMastered(q.id);
     results.push({ id:q.id, correct:true, userAns:val });
     window.updateFreq(q.id, true);
   } else {
@@ -7264,7 +7273,6 @@ function submitSentDict() {
     input.className = 'type-input correct';
     addScore(10);
     addCombo();
-    markMastered(q.id);
   } else {
     input.className = 'type-input wrong';
     addScore(-3);
@@ -7298,7 +7306,6 @@ function submitSentFill() {
     input.className = 'fill-input correct';
     addScore(10);
     addCombo();
-    markMastered(q.id);
   } else {
     input.className = 'fill-input wrong';
     addScore(-3);
@@ -7352,7 +7359,7 @@ function addCombo() {
 }
 
 function resetCombo() { currentCombo = 0; }
-function markMastered(id) { masteredSet.add(id); }
+function markMastered(id) { if (!masteredSet.has(id)) { masteredSet.add(id); saveMastered(); } }
 
 // ============ END TEST ============
 function endTest() {
@@ -7560,6 +7567,7 @@ function collectSyncData() {
     seenList: seenList,
     srsState: srsState,
     bookmarks: (typeof bookmarkedSet !== 'undefined' && bookmarkedSet) ? Array.from(bookmarkedSet) : [],
+    mastered: Array.from(masteredSet),
     savedAt: Date.now()
   };
 }
@@ -7587,6 +7595,9 @@ function applySyncData(data) {
     if (Array.isArray(data.bookmarks) && typeof bookmarkedSet !== 'undefined' && bookmarkedSet) {
       data.bookmarks.forEach(function(id){ bookmarkedSet.add(id); });
     }
+    if (Array.isArray(data.mastered)) {
+      data.mastered.forEach(function(id){ masteredSet.add(id); });
+    }
     if (data.srsState && typeof data.srsState === 'object') {
       Object.keys(data.srsState).forEach(function(id){
         var r = data.srsState[id];
@@ -7596,7 +7607,7 @@ function applySyncData(data) {
         srsState[id] = { box: box, due: Date.now() + SRS_INTERVAL_MIN[Math.min(box, SRS_INTERVAL_MIN.length-1)] * 60000 };
       });
     }
-    saveFreqState(); saveSeen(); saveBookmarks(); saveSrs(); updateHomeStats();
+    saveFreqState(); saveSeen(); saveBookmarks(); saveSrs(); saveMastered(); updateHomeStats();
   } finally { _syncing = false; }
 }
 function apiHeaders(token) {
