@@ -377,7 +377,7 @@
 </style>
 </head>
 <body>
-<a href="index.html" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+<a href="英语学习中心.html" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
 
 <!-- ====== 首页 ====== -->
 <div class="home-page" id="homePage">
@@ -7404,7 +7404,7 @@ function normalizeWord(s) {
 
 // ====== NAME SPELLING HINT + CONTRACTION-TOLERANT CHECK ======
 // 常见英文名/姓氏词典（含中文拼音姓氏），用于在题目中提示拼写
-const NAME_LIST = ["Tom","Mary","John","Mike","Anna","Bob","Lucy","Lisa","Sarah","David","Peter","Alice","Jack","Lily","Sam","Jane","Jim","Kate","Emma","Amy","Cindy","Betty","Helen","Susan","Nancy","Paul","Mark","Steve","Brian","Kevin","Chris","Tony","Andrew","Daniel","James","Robert","William","Michael","George","Henry","Charles","Thomas","Richard","Joseph","Eric","Ryan","Justin","Jason","Jeff","Gary","Larry","Harry","Tim","Sean","Oliver","Sophie","Julie","Grace","Rose","Tina","Diana","Fiona","Hannah","Laura","Linda","Maria","Mia","Nina","Rita","Sara","Wendy","Jessica","Emily","Olivia","Sophia","Chloe","Zoe","Ella","Eve","Ivy","Joy","Leo","Max","Ben","Dan","Ken","Ray","Ted","Vic","Carl","Don","Ed","Hal","Jan","Pat","Rob","Sue","Ann","Bea","Fay","Gail","Iris","Joan","Kay","Lynn","Meg","Nan","Pam","Rae","Sal","Thea","Vera","Winnie","Yvonne","Zara","Ali","Omar","Yusuf","Hassan","Layla","Noor","Fatima","Aisha","Chen","Li","Wang","Zhang","Liu","Yang","Zhao","Sun","Wu","Zhou","Xu","Hu","Guo","Lin","Huang","Zhu","Gao","Luo","He","Liang","Song","Deng","Feng","Han","Cao","Peng","Xiao","Ming","Hong","Ying","Juan","Fang","Mei","Jie","Lei","Tao","Wei","Jun","Hao","Yan","Ping","Qiang","Bin","Ting","Jing","Xin","Yong","Gang","Min","Xia","Ling","Hui","Jia","Yue","Rui","Kun","Bo","Fei","Long","Hua","Qing","Yu","Chun","Shu","Lan","Jin","Bao","Cai","De","Ding","Dong","Gu","Kang","Mao","Niu","Qian","Shao","Tan","Tang","Tong","Wen","Xiang","Xue","Yao","Yin","Zeng","Zheng","Zhong","Zou"];
+const NAME_LIST = ["Tom","Mary","John","Mike","Anna","Bob","Lucy","Lisa","Sarah","David","Peter","Alice","Jack","Lily","Sam","Jane","Jim","Kate","Emma","Amy","Cindy","Betty","Helen","Susan","Nancy","Paul","Mark","Steve","Brian","Kevin","Chris","Tony","Andrew","Daniel","James","Robert","William","Michael","George","Henry","Charles","Thomas","Richard","Joseph","Eric","Ryan","Justin","Jason","Jeff","Gary","Larry","Harry","Tim","Sean","Oliver","Sophie","Julie","Grace","Rose","Tina","Diana","Fiona","Hannah","Laura","Linda","Maria","Mia","Nina","Rita","Sara","Wendy","Jessica","Emily","Olivia","Sophia","Chloe","Zoe","Ella","Eve","Ivy","Joy","Leo","Max","Ben","Dan","Ken","Ray","Ted","Vic","Carl","Don","Ed","Hal","Jan","Pat","Rob","Sue","Ann","Bea","Fay","Gail","Iris","Joan","Kay","Lynn","Meg","Nan","Pam","Rae","Sal","Thea","Vera","Winnie","Yvonne","Zara","Ali","Omar","Yusuf","Hassan","Layla","Noor","Fatima","Aisha","Chen","Li","Wang","Zhang","Liu","Yang","Zhao","Sun","Wu","Zhou","Xu","Hu","Guo","Lin","Huang","Zhu","Gao","Luo","Liang","Song","Deng","Feng","Han","Cao","Peng","Xiao","Ming","Hong","Ying","Juan","Fang","Mei","Jie","Lei","Tao","Wei","Jun","Hao","Yan","Ping","Qiang","Bin","Ting","Jing","Xin","Yong","Gang","Min","Xia","Ling","Hui","Jia","Yue","Rui","Kun","Bo","Fei","Hua","Qing","Yu","Chun","Shu","Lan","Jin","Bao","Cai","De","Ding","Dong","Gu","Kang","Mao","Niu","Qian","Shao","Tan","Tang","Tong","Wen","Xiang","Xue","Yao","Yin","Zeng","Zheng","Zhong","Zou"];
 
 function extractNames(q) {
   if(!q) return [];
@@ -7712,7 +7712,7 @@ init();
     var homeLink = document.querySelector('a[href*="学习中心"]');
     if (homeLink) {
       var spLink = document.createElement('a');
-      spLink.href = 'study-plan.html';
+      spLink.href = '学习计划.html';
       spLink.style.cssText = 'display:inline-block;margin:8px 4px;padding:6px 14px;background:#8B5CF6;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;';
       spLink.textContent = '← 学习计划';
       homeLink.parentNode.insertBefore(spLink, homeLink.nextSibling);
@@ -7724,7 +7724,7 @@ init();
       spBtn.className = 'test-back';
       spBtn.style.cssText = 'background:#8B5CF6;';
       spBtn.textContent = '← 学习计划';
-      spBtn.onclick = function() { window.location.href = 'study-plan.html'; };
+      spBtn.onclick = function() { window.location.href = '学习计划.html'; };
       testTop.appendChild(spBtn);
     }
     if (validCats.indexOf(c) >= 0) {
