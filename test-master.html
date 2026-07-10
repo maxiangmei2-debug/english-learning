@@ -6804,7 +6804,7 @@ function startMode(mode) {
   timeLeft = cfg.timePer > 0 ? cfg.total * cfg.timePer : 0;
 
   // ===== 选题：艾宾浩斯间隔重复调度 =====
-  let questions = [];
+  questions = [];
   if (mode === 'mastered') {
     // 已掌握模式：只练习/管理「已掌握」的题
     var mpool = [];
