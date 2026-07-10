@@ -18976,7 +18976,12 @@ function pullSync() {
         catch(e){ setSyncStatus('❌ 云数据解析失败：' + e.message, true); }
       } else { setSyncStatus('云里还没有记录，稍后保存即创建'); }
     })
-    .catch(function(e){ setSyncStatus('❌ 拉取失败：' + e.message, true); });
+    .catch(function(e){
+      var msg = (e && e.message && e.message.indexOf('404') >= 0)
+        ? '❌ 拉取失败：HTTP 404 — Gist ID 不存在或令牌无 gist 权限。请确认：① 手机端填的是 PC 端同一个 Gist ID（无多余空格）；② 令牌勾选了 gist 权限且属于同一 GitHub 账号'
+        : '❌ 拉取失败：' + (e && e.message ? e.message : e);
+      setSyncStatus(msg, true);
+    });
 }
 function scheduleSync() {
   if (_syncing) return;
@@ -18994,6 +18999,16 @@ function openSyncModal() {
   setSyncStatus(cfg.token ? '已配置，可点「立即同步」' : '请先填入 GitHub 访问令牌');
 }
 function closeSyncModal() { var m = document.getElementById('syncModal'); if (m) m.style.display = 'none'; }
+function copyGistId() {
+  var g = document.getElementById('syncGist');
+  if (!g || !g.value) { setSyncStatus('当前没有可复制的 Gist ID（先在 PC 端保存配置或同步一次）', true); return; }
+  var done = function(){ setSyncStatus('✅ 已复制 Gist ID，去手机端粘贴到「Gist ID」框'); };
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(g.value).then(done, function(){ g.select(); document.execCommand('copy'); done(); });
+    } else { g.select(); document.execCommand('copy'); done(); }
+  } catch(e) { g.select(); document.execCommand('copy'); done(); }
+}
 
 // ============ 已掌握管理面板 ============
 function findQuestionById(id) {
@@ -19053,7 +19068,11 @@ function clearSyncConfig() {
 }
 function doSyncNow() {
   saveSyncConfig();
-  if (!loadSyncConfigLocal().token) { setSyncStatus('请先填写令牌', true); return; }
+  var cfg = loadSyncConfigLocal();
+  if (!cfg.token) { setSyncStatus('请先填写令牌', true); return; }
+  if (!cfg.gist) {
+    setSyncStatus('⚠️ 未填 Gist ID，将创建新 Gist（与 PC 不互通）。要合并 PC 数据，请先粘贴 PC 的 Gist ID。', true);
+  }
   pullSync();
   setTimeout(pushSync, 700);
 }
@@ -19095,8 +19114,12 @@ document.addEventListener('keydown', function(e) {
     <p style="font-size:12px;color:#6B7280;line-height:1.6;margin:0 0 12px;">把做题记录（每题对/错次数、间隔重复状态、收藏）存到你的 GitHub Gist。电脑和手机填入同一个 Gist 即可共享。令牌只存在你自己的浏览器，不会写入网页源码。</p>
     <label style="font-size:13px;font-weight:600;">GitHub 访问令牌 (PAT)</label>
     <input id="syncToken" type="password" placeholder="ghp_xxx，需 gist 权限" style="width:100%;padding:8px;border:1px solid #D1D5DB;border-radius:8px;margin:4px 0 12px;font-size:13px;box-sizing:border-box;">
-    <label style="font-size:13px;font-weight:600;">Gist ID（可留空，首次同步自动创建）</label>
-    <input id="syncGist" placeholder="如 a1b2c3d4e5f6，可留空" style="width:100%;padding:8px;border:1px solid #D1D5DB;border-radius:8px;margin:4px 0 12px;font-size:13px;box-sizing:border-box;">
+    <label style="font-size:13px;font-weight:600;">Gist ID（手机/电脑必须填<b>同一个</b>才能共享）</label>
+    <div style="display:flex;gap:8px;align-items:center;margin:4px 0 4px;">
+      <input id="syncGist" placeholder="在 PC 端同步面板复制后粘贴到这里" style="flex:1;min-width:0;padding:8px;border:1px solid #D1D5DB;border-radius:8px;font-size:13px;box-sizing:border-box;">
+      <button type="button" onclick="copyGistId()" style="flex:none;padding:8px 10px;border:1px solid #2563EB;color:#2563EB;background:#fff;border-radius:8px;cursor:pointer;font-size:12px;white-space:nowrap;">复制本机</button>
+    </div>
+    <div style="font-size:11px;color:#9CA3AF;margin:0 0 12px;line-height:1.5;">留空会新建一个独立 Gist，与 PC 不互通。要合并 PC 的进度，请把 PC 端这个框里的值原样粘贴过来（注意别带前后空格）。</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
       <button onclick="saveSyncConfig()" style="flex:1;min-width:110px;padding:9px;border:none;border-radius:8px;background:#2563EB;color:#fff;font-weight:600;cursor:pointer;font-size:13px;">保存配置</button>
       <button onclick="doSyncNow()" style="flex:1;min-width:110px;padding:9px;border:none;border-radius:8px;background:#10B981;color:#fff;font-weight:600;cursor:pointer;font-size:13px;">立即同步</button>
