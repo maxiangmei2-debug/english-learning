@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260713-1657">
+<meta name="build-version" content="20260713-1736">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
 <style>
@@ -19447,15 +19447,18 @@ function saveFreqState() {
 }
 
 // ============ SPACED REPETITION (艾宾浩斯间隔重复) ============
-// 升阶规则：box0 需连续答对 3 次才升一阶；box1~box6 每阶只需连续答对 2 次即可升一阶。
+// 升阶规则（每阶所需「连续答对」次数递减）：
+//   box0（新题）：连续答对 3 次 → 升一阶（下次 2 天后复习）
+//   box1（2天档）：连续答对 2 次 → 升一阶（下次 4 天后复习）
+//   box2（4天档）起：每次答对 1 次即升一阶 → 7天 → 15天 → 30天 → 60天（封顶）
 // 间隔曲线（升到对应 box 后推后的天数）：box1=2天, box2=4天, box3=7天, box4=15天, box5=30天, box6=60天。
-// 在 box6（60天）再连续答对 2 次 → 标为「已掌握」，后续默认不再出现（除非在「已掌握」面板移出）。
+// 在 box6（60天）再答对 1 次 → 标为「已掌握」，后续默认不再出现（除非在「已掌握」面板移出，移出后从 box0 重走一轮曲线）。
 // 漏学顺延：due 为绝对时间戳，过期题任一天使用即立即可练，下次间隔从当天重算（天然满足）。
 // 答错：降 2 阶，立即可练，连对清零，并移出「已掌握」。
 const SRS_KEY = 'testmaster_srs';
-const SRS_STREAK_FIRST = 3;   // box0 连续答对几次才升阶
-const SRS_STREAK_NEXT = 2;    // box1~box6 每阶连续答对几次才升阶（含升到「已掌握」）
-function reqStreakForBox(box) { return box <= 0 ? SRS_STREAK_FIRST : SRS_STREAK_NEXT; }
+// 每个 box 升阶所需的「连续答对」次数，索引 = 当前 box（0..6）。box0=3, box1=2, box2~box6=1
+const SRS_STREAK_BY_BOX = [3, 2, 1, 1, 1, 1, 1];
+function reqStreakForBox(box) { var b = box < 0 ? 0 : box; return SRS_STREAK_BY_BOX[Math.min(b, SRS_STREAK_BY_BOX.length - 1)]; }
 // 升到 box(b+1) 时推后的天数：索引 = 当前 box（0..5）。box1=2, box2=4, box3=7, box4=15, box5=30, box6=60
 const SRS_INTERVAL_DAY = [2, 4, 7, 15, 30, 60];
 const SRS_MAX_BOX = SRS_INTERVAL_DAY.length; // 6（box6 = 60天，最高复习档，再连对即「已掌握」）
@@ -21089,6 +21092,6 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260713-1657</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260713-1736</div>
 </body>
 </html>
