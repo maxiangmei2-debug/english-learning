@@ -1048,7 +1048,7 @@ const WORDS = [
     explain:'unfairly adv. 不公平地；unfair adj. 不公平的。' },
   { en:'tough', cn:'辛苦的、难熬的', ph:'', topic:'生活事物',
     opts:[{cn:'困难的',en:'hard'},{cn:'坚强的',en:'strong'},{cn:'辛苦的、难熬的',en:'tough'},{cn:'柔软的',en:'soft'}],
-    explain:'tough adj. 辛苦的、难熬的；It sounds tough. 听起来挺辛苦的。' }
+    explain:'tough adj. 辛苦的、难熬的；It sounds tough. 听起来挺辛苦的。' },
   { en:'engine', cn:'发动机', ph:'/ˈendʒɪn/', topic:'飞行场景',
     opts:[{cn:'发动机',en:'engine'},{cn:'飞行员',en:'pilot'},{cn:'降落伞',en:'parachute'},{cn:'背包',en:'backpack'}],
     explain:'【知识点】engine = 发动机<br>【拼写提示】注意拼写：engine' },
@@ -1259,7 +1259,7 @@ const WORDS = [
   { en:'square meter', cn:'平方米', ph:'', topic:'描述家乡',
     opts:[{cn:'平方米',en:'square meter'},{cn:'家乡',en:'hometown'},{cn:'传统的',en:'traditional'},{cn:'现代的',en:'modern'}],
     explain:'【知识点】square meter = 平方米<br>【拼写提示】注意拼写：square meter' },
-]; ======
+];
 const TOPICS = ['全部','租房','运动','购物','办公','手机','性格','情绪','职场','旅行','搭配','否定表达','狼来了','看医生','祈使句','坐飞机','交通出行','入住酒店','点餐用餐','问路方向','购物消费','出入境','简单聊天','时态动词','完成时搭配','情态搭配','从句引导词','药店看病','职业工作','面试求职','性格描述','短语动词','日常生活','助动词与be动词','通勤职场','旅行度假','餐饮美食','生活事物','飞行场景','露营装备','职场时间','土地往事','房产租赁','展会商务','描述家乡'];
 
 // ====== 状态 ======
@@ -1309,6 +1309,8 @@ function startPractice(mode) {
 
   // 过滤题目
   let pool = currentTopic === '全部' ? [...WORDS] : WORDS.filter(w => w.topic === currentTopic);
+  // 为缺少选项(opts)的单词自动生成干扰项，避免渲染崩溃
+  pool = pool.map(w => ensureOpts(w, pool));
   if(pool.length === 0) {
     showToast('该主题暂无题目');
     return;
@@ -1340,6 +1342,20 @@ function shuffle(arr) {
     [a[i],a[j]] = [a[j],a[i]];
   }
   return a;
+}
+
+// 为缺少 opts 的单词自动生成 4 选 1 干扰项（来自同主题/同学库的其他词）
+function ensureOpts(w, pool) {
+  if (w.opts && w.opts.length >= 2) return w;
+  const others = pool.filter(x => x !== w && x.cn && x.cn !== w.cn);
+  const shuffled = others.slice().sort(() => Math.random() - 0.5);
+  const distractors = shuffled.slice(0, 3).map(x => ({ cn: x.cn, en: x.en }));
+  let opts = [{ cn: w.cn, en: w.en }].concat(distractors);
+  for (let i = opts.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const t = opts[i]; opts[i] = opts[j]; opts[j] = t;
+  }
+  return Object.assign({}, w, { opts: opts });
 }
 
 function showPage(id) {
