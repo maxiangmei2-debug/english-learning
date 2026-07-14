@@ -216,11 +216,102 @@
     if (container) container.appendChild(sec);
   }
 
+  /* ---------------- 自动识别（无需选类型） ---------------- */
+  // 从原始文本判断类型：grammar / sentence / word / phrase
+  function classifyType(raw, content) {
+    raw = raw || '';
+    content = (content || '').trim();
+    // 1) 语法：含语法关键词，或纯中文长解释
+    if (/(时态|语法|被动|从句|分词|结构是|表示|用法|过去式|将来时|现在完成|过去完成|进行时|虚拟|条件句|比较级|最高级|感叹句|祈使句|tense|grammar)/i.test(raw)) return 'grammar';
+    if (/[一-鿿]/.test(raw) && raw.length > 24 && /[。；;]/.test(raw)) return 'grammar';
+    // 2) 句子：以标点结尾 或 含主谓结构
+    if (/[.?!。？！]$/.test(content)) return 'sentence';
+    if (/\b(is|are|was|were|do|does|did|have|has|can|will|would|should|may|might|must|I|you|he|she|we|they|it)\b/i.test(content) && /[.?!。？！]/.test(content)) return 'sentence';
+    // 3) 单词：纯单个英文词
+    if (/^[A-Za-z][A-Za-z'’-]*$/.test(content)) return 'word';
+    // 4) 短语：2~6 个英文词
+    var eng = content.split(/\s+/).filter(function (w) { return /^[A-Za-z]/.test(w); });
+    if (eng.length >= 2 && eng.length <= 6) return 'phrase';
+    if (eng.length === 1) return 'word';
+    return 'phrase';
+  }
+  // 从一行文本解析出一条知识库条目（自动提取「内容 / 释义」）
+  function parseEntry(raw) {
+    raw = (raw || '').trim();
+    if (!raw) return null;
+    var content = raw, meaning = '';
+    // 显式分隔符 = : ：
+    var sep = raw.match(/^(.+?)\s*(?:=|:|：)\s*(.+)$/);
+    if (sep && sep[2].trim().length) {
+      content = sep[1].trim();
+      meaning = sep[2].trim();
+    } else {
+      // 英文头 + 中文尾（首个中文字符前为内容，后为释义）
+      var ci = raw.search(/[一-鿿]/);
+      if (ci > 0) {
+        content = raw.slice(0, ci).trim();
+        meaning = raw.slice(ci).trim();
+      }
+    }
+    return {
+      content: content,
+      meaning: meaning,
+      type: classifyType(raw, content),
+      example: '', exampleZh: '', note: ''
+    };
+  }
+  // 从整段文本（每行一条）批量解析并保存，返回统计
+  function addFromText(text) {
+    var lines = (text || '').split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
+    var stats = { total: 0, word: 0, phrase: 0, sentence: 0, grammar: 0, error: 0 };
+    lines.forEach(function (line) {
+      var e = parseEntry(line);
+      if (!e) return;
+      e.id = 'kb_' + Date.now() + '_' + Math.floor(Math.random() * 1e6).toString(36);
+      e.createdAt = Date.now();
+      upsert(e);
+      stats.total++;
+      stats[e.type] = (stats[e.type] || 0) + 1;
+    });
+    return stats;
+  }
+
+  function applyToStudyPlan() {
+    var container = document.querySelector('.container');
+    if (!container) return;
+    if (document.getElementById('kbSelfStudy')) return; // 防重复
+    var entries = getEntries();
+    var typeName = { word: '单词', phrase: '搭配', sentence: '句型', grammar: '语法', error: '易错' };
+    var sec = document.createElement('div');
+    sec.className = 'progress-section';
+    sec.id = 'kbSelfStudy';
+    sec.style.marginTop = '24px';
+    var html = '<div class="section-head">📥 我的知识库（自选复习）</div>';
+    if (!entries.length) {
+      html += '<p style="color:#9ca3af;font-size:13px;">还没有内容。去「英语学习中心 → 我的知识库」添加你想学的内容吧。</p>';
+    } else {
+      html += '<div style="display:flex;flex-direction:column;gap:8px">';
+      entries.forEach(function (e) {
+        html += '<div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;">';
+        html += '<div style="font-weight:700;color:#111827;">' + escapeHtml(e.content) +
+          ' <span style="font-size:11px;padding:2px 8px;border-radius:12px;background:#ede9fe;color:#6d28d9;">' + (typeName[e.type] || '') + '</span></div>';
+        if (e.meaning) html += '<div style="font-size:14px;color:#374151;margin-top:4px;">释义：' + escapeHtml(e.meaning) + '</div>';
+        if (e.example) html += '<div style="font-size:13px;color:#7c3aed;margin-top:4px;">📌 ' + escapeHtml(e.example) + '</div>';
+        if (e.note) html += '<div style="font-size:13px;color:#6b7280;margin-top:4px;">📝 ' + escapeHtml(e.note) + '</div>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+    sec.innerHTML = html;
+    container.appendChild(sec);
+  }
+
   function apply() {
     try { applyToHandbook(); } catch (e) { console.warn('KB→handbook', e); }
     try { applyToTestMaster(); } catch (e) { console.warn('KB→testmaster', e); }
     try { applyToVocabGame(); } catch (e) { console.warn('KB→vocabgame', e); }
     try { applyToSpelling(); } catch (e) { console.warn('KB→spelling', e); }
+    try { applyToStudyPlan(); } catch (e) { console.warn('KB→studyplan', e); }
   }
 
   /* ---------------- 暴露 API ---------------- */
@@ -228,7 +319,8 @@
     getEntries: getEntries, getByType: getByType, upsert: upsert, remove: removeEntry,
     exportJSON: exportJSON, importJSON: importJSON,
     pushSync: pushSync, pullSync: pullSync, ensureGist: ensureGist,
-    loadSyncCfg: loadSyncCfg, saveSyncCfg: saveSyncCfg, apply: apply
+    loadSyncCfg: loadSyncCfg, saveSyncCfg: saveSyncCfg, apply: apply,
+    addFromText: addFromText, parseEntry: parseEntry, classifyType: classifyType
   };
 
   /* ---------------- 启动：配置了云同步则先拉取再注入 ---------------- */
