@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260714-1640">
+<meta name="build-version" content="20260714-1700">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
 <style>
@@ -17966,10 +17966,15 @@ function showExplain(q, isCorrect, userAns) {
       correctDisplay = q.ans[0];
     }
     var showDiff = (q.type === 'sent-dict' || q.type === 'sent-fill');
-    correctAnswerHtml = '<div style="background:var(--danger-light);padding:8px 12px;border-radius:8px;margin-bottom:8px;">' +
-      '<div style="color:var(--danger);font-weight:600;">❌ 你的答案：' + escapeHtml(userDisplay) + '</div>' +
-      '<div style="color:var(--success);font-weight:600;margin-top:' + (showDiff ? '4px' : '0') + ';">✅ 正确答案：' + escapeHtml(correctDisplay) + ' ' + speakerBtn(getAnswerSpeakText(q)) + '</div>' +
-      '</div>';
+    if (showDiff && userDisplay && userDisplay !== '(未作答)') {
+      correctAnswerHtml = '<div style="background:var(--danger-light);padding:8px 12px;border-radius:8px;margin-bottom:8px;">' +
+        renderSentDiffHtml(userDisplay, correctDisplay, q) + '</div>';
+    } else {
+      correctAnswerHtml = '<div style="background:var(--danger-light);padding:8px 12px;border-radius:8px;margin-bottom:8px;">' +
+        '<div style="color:var(--danger);font-weight:600;">❌ 你的答案：' + escapeHtml(userDisplay) + '</div>' +
+        '<div style="color:var(--success);font-weight:600;margin-top:' + (showDiff ? '4px' : '0') + ';">✅ 正确答案：' + escapeHtml(correctDisplay) + ' ' + speakerBtn(getAnswerSpeakText(q)) + '</div>' +
+        '</div>';
+    }
   }
   let html = `<div class="explain-box">`;
   html += correctAnswerHtml;
@@ -18232,6 +18237,59 @@ function normalizeSent(s) {
 }
 function normalizeWord(s) {
   return s.replace(/[.,!?;:'"()]/g, '').trim().toLowerCase();
+}
+
+// ====== SENTENCE ANSWER DIFF（词级对比，只标红错/漏的词） ======
+// 去掉标点后比较（忽略大小写），用最长公共子序列(LCS)做词对齐，
+// 这样「我 去 公园」vs「我 去了 公园」能对上「我/公园」，只把「去→去了」和漏写的「了」标红。
+function _normTok(t) { return (t || '').replace(/[^A-Za-z0-9']/g, '').toLowerCase(); }
+function alignWords(ut, ct) {
+  const n = ut.length, m = ct.length;
+  const dp = Array.from({ length: n + 1 }, function () { return new Array(m + 1).fill(0); });
+  for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--) {
+    if (_normTok(ut[i]) === _normTok(ct[j])) dp[i][j] = dp[i + 1][j + 1] + 1;
+    else dp[i][j] = Math.max(dp[i + 1][j], dp[i][j + 1]);
+  }
+  let i = 0, j = 0;
+  const userAligned = [], correctAligned = [];
+  while (i < n && j < m) {
+    if (_normTok(ut[i]) === _normTok(ct[j])) {
+      userAligned.push({ w: ut[i], status: 'match' });
+      correctAligned.push({ w: ct[j], status: 'match' });
+      i++; j++;
+    } else if (dp[i + 1][j] >= dp[i][j + 1]) {
+      userAligned.push({ w: ut[i], status: 'wrong' });
+      i++;
+    } else {
+      correctAligned.push({ w: ct[j], status: 'missing' });
+      j++;
+    }
+  }
+  while (i < n) { userAligned.push({ w: ut[i], status: 'wrong' }); i++; }
+  while (j < m) { correctAligned.push({ w: ct[j], status: 'missing' }); j++; }
+  return { userAligned: userAligned, correctAligned: correctAligned };
+}
+// 生成两行对比 HTML：对的词正常深色，写错的词标红加删除线，漏写的词标红加下划线
+function renderSentDiffHtml(userText, correctText, q) {
+  const ut = (userText || '').trim().split(/\s+/).filter(Boolean);
+  const ct = (correctText || '').trim().split(/\s+/).filter(Boolean);
+  const al = alignWords(ut, ct);
+  const esc = escapeHtml;
+  const OK = 'color:#374151;';
+  const BAD = 'color:#EF4444;font-weight:700;';
+  const uh = ut.length ? al.userAligned.map(function (t) {
+    return t.status === 'match'
+      ? '<span style="' + OK + '">' + esc(t.w) + '</span>'
+      : '<span style="' + BAD + 'text-decoration:line-through;">' + esc(t.w) + '</span>';
+  }).join(' ') : '<span style="' + BAD + '">（空）</span>';
+  const ch = al.correctAligned.map(function (t) {
+    return t.status === 'match'
+      ? '<span style="' + OK + '">' + esc(t.w) + '</span>'
+      : '<span style="' + BAD + 'text-decoration:underline;">' + esc(t.w) + '</span>';
+  }).join(' ');
+  return '<div style="font-weight:600;line-height:1.9;"><span style="color:var(--danger);">❌ 你的答案：</span> ' + uh + '</div>' +
+    '<div style="font-weight:600;margin-top:4px;line-height:1.9;"><span style="color:var(--success);">✅ 正确答案：</span> ' + ch + ' ' + speakerBtn(getAnswerSpeakText(q)) + '</div>' +
+    '<div style="font-size:11px;color:#9CA3AF;margin-top:4px;">红色删除线=你多写/写错的词，红色下划线=你漏写的词</div>';
 }
 
 // ====== NAME SPELLING HINT + CONTRACTION-TOLERANT CHECK ======
