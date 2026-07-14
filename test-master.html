@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260714-1015">
+<meta name="build-version" content="20260714-1040">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
 <style>
@@ -206,6 +206,13 @@
   }
   .master-btn:hover { border-color:#10B981; background:#D1FAE5; color:#047857; }
   .master-btn.mastered { color:#9CA3AF; border-color:#E5E7EB; background:#F3F4F6; cursor:default; }
+  .skip-stage-btn {
+    display:inline-flex; align-items:center; gap:4px; padding:4px 12px;
+    border-radius:16px; border:1.5px solid #BFDBFE; background:#EFF6FF;
+    font-size:15px; cursor:pointer; transition:all 0.2s; touch-action:manipulation;
+    color:#2563EB; font-weight:600; margin-left:0; vertical-align:middle;
+  }
+  .skip-stage-btn:hover { border-color:#3B82F6; background:#DBEAFE; color:#1D4ED8; }
   .master-mark-btn {
     font-size:15px; font-weight:600; padding:12px 22px; border-radius:24px;
     border:2px solid #A7F3D0; background:#ECFDF5; color:#059669; cursor:pointer;
@@ -18991,6 +18998,29 @@ function updateSrs(id, correct) {
   }
   saveSrs();
 }
+// ====== SKIP STAGE（跳过当前复习阶段，不标记掌握） ======
+// 把当前题 box 升一阶（跳过当前阶段），并推后到下一档间隔（从今天算）。
+// 与"标掌握"不同：不会加入 masteredSet，下一阶段仍会按曲线再次出现。
+// 边界：若已是最高档 box6（60天档），跳过即进入"已掌握"（下一阶段即掌握），
+//       仍可在「已掌握」面板移出重来。
+function stageLabel(box) {
+  if (box >= SRS_MAX_BOX) return '已掌握';
+  var names = ['新题（立即可练）', '2天档', '4天档', '7天档', '15天档', '30天档', '60天档'];
+  return names[Math.min(box, names.length - 1)] || ('box' + box);
+}
+function skipStage(id) {
+  var s = getSrs(id);
+  if (s.box >= SRS_MAX_BOX) {
+    markMastered(id);          // box6 的下一阶段即「已掌握」
+    s.box = SRS_MAX_BOX;
+    s.due = Number.MAX_SAFE_INTEGER;
+  } else {
+    var interval = SRS_INTERVAL_DAY[Math.min(s.box, SRS_INTERVAL_DAY.length - 1)];
+    s.box = s.box + 1;          // 升一阶
+    s.due = Date.now() + interval * DAY_MS; // 排到下一档间隔（支持漏学顺延）
+  }
+  saveSrs();
+}
 // 毫秒 → 友好剩余时间
 function fmtRemain(ms) {
   if (ms <= 0) return '现在';
@@ -19452,9 +19482,11 @@ function renderQuestion() {
   let bmIcon = isBookmarked ? '⭐' : '☆';
   let isMasteredQ = masteredSet.has(q.id);
   let inMasteredMode = (typeof isMasteredMode !== 'undefined' && isMasteredMode);
+  let skipBtn = inMasteredMode ? '' :
+    `<button class="skip-stage-btn" onclick="window.skipStageCurrent()" title="跳过当前复习阶段，直接推进到下一阶段（不会标记掌握，下一阶段仍会按曲线出现）">⏭ 跳过该阶段</button>`;
   let masterBtn = inMasteredMode ? '' :
     `<button class="master-btn${isMasteredQ?' mastered':''}" onclick="window.manualMarkMastered()" title="标记为已掌握，这道题以后不再出现">${isMasteredQ?'✅ 已掌握':'✅ 标掌握'}</button>`;
-  let html = `<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;"><div class="q-type-badge ${badgeClass}">${q.badge}</div><div style="display:flex;gap:8px;align-items:center;">${masterBtn}<button class="bm-btn${bmClass}" id="bmBtn" onclick="window.toggleBookmark('${q.id}')" title="${isBookmarked?'取消收藏':'收藏此题'}">${bmIcon} 收藏</button></div></div>`;
+  let html = `<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;"><div class="q-type-badge ${badgeClass}">${q.badge}</div><div style="display:flex;gap:8px;align-items:center;">${skipBtn}${masterBtn}<button class="bm-btn${bmClass}" id="bmBtn" onclick="window.toggleBookmark('${q.id}')" title="${isBookmarked?'取消收藏':'收藏此题'}">${bmIcon} 收藏</button></div></div>`;
   html += `<div class="q-history" id="qHistory">${renderHistoryHtml(q)}</div>`;
 
   if(q.type === 'choice' || q.type === 'sent-app') {
@@ -19811,6 +19843,46 @@ window.manualMarkMastered = function() {
     else renderQuestion();
   }
 };
+
+// ====== SKIP STAGE（UI 按钮） ======
+// 用户点"跳过该阶段"：只推进当前复习阶段，不标记掌握，下一阶段仍按曲线出现。
+window.skipStageCurrent = function() {
+  if(!questions || qIndex >= questions.length) return;
+  var q = questions[qIndex];
+  if(!q) return;
+  var wasAnswered = answered;
+  skipStage(q.id);
+  var s = readSrs(q.id);
+  var label = stageLabel(s.box);
+  var remain = (s.due >= Number.MAX_SAFE_INTEGER)
+    ? '已标记掌握（可在「已掌握」面板移出重来）'
+    : ('约 ' + fmtRemain(s.due - Date.now()) + ' 后再次出现');
+  if(!wasAnswered) {
+    results.push({ id:q.id, correct:false, userAns:'（已跳过本阶段）', skipped:true, skippedStage:true });
+  } else {
+    var last = results[results.length - 1];
+    if(last && last.id === q.id) last.skippedStage = true;
+  }
+  showSkipStageToast('⏭ 已跳过本阶段 → 下一阶段：' + label + '，' + remain);
+  qIndex++;
+  if(qIndex >= questions.length || lives <= 0) endTest();
+  else renderQuestion();
+};
+
+// 跳过阶段提示气泡（蓝色）
+function showSkipStageToast(msg) {
+  var t = document.getElementById('skipToast');
+  if(!t) {
+    t = document.createElement('div');
+    t.id = 'skipToast';
+    t.style.cssText = 'position:fixed;left:50%;top:16%;transform:translateX(-50%);background:rgba(59,130,246,.96);color:#fff;padding:10px 18px;border-radius:24px;font-size:14px;font-weight:600;z-index:300;box-shadow:0 6px 20px rgba(0,0,0,.25);transition:opacity .3s;pointer-events:none;';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(function(){ t.style.opacity = '0'; }, 1800);
+}
 
 // 轻量提示气泡
 function showMasterToast(msg) {
@@ -20575,6 +20647,6 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260714-1015</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260714-1040</div>
 </body>
 </html>
