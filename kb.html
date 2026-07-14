@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta name="build-version" content="20260714-1432">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的知识库 · 英语学习</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f3f4f6;color:#1f2937;padding:18px;max-width:760px;margin:0 auto}
+.topbar{background:linear-gradient(135deg,#6366F1,#8B5CF6);color:#fff;border-radius:18px;padding:20px;margin-bottom:16px}
+.topbar h1{font-size:22px;margin-bottom:4px}
+.topbar p{font-size:13px;opacity:.85}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 4px 16px rgba(0,0,0,.05)}
+.card h2{font-size:16px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+label{display:block;font-size:13px;color:#4b5563;margin:10px 0 4px;font-weight:600}
+input,select,textarea{width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:10px;font-size:14px;font-family:inherit;background:#fff}
+textarea{resize:vertical;min-height:54px}
+.row{display:flex;gap:10px}
+.row>*{flex:1}
+button{font-family:inherit;cursor:pointer;border:none;border-radius:10px;font-size:14px;font-weight:600;padding:10px 16px;transition:.15s}
+.btn-primary{background:#6366F1;color:#fff}
+.btn-primary:hover{background:#4f46e5}
+.btn-ghost{background:#eef2ff;color:#4f46e5}
+.btn-ghost:hover{background:#e0e7ff}
+.btn-danger{background:#fee2e2;color:#dc2626}
+.btn-danger:hover{background:#fecaca}
+.btn-sm{padding:6px 10px;font-size:12px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.hint{font-size:12px;color:#6b7280;background:#f9fafb;border-left:3px solid #c7d2fe;padding:8px 10px;border-radius:8px;margin-top:8px;line-height:1.6}
+.entry{border:1px solid #e5e7eb;border-radius:12px;padding:12px;margin-bottom:10px}
+.entry .eh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.entry .et{font-size:15px;font-weight:700;color:#111827;word-break:break-word}
+.entry .eb{font-size:11px;padding:2px 8px;border-radius:12px;background:#ede9fe;color:#6d28d9;white-space:nowrap}
+.entry .em{font-size:14px;color:#374151}
+.entry .ex{font-size:13px;color:#4b5563;margin-top:4px}
+.entry .en{font-size:13px;color:#7c3aed;margin-top:4px}
+.badge-word{background:#dbeafe;color:#1d4ed8}.badge-phrase{background:#d1fae5;color:#047857}
+.badge-sentence{background:#fef3c7;color:#b45309}.badge-grammar{background:#ede9fe;color:#6d28d9}.badge-error{background:#fee2e2;color:#dc2626}
+#status{font-size:12px;margin-top:8px;min-height:16px}
+.ok{color:#059669}.err{color:#dc2626}.muted{color:#6b7280}
+.empty{color:#9ca3af;font-size:13px;text-align:center;padding:18px}
+details{margin-top:6px}
+summary{cursor:pointer;font-size:13px;color:#4f46e5;font-weight:600}
+.collapse{margin-top:10px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>📥 我的知识库</h1>
+  <p>把日常遇到的想学内容记下来，自动同步到手册 / 测试达人 / 大闯关 / 拼写训练营</p>
+</div>
+
+<!-- 录入 -->
+<div class="card">
+  <h2>➕ 添加 / 编辑内容</h2>
+  <div class="row">
+    <div>
+      <label>类型</label>
+      <select id="fType">
+        <option value="word">单词</option>
+        <option value="phrase">短语 / 搭配</option>
+        <option value="sentence">句型</option>
+        <option value="grammar">语法</option>
+        <option value="error">易错点</option>
+      </select>
+    </div>
+    <div>
+      <label>英文内容</label>
+      <input id="fContent" placeholder="如：furnished / in order to / How about...?" />
+    </div>
+  </div>
+  <label>中文释义</label>
+  <input id="fMeaning" placeholder="如：带家具的 / 为了做某事" />
+  <div class="row">
+    <div>
+      <label>例句（英文，可选）</label>
+      <input id="fExample" placeholder="Is it furnished?" />
+    </div>
+    <div>
+      <label>例句翻译（可选）</label>
+      <input id="fExampleZh" placeholder="带家具吗？" />
+    </div>
+  </div>
+  <label>笔记（可选）</label>
+  <textarea id="fNote" placeholder="自己的记忆法、易错提醒…"></textarea>
+  <div class="toolbar">
+    <button class="btn-primary" id="btnSave">💾 保存</button>
+    <button class="btn-ghost" id="btnClear">清空</button>
+  </div>
+  <div id="status"></div>
+</div>
+
+<!-- 列表 -->
+<div class="card">
+  <h2>📚 已维护的内容（<span id="cnt">0</span>）</h2>
+  <div id="list"></div>
+  <div class="toolbar" style="margin-top:12px">
+    <button class="btn-ghost btn-sm" id="btnExport">⬇ 导出 JSON</button>
+    <button class="btn-ghost btn-sm" id="btnImport">⬆ 导入 JSON</button>
+    <input type="file" id="fileInput" accept="application/json" style="display:none" />
+  </div>
+</div>
+
+<!-- 云同步（可选，跨设备） -->
+<div class="card">
+  <h2>☁️ 云同步（可选）</h2>
+  <div class="hint">想在手机和电脑共用同一份知识库，可填入 GitHub Token 与一个 Gist ID（私密 Gist）。保存配置后，添加内容会自动推送；打开本页会自动拉取。未配置则仅保存在本浏览器。</div>
+  <details>
+    <summary>展开同步设置</summary>
+    <div class="collapse">
+      <label>GitHub Token（需 gist 权限）</label>
+      <input id="sToken" type="password" placeholder="ghp_..." />
+      <label>Gist ID（留空则首次推送时自动创建）</label>
+      <input id="sGist" placeholder="已有 Gist 的 ID，可留空" />
+      <div class="toolbar">
+        <button class="btn-ghost btn-sm" id="btnSaveSync">保存配置</button>
+        <button class="btn-ghost btn-sm" id="btnPush">⬆ 立即推送</button>
+        <button class="btn-ghost btn-sm" id="btnPull">⬇ 立即拉取</button>
+      </div>
+      <div id="syncStatus" class="muted"></div>
+    </div>
+  </details>
+</div>
+
+<a href="index.html" class="btn-ghost" style="display:inline-block;text-decoration:none;margin-bottom:24px">← 返回英语学习中心</a>
+
+<script src="kb.js"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var editingId = null;
+
+  function status(msg, cls) { var s = $('status'); s.textContent = msg || ''; s.className = cls || ''; }
+  function syncStatus(msg, cls) { var s = $('syncStatus'); s.textContent = msg || ''; s.className = cls || 'muted'; }
+
+  function readForm() {
+    return {
+      type: $('fType').value,
+      content: $('fContent').value.trim(),
+      meaning: $('fMeaning').value.trim(),
+      example: $('fExample').value.trim(),
+      exampleZh: $('fExampleZh').value.trim(),
+      note: $('fNote').value.trim()
+    };
+  }
+  function fillForm(e) {
+    $('fType').value = e.type; $('fContent').value = e.content; $('fMeaning').value = e.meaning;
+    $('fExample').value = e.example || ''; $('fExampleZh').value = e.exampleZh || ''; $('fNote').value = e.note || '';
+  }
+  function clearForm() {
+    editingId = null;
+    ['fContent', 'fMeaning', 'fExample', 'fExampleZh', 'fNote'].forEach(function (id) { $(id).value = ''; });
+    $('fType').value = 'word'; status('');
+  }
+  function pushIfNeeded() {
+    var cfg = KB.loadSyncCfg();
+    if (cfg && cfg.token && cfg.gist) {
+      KB.pushSync().then(function () { syncStatus('已自动推送到云端', 'ok'); })
+        .catch(function (err) { syncStatus('自动推送失败：' + err.message, 'err'); });
+    }
+  }
+
+  function save() {
+    var d = readForm();
+    if (!d.content) { status('请填写「英文内容」', 'err'); return; }
+    if (!d.meaning) { status('请填写「中文释义」', 'err'); return; }
+    if (editingId) d.id = editingId;
+    else d.id = 'kb_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+    if (!d.createdAt) d.createdAt = Date.now();
+    KB.upsert(d);
+    status('已保存 ✓', 'ok');
+    clearForm();
+    render();
+    pushIfNeeded();
+  }
+  function del(id) {
+    if (!confirm('确定删除这条内容？')) return;
+    KB.remove(id);
+    if (editingId === id) clearForm();
+    render();
+    pushIfNeeded();
+  }
+  function edit(id) {
+    var e = KB.getEntries().filter(function (x) { return x.id === id; })[0];
+    if (!e) return;
+    editingId = id; fillForm(e);
+    status('编辑中…（保存即更新）', 'muted');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function render() {
+    var entries = KB.getEntries().sort(function (a, b) { return (b.updatedAt || 0) - (a.updatedAt || 0); });
+    $('cnt').textContent = entries.length;
+    var box = $('list');
+    if (!entries.length) { box.innerHTML = '<div class="empty">还没有内容，上方添加第一条吧 ✏️</div>'; return; }
+    var typeName = { word: '单词', phrase: '短语/搭配', sentence: '句型', grammar: '语法', error: '易错' };
+    var html = '';
+    entries.forEach(function (e) {
+      html += '<div class="entry">';
+      html += '<div class="eh"><div class="et">' + escapeHtml(e.content) + '</div><span class="eb badge-' + e.type + '">' + (typeName[e.type] || '') + '</span></div>';
+      html += '<div class="em">释义：' + escapeHtml(e.meaning || '') + '</div>';
+      if (e.example) html += '<div class="ex"><span class="en">' + escapeHtml(e.example) + '</span></div>';
+      if (e.exampleZh) html += '<div class="ex">' + escapeHtml(e.exampleZh) + '</div>';
+      if (e.note) html += '<div class="en">📝 ' + escapeHtml(e.note) + '</div>';
+      html += '<div class="toolbar"><button class="btn-ghost btn-sm" onclick="__kb.edit(\'' + e.id + '\')">✏️ 编辑</button><button class="btn-danger btn-sm" onclick="__kb.del(\'' + e.id + '\')">🗑 删除</button></div>';
+      html += '</div>';
+    });
+    box.innerHTML = html;
+  }
+  function escapeHtml(s) {
+    return (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  // 导出 / 导入
+  function doExport() {
+    var blob = new Blob([KB.exportJSON()], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'my-english-kb.json';
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+  function doImport(file) {
+    var r = new FileReader();
+    r.onload = function () {
+      try { KB.importJSON(r.result); render(); pushIfNeeded(); syncStatus('导入成功', 'ok'); }
+      catch (e) { syncStatus('导入失败：' + e.message, 'err'); }
+    };
+    r.readAsText(file);
+  }
+
+  // 云同步配置
+  function loadSyncUI() {
+    var c = KB.loadSyncCfg();
+    $('sToken').value = c.token || ''; $('sGist').value = c.gist || '';
+  }
+  function saveSync() {
+    KB.saveSyncCfg({ token: $('sToken').value.trim(), gist: $('sGist').value.trim() });
+    syncStatus('配置已保存', 'ok');
+  }
+  function doPush() {
+    syncStatus('推送中…');
+    KB.ensureGist().then(KB.pushSync).then(function () {
+      var c = KB.loadSyncCfg(); $('sGist').value = c.gist || '';
+      syncStatus('推送成功 ✓', 'ok');
+    }).catch(function (err) { syncStatus('推送失败：' + err.message, 'err'); });
+  }
+  function doPull() {
+    syncStatus('拉取中…');
+    KB.pullSync().then(function () { render(); syncStatus('拉取成功 ✓', 'ok'); })
+      .catch(function (err) { syncStatus('拉取失败：' + err.message, 'err'); });
+  }
+
+  // 绑定
+  $('btnSave').onclick = save;
+  $('btnClear').onclick = clearForm;
+  $('btnExport').onclick = doExport;
+  $('btnImport').onclick = function () { $('fileInput').click(); };
+  $('fileInput').onchange = function (e) { if (e.target.files[0]) doImport(e.target.files[0]); };
+  $('btnSaveSync').onclick = saveSync;
+  $('btnPush').onclick = doPush;
+  $('btnPull').onclick = doPull;
+
+  // 暴露给内联 onclick
+  window.__kb = { edit: edit, del: del };
+
+  // 启动：配置了云端则先拉取
+  loadSyncUI();
+  var cfg = KB.loadSyncCfg();
+  if (cfg && cfg.token && cfg.gist) {
+    KB.pullSync().then(render, render);
+  } else {
+    render();
+  }
+})();
+</script>
+</body>
+</html>
