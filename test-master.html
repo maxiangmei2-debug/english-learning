@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260714-1730">
+<meta name="build-version" content="20260714-1800">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
 <style>
@@ -403,6 +403,21 @@
     .opts-grid { grid-template-columns:1fr 1fr; gap:12px; }
     .mode-grid { max-width:540px; }
   }
+
+  /* ===== 学习覆盖统计面板 ===== */
+  .coverage-panel{background:white;border-radius:16px;padding:16px 18px;margin:0 16px 16px;box-shadow:0 4px 16px rgba(79,70,229,0.08);}
+  .cov-title{font-size:15px;font-weight:700;color:#312E81;margin-bottom:12px;}
+  .cov-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .cov-name{font-size:13px;font-weight:600;color:#374151;width:66px;flex:none;white-space:nowrap;}
+  .cov-bar{flex:1;height:10px;background:#EEF2FF;border-radius:6px;overflow:hidden;}
+  .cov-fill{display:block;height:100%;border-radius:6px;transition:width .4s ease;}
+  .cov-total .cov-fill{background:linear-gradient(90deg,#6D28D9,#8B5CF6);}
+  .cov-master .cov-fill{background:linear-gradient(90deg,#059669,#10B981);}
+  .cov-learned .cov-fill{background:linear-gradient(90deg,#2563EB,#3B82F6);}
+  .cov-touched .cov-fill{background:linear-gradient(90deg,#D97706,#F59E0B);}
+  .cov-meta{font-size:12px;color:#6B7280;width:118px;flex:none;text-align:right;white-space:nowrap;}
+  .cov-meta b{color:#312E81;font-size:13px;}
+  .cov-note{font-size:11px;color:#9CA3AF;margin-top:4px;line-height:1.6;}
 </style>
 </head>
 <body>
@@ -412,7 +427,7 @@
 <div class="home-page" id="homePage">
   <div class="home-hero">
     <h1>🎯 英语测试达人</h1>
-    <p>6种玩法 · 200+题目 · 随时随地练</p>
+    <p>6种玩法 · 1000+题目 · 随时随地练</p>
   </div>
 
   <div class="home-stats">
@@ -437,6 +452,8 @@
       <div class="home-stat-label">收藏</div>
     </div>
   </div>
+
+  <div class="coverage-panel" id="coveragePanel"></div>
 
   <div class="mode-grid" id="modeGrid">
     <div class="mode-card" onclick="startMode('speed')">
@@ -17537,6 +17554,25 @@ function init() {
   }
 }
 
+// ============ 题库索引（id -> 分类，用于「知识点」覆盖统计） ============
+var ID2CAT = {};
+var ALL_IDS = [];
+(function buildBankIndex(){
+  Object.keys(Q).forEach(function(cat){
+    (Q[cat] || []).forEach(function(qd){
+      if (qd.id) { ID2CAT[qd.id] = cat; ALL_IDS.push(qd.id); }
+    });
+  });
+})();
+var TOTAL_COUNT = ALL_IDS.length;
+var TOTAL_CATS = (function(){ var s = new Set(); ALL_IDS.forEach(function(id){ if (ID2CAT[id]) s.add(ID2CAT[id]); }); return s.size; })();
+// 给定一组题 id，返回 {题数, 覆盖知识点数}
+function catCountOf(idSet) {
+  var cats = new Set();
+  idSet.forEach(function(id){ if (ID2CAT[id]) cats.add(ID2CAT[id]); });
+  return { count: idSet.size, cats: cats.size };
+}
+
 function updateHomeStats() {
   document.getElementById('hScore').textContent = totalScore;
   document.getElementById('hCombo').textContent = maxCombo;
@@ -17544,6 +17580,38 @@ function updateHomeStats() {
   if(hMasterEl) hMasterEl.textContent = masteredSet.size;
   const hBmEl = document.getElementById('hBookmark');
   if(hBmEl) hBmEl.textContent = bookmarkedSet.size;
+
+  // ===== 学习覆盖统计（四档） =====
+  // 已涉及：所有出现过（被作答过）的题，哪怕每次都错 —— 即 srsState 里有记录的题
+  var touchedSet = new Set(Object.keys(srsState));
+  // 已学习：已掌握 或 做过且过了第一阶段（box >= 1）的题
+  var learnedSet = new Set();
+  touchedSet.forEach(function(id){
+    var s = srsState[id];
+    if (masteredSet.has(id) || (s && s.box >= 1)) learnedSet.add(id);
+  });
+  var tTotal   = { count: TOTAL_COUNT, cats: TOTAL_CATS };
+  var tMaster  = catCountOf(masteredSet);
+  var tLearned = catCountOf(learnedSet);
+  var tTouched = catCountOf(touchedSet);
+  var rows = [
+    { name:'总计',   icon:'📚', cls:'cov-total',   d: tTotal },
+    { name:'已掌握', icon:'✅', cls:'cov-master',  d: tMaster },
+    { name:'已学习', icon:'📈', cls:'cov-learned', d: tLearned },
+    { name:'已涉及', icon:'👀', cls:'cov-touched', d: tTouched }
+  ];
+  var html = '<div class="cov-title">📊 学习覆盖统计</div>';
+  rows.forEach(function(r){
+    var pct = TOTAL_COUNT ? Math.round(r.d.count / TOTAL_COUNT * 100) : 0;
+    html += '<div class="cov-row ' + r.cls + '">'
+      + '<div class="cov-name">' + r.icon + ' ' + r.name + '</div>'
+      + '<div class="cov-bar"><span class="cov-fill" style="width:' + pct + '%"></span></div>'
+      + '<div class="cov-meta"><b>' + r.d.count + '</b> 题 · <b>' + r.d.cats + '</b> 知识点</div>'
+      + '</div>';
+  });
+  html += '<div class="cov-note">已涉及 = 出现过（含每次都错）；已学习 = 已掌握或过了第一阶段；已掌握 = 连对达标并标记。知识点 = 6 大分类（语法/词汇/搭配/场景/易错/句子）。</div>';
+  var covEl = document.getElementById('coveragePanel');
+  if (covEl) covEl.innerHTML = html;
 }
 
 // ============ START MODE ============
