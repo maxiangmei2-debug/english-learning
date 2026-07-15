@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260715-1200">
+<meta name="build-version" content="20260715-1210">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>学习模块</title>
 <style>
@@ -187,6 +187,15 @@ body {
   .study-table td { padding: 3px 4px; font-size: 11px; }
 }
 </style>
+<style>
+.spk{display:inline-block;margin-left:6px;cursor:pointer;font-size:13px;line-height:1;
+  color:var(--primary,#6366F1);opacity:.5;transition:opacity .15s,transform .1s;
+  user-select:none;vertical-align:middle;}
+.spk:hover{opacity:1;transform:scale(1.18);}
+.spk:active{transform:scale(.92);}
+.spk.speaking{opacity:1;animation:pulse .6s ease;}
+@keyframes pulse{0%{transform:scale(1);}50%{transform:scale(1.3);}100%{transform:scale(1);}}
+</style>
 </head>
 <body>
 
@@ -299,23 +308,23 @@ var MODULES = {
           '<div class="sub-title">三大核心用法</div>'+
           '<table class="study-table">'+
           '<tr><th style="width:20%;">用法</th><th style="width:40%;">含义</th><th style="width:40%;">例句</th></tr>'+
-          '<tr><td><strong>经验</strong></td><td>曾经做过（对目前有影响）</td><td class="en">I have been to Paris. 我去过巴黎。</td></tr>'+
-          '<tr><td><strong>持续</strong></td><td>从过去持续到现在</td><td class="en">I have lived here since 2019. 从2019住到现在。</td></tr>'+
-          '<tr><td><strong>结果</strong></td><td>刚刚完成，对现在产生影响</td><td class="en">I have lost my key. 我把钥匙弄丢了。（现在进不去）</td></tr>'+
+          '<tr><td><strong>经验</strong></td><td>曾经做过（对目前有影响）</td><td class="en">I have been to Paris. 我去过巴黎。<span class="spk">🔊</span></td></tr>'+
+          '<tr><td><strong>持续</strong></td><td>从过去持续到现在</td><td class="en">I have lived here since 2019. 从2019住到现在。<span class="spk">🔊</span></td></tr>'+
+          '<tr><td><strong>结果</strong></td><td>刚刚完成，对现在产生影响</td><td class="en">I have lost my key. 我把钥匙弄丢了。（现在进不去）<span class="spk">🔊</span></td></tr>'+
           '</table>'+
           '<div class="sub-title">现在完成时 vs 一般过去时</div>'+
           '<table class="study-table">'+
           '<tr><th style="width:25%;"></th><th style="width:37.5%;">现在完成时</th><th style="width:37.5%;">一般过去时</th></tr>'+
           '<tr><td><strong>时间感</strong></td><td>与现在有关</td><td>纯过去，与现在无关</td></tr>'+
           '<tr><td><strong>标志词</strong></td><td>already, yet, ever, never, since, for</td><td>yesterday, last week, in 2019, ago</td></tr>'+
-          '<tr><td><strong>例句</strong></td><td class="en">I have been there. ✅</td><td class="en">I was there in 2019. ✅</td></tr>'+
+          '<tr><td><strong>例句</strong></td><td class="en">I have been there. ✅<span class="spk">🔊</span></td><td class="en">I was there in 2019. ✅<span class="spk">🔊</span></td></tr>'+
           '<tr><td><strong>❌ 错误</strong></td><td colspan="2">I have been there in 2019. ❌（有具体过去时间 → 一般过去时）</td></tr>'+
           '</table>'+
           '<div class="sub-title">关键标志词</div>'+
           '<table class="study-table">'+
           '<tr><th>标志词</th><th>含义</th><th>位置</th><th>例句</th></tr>'+
-          '<tr><td class="en">for + 一段时间</td><td>持续了多久</td><td>句末</td><td class="en">for 3 years / for six months</td></tr>'+
-          '<tr><td class="en">since + 时间点</td><td>自从...</td><td>句末</td><td class="en">since 2019 / since last March</td></tr>'+
+          '<tr><td class="en">for + 一段时间<span class="spk">🔊</span></td><td>持续了多久</td><td>句末</td><td class="en">for 3 years / for six months<span class="spk">🔊</span></td></tr>'+
+          '<tr><td class="en">since + 时间点<span class="spk">🔊</span></td><td>自从...</td><td>句末</td><td class="en">since 2019 / since last March<span class="spk">🔊</span></td></tr>'+
           '</table>'+
           '<div class="sub-title">have been to vs have gone to</div>'+
           '<div style="font-size:13px;line-height:1.8;">'+
@@ -350,13 +359,13 @@ var MODULES = {
         type: 'grammar', title: '⚡ 情态动词 must / have to 家族',
         content: '<table class="study-table">'+
           '<tr><th>情态动词</th><th>含义</th><th>语气强度</th><th>例句</th></tr>'+
-          '<tr><td class="en">must</td><td>必须（主观）</td><td>最强</td><td class="en">I must finish this today.</td></tr>'+
-          '<tr><td class="en">have to</td><td>不得不（客观）</td><td>强</td><td class="en">I have to wear a uniform.</td></tr>'+
-          '<tr><td class="en">should</td><td>应该（建议）</td><td>中</td><td class="en">You should see a doctor.</td></tr>'+
-          '<tr><td class="en">can</td><td>能够/可以</td><td>中</td><td class="en">Can I help you?</td></tr>'+
-          '<tr><td class="en">could</td><td>可以（更礼貌）</td><td>弱</td><td class="en">Could I have the menu?</td></tr>'+
-          '<tr><td class="en">may</td><td>也许/可以</td><td>弱</td><td class="en">May I come in?</td></tr>'+
-          '<tr><td class="en">might</td><td>也许（可能性更低）</td><td>最弱</td><td class="en">It might rain later.</td></tr>'+
+          '<tr><td class="en">must<span class="spk">🔊</span></td><td>必须（主观）</td><td>最强</td><td class="en">I must finish this today.<span class="spk">🔊</span></td></tr>'+
+          '<tr><td class="en">have to<span class="spk">🔊</span></td><td>不得不（客观）</td><td>强</td><td class="en">I have to wear a uniform.<span class="spk">🔊</span></td></tr>'+
+          '<tr><td class="en">should<span class="spk">🔊</span></td><td>应该（建议）</td><td>中</td><td class="en">You should see a doctor.<span class="spk">🔊</span></td></tr>'+
+          '<tr><td class="en">can<span class="spk">🔊</span></td><td>能够/可以</td><td>中</td><td class="en">Can I help you?<span class="spk">🔊</span></td></tr>'+
+          '<tr><td class="en">could<span class="spk">🔊</span></td><td>可以（更礼貌）</td><td>弱</td><td class="en">Could I have the menu?<span class="spk">🔊</span></td></tr>'+
+          '<tr><td class="en">may<span class="spk">🔊</span></td><td>也许/可以</td><td>弱</td><td class="en">May I come in?<span class="spk">🔊</span></td></tr>'+
+          '<tr><td class="en">might<span class="spk">🔊</span></td><td>也许（可能性更低）</td><td>最弱</td><td class="en">It might rain later.<span class="spk">🔊</span></td></tr>'+
           '</table>'+
           '<div class="tip-box">'+
           '<strong>铁律：</strong>情态动词后面的动词<strong>永远是原形</strong>！<br>'+
@@ -366,10 +375,10 @@ var MODULES = {
         type: 'grammar', title: '💬 情态动词：请求 & 建议',
         content: '<table class="study-table">'+
           '<tr><th style="width:25%;">功能</th><th style="width:37.5%;">句型</th><th style="width:37.5%;">场景</th></tr>'+
-          '<tr><td><strong>请求许可</strong></td><td class="en">Can/Could/May I + 原形?</td><td>Can I use your phone? 能用手机吗？</td></tr>'+
-          '<tr><td><strong>礼貌请求</strong></td><td class="en">Could/Would you + 原形?</td><td>Could you help me? 能帮我一下吗？</td></tr>'+
-          '<tr><td><strong>提建议</strong></td><td class="en">You should/shouldn\'t + 原形</td><td>You should rest. 你应该休息。</td></tr>'+
-          '<tr><td><strong>表达必要</strong></td><td class="en">must / have to + 原形</td><td>I must go now. 我必须走了。</td></tr>'+
+          '<tr><td><strong>请求许可</strong></td><td class="en">Can/Could/May I + 原形?<span class="spk">🔊</span></td><td>Can I use your phone? 能用手机吗？</td></tr>'+
+          '<tr><td><strong>礼貌请求</strong></td><td class="en">Could/Would you + 原形?<span class="spk">🔊</span></td><td>Could you help me? 能帮我一下吗？</td></tr>'+
+          '<tr><td><strong>提建议</strong></td><td class="en">You should/shouldn\'t + 原形<span class="spk">🔊</span></td><td>You should rest. 你应该休息。</td></tr>'+
+          '<tr><td><strong>表达必要</strong></td><td class="en">must / have to + 原形<span class="spk">🔊</span></td><td>I must go now. 我必须走了。</td></tr>'+
           '</table>'+
           '<div class="tip-box">'+
           '<strong>礼貌等级：</strong>Could/May/Would（最礼貌）> Can（一般）> Must/Should（命令/建议）</div>'
@@ -384,9 +393,9 @@ var MODULES = {
         type: 'grammar', title: '🌳 从句体系概览',
         content: '<table class="study-table">'+
           '<tr><th style="width:20%;">从句类型</th><th style="width:30%;">引导词</th><th style="width:25%;">充当成分</th><th style="width:25%;">例句</th></tr>'+
-          '<tr><td><strong>名词性从句</strong></td><td>that, what, who</td><td>主语/宾语/表语</td><td class="en">I think <strong>that</strong> he is right.</td></tr>'+
-          '<tr><td><strong>定语从句</strong></td><td>who, which, that</td><td>修饰名词</td><td class="en">The book <strong>that</strong> I read.</td></tr>'+
-          '<tr><td><strong>状语从句</strong></td><td>when, because, if, although</td><td>表时间/原因/条件</td><td class="en"><strong>If</strong> it rains, I\'ll stay home.</td></tr>'+
+          '<tr><td><strong>名词性从句</strong></td><td>that, what, who</td><td>主语/宾语/表语</td><td class="en">I think <strong>that</strong> he is right.<span class="spk">🔊</span></td></tr>'+
+          '<tr><td><strong>定语从句</strong></td><td>who, which, that</td><td>修饰名词</td><td class="en">The book <strong>that</strong> I read.<span class="spk">🔊</span></td></tr>'+
+          '<tr><td><strong>状语从句</strong></td><td>when, because, if, although</td><td>表时间/原因/条件</td><td class="en"><strong>If</strong> it rains, I\'ll stay home.<span class="spk">🔊</span></td></tr>'+
           '</table>'+
           '<div class="tip-box"><strong>核心规则：</strong>that/which 修饰物，who 修饰人，where 修饰地点。从句本身也是完整句子。</div>'
       },
@@ -414,13 +423,13 @@ var MODULES = {
       {
         type: 'vocab', title: '🏠 租房 & 生活 核心词汇',
         content: '<table class="study-table">'+
-          '<tr><th>英文</th><th>音标</th><th>中文</th><th>英文</th><th>中文</th></tr><tr><td class="en">landlord</td><td>/ˈlændlɔrd/</td><td>房东</td><td class="en">tenant</td><td>租客</td></tr><tr><td class="en">deposit</td><td>/dɪˈpɑzət/</td><td>押金</td><td class="en">utility bill</td><td>水电费</td></tr><tr><td class="en">furnished</td><td>/ˈfərnɪʃt/</td><td>带家具的</td><td class="en">balcony</td><td>阳台</td></tr><tr><td class="en">air conditioner</td><td>/er kənˈdɪʃənər/</td><td>空调</td><td class="en">heater</td><td>暖气</td></tr><tr><td class="en">neighborhood</td><td>/ˈneɪbərhʊd/</td><td>社区；附近</td><td class="en">move in/out</td><td>搬进/出</td></tr>'+
+          '<tr><th>英文</th><th>音标</th><th>中文</th><th>英文</th><th>中文</th></tr><tr><td class="en">landlord<span class="spk">🔊</span></td><td>/ˈlændlɔrd/</td><td>房东</td><td class="en">tenant<span class="spk">🔊</span></td><td>租客</td></tr><tr><td class="en">deposit<span class="spk">🔊</span></td><td>/dɪˈpɑzət/</td><td>押金</td><td class="en">utility bill<span class="spk">🔊</span></td><td>水电费</td></tr><tr><td class="en">furnished<span class="spk">🔊</span></td><td>/ˈfərnɪʃt/</td><td>带家具的</td><td class="en">balcony<span class="spk">🔊</span></td><td>阳台</td></tr><tr><td class="en">air conditioner<span class="spk">🔊</span></td><td>/er kənˈdɪʃənər/</td><td>空调</td><td class="en">heater<span class="spk">🔊</span></td><td>暖气</td></tr><tr><td class="en">neighborhood<span class="spk">🔊</span></td><td>/ˈneɪbərhʊd/</td><td>社区；附近</td><td class="en">move in/out<span class="spk">🔊</span></td><td>搬进/出</td></tr>'+
           '</table>'
       },
       {
         type: 'vocab', title: '🛒 购物 & 砍价 核心词汇',
         content: '<table class="study-table">'+
-          '<tr><th>英文</th><th>音标</th><th>中文</th><th>英文</th><th>中文</th></tr><tr><td class="en">discount</td><td>/ˈdɪskaʊnt/</td><td>折扣</td><td class="en">on sale</td><td>打折中</td></tr><tr><td class="en">bargain</td><td>/ˈbɑrgɪn/</td><td>讨价还价/便宜货</td><td class="en">receipt</td><td>收据</td></tr><tr><td class="en">cashier</td><td>/kæˈʃɪr/</td><td>收银员</td><td class="en">fitting room</td><td>试衣间</td></tr><tr><td class="en">size</td><td>/saɪz/</td><td>尺码</td><td class="en">refund</td><td>退款</td></tr><tr><td class="en">second-hand</td><td></td><td>二手的</td><td class="en">brand new</td><td>全新的</td></tr>'+
+          '<tr><th>英文</th><th>音标</th><th>中文</th><th>英文</th><th>中文</th></tr><tr><td class="en">discount<span class="spk">🔊</span></td><td>/ˈdɪskaʊnt/</td><td>折扣</td><td class="en">on sale<span class="spk">🔊</span></td><td>打折中</td></tr><tr><td class="en">bargain<span class="spk">🔊</span></td><td>/ˈbɑrgɪn/</td><td>讨价还价/便宜货</td><td class="en">receipt<span class="spk">🔊</span></td><td>收据</td></tr><tr><td class="en">cashier<span class="spk">🔊</span></td><td>/kæˈʃɪr/</td><td>收银员</td><td class="en">fitting room<span class="spk">🔊</span></td><td>试衣间</td></tr><tr><td class="en">size<span class="spk">🔊</span></td><td>/saɪz/</td><td>尺码</td><td class="en">refund<span class="spk">🔊</span></td><td>退款</td></tr><tr><td class="en">second-hand<span class="spk">🔊</span></td><td></td><td>二手的</td><td class="en">brand new<span class="spk">🔊</span></td><td>全新的</td></tr>'+
           '</table>'
       },
       {
@@ -435,7 +444,7 @@ var MODULES = {
       {
         type: 'vocab', title: '🏢 房产租赁核心词 (MC05&10)',
         content: '<table class="study-table">'+
-          '<tr><th>英文</th><th>音标</th><th>中文</th><th>英文</th><th>中文</th></tr><tr><td class="en">real-estate</td><td>/ˈrilɪsteɪt/</td><td>房地产</td><td class="en">tenant</td><td>租客</td></tr><tr><td class="en">property</td><td>/ˈprɑpərti/</td><td>房产；地产</td><td class="en">utility</td><td>水电燃气</td></tr><tr><td class="en">deposit</td><td>/dɪˈpɑzət/</td><td>押金</td><td class="en">furnish</td><td>配备家具</td></tr><tr><td class="en">furniture</td><td>/ˈfərnɪʧər/</td><td>家具(不可数)</td><td class="en">amenity</td><td>生活配套</td></tr><tr><td class="en">lift</td><td>/lɪft/</td><td>电梯(英式)</td><td class="en">metro</td><td>地铁</td></tr>'+
+          '<tr><th>英文</th><th>音标</th><th>中文</th><th>英文</th><th>中文</th></tr><tr><td class="en">real-estate<span class="spk">🔊</span></td><td>/ˈrilɪsteɪt/</td><td>房地产</td><td class="en">tenant<span class="spk">🔊</span></td><td>租客</td></tr><tr><td class="en">property<span class="spk">🔊</span></td><td>/ˈprɑpərti/</td><td>房产；地产</td><td class="en">utility<span class="spk">🔊</span></td><td>水电燃气</td></tr><tr><td class="en">deposit<span class="spk">🔊</span></td><td>/dɪˈpɑzət/</td><td>押金</td><td class="en">furnish<span class="spk">🔊</span></td><td>配备家具</td></tr><tr><td class="en">furniture<span class="spk">🔊</span></td><td>/ˈfərnɪʧər/</td><td>家具(不可数)</td><td class="en">amenity<span class="spk">🔊</span></td><td>生活配套</td></tr><tr><td class="en">lift<span class="spk">🔊</span></td><td>/lɪft/</td><td>电梯(英式)</td><td class="en">metro<span class="spk">🔊</span></td><td>地铁</td></tr>'+
           '</table>'+
           '<div class="example-box">How <strong>big</strong> is your house? 你家多大？</div>'+
           '<div class="example-box">How <strong>far</strong> is the store? 商店多远？</div>'
@@ -449,13 +458,13 @@ var MODULES = {
       {
         type: 'vocab', title: '🍽️ 点餐用餐 核心词汇',
         content: '<table class="study-table">'+
-          '<tr><th>英文</th><th>音标</th><th>中文</th><th>英文</th><th>中文</th></tr><tr><td class="en">menu</td><td>/ˈmenju/</td><td>菜单</td><td class="en">appetizer</td><td>开胃菜</td></tr><tr><td class="en">main course</td><td>/meɪn kɔrs/</td><td>主菜</td><td class="en">dessert</td><td>甜点</td></tr><tr><td class="en">rare/medium/well-done</td><td>/rer/ /ˈmidiəm/</td><td>一分/五分/全熟</td><td class="en">tip</td><td>小费</td></tr><tr><td class="en">reservation</td><td>/rezərˈveɪʃən/</td><td>预约</td><td class="en">bill/check</td><td>账单</td></tr><tr><td class="en">vegetarian</td><td>/veʤəˈteriən/</td><td>素食的</td><td class="en">allergic</td><td>过敏的</td></tr>'+
+          '<tr><th>英文</th><th>音标</th><th>中文</th><th>英文</th><th>中文</th></tr><tr><td class="en">menu<span class="spk">🔊</span></td><td>/ˈmenju/</td><td>菜单</td><td class="en">appetizer<span class="spk">🔊</span></td><td>开胃菜</td></tr><tr><td class="en">main course<span class="spk">🔊</span></td><td>/meɪn kɔrs/</td><td>主菜</td><td class="en">dessert<span class="spk">🔊</span></td><td>甜点</td></tr><tr><td class="en">rare/medium/well-done<span class="spk">🔊</span></td><td>/rer/ /ˈmidiəm/</td><td>一分/五分/全熟</td><td class="en">tip<span class="spk">🔊</span></td><td>小费</td></tr><tr><td class="en">reservation<span class="spk">🔊</span></td><td>/rezərˈveɪʃən/</td><td>预约</td><td class="en">bill/check<span class="spk">🔊</span></td><td>账单</td></tr><tr><td class="en">vegetarian<span class="spk">🔊</span></td><td>/veʤəˈteriən/</td><td>素食的</td><td class="en">allergic<span class="spk">🔊</span></td><td>过敏的</td></tr>'+
           '</table>'
       },
       {
         type: 'vocab', title: '✈️ 旅行 & 住宿 核心词汇',
         content: '<table class="study-table">'+
-          '<tr><th>英文</th><th>音标</th><th>中文</th><th>英文</th><th>中文</th></tr><tr><td class="en">check in</td><td>/ʧek ɪn/</td><td>办理入住</td><td class="en">check out</td><td>退房</td></tr><tr><td class="en">single/double room</td><td>/ˈsɪŋgəl/ /ˈdəbəl rum/</td><td>单人/双人房</td><td class="en">suite</td><td>套房</td></tr><tr><td class="en">boarding pass</td><td>/ˈbɔrdɪŋ pæs/</td><td>登机牌</td><td class="en">departure</td><td>出发</td></tr><tr><td class="en">luggage/baggage</td><td>/ˈləgɪʤ/ /ˈbægɪʤ/</td><td>行李</td><td class="en">delay</td><td>延误</td></tr><tr><td class="en">one-way/round trip</td><td>/ˈwənˈweɪ/ /raʊnd trɪp/</td><td>单程/往返</td><td class="en">transfer</td><td>转机</td></tr>'+
+          '<tr><th>英文</th><th>音标</th><th>中文</th><th>英文</th><th>中文</th></tr><tr><td class="en">check in<span class="spk">🔊</span></td><td>/ʧek ɪn/</td><td>办理入住</td><td class="en">check out<span class="spk">🔊</span></td><td>退房</td></tr><tr><td class="en">single/double room<span class="spk">🔊</span></td><td>/ˈsɪŋgəl/ /ˈdəbəl rum/</td><td>单人/双人房</td><td class="en">suite<span class="spk">🔊</span></td><td>套房</td></tr><tr><td class="en">boarding pass<span class="spk">🔊</span></td><td>/ˈbɔrdɪŋ pæs/</td><td>登机牌</td><td class="en">departure<span class="spk">🔊</span></td><td>出发</td></tr><tr><td class="en">luggage/baggage<span class="spk">🔊</span></td><td>/ˈləgɪʤ/ /ˈbægɪʤ/</td><td>行李</td><td class="en">delay<span class="spk">🔊</span></td><td>延误</td></tr><tr><td class="en">one-way/round trip<span class="spk">🔊</span></td><td>/ˈwənˈweɪ/ /raʊnd trɪp/</td><td>单程/往返</td><td class="en">transfer<span class="spk">🔊</span></td><td>转机</td></tr>'+
           '</table>'
       },
       {
@@ -469,7 +478,7 @@ var MODULES = {
       {
         type: 'vocab', title: '✈️ 飞行 & 露营核心词 (MC05&10)',
         content: '<table class="study-table">'+
-          '<tr><th>英文</th><th>音标</th><th>中文</th><th>英文</th><th>中文</th></tr><tr><td class="en">engine</td><td>/ˈɪnʤən/</td><td>发动机</td><td class="en">pilot</td><td>飞行员</td></tr><tr><td class="en">parachute</td><td>/ˈperəʃut/</td><td>降落伞</td><td class="en">grab</td><td>抓住；夺取</td></tr><tr><td class="en">backpack</td><td>/ˈbækpæk/</td><td>背包</td><td class="en">forecast</td><td>预报</td></tr><tr><td class="en">insect / repellent</td><td>/ˈɪnsekt/ /rɪˈpelənt/</td><td>昆虫/驱虫剂</td><td class="en">flashlight</td><td>手电筒</td></tr><tr><td class="en">flip-flops / thongs</td><td></td><td>人字拖</td><td class="en">first aid kit</td><td>急救包</td></tr>'+
+          '<tr><th>英文</th><th>音标</th><th>中文</th><th>英文</th><th>中文</th></tr><tr><td class="en">engine<span class="spk">🔊</span></td><td>/ˈɪnʤən/</td><td>发动机</td><td class="en">pilot<span class="spk">🔊</span></td><td>飞行员</td></tr><tr><td class="en">parachute<span class="spk">🔊</span></td><td>/ˈperəʃut/</td><td>降落伞</td><td class="en">grab<span class="spk">🔊</span></td><td>抓住；夺取</td></tr><tr><td class="en">backpack<span class="spk">🔊</span></td><td>/ˈbækpæk/</td><td>背包</td><td class="en">forecast<span class="spk">🔊</span></td><td>预报</td></tr><tr><td class="en">insect / repellent<span class="spk">🔊</span></td><td>/ˈɪnsekt/ /rɪˈpelənt/</td><td>昆虫/驱虫剂</td><td class="en">flashlight<span class="spk">🔊</span></td><td>手电筒</td></tr><tr><td class="en">flip-flops / thongs<span class="spk">🔊</span></td><td></td><td>人字拖</td><td class="en">first aid kit<span class="spk">🔊</span></td><td>急救包</td></tr>'+
           '</table>'+
           '<div class="example-box">The pilot jumped <strong>with a parachute</strong>. 飞行员带降落伞跳下。</div>'+
           '<div class="example-box">Check the <strong>forecast</strong> before camping. 露营前看天气。</div>'
@@ -483,19 +492,19 @@ var MODULES = {
       {
         type: 'vocab', title: '🧍 身体部位 核心词汇',
         content: '<table class="study-table">'+
-          '<tr><td class="en">head</td><td>头</td><td class="en">stomach</td><td>胃/肚子</td>'+
-          '<td class="en">chest</td><td>胸口</td><td class="en">back</td><td>背</td></tr>'+
-          '<tr><td class="en">throat</td><td>喉咙</td><td class="en">arm/leg</td><td>手臂/腿</td>'+
-          '<td class="en">knee</td><td>膝盖</td><td class="en">ankle</td><td>脚踝</td></tr>'+
+          '<tr><td class="en">head<span class="spk">🔊</span></td><td>头</td><td class="en">stomach<span class="spk">🔊</span></td><td>胃/肚子</td>'+
+          '<td class="en">chest<span class="spk">🔊</span></td><td>胸口</td><td class="en">back<span class="spk">🔊</span></td><td>背</td></tr>'+
+          '<tr><td class="en">throat<span class="spk">🔊</span></td><td>喉咙</td><td class="en">arm/leg<span class="spk">🔊</span></td><td>手臂/腿</td>'+
+          '<td class="en">knee<span class="spk">🔊</span></td><td>膝盖</td><td class="en">ankle<span class="spk">🔊</span></td><td>脚踝</td></tr>'+
           '</table>'
       },
       {
         type: 'vocab', title: '🏥 看医生 & 症状 核心词汇',
         content: '<table class="study-table">'+
-          '<tr><td class="en">headache</td><td>头痛</td><td class="en">fever</td><td>发烧</td>'+
-          '<td class="en">cough</td><td>咳嗽</td><td class="en">sore throat</td><td>喉咙痛</td></tr>'+
-          '<tr><td class="en">appointment</td><td>预约</td><td class="en">prescription</td><td>处方</td>'+
-          '<td class="en">symptom</td><td>症状</td><td class="en">medicine</td><td>药</td></tr>'+
+          '<tr><td class="en">headache<span class="spk">🔊</span></td><td>头痛</td><td class="en">fever<span class="spk">🔊</span></td><td>发烧</td>'+
+          '<td class="en">cough<span class="spk">🔊</span></td><td>咳嗽</td><td class="en">sore throat<span class="spk">🔊</span></td><td>喉咙痛</td></tr>'+
+          '<tr><td class="en">appointment<span class="spk">🔊</span></td><td>预约</td><td class="en">prescription<span class="spk">🔊</span></td><td>处方</td>'+
+          '<td class="en">symptom<span class="spk">🔊</span></td><td>症状</td><td class="en">medicine<span class="spk">🔊</span></td><td>药</td></tr>'+
           '</table>'
       },
       {
@@ -515,19 +524,19 @@ var MODULES = {
       {
         type: 'vocab', title: '👤 外貌 & 性格 核心词汇',
         content: '<table class="study-table">'+
-          '<tr><td class="en">tall / short</td><td>高/矮</td><td class="en">slim / overweight</td><td>苗条/超重</td></tr>'+
-          '<tr><td class="en">blond / curly / straight</td><td>金发/卷发/直发</td><td class="en">bald</td><td>秃头</td></tr>'+
-          '<tr><td class="en">friendly / shy</td><td>友好的/害羞的</td><td class="en">outgoing / quiet</td><td>外向的/安静的</td></tr>'+
-          '<tr><td class="en">patient / strict</td><td>耐心的/严格的</td><td class="en">generous / mean</td><td>慷慨的/小气的</td></tr>'+
+          '<tr><td class="en">tall / short<span class="spk">🔊</span></td><td>高/矮</td><td class="en">slim / overweight<span class="spk">🔊</span></td><td>苗条/超重</td></tr>'+
+          '<tr><td class="en">blond / curly / straight<span class="spk">🔊</span></td><td>金发/卷发/直发</td><td class="en">bald<span class="spk">🔊</span></td><td>秃头</td></tr>'+
+          '<tr><td class="en">friendly / shy<span class="spk">🔊</span></td><td>友好的/害羞的</td><td class="en">outgoing / quiet<span class="spk">🔊</span></td><td>外向的/安静的</td></tr>'+
+          '<tr><td class="en">patient / strict<span class="spk">🔊</span></td><td>耐心的/严格的</td><td class="en">generous / mean<span class="spk">🔊</span></td><td>慷慨的/小气的</td></tr>'+
           '</table>'
       },
       {
         type: 'vocab', title: '😰 情绪表达 核心词汇',
         content: '<table class="study-table">'+
-          '<tr><td class="en">excited</td><td>兴奋的</td><td class="en">anxious</td><td>焦虑的</td>'+
-          '<td class="en">annoyed</td><td>恼怒的</td><td class="en">relieved</td><td>放心的</td></tr>'+
-          '<tr><td class="en">disappointed</td><td>失望的</td><td class="en">jealous</td><td>嫉妒的</td>'+
-          '<td class="en">grateful</td><td>感激的</td><td class="en">embarrassed</td><td>尴尬的</td></tr>'+
+          '<tr><td class="en">excited<span class="spk">🔊</span></td><td>兴奋的</td><td class="en">anxious<span class="spk">🔊</span></td><td>焦虑的</td>'+
+          '<td class="en">annoyed<span class="spk">🔊</span></td><td>恼怒的</td><td class="en">relieved<span class="spk">🔊</span></td><td>放心的</td></tr>'+
+          '<tr><td class="en">disappointed<span class="spk">🔊</span></td><td>失望的</td><td class="en">jealous<span class="spk">🔊</span></td><td>嫉妒的</td>'+
+          '<td class="en">grateful<span class="spk">🔊</span></td><td>感激的</td><td class="en">embarrassed<span class="spk">🔊</span></td><td>尴尬的</td></tr>'+
           '</table>'
       },
       {
@@ -541,7 +550,7 @@ var MODULES = {
       {
         type: 'vocab', title: '🏡 描述家乡核心词 (MC05&10)',
         content: '<table class="study-table">'+
-          '<tr><th>英文</th><th>音标</th><th>中文</th><th>英文</th><th>中文</th></tr><tr><td class="en">modern ↔ traditional</td><td>/ˈmɑdərn trəˈdɪʃənəl/</td><td>现代↔传统</td><td class="en">crowded ↔ quiet</td><td>拥挤↔安静</td></tr><tr><td class="en">convenient ↔ inconvenient</td><td>/kənˈvinjənt ɪnkənˈvinjənt/</td><td>便利↔不便</td><td class="en">busy ↔ unbusy</td><td>繁忙↔不忙</td></tr><tr><td class="en">safe ↔ dangerous</td><td>/seɪf ˈdeɪnʤərəs/</td><td>安全↔危险</td><td class="en">clean ↔ polluted</td><td>干净↔污染</td></tr>'+
+          '<tr><th>英文</th><th>音标</th><th>中文</th><th>英文</th><th>中文</th></tr><tr><td class="en">modern ↔ traditional<span class="spk">🔊</span></td><td>/ˈmɑdərn trəˈdɪʃənəl/</td><td>现代↔传统</td><td class="en">crowded ↔ quiet<span class="spk">🔊</span></td><td>拥挤↔安静</td></tr><tr><td class="en">convenient ↔ inconvenient<span class="spk">🔊</span></td><td>/kənˈvinjənt ɪnkənˈvinjənt/</td><td>便利↔不便</td><td class="en">busy ↔ unbusy<span class="spk">🔊</span></td><td>繁忙↔不忙</td></tr><tr><td class="en">safe ↔ dangerous<span class="spk">🔊</span></td><td>/seɪf ˈdeɪnʤərəs/</td><td>安全↔危险</td><td class="en">clean ↔ polluted<span class="spk">🔊</span></td><td>干净↔污染</td></tr>'+
           '</table>'+
           '<div class="example-box">My hometown is a <strong>fairly large</strong> town. 我的家乡是个挺大的镇。</div>'+
           '<div class="example-box">It\'s <strong>famous for</strong> natural sights. 以自然风光闻名。</div>'+
@@ -556,10 +565,10 @@ var MODULES = {
       {
         type: 'vocab', title: '💼 职场 & 沟通 核心词汇',
         content: '<table class="study-table">'+
-          '<tr><td class="en">resume/CV</td><td>简历</td><td class="en">interview</td><td>面试</td>'+
-          '<td class="en">colleague</td><td>同事</td><td class="en">deadline</td><td>截止日期</td></tr>'+
-          '<tr><td class="en">salary</td><td>薪资</td><td class="en">promotion</td><td>升职</td>'+
-          '<td class="en">overtime</td><td>加班</td><td class="en">quit/resign</td><td>辞职</td></tr>'+
+          '<tr><td class="en">resume/CV<span class="spk">🔊</span></td><td>简历</td><td class="en">interview<span class="spk">🔊</span></td><td>面试</td>'+
+          '<td class="en">colleague<span class="spk">🔊</span></td><td>同事</td><td class="en">deadline<span class="spk">🔊</span></td><td>截止日期</td></tr>'+
+          '<tr><td class="en">salary<span class="spk">🔊</span></td><td>薪资</td><td class="en">promotion<span class="spk">🔊</span></td><td>升职</td>'+
+          '<td class="en">overtime<span class="spk">🔊</span></td><td>加班</td><td class="en">quit/resign<span class="spk">🔊</span></td><td>辞职</td></tr>'+
           '</table>'
       },
       {
@@ -574,7 +583,7 @@ var MODULES = {
       {
         type: 'vocab', title: '🤝 展会商务核心词 (MC05&10)',
         content: '<table class="study-table">'+
-          '<tr><th>英文</th><th>音标</th><th>中文</th><th>英文</th><th>中文</th></tr><tr><td class="en">showcase products</td><td>/ˈʃəʊkeɪs ˈprɑdəkts/</td><td>展示产品</td><td class="en">wholesale price</td><td>批发价</td></tr><tr><td class="en">bulk order</td><td>/bəlk ˈɔrdər/</td><td>批量订单</td><td class="en">return policy</td><td>退货政策</td></tr><tr><td class="en">shipping fee</td><td>/ˈʃɪpɪŋ fi/</td><td>运费</td><td class="en">salesperson</td><td>销售员</td></tr><tr><td class="en">customer</td><td>/ˈkəstəmər/</td><td>客户</td><td class="en">manufacture</td><td>生产(货物)</td></tr>'+
+          '<tr><th>英文</th><th>音标</th><th>中文</th><th>英文</th><th>中文</th></tr><tr><td class="en">showcase products<span class="spk">🔊</span></td><td>/ˈʃəʊkeɪs ˈprɑdəkts/</td><td>展示产品</td><td class="en">wholesale price<span class="spk">🔊</span></td><td>批发价</td></tr><tr><td class="en">bulk order<span class="spk">🔊</span></td><td>/bəlk ˈɔrdər/</td><td>批量订单</td><td class="en">return policy<span class="spk">🔊</span></td><td>退货政策</td></tr><tr><td class="en">shipping fee<span class="spk">🔊</span></td><td>/ˈʃɪpɪŋ fi/</td><td>运费</td><td class="en">salesperson<span class="spk">🔊</span></td><td>销售员</td></tr><tr><td class="en">customer<span class="spk">🔊</span></td><td>/ˈkəstəmər/</td><td>客户</td><td class="en">manufacture<span class="spk">🔊</span></td><td>生产(货物)</td></tr>'+
           '</table>'+
           '<div class="example-box">How much is it? / What\'s the <strong>wholesale price</strong>? 多少钱？批发价？</div>'+
           '<div class="example-box">Is the <strong>shipping</strong> free? 运费免费吗？</div>'
@@ -588,19 +597,19 @@ var MODULES = {
       {
         type: 'vocab', title: '🌍 环保主题 核心词汇',
         content: '<table class="study-table">'+
-          '<tr><td class="en">environment</td><td>环境</td><td class="en">pollution</td><td>污染</td>'+
-          '<td class="en">recycle</td><td>回收</td><td class="en">global warming</td><td>全球变暖</td></tr>'+
-          '<tr><td class="en">carbon footprint</td><td>碳足迹</td><td class="en">renewable energy</td><td>可再生能源</td></tr>'+
-          '<tr><td class="en">endangered</td><td>濒危的</td><td class="en">sustainable</td><td>可持续的</td></tr>'+
+          '<tr><td class="en">environment<span class="spk">🔊</span></td><td>环境</td><td class="en">pollution<span class="spk">🔊</span></td><td>污染</td>'+
+          '<td class="en">recycle<span class="spk">🔊</span></td><td>回收</td><td class="en">global warming<span class="spk">🔊</span></td><td>全球变暖</td></tr>'+
+          '<tr><td class="en">carbon footprint<span class="spk">🔊</span></td><td>碳足迹</td><td class="en">renewable energy<span class="spk">🔊</span></td><td>可再生能源</td></tr>'+
+          '<tr><td class="en">endangered<span class="spk">🔊</span></td><td>濒危的</td><td class="en">sustainable<span class="spk">🔊</span></td><td>可持续的</td></tr>'+
           '</table>'
       },
       {
         type: 'vocab', title: '📰 犯罪新闻 核心词汇',
         content: '<table class="study-table">'+
-          '<tr><td class="en">robbery</td><td>抢劫</td><td class="en">burglary</td><td>入室盗窃</td>'+
-          '<td class="en">suspect</td><td>嫌疑人</td><td class="en">witness</td><td>目击者</td></tr>'+
-          '<tr><td class="en">arrest</td><td>逮捕</td><td class="en">evidence</td><td>证据</td>'+
-          '<td class="en">investigation</td><td>调查</td><td class="en">sentence</td><td>判决</td></tr>'+
+          '<tr><td class="en">robbery<span class="spk">🔊</span></td><td>抢劫</td><td class="en">burglary<span class="spk">🔊</span></td><td>入室盗窃</td>'+
+          '<td class="en">suspect<span class="spk">🔊</span></td><td>嫌疑人</td><td class="en">witness<span class="spk">🔊</span></td><td>目击者</td></tr>'+
+          '<tr><td class="en">arrest<span class="spk">🔊</span></td><td>逮捕</td><td class="en">evidence<span class="spk">🔊</span></td><td>证据</td>'+
+          '<td class="en">investigation<span class="spk">🔊</span></td><td>调查</td><td class="en">sentence<span class="spk">🔊</span></td><td>判决</td></tr>'+
           '</table>'
       },
       {
@@ -621,10 +630,10 @@ var MODULES = {
         type: 'grammar', title: '🐺 动物量词与状语从句',
         content: '<table class="study-table">'+
           '<tr><th>动物</th><th>量词</th><th>例句</th></tr>'+
-          '<tr><td>鸟 birds</td><td class="en">a flock of</td><td class="en">a flock of birds</td></tr>'+
-          '<tr><td>牛羊</td><td class="en">a herd of</td><td class="en">a herd of cows</td></tr>'+
-          '<tr><td>鱼</td><td class="en">a school of</td><td class="en">a school of fish</td></tr>'+
-          '<tr><td>狼</td><td class="en">a pack of</td><td class="en">a pack of wolves</td></tr>'+
+          '<tr><td>鸟 birds</td><td class="en">a flock of<span class="spk">🔊</span></td><td class="en">a flock of birds<span class="spk">🔊</span></td></tr>'+
+          '<tr><td>牛羊</td><td class="en">a herd of<span class="spk">🔊</span></td><td class="en">a herd of cows<span class="spk">🔊</span></td></tr>'+
+          '<tr><td>鱼</td><td class="en">a school of<span class="spk">🔊</span></td><td class="en">a school of fish<span class="spk">🔊</span></td></tr>'+
+          '<tr><td>狼</td><td class="en">a pack of<span class="spk">🔊</span></td><td class="en">a pack of wolves<span class="spk">🔊</span></td></tr>'+
           '</table>'+
           '<div class="sub-title">让步状语从句</div>'+
           '<div class="example-box"><strong>Although/Though</strong> he shouted, nobody came.<br>虽然他在喊，但没人来。</div>'+
@@ -650,10 +659,10 @@ var MODULES = {
         type: 'grammar', title: '📢 祈使句详解 四种类型',
         content: '<table class="study-table">'+
           '<tr><th style="width:20%;">类型</th><th style="width:30%;">结构</th><th style="width:25%;">用法</th><th style="width:25%;">例句</th></tr>'+
-          '<tr><td><strong>肯定祈使</strong></td><td>动词原形开头</td><td>命令/请求</td><td class="en"><strong>Close</strong> the door.</td></tr>'+
-          '<tr><td><strong>否定祈使</strong></td><td>Don\'t + 动词原形</td><td>禁止</td><td class="en"><strong>Don\'t be</strong> late.</td></tr>'+
-          '<tr><td><strong>Let\'s 祈使</strong></td><td>Let\'s + 动词原形</td><td>建议一起做</td><td class="en"><strong>Let\'s go</strong> shopping.</td></tr>'+
-          '<tr><td><strong>No doing</strong></td><td>No + 动名词</td><td>公示语禁止</td><td class="en"><strong>No smoking</strong>.</td></tr>'+
+          '<tr><td><strong>肯定祈使</strong></td><td>动词原形开头</td><td>命令/请求</td><td class="en"><strong>Close</strong> the door.<span class="spk">🔊</span></td></tr>'+
+          '<tr><td><strong>否定祈使</strong></td><td>Don\'t + 动词原形</td><td>禁止</td><td class="en"><strong>Don\'t be</strong> late.<span class="spk">🔊</span></td></tr>'+
+          '<tr><td><strong>Let\'s 祈使</strong></td><td>Let\'s + 动词原形</td><td>建议一起做</td><td class="en"><strong>Let\'s go</strong> shopping.<span class="spk">🔊</span></td></tr>'+
+          '<tr><td><strong>No doing</strong></td><td>No + 动名词</td><td>公示语禁止</td><td class="en"><strong>No smoking</strong>.<span class="spk">🔊</span></td></tr>'+
           '</table>'+
           '<div class="sub-title">祈使句 + and/or 结果</div>'+
           '<div class="example-box"><strong>Study hard and</strong> you will pass.<br>努力学习，你就会通过。</div>'+
@@ -663,7 +672,7 @@ var MODULES = {
       {
         type: 'phrase', title: '📢 祈使句常用表达',
         content: '<table class="study-table">'+
-          '<tr><th>场景</th><th>英文</th><th>音标</th><th>中文</th></tr><tr><td>提醒注意</td><td class="en">Watch out! / Be careful!</td><td></td><td>当心！</td></tr><tr><td>礼貌请求</td><td class="en">Please have a seat.</td><td></td><td>请坐。</td></tr><tr><td>邀请建议</td><td class="en">Let\'s grab a coffee.</td><td></td><td>我们去喝杯咖啡吧。</td></tr><tr><td>公示语</td><td class="en">No parking. / Keep off the grass.</td><td></td><td>禁止停车/勿踏草地。</td></tr>'+
+          '<tr><th>场景</th><th>英文</th><th>音标</th><th>中文</th></tr><tr><td>提醒注意</td><td class="en">Watch out! / Be careful!<span class="spk">🔊</span></td><td></td><td>当心！</td></tr><tr><td>礼貌请求</td><td class="en">Please have a seat.<span class="spk">🔊</span></td><td></td><td>请坐。</td></tr><tr><td>邀请建议</td><td class="en">Let\'s grab a coffee.<span class="spk">🔊</span></td><td></td><td>我们去喝杯咖啡吧。</td></tr><tr><td>公示语</td><td class="en">No parking. / Keep off the grass.<span class="spk">🔊</span></td><td></td><td>禁止停车/勿踏草地。</td></tr>'+
           '</table>'
       }
     ]
@@ -718,5 +727,49 @@ renderModule();
 
 <div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260714-1500</div>
   <script src="kb.js"></script>
+<script>
+(function(){
+  function spkText(raw){
+    if(!raw) return '';
+    var t = raw.replace(/\s+/g,' ').trim();
+    var m = t.search(/[一-鿿]/);
+    if(m>=0) t = t.slice(0,m);
+    t = t.replace(/\s*\/\s*/g,' or ').replace(/\s*\+\s*/g,' ');
+    t = t.replace(/[^A-Za-z0-9 '.,?!:;\-\/()]/g,'');
+    return t.trim();
+  }
+  var spkVoice=null;
+  function pickVoice(){
+    if(!('speechSynthesis' in window)) return;
+    var vs = speechSynthesis.getVoices()||[];
+    spkVoice = vs.filter(function(v){return /en-GB/i.test(v.lang);})[0]
+             || vs.filter(function(v){return /^en/i.test(v.lang);})[0] || null;
+  }
+  function speak(text){
+    if(!('speechSynthesis' in window) || !text) return;
+    try{
+      speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-GB';
+      if(spkVoice) u.voice = spkVoice;
+      u.rate = 0.95; u.pitch = 1;
+      speechSynthesis.speak(u);
+    }catch(e){}
+  }
+  if('speechSynthesis' in window){
+    pickVoice();
+    speechSynthesis.onvoiceschanged = pickVoice;
+  }
+  document.addEventListener('click', function(e){
+    var sp = e.target.closest ? e.target.closest('.spk') : null;
+    if(!sp) return;
+    var td = sp.parentNode;
+    if(!td) return;
+    sp.classList.add('speaking');
+    setTimeout(function(){ sp.classList.remove('speaking'); }, 600);
+    speak(spkText(td.textContent));
+  });
+})();
+</script>
 </body>
 </html>
