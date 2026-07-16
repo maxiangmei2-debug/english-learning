@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta name="build-version" content="20260716-1816">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的知识库 · 英语学习</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f3f4f6;color:#1f2937;padding:18px;max-width:760px;margin:0 auto}
+.topbar{background:linear-gradient(135deg,#6366F1,#8B5CF6);color:#fff;border-radius:18px;padding:20px;margin-bottom:16px}
+.topbar h1{font-size:22px;margin-bottom:4px}
+.topbar p{font-size:13px;opacity:.85}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 4px 16px rgba(0,0,0,.05)}
+.card h2{font-size:16px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+textarea{width:100%;padding:12px;border:1px solid #d1d5db;border-radius:12px;font-size:15px;font-family:inherit;background:#fff;resize:vertical;min-height:140px;line-height:1.7}
+textarea:focus{outline:none;border-color:#6366F1;box-shadow:0 0 0 3px #e0e7ff}
+button{font-family:inherit;cursor:pointer;border:none;border-radius:12px;font-size:15px;font-weight:700;padding:12px 22px;transition:.15s}
+.btn-primary{background:#6366F1;color:#fff;width:100%}
+.btn-primary:hover{background:#4f46e5}
+.btn-ghost{background:#eef2ff;color:#4f46e5}
+.btn-ghost:hover{background:#e0e7ff}
+.btn-danger{background:#fee2e2;color:#dc2626;font-size:12px;padding:5px 10px;font-weight:600}
+.hint{font-size:12px;color:#6b7280;background:#f9fafb;border-left:3px solid #c7d2fe;padding:9px 11px;border-radius:8px;margin-top:10px;line-height:1.7}
+#status{font-size:13px;margin-top:12px;min-height:18px;text-align:center;font-weight:600}
+.ok{color:#059669}.err{color:#dc2626}.muted{color:#6b7280}
+.entry{border:1px solid #e5e7eb;border-radius:12px;padding:12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.entry .et{font-size:15px;font-weight:700;color:#111827;word-break:break-word}
+.entry .eb{font-size:11px;padding:2px 8px;border-radius:12px;background:#ede9fe;color:#6d28d9;white-space:nowrap;margin-left:6px}
+.entry .em{font-size:13px;color:#4b5563;margin-top:3px}
+.entry .ex{font-size:12px;color:#7c3aed;margin-top:3px}
+.badge-word{background:#dbeafe;color:#1d4ed8}.badge-phrase{background:#d1fae5;color:#047857}
+.badge-sentence{background:#fef3c7;color:#b45309}.badge-grammar{background:#ede9fe;color:#6d28d9}.badge-error{background:#fee2e2;color:#dc2626}
+.empty{color:#9ca3af;font-size:13px;text-align:center;padding:18px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>📥 我的知识库</h1>
+  <p>把日常想学的内容记下来，点「更新」自动识别并同步到 5 个学习模块</p>
+</div>
+
+<div class="card">
+  <h2>✏️ 添加内容</h2>
+  <textarea id="box" placeholder="每行一条，直接写就行，不用选类型，工具会自动识别：&#10;&#10;furnished = 带家具的&#10;in order to 为了做某事&#10;How about a coffee? 喝杯咖啡怎么样？&#10;现在完成时表示过去发生的事对现在有影响。结构是 have/has + 过去分词。"></textarea>
+  <div style="margin-top:12px"><button class="btn-primary" id="btnUpdate">🔄 更新 / 同步到各模块</button></div>
+  <div class="hint">
+    • <b>单词</b>：furnished = 带家具的 &nbsp; | &nbsp; <b>搭配</b>：in order to 为了做某事<br>
+    • <b>句子</b>：How about a coffee? 喝杯咖啡怎么样？ &nbsp; | &nbsp; <b>语法</b>：直接写一段解释<br>
+    • 写「= 释义」或「中文」会自动带上意思；只写英文也能存（用于拼写/闯关）。<br>
+    • 点「更新」后已同步到：学习手册 / 测试达人 / 拼写训练营 / 学习计划，<b>刷新对应模块即可看到</b>。
+  </div>
+  <div id="status"></div>
+</div>
+
+<div class="card">
+  <h2>📚 已维护的内容（<span id="cnt">0</span>）</h2>
+  <div id="list"></div>
+</div>
+
+<a href="index.html" class="btn-ghost" style="display:inline-block;text-decoration:none;margin-bottom:24px">← 返回英语学习中心</a>
+
+<script src="kb.js"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  function escapeHtml(s) {
+    return (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+  var typeName = { word: '单词', phrase: '搭配', sentence: '句型', grammar: '语法', error: '易错' };
+
+  function render() {
+    var entries = (KB.getEntries() || []).sort(function (a, b) { return (b.updatedAt || 0) - (a.updatedAt || 0); });
+    $('cnt').textContent = entries.length;
+    var box = $('list');
+    if (!entries.length) { box.innerHTML = '<div class="empty">还没有内容，上面写一条点「更新」吧 ✏️</div>'; return; }
+    var html = '';
+    entries.forEach(function (e) {
+      html += '<div class="entry"><div><div><span class="et">' + escapeHtml(e.content) + '</span><span class="eb badge-' + e.type + '">' + (typeName[e.type] || '') + '</span></div>';
+      if (e.meaning) html += '<div class="em">释义：' + escapeHtml(e.meaning) + '</div>';
+      if (e.example) html += '<div class="ex">' + escapeHtml(e.example) + '</div>';
+      html += '</div><button class="btn-danger" onclick="__kb.del(\'' + e.id + '\')">删除</button></div>';
+    });
+    box.innerHTML = html;
+  }
+
+  function update() {
+    var text = $('box').value;
+    if (!text.trim()) { $('status').textContent = '先写点内容再点更新哦'; $('status').className = 'err'; return; }
+    try {
+      var stats = KB.addFromText(text);
+      var parts = [];
+      ['word', 'phrase', 'sentence', 'grammar'].forEach(function (t) { if (stats[t]) parts.push(typeName[t] + ' ' + stats[t]); });
+      $('status').textContent = '✅ 已识别 ' + stats.total + ' 条（' + parts.join(' · ') + '），已同步到 5 个模块，刷新对应模块即可看到';
+      $('status').className = 'ok';
+      render();
+    } catch (e) {
+      $('status').textContent = '出错了：' + e.message; $('status').className = 'err';
+    }
+  }
+
+  function del(id) {
+    KB.remove(id);
+    render();
+  }
+
+  $('btnUpdate').onclick = update;
+  window.__kb = { del: del };
+  render();
+})();
+</script>
+</body>
+</html>

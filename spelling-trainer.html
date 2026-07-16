@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260716-1717">
+<meta name="build-version" content="20260716-1816">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>词汇拼写训练营</title>
 <style>
@@ -265,10 +265,10 @@
       <div class="home-stat-val" id="hCombo">0</div>
       <div class="home-stat-label">最高连击</div>
     </div>
-    <div class="home-stat">
+    <div class="home-stat" onclick="openMasteredPanel()" style="cursor:pointer;">
       <div class="home-stat-icon">✅</div>
       <div class="home-stat-val" id="hMaster">0</div>
-      <div class="home-stat-label">已掌握</div>
+      <div class="home-stat-label">已掌握 · 点击管理</div>
     </div>
   </div>
 
@@ -292,7 +292,7 @@
     <div class="mode-card" onclick="startPractice('spellall')">
       <div class="mode-card-icon">✍️</div>
       <div class="mode-card-title">拼写全练</div>
-      <div class="mode-card-desc">全部单词逐个拼写</div>
+      <div class="mode-card-desc">逐个拼写·答错再拼一遍·艾宾浩斯复习</div>
     </div>
   </div>
 
@@ -1263,7 +1263,6 @@ const WORDS = [
   { en:'square meter', cn:'平方米', ph:'', topic:'描述家乡',
     opts:[{cn:'平方米',en:'square meter'},{cn:'家乡',en:'hometown'},{cn:'传统的',en:'traditional'},{cn:'现代的',en:'modern'}],
     explain:'【知识点】square meter = 平方米<br>【拼写提示】注意拼写：square meter' },
-,
 {
   "en": "suburb",
   "cn": "郊区",
@@ -22716,23 +22715,26 @@ const WORDS = [
 },
   {
     "en": "colorful",
-    "zh": "五颜六色的",
+    "cn": "五颜六色的",
+    "ph": "/ˈkʌləfl/",
     "topic": "MC23 生日礼物",
-    "options": ["五颜六色的","多彩的","彩色的","无聊的"],
+    "opts": [{"cn":"五颜六色的","en":"colorful"},{"cn":"多彩的","en":"multicolored"},{"cn":"彩色的","en":"colored"},{"cn":"无聊的","en":"boring"}],
     "explain": "【知识点】colorful /ˈkʌləfl/ = 五颜六色的、丰富多彩的<br>【主题】MC23（生日礼物）"
   },
   {
     "en": "damages",
-    "zh": "损坏",
+    "cn": "损坏",
+    "ph": "/ˈdæmɪdʒɪz/",
     "topic": "MC23 生日礼物",
-    "options": ["损坏","修理","划痕","赔偿"],
+    "opts": [{"cn":"损坏","en":"damages"},{"cn":"修理","en":"repair"},{"cn":"划痕","en":"scratch"},{"cn":"赔偿","en":"compensation"}],
     "explain": "【知识点】damages /ˈdæmɪdʒɪz/ = 损坏、损害（常复数）<br>【主题】MC23（生日礼物）"
   },
   {
     "en": "think-thought",
-    "zh": "想，认为",
+    "cn": "想，认为",
+    "ph": "/θɪŋk - θɔːt/",
     "topic": "MC23 生日礼物",
-    "options": ["想，认为","思考","想法","思想"],
+    "opts": [{"cn":"想，认为","en":"think-thought"},{"cn":"思考","en":"consider"},{"cn":"想法","en":"idea"},{"cn":"思想","en":"thought"}],
     "explain": "【知识点】think-thought /θɪŋk - θɔːt/ = 想，认为（过去式 thought）<br>【主题】MC23（生日礼物）"
   },
 
@@ -22751,6 +22753,46 @@ let qIndex = 0;
 let answered = false;
 let correctCount = 0;
 let wrongCount = 0;
+
+// ====== 艾宾浩斯间隔重复 SRS（与测试达人一致的曲线） ======
+const SRS_KEY = 'spelltrainer_srs';
+const MASTER_KEY = 'spelltrainer_mastered';
+const SRS_STREAK_BY_BOX = [3, 2, 1, 1, 1, 1, 1]; // 各 box 升阶所需连对次数
+const SRS_INTERVAL_DAY = [2, 4, 7, 15, 30, 60];  // 升阶后推后天数
+const SRS_MAX_BOX = SRS_INTERVAL_DAY.length;      // 6（box6=60天，再连对即已掌握）
+const DAY_MS = 86400000;
+let srsState = {};
+(function loadSrs(){ try{ var r=localStorage.getItem(SRS_KEY); if(r) srsState=JSON.parse(r); }catch(e){} })();
+(function loadMastered(){ try{ var r=localStorage.getItem(MASTER_KEY); if(r){ JSON.parse(r).forEach(function(id){ masteredSet.add(id); }); } }catch(e){} })();
+function saveSrs(){ try{ localStorage.setItem(SRS_KEY, JSON.stringify(srsState)); }catch(e){} }
+function saveMastered(){ try{ localStorage.setItem(MASTER_KEY, JSON.stringify(Array.from(masteredSet))); }catch(e){} }
+function reqStreakForBox(box){ var b=box<0?0:box; return SRS_STREAK_BY_BOX[Math.min(b, SRS_STREAK_BY_BOX.length-1)]; }
+function getSrs(id){ if(!srsState[id]) srsState[id]={box:0,due:0,streak:0}; if(srsState[id].streak===undefined) srsState[id].streak=0; return srsState[id]; }
+function srsDueTs(id){ var s=srsState[id]; return s&&s.due?s.due:0; }
+function isSrsDue(id, now){ return srsDueTs(id) <= (now||Date.now()); }
+function markMastered(id){ if(!masteredSet.has(id)){ masteredSet.add(id); saveMastered(); } }
+function updateSrs(id, correct){
+  var s=getSrs(id);
+  if(correct){
+    s.streak=(s.streak||0)+1;
+    if(s.streak >= reqStreakForBox(s.box)){
+      if(s.box >= SRS_MAX_BOX){ markMastered(id); s.box=SRS_MAX_BOX; s.due=Number.MAX_SAFE_INTEGER; }
+      else { var iv=SRS_INTERVAL_DAY[Math.min(s.box, SRS_INTERVAL_DAY.length-1)]; s.box=s.box+1; s.due=Date.now()+iv*DAY_MS; }
+      s.streak=0;
+    } else { s.due=Date.now(); }
+  } else {
+    s.box=Math.max(0, s.box-2); s.due=Date.now(); s.streak=0;
+    if(masteredSet.has(id)){ masteredSet.delete(id); saveMastered(); }
+  }
+  saveSrs();
+}
+function skipStage(id){
+  var s=getSrs(id);
+  if(s.box>=SRS_MAX_BOX){ markMastered(id); s.box=SRS_MAX_BOX; s.due=Number.MAX_SAFE_INTEGER; }
+  else { var iv=SRS_INTERVAL_DAY[Math.min(s.box, SRS_INTERVAL_DAY.length-1)]; s.box=s.box+1; s.due=Date.now()+iv*DAY_MS; }
+  s.streak=0; saveSrs();
+}
+function stageLabel(box){ if(box>=SRS_MAX_BOX) return '已掌握'; var n=['新词','2天档','4天档','7天档','15天档','30天档','60天档']; return n[Math.min(box,n.length-1)]; }
 
 // ====== 初始化 ======
 function init() {
@@ -22793,18 +22835,28 @@ function startPractice(mode) {
     return;
   }
 
-  // 根据模式生成题目
+  // 艾宾浩斯：默认排除「已掌握」的词
+  let active = pool.filter(w => !masteredSet.has(w.en));
+  if(active.length === 0) {
+    showToast('🎉 该主题已全部掌握！可在首页「已掌握」中移出重练');
+    return;
+  }
+
+  // 艾宾浩斯排序：到期(due<=now)的词优先，其余排后；组内打乱
+  const now = Date.now();
+  let dueList   = shuffle(active.filter(w => isSrsDue(w.en, now)));
+  let notDue    = shuffle(active.filter(w => !isSrsDue(w.en, now)));
+  let ordered   = dueList.concat(notDue);
+
+  // 根据模式生成题目（保持艾宾浩斯排序，不再二次打乱）
   if(mode === 'en2cn') {
-    questions = shuffle(pool).map(w => ({ ...w, mode:'en2cn' }));
+    questions = ordered.map(w => ({ ...w, mode:'en2cn' }));
   } else if(mode === 'cn2en') {
-    questions = shuffle(pool).map(w => ({ ...w, mode:'cn2en' }));
+    questions = ordered.map(w => ({ ...w, mode:'cn2en' }));
   } else if(mode === 'mix') {
-    questions = shuffle(pool).map(w => {
-      const m = Math.random() < 0.5 ? 'en2cn' : 'cn2en';
-      return { ...w, mode:m };
-    });
+    questions = ordered.map(w => ({ ...w, mode: Math.random() < 0.5 ? 'en2cn' : 'cn2en' }));
   } else if(mode === 'spellall') {
-    questions = shuffle(pool).map(w => ({ ...w, mode:'cn2en' }));
+    questions = ordered.map(w => ({ ...w, mode:'cn2en' }));
   }
 
   qIndex = 0;
@@ -22864,12 +22916,41 @@ function renderQuestion() {
   }
 }
 
+// ====== SRS 工具栏：阶段徽章 + 已标熟 + 跳过该阶段 ======
+function srsToolbarHtml(q) {
+  var box = getSrs(q.en).box;
+  return `<div class="srs-toolbar" style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+    <span class="srs-badge" style="font-size:12px;font-weight:700;color:#6D28D9;background:#EDE9FE;padding:4px 10px;border-radius:20px;">📦 ${stageLabel(box)}</span>
+    <div style="display:flex;gap:6px;">
+      <button onclick="skipCurrentStage()" title="跳过当前复习阶段，直接进入下一档间隔（不标记熟练）" style="font-size:12px;padding:5px 10px;border:1px solid #3B82F6;color:#2563EB;background:#fff;border-radius:8px;cursor:pointer;font-weight:600;">⏭ 跳过该阶段</button>
+      <button onclick="markCurrentMastered()" title="标记为已熟练，以后不再出现（可在首页移出重练）" style="font-size:12px;padding:5px 10px;border:1px solid #10B981;color:#059669;background:#fff;border-radius:8px;cursor:pointer;font-weight:600;">✅ 已标熟</button>
+    </div>
+  </div>`;
+}
+function markCurrentMastered() {
+  const q = questions[qIndex];
+  if(!q) return;
+  markMastered(q.en);
+  updateHomeStats();
+  showToast('✅ 已标记熟练，之后不再出现');
+  nextQuestion();
+}
+function skipCurrentStage() {
+  const q = questions[qIndex];
+  if(!q) return;
+  skipStage(q.en);
+  updateHomeStats();
+  showToast('⏭ 已跳过当前阶段，推后到下一档复习');
+  nextQuestion();
+}
+
 // ====== 模式1：看英文猜中文 ======
 function renderEn2Cn(q, area) {
   const shuffledOpts = shuffle(q.opts);
   const correctCn = q.cn;
 
   area.innerHTML = `
+    ${srsToolbarHtml(q)}
     <div class="q-prompt">${q.en}</div>
     ${q.ph ? `<div class="phonetic">${q.ph}</div>` : ''}
     <div class="q-sub">这个单词是什么意思？</div>
@@ -22907,11 +22988,12 @@ function selectOpt(idx, selectedCn, correctCn, btn) {
     currentCombo++;
     if(currentCombo > maxCombo) maxCombo = currentCombo;
     totalScore += 10 + currentCombo * 2;
-    masteredSet.add(questions[qIndex].en);
   } else {
     wrongCount++;
     currentCombo = 0;
   }
+  // 艾宾浩斯：推进/回退复习计划
+  updateSrs(questions[qIndex].en, isCorrect);
 
   // 显示解析
   showExplainForEn2Cn(questions[qIndex], isCorrect, selectedCn);
@@ -22942,8 +23024,8 @@ function showExplainForEn2Cn(q, isCorrect, selectedCn) {
     <div class="spell-practice-title">✍️ 拼写练习：把 ${q.cn} 的英文拼一遍</div>
     <div class="spell-practice-row">
       <span class="spell-practice-word">${q.cn}</span>
-      <input class="spell-practice-input" id="spellInput" placeholder="输入英文..." autocomplete="off">
-      <button class="spell-practice-btn" onclick="checkSpellPractice('${q.en}')">检查</button>
+      <input class="spell-practice-input" id="spellInput" placeholder="输入英文..." autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();checkSpellPractice('${q.en.replace(/'/g,"\\'")}')}">
+      <button class="spell-practice-btn" onclick="checkSpellPractice('${q.en.replace(/'/g,"\\'")}')">检查</button>
       <span class="spell-practice-result" id="spellResult"></span>
     </div>
     <button class="spell-show" onclick="showAnswer('${q.en}')">看答案</button>
@@ -22959,23 +23041,33 @@ function showExplainForEn2Cn(q, isCorrect, selectedCn) {
 // ====== 模式2：看中文拼英文 ======
 function renderCn2En(q, area) {
   area.innerHTML = `
+    ${srsToolbarHtml(q)}
     <div class="spell-prompt">${q.cn}</div>
     ${q.ph ? `<div class="phonetic">音标：${q.ph}</div>` : ''}
-    <div class="spell-hint">请拼写对应的英文</div>
+    <div class="spell-hint">请拼写对应的英文（回车提交）</div>
     <div class="spell-section">
       <div class="spell-row">
         <input class="spell-input" id="mainSpellInput" placeholder="输入英文..." autocomplete="off">
-        <button class="spell-submit" onclick="submitSpell('${q.en}')">提交</button>
-        <button class="spell-show" onclick="showMainAnswer('${q.en}')">看答案</button>
+        <button class="spell-submit" onclick="submitSpell('${q.en.replace(/'/g,"\\'")}')">提交</button>
+        <button class="spell-show" onclick="showMainAnswer('${q.en.replace(/'/g,"\\'")}')">看答案</button>
       </div>
     </div>
     <div class="explain-area" id="explainArea"></div>
     <button class="next-btn" id="nextBtn" style="display:none" onclick="nextQuestion()">下一题 →</button>
   `;
 
-  // 自动聚焦
+  // 自动聚焦 + 回车提交
   const inp = document.getElementById('mainSpellInput');
-  if(inp) inp.focus();
+  if(inp) {
+    inp.focus();
+    inp.addEventListener('keydown', function(e){
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        if(!answered) submitSpell(q.en);
+        else nextQuestion();
+      }
+    });
+  }
 }
 
 function submitSpell(correctEn) {
@@ -22997,15 +23089,18 @@ function submitSpell(correctEn) {
     currentCombo++;
     if(currentCombo > maxCombo) maxCombo = currentCombo;
     totalScore += 15 + currentCombo * 3;
-    masteredSet.add(questions[qIndex].en);
   } else {
     wrongCount++;
     currentCombo = 0;
   }
+  // 艾宾浩斯：推进/回退复习计划
+  updateSrs(questions[qIndex].en, isCorrect);
 
   // 显示解析
   showExplainForCn2En(questions[qIndex], isCorrect, val);
   document.getElementById('nextBtn').style.display = 'block';
+  // 答错：自动聚焦「再拼一遍」巩固框（移植自打字冲刺的强化记忆）
+  if(!isCorrect) { setTimeout(function(){ var r=document.getElementById('spellInput2'); if(r) r.focus(); }, 120); }
 }
 
 function showExplainForCn2En(q, isCorrect, userAns) {
@@ -23042,8 +23137,8 @@ function showExplainForCn2En(q, isCorrect, userAns) {
     <div class="spell-practice-title">✍️ 再拼一遍巩固记忆</div>
     <div class="spell-practice-row">
       <span class="spell-practice-word">${q.cn}</span>
-      <input class="spell-practice-input" id="spellInput2" placeholder="再拼一次..." autocomplete="off">
-      <button class="spell-practice-btn" onclick="checkSpellPractice2('${q.en}')">检查</button>
+      <input class="spell-practice-input" id="spellInput2" placeholder="再拼一次..." autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();checkSpellPractice2('${q.en.replace(/'/g,"\\'")}')}">
+      <button class="spell-practice-btn" onclick="checkSpellPractice2('${q.en.replace(/'/g,"\\'")}')">检查</button>
       <span class="spell-practice-result" id="spellResult2"></span>
     </div>
   </div>`;
@@ -23107,9 +23202,13 @@ function showMainAnswer(ans) {
     inp.value = ans;
     inp.className = 'spell-input correct';
     answered = true;
-    // 不计分，只展示答案
+    wrongCount++;
+    currentCombo = 0;
+    // 看了答案 = 未掌握，SRS 视为答错，保持到期尽快再练
+    updateSrs(questions[qIndex].en, false);
     showExplainForCn2En(questions[qIndex], false, '（看了答案）');
     document.getElementById('nextBtn').style.display = 'block';
+    setTimeout(function(){ var r=document.getElementById('spellInput2'); if(r) r.focus(); }, 120);
   }
 }
 
@@ -23156,6 +23255,52 @@ function showToast(msg) {
   t.textContent = msg;
   document.body.appendChild(t);
   setTimeout(() => t.remove(), 2500);
+}
+
+// ====== 已掌握管理面板 ======
+function openMasteredPanel() {
+  var old = document.getElementById('masteredModal');
+  if(old) old.remove();
+  var overlay = document.createElement('div');
+  overlay.id = 'masteredModal';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100000;display:flex;align-items:center;justify-content:center;padding:16px;';
+  overlay.onclick = function(e){ if(e.target===overlay) overlay.remove(); };
+
+  // 按 en 查中文
+  var cnMap = {};
+  WORDS.forEach(function(w){ if(w && w.en) cnMap[w.en] = w.cn || ''; });
+  var ids = Array.from(masteredSet);
+
+  var listHtml = '';
+  if(ids.length === 0){
+    listHtml = '<div style="text-align:center;color:#9ca3af;padding:30px 0;font-size:14px;">还没有已掌握的单词<br>练习答对达标或点「已标熟」即可加入</div>';
+  } else {
+    ids.forEach(function(id){
+      listHtml += '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border-bottom:1px solid #f0f0f0;">'
+        + '<div style="min-width:0;"><span style="font-weight:700;">'+id+'</span> <span style="color:#6b7280;font-size:13px;">'+(cnMap[id]||'')+'</span></div>'
+        + '<button onclick="removeMastered(\''+id.replace(/'/g,"\\'")+'\')" style="flex:none;padding:5px 12px;border:1px solid #EF4444;color:#EF4444;background:#fff;border-radius:8px;cursor:pointer;font-size:12px;white-space:nowrap;">移出</button>'
+        + '</div>';
+    });
+  }
+
+  overlay.innerHTML = '<div style="background:#fff;border-radius:16px;max-width:440px;width:100%;max-height:80vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);">'
+    + '<div style="padding:16px 18px;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:space-between;">'
+    + '<strong style="font-size:16px;">✅ 已掌握（<span id="mCount">'+ids.length+'</span>）</strong>'
+    + '<button onclick="document.getElementById(\'masteredModal\').remove()" style="border:none;background:#f3f4f6;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;">×</button>'
+    + '</div>'
+    + '<div style="padding:8px 12px;font-size:12px;color:#6b7280;background:#faf9ff;">移出后该词回到「新词」，会重新进入复习循环。</div>'
+    + '<div id="mList" style="overflow-y:auto;padding:4px 8px;">'+listHtml+'</div>'
+    + '</div>';
+  document.body.appendChild(overlay);
+}
+function removeMastered(id) {
+  masteredSet.delete(id);
+  saveMastered();
+  // 恢复为新词，重新进入复习
+  srsState[id] = { box:0, due:0, streak:0 };
+  saveSrs();
+  updateHomeStats();
+  openMasteredPanel(); // 刷新面板
 }
 
 // 启动
@@ -23210,7 +23355,7 @@ document.addEventListener('keydown', function(e) {
   }
 });
 </script>
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260716-1717</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260716-1816</div>
   <script src="kb.js"></script>
 </body>
 </html>
