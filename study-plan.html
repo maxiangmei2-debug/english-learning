@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260715-1750">
+<meta name="build-version" content="20260716-0940">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>学习计划</title>
 <style>
@@ -85,13 +85,16 @@ body {
 
 /* Unit list */
 .unit-section { margin-bottom: 24px; }
+.search-bar { display:flex; gap:10px; align-items:center; margin:10px 0 14px; flex-wrap:wrap; }
+.search-bar input { flex:1; min-width:200px; padding:10px 14px; border:1.5px solid var(--gray-200); border-radius:10px; font-size:14px; font-family:inherit; outline:none; }
+.search-bar input:focus { border-color: var(--primary); }
+.search-hint { font-size:12px; color:#9ca3af; white-space:nowrap; }
 .unit-card {
   background: white; border-radius: var(--radius); box-shadow: 0 1px 3px rgba(0,0,0,0.08);
   padding: 16px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s;
 }
 .unit-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
 .unit-card.active { border: 2px solid var(--primary); }
-.unit-card.locked { opacity: 0.5; }
 .unit-card .unit-header { display: flex; align-items: center; gap: 10px; }
 .unit-card .unit-icon { font-size: 28px; }
 .unit-card .unit-info { flex: 1; }
@@ -170,7 +173,11 @@ body {
 
 <!-- All units -->
 <div class="today-section">
-  <div class="section-head">📚 全部课程</div>
+  <div class="section-head">📚 全部课程 <span style="font-size:12px;color:#9ca3af;font-weight:400;">（任选单元，无需按顺序）</span></div>
+  <div class="search-bar">
+    <input id="unitSearch" type="text" placeholder="🔍 搜索主题 / 单元，如：租房、购物、面试、时态…" oninput="filterUnits()" />
+    <span class="search-hint">共 <b id="unitCount">0</b> 个单元可选</span>
+  </div>
   <div id="unitList"></div>
 </div>
 
@@ -2416,19 +2423,16 @@ function renderUnits() {
     var isToday = today && today.unit.id === u.id;
     var cls = 'unit-card';
     if (isToday) cls += ' active';
-    if (i > 0 && !allDone && !isToday) {
-      var prevDone = (p[CURRICULUM[i-1].id]||[]).length >= CURRICULUM[i-1].sessions.length;
-      if (!prevDone && !isToday) cls += ' locked';
-    }
 
-    html += '<div class="' + cls + '" onclick="toggleUnit(this)">';
+    var searchKey = (u.phase + ' ' + u.theme + ' ' + u.id + ' ' + u.desc).replace(/"/g, '');
+    html += '<div class="' + cls + '" data-search="' + searchKey + '" onclick="toggleUnit(this)">';
     html += '<div class="unit-header">';
     html += '<div class="unit-icon">' + u.icon + '</div>';
     html += '<div class="unit-info">';
     html += '<h3>' + u.phase + ' · ' + u.theme + '</h3>';
     html += '<div class="meta">' + u.desc + ' | ' + done + '/' + u.sessions.length + ' 课完成</div>';
     html += '</div>';
-    html += '<div class="unit-status">' + (allDone ? '✅' : isToday ? '📍' : (i > 0 ? '' : '🔓')) + '</div>';
+    html += '<div class="unit-status">' + (allDone ? '✅' : isToday ? '📍' : '🔓') + '</div>';
     html += '</div>';
 
     // Sessions detail
@@ -2451,6 +2455,8 @@ function renderUnits() {
     html += '</div></div>';
   });
   document.getElementById('unitList').innerHTML = html;
+  var uc = document.getElementById('unitCount');
+  if (uc) uc.textContent = CURRICULUM.length;
 
   // Open today's unit
   if (today) {
@@ -2462,14 +2468,24 @@ function renderUnits() {
 }
 
 function toggleUnit(el) {
-  if (el.classList.contains('locked')) return;
   el.classList.toggle('open');
+}
+
+// 自由选课：按关键词过滤单元（主题/单元号/阶段），无需按顺序
+function filterUnits() {
+  var box = document.getElementById('unitSearch');
+  var q = (box && box.value || '').trim().toLowerCase();
+  var cards = document.querySelectorAll('#unitList .unit-card');
+  cards.forEach(function(c) {
+    var key = (c.getAttribute('data-search') || '').toLowerCase();
+    c.style.display = (!q || key.indexOf(q) >= 0) ? '' : 'none';
+  });
 }
 
 // ====== Init ======
 renderAll();
 </script>
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260715-1750</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260716-0940</div>
   <script src="kb.js"></script>
 </body>
 </html>
