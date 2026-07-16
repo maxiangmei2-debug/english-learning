@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260716-1450">
+<meta name="build-version" content="20260716-1537">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
 <style>
@@ -37479,7 +37479,7 @@ function buildMixedQuestions(total, catKeys) {
   availCats.forEach(c => {
     const due = dueByCat[c].slice().sort((a,b)=> srsWrongOf(b) - srsWrongOf(a) + (Math.random()-0.5));
     const notDue = notDueByCat[c].slice().sort((a,b)=> srsDueTs(a.id) - srsDueTs(b.id));
-    byCat[c] = due.concat(notDue).slice(0, quotas[c]);
+    byCat[c] = due.concat(notDue.filter(function(q){ return getSrs(q.id).box < 1; })).slice(0, quotas[c]);
   });
 
   // 3) 跨分类轮转交叉，避免同一维度连排
@@ -37520,6 +37520,7 @@ function pickDueQuestions(total, typeFilter) {
   }
   for (const q of notDue) {
     if (chosen.length >= total) break;
+    if (getSrs(q.id).box >= 1) continue;   // 已升阶/跳过阶段：未到期不补（SRS 语义，避免已学/已跳过的题反复出现）
     if (!used.has(q.id)) { chosen.push(q); used.add(q.id); }
   }
   return chosen.slice(0, total);
@@ -39148,7 +39149,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260716-1450</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260716-1537</div>
   <script src="kb.js"></script>
 </body>
 </html>
