@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260716-0940">
+<meta name="build-version" content="20260716-1036">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>学习计划</title>
 <style>
@@ -85,16 +85,13 @@ body {
 
 /* Unit list */
 .unit-section { margin-bottom: 24px; }
-.search-bar { display:flex; gap:10px; align-items:center; margin:10px 0 14px; flex-wrap:wrap; }
-.search-bar input { flex:1; min-width:200px; padding:10px 14px; border:1.5px solid var(--gray-200); border-radius:10px; font-size:14px; font-family:inherit; outline:none; }
-.search-bar input:focus { border-color: var(--primary); }
-.search-hint { font-size:12px; color:#9ca3af; white-space:nowrap; }
 .unit-card {
   background: white; border-radius: var(--radius); box-shadow: 0 1px 3px rgba(0,0,0,0.08);
   padding: 16px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s;
 }
 .unit-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
 .unit-card.active { border: 2px solid var(--primary); }
+.unit-card.locked { opacity: 0.5; }
 .unit-card .unit-header { display: flex; align-items: center; gap: 10px; }
 .unit-card .unit-icon { font-size: 28px; }
 .unit-card .unit-info { flex: 1; }
@@ -173,11 +170,7 @@ body {
 
 <!-- All units -->
 <div class="today-section">
-  <div class="section-head">📚 全部课程 <span style="font-size:12px;color:#9ca3af;font-weight:400;">（任选单元，无需按顺序）</span></div>
-  <div class="search-bar">
-    <input id="unitSearch" type="text" placeholder="🔍 搜索主题 / 单元，如：租房、购物、面试、时态…" oninput="filterUnits()" />
-    <span class="search-hint">共 <b id="unitCount">0</b> 个单元可选</span>
-  </div>
+  <div class="section-head">📚 全部课程</div>
   <div id="unitList"></div>
 </div>
 
@@ -214,31 +207,31 @@ var CURRICULUM = [
     sessions: [
       { label: '学习新知', time: '20分钟', desc: '聚焦学习模块：租房生活词汇 + 购物场景句型', actions: [{text:'📖 开始学习',url:'learning-module.html?unit=u5&session=0',icon:'📖'}] },
       { label: '词汇练习', time: '20分钟', desc: '大闯关：租房/购物/房产租赁主题配对练习（含 MC05&10）', actions: [{text:'大闯关',url:'vocab-game.html?topic=购物砍价',icon:'🎮'},{text:'房产租赁',url:'vocab-game.html?topic=房产租赁',icon:'🏠'},{text:'拼写',url:'spelling-trainer.html?topic=购物',icon:'✏️'}] },
-      { label: '测试巩固', time: '15分钟', desc: '测试达人：租房 & 购物 主题专项闯关（词汇/搭配/语法/句型）', actions: [{text:'测试达人',url:'test-master.html?topic=租房&topic=购物',icon:'📝'}] }
+      { label: '测试巩固', time: '15分钟', desc: '自动进入词汇极速闯关模式，完成20题', actions: [{text:'测试达人',url:'test-master.html?cat=vocab',icon:'📝'}] }
     ]},
   { id: 'u6', phase: '生活场景', theme: '点餐 & 旅行', icon: '🍽️', desc: '餐厅点餐、酒店入住、交通出行',
     sessions: [
       { label: '学习新知', time: '20分钟', desc: '聚焦学习模块：点餐主题词汇 + 旅行场景句型', actions: [{text:'📖 开始学习',url:'learning-module.html?unit=u6&session=0',icon:'📖'}] },
       { label: '词汇练习', time: '20分钟', desc: '大闯关 + 拼写：点餐、旅行、飞行、露营主题（含 MC05&10）', actions: [{text:'大闯关',url:'vocab-game.html?topic=点餐',icon:'🎮'},{text:'飞行场景',url:'vocab-game.html?topic=飞行场景',icon:'✈️'},{text:'露营主题',url:'vocab-game.html?topic=露营主题',icon:'⛺'},{text:'拼写',url:'spelling-trainer.html?topic=旅行',icon:'✏️'}] },
-      { label: '测试巩固', time: '15分钟', desc: '测试达人：点餐 & 旅行 主题专项闯关（词汇/搭配/语法/句型）', actions: [{text:'测试达人',url:'test-master.html?topic=点餐&topic=旅行',icon:'📝'}] }
+      { label: '测试巩固', time: '15分钟', desc: '自动进入词汇极速闯关模式，完成20题', actions: [{text:'测试达人',url:'test-master.html?cat=vocab',icon:'📝'}] }
     ]},
   { id: 'u7', phase: '生活场景', theme: '看医生 & 健康', icon: '🏥', desc: '描述症状、预约看病、身体部位与疼痛',
     sessions: [
       { label: '学习新知', time: '20分钟', desc: '聚焦学习模块：看医生主题词汇 + 搭配 + 句型', actions: [{text:'📖 开始学习',url:'learning-module.html?unit=u7&session=0',icon:'📖'}] },
       { label: '词汇练习', time: '20分钟', desc: '大闯关 + 拼写：看医生主题', actions: [{text:'大闯关',url:'vocab-game.html?topic=看医生',icon:'🎮'},{text:'拼写',url:'spelling-trainer.html?topic=看医生',icon:'✏️'}] },
-      { label: '测试巩固', time: '15分钟', desc: '测试达人：看医生 & 健康 主题专项闯关（词汇/搭配/语法/句型）', actions: [{text:'测试达人',url:'test-master.html?topic=健康&topic=药房买药',icon:'📝'}] }
+      { label: '测试巩固', time: '15分钟', desc: '自动进入语法极速闯关模式，完成20题', actions: [{text:'测试达人',url:'test-master.html?cat=grammar',icon:'📝'}] }
     ]},
   { id: 'u8', phase: '生活场景', theme: '外貌 & 情绪', icon: '😊', desc: '描述人物外貌、性格特征、情绪表达',
     sessions: [
       { label: '学习新知', time: '20分钟', desc: '聚焦学习模块：外貌性格词汇 + 情绪表达搭配', actions: [{text:'📖 开始学习',url:'learning-module.html?unit=u8&session=0',icon:'📖'}] },
       { label: '词汇练习', time: '20分钟', desc: '大闯关 + 拼写：外貌、情绪、描述家乡主题（含 MC05&10）', actions: [{text:'大闯关',url:'vocab-game.html?topic=情绪',icon:'🎮'},{text:'描述家乡',url:'vocab-game.html?topic=描述家乡',icon:'🏡'},{text:'拼写',url:'spelling-trainer.html?topic=情绪',icon:'✏️'}] },
-      { label: '测试巩固', time: '15分钟', desc: '测试达人：外貌 & 情绪 主题专项闯关（词汇/搭配/语法/句型）', actions: [{text:'测试达人',url:'test-master.html?topic=外貌描述',icon:'📝'}] }
+      { label: '测试巩固', time: '15分钟', desc: '英语测试达人：选择"词汇 + 易错"类别完成10题', actions: [{text:'测试达人',url:'test-master.html?cat=vocab',icon:'📝'}] }
     ]},
   { id: 'u9', phase: '进阶表达', theme: '职场 & 面试', icon: '💼', desc: '职场沟通、面试问答、邮件表达',
     sessions: [
       { label: '学习新知', time: '20分钟', desc: '聚焦学习模块：职场面试词汇 + 句型 + 易错清单', actions: [{text:'📖 开始学习',url:'learning-module.html?unit=u9&session=0',icon:'📖'}] },
       { label: '场景练习', time: '20分钟', desc: '场景句型：面试问答模拟 + 大闯关（含 MC05&10 展会商务）', actions: [{text:'场景句型',url:'handbook.html?ref=sp&kw=职场面试#scene',icon:'💬'},{text:'大闯关',url:'vocab-game.html?topic=职场',icon:'🎮'},{text:'展会商务',url:'vocab-game.html?topic=展会商务',icon:'💼'}] },
-      { label: '测试巩固', time: '15分钟', desc: '测试达人：职场 & 面试 主题专项闯关（词汇/搭配/语法/句型）', actions: [{text:'测试达人',url:'test-master.html?topic=面试求职&topic=求职面试',icon:'📝'}] }
+      { label: '测试巩固', time: '15分钟', desc: '自动进入场景极速闯关模式，完成20题', actions: [{text:'测试达人',url:'test-master.html?cat=scene',icon:'📝'}] }
     ]},
   { id: 'u10', phase: '进阶表达', theme: '新闻 & 环保', icon: '🌍', desc: '阅读新闻、环保话题、社会现象表达',
     sessions: [
@@ -2423,16 +2416,19 @@ function renderUnits() {
     var isToday = today && today.unit.id === u.id;
     var cls = 'unit-card';
     if (isToday) cls += ' active';
+    if (i > 0 && !allDone && !isToday) {
+      var prevDone = (p[CURRICULUM[i-1].id]||[]).length >= CURRICULUM[i-1].sessions.length;
+      if (!prevDone && !isToday) cls += ' locked';
+    }
 
-    var searchKey = (u.phase + ' ' + u.theme + ' ' + u.id + ' ' + u.desc).replace(/"/g, '');
-    html += '<div class="' + cls + '" data-search="' + searchKey + '" onclick="toggleUnit(this)">';
+    html += '<div class="' + cls + '" onclick="toggleUnit(this)">';
     html += '<div class="unit-header">';
     html += '<div class="unit-icon">' + u.icon + '</div>';
     html += '<div class="unit-info">';
     html += '<h3>' + u.phase + ' · ' + u.theme + '</h3>';
     html += '<div class="meta">' + u.desc + ' | ' + done + '/' + u.sessions.length + ' 课完成</div>';
     html += '</div>';
-    html += '<div class="unit-status">' + (allDone ? '✅' : isToday ? '📍' : '🔓') + '</div>';
+    html += '<div class="unit-status">' + (allDone ? '✅' : isToday ? '📍' : (i > 0 ? '' : '🔓')) + '</div>';
     html += '</div>';
 
     // Sessions detail
@@ -2455,8 +2451,6 @@ function renderUnits() {
     html += '</div></div>';
   });
   document.getElementById('unitList').innerHTML = html;
-  var uc = document.getElementById('unitCount');
-  if (uc) uc.textContent = CURRICULUM.length;
 
   // Open today's unit
   if (today) {
@@ -2468,24 +2462,14 @@ function renderUnits() {
 }
 
 function toggleUnit(el) {
+  if (el.classList.contains('locked')) return;
   el.classList.toggle('open');
-}
-
-// 自由选课：按关键词过滤单元（主题/单元号/阶段），无需按顺序
-function filterUnits() {
-  var box = document.getElementById('unitSearch');
-  var q = (box && box.value || '').trim().toLowerCase();
-  var cards = document.querySelectorAll('#unitList .unit-card');
-  cards.forEach(function(c) {
-    var key = (c.getAttribute('data-search') || '').toLowerCase();
-    c.style.display = (!q || key.indexOf(q) >= 0) ? '' : 'none';
-  });
 }
 
 // ====== Init ======
 renderAll();
 </script>
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260716-0940</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260716-1036</div>
   <script src="kb.js"></script>
 </body>
 </html>
