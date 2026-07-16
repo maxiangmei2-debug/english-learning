@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260716-1215">
+<meta name="build-version" content="20260716-1343">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
 <style>
@@ -38093,6 +38093,25 @@ function showExplain(q, isCorrect, userAns) {
   html += correctAnswerHtml;
   html += `<div class="explain-title">${isCorrect ? '✅ 答对了！' : '❌ 答错了'} 解析：</div>`;
   html += `<div class="explain-body">${q.explain}</div>`;
+
+  // 词汇/选择类题目：展示所有选项的对应英文，便于一次记住多个相关词
+  if (q.type === 'choice' && q.opts && q.opts.length > 0) {
+    html += `<div style="margin-top:14px;"><div style="font-size:13px;font-weight:700;color:var(--gray-600);margin-bottom:8px;">📝 选项解析</div>`;
+    q.opts.forEach(function(opt, idx) {
+      var isRight = idx === q.ans;
+      var en = OPTION_ZH_TO_EN[String(opt).trim()] || '';
+      var label = String.fromCharCode(65 + idx);
+      html += '<div style="display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border-radius:8px;margin-bottom:6px;background:' + (isRight ? 'rgba(16,185,129,0.08)' : 'var(--gray-50)') + ';border:1px solid ' + (isRight ? 'rgba(16,185,129,0.25)' : 'var(--gray-200)') + ';">' +
+        '<div style="font-weight:700;color:' + (isRight ? 'var(--success)' : 'var(--gray-400)') + ';min-width:20px;">' + label + '</div>' +
+        '<div style="flex:1;">' +
+          '<div style="font-weight:' + (isRight ? '600' : 'normal') + ';color:' + (isRight ? 'var(--success)' : 'var(--gray-800)') + ';">' + escapeHtml(String(opt)) + (isRight ? ' <span style="font-size:12px;">✅ 正确答案</span>' : '') + '</div>' +
+          (en ? '<div style="font-size:12px;color:var(--primary);margin-top:2px;">英文对应：' + escapeHtml(en) + '</div>' : '') +
+        '</div>' +
+      '</div>';
+    });
+    html += `</div>`;
+  }
+
   if(q.tip) html += `<div class="explain-tip">${q.tip}</div>`;
   html += `</div>`;
 
@@ -38760,6 +38779,31 @@ var activeTopics = [];
     }
   }
 })();
+
+// ===== Vocab option reverse lookup (show English for all Chinese option meanings) =====
+function extractEnWordFromQuestion(qtext) {
+  if (!qtext) return null;
+  var m = qtext.match(/<span class="en">([^<]+)<\/span>/);
+  if (m) return m[1].trim();
+  // match a quoted or plain English word/phrase at the start of the question
+  m = qtext.match(/^[“”"']?\s*([A-Za-z][A-Za-z0-9\s\-'’]{1,})\s*[“”"']?/);
+  if (m) return m[1].trim();
+  return null;
+}
+var OPTION_ZH_TO_EN = {};
+(function buildOptionZhToEn(){
+  (Q.vocab || []).forEach(function(q){
+    if (q.type !== 'choice') return;
+    var en = extractEnWordFromQuestion(q.q);
+    if (!en) return;
+    var ansIdx = q.ans;
+    if (typeof ansIdx !== 'number' || !q.opts || !q.opts[ansIdx]) return;
+    var zh = String(q.opts[ansIdx]).trim();
+    if (!zh) return;
+    if (!OPTION_ZH_TO_EN[zh]) OPTION_ZH_TO_EN[zh] = en;
+  });
+})();
+
 init();
 // URL param: ?cat=grammar → auto-select category and auto-start 极速闯关
 (function(){
@@ -39104,7 +39148,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260716-1215</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260716-1343</div>
   <script src="kb.js"></script>
 </body>
 </html>
