@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260716-1343">
+<meta name="build-version" content="20260716-1357">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>学习计划</title>
 <style>
@@ -91,7 +91,6 @@ body {
 }
 .unit-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
 .unit-card.active { border: 2px solid var(--primary); }
-.unit-card.locked { opacity: 0.5; }
 .unit-card .unit-header { display: flex; align-items: center; gap: 10px; }
 .unit-card .unit-icon { font-size: 28px; }
 .unit-card .unit-info { flex: 1; }
@@ -170,7 +169,9 @@ body {
 
 <!-- All units -->
 <div class="today-section">
-  <div class="section-head">📚 全部课程</div>
+  <div class="section-head">📚 全部课程（任选单元，无需按顺序）</div>
+  <input id="unitSearch" type="text" placeholder="🔍 搜索主题 / 阶段 / 关键词，如：租房、职场、面试、时态、工作职业" style="width:100%;max-width:520px;padding:10px 14px;margin-bottom:10px;border:1px solid var(--gray-300);border-radius:10px;font-size:14px;box-sizing:border-box;" oninput="filterUnits()" />
+  <div id="unitCount" style="font-size:12px;color:var(--gray-500);margin-bottom:10px;"></div>
   <div id="unitList"></div>
 </div>
 
@@ -2416,19 +2417,16 @@ function renderUnits() {
     var isToday = today && today.unit.id === u.id;
     var cls = 'unit-card';
     if (isToday) cls += ' active';
-    if (i > 0 && !allDone && !isToday) {
-      var prevDone = (p[CURRICULUM[i-1].id]||[]).length >= CURRICULUM[i-1].sessions.length;
-      if (!prevDone && !isToday) cls += ' locked';
-    }
 
-    html += '<div class="' + cls + '" onclick="toggleUnit(this)">';
+    var searchData = (u.phase + ' ' + u.theme + ' ' + u.id + ' ' + u.desc).toLowerCase().replace(/"/g, '&quot;');
+    html += '<div class="' + cls + '" data-search="' + searchData + '" onclick="toggleUnit(this)">';
     html += '<div class="unit-header">';
     html += '<div class="unit-icon">' + u.icon + '</div>';
     html += '<div class="unit-info">';
     html += '<h3>' + u.phase + ' · ' + u.theme + '</h3>';
     html += '<div class="meta">' + u.desc + ' | ' + done + '/' + u.sessions.length + ' 课完成</div>';
     html += '</div>';
-    html += '<div class="unit-status">' + (allDone ? '✅' : isToday ? '📍' : (i > 0 ? '' : '🔓')) + '</div>';
+    html += '<div class="unit-status">' + (allDone ? '✅' : isToday ? '📍' : '🔓') + '</div>';
     html += '</div>';
 
     // Sessions detail
@@ -2451,6 +2449,7 @@ function renderUnits() {
     html += '</div></div>';
   });
   document.getElementById('unitList').innerHTML = html;
+  filterUnits();
 
   // Open today's unit
   if (today) {
@@ -2462,14 +2461,31 @@ function renderUnits() {
 }
 
 function toggleUnit(el) {
-  if (el.classList.contains('locked')) return;
   el.classList.toggle('open');
+}
+
+function filterUnits() {
+  var input = document.getElementById('unitSearch');
+  var q = input ? input.value.trim().toLowerCase() : '';
+  var cards = document.querySelectorAll('#unitList .unit-card');
+  var shown = 0;
+  cards.forEach(function(c) {
+    var data = c.getAttribute('data-search') || '';
+    if (!q || data.indexOf(q) >= 0) {
+      c.style.display = '';
+      shown++;
+    } else {
+      c.style.display = 'none';
+    }
+  });
+  var counter = document.getElementById('unitCount');
+  if (counter) counter.textContent = '共 ' + shown + ' 个单元可选';
 }
 
 // ====== Init ======
 renderAll();
 </script>
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260716-1343</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260716-1357</div>
   <script src="kb.js"></script>
 </body>
 </html>
