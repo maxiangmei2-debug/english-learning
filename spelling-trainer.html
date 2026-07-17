@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260717-1031">
+<meta name="build-version" content="20260717-1114">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>词汇拼写训练营</title>
 <style>
@@ -85,6 +85,23 @@
   .progress-track{width:100%;height:6px;background:rgba(255,255,255,0.2);border-radius:3px;}
   .progress-fill{height:100%;border-radius:3px;background:white;transition:width 0.3s;}
 
+  /* 实时计分栏 */
+  .score-bar{
+    display:flex;align-items:center;gap:10px;
+    padding:6px 16px;font-size:13px;color:white;
+    flex-wrap:wrap;
+  }
+  .score-item{
+    display:flex;align-items:center;gap:3px;
+    background:rgba(255,255,255,0.15);padding:3px 10px;
+    border-radius:12px;font-weight:600;
+  }
+  .score-stage{
+    margin-left:auto;font-size:12px;
+    background:rgba(237,233,254,0.25);color:#EDE9FE;
+    padding:3px 10px;border-radius:12px;font-weight:600;
+  }
+
   /* 题目区 */
   .q-area{
     background:white;border-radius:20px 20px 0 0;
@@ -115,6 +132,7 @@
   .spell-section{margin-bottom:16px;}
   .spell-prompt{font-size:18px;font-weight:700;margin-bottom:4px;}
   .spell-hint{font-size:13px;color:var(--gray-500);margin-bottom:10px;}
+  .spell-hint-word{font-size:14px;color:#6D28D9;background:#F5F3FF;padding:6px 12px;border-radius:10px;margin-bottom:12px;display:inline-block;font-weight:600;letter-spacing:2px;font-family:monospace;}
   .spell-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
   .spell-input{
     flex:1;min-width:120px;padding:12px 14px;border-radius:12px;
@@ -313,6 +331,12 @@
     <div class="progress-track">
       <div class="progress-fill" id="pFill"></div>
     </div>
+  </div>
+  <div class="score-bar" id="scoreBar" style="display:none;">
+    <span class="score-item"><span style="color:#10B981;">✅</span> <span id="sbCorrect">0</span></span>
+    <span class="score-item"><span style="color:#EF4444;">❌</span> <span id="sbWrong">0</span></span>
+    <span class="score-item"><span style="color:#F59E0B;">🔥</span> <span id="sbCombo">0</span></span>
+    <span class="score-stage" id="sbStage"></span>
   </div>
   <div class="q-area" id="qArea"></div>
 </div>
@@ -22861,6 +22885,8 @@ function startPractice(mode) {
 
   qIndex = 0;
   showPage('practicePage');
+  document.getElementById('scoreBar').style.display = 'flex';
+  updateScoreBar();
   renderQuestion();
 }
 
@@ -22894,6 +22920,20 @@ function showPage(id) {
 }
 
 // ====== 渲染题目 ======
+function updateScoreBar() {
+  document.getElementById('sbCorrect').textContent = correctCount;
+  document.getElementById('sbWrong').textContent = wrongCount;
+  document.getElementById('sbCombo').textContent = currentCombo;
+  // 当前词的 SRS 阶段
+  if(qIndex < questions.length) {
+    var q = questions[qIndex];
+    var box = getSrs(q.en).box;
+    document.getElementById('sbStage').textContent = '📦 ' + stageLabel(box);
+  } else {
+    document.getElementById('sbStage').textContent = '';
+  }
+}
+
 function renderQuestion() {
   if(qIndex >= questions.length) {
     showResult();
@@ -22908,6 +22948,7 @@ function renderQuestion() {
 
   document.getElementById('pInfo').textContent = `${qIndex+1} / ${total}`;
   document.getElementById('pFill').style.width = pct + '%';
+  updateScoreBar();
 
   if(q.mode === 'en2cn') {
     renderEn2Cn(q, area);
@@ -22999,6 +23040,7 @@ function selectOpt(idx, selectedCn, correctCn, btn) {
   showExplainForEn2Cn(questions[qIndex], isCorrect, selectedCn);
 
   document.getElementById('nextBtn').style.display = 'block';
+  updateScoreBar();
 }
 
 function showExplainForEn2Cn(q, isCorrect, selectedCn) {
@@ -23039,12 +23081,20 @@ function showExplainForEn2Cn(q, isCorrect, selectedCn) {
 }
 
 // ====== 模式2：看中文拼英文 ======
+function makeWordHint(en) {
+  if(!en || en.length < 2) return '';
+  var first = en.charAt(0);
+  var rest = '_'.repeat(en.length - 1);
+  return first + rest + ' (' + en.length + '个字母)';
+}
+
 function renderCn2En(q, area) {
   area.innerHTML = `
     ${srsToolbarHtml(q)}
     <div class="spell-prompt">${q.cn}</div>
     ${q.ph ? `<div class="phonetic">音标：${q.ph}</div>` : ''}
     <div class="spell-hint">请拼写对应的英文（回车提交）</div>
+    <div class="spell-hint-word">💡 提示：${makeWordHint(q.en)}</div>
     <div class="spell-section">
       <div class="spell-row">
         <input class="spell-input" id="mainSpellInput" placeholder="输入英文..." autocomplete="off">
@@ -23099,6 +23149,7 @@ function submitSpell(correctEn) {
   // 显示解析
   showExplainForCn2En(questions[qIndex], isCorrect, val);
   document.getElementById('nextBtn').style.display = 'block';
+  updateScoreBar();
   // 答错：自动聚焦「再拼一遍」巩固框（移植自打字冲刺的强化记忆）
   if(!isCorrect) { setTimeout(function(){ var r=document.getElementById('spellInput2'); if(r) r.focus(); }, 120); }
 }
@@ -23343,7 +23394,14 @@ document.addEventListener('keydown', function(e) {
   if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
     return;
   }
-  // 仅在练习页、且“下一题”按钮可见时，回车进入下一题
+  // 关键修复：Chrome 下 disabled 会让输入框失焦，导致全局 handler 误判跳题。
+  // 如果主拼写输入框存在且 disabled=true，说明 submitSpell 刚执行完（答案已判断、解析正在显示），
+  // 此时禁止全局回车跳题，等用户看完解析后手动点"下一题"或再次回车。
+  var mainSpell = document.getElementById('mainSpellInput');
+  if (mainSpell && mainSpell.disabled) {
+    return;
+  }
+  // 仅在练习页、且"下一题"按钮可见时，回车进入下一题
   var practicePage = document.getElementById('practicePage');
   var onPractice = practicePage && practicePage.classList.contains('active');
   var nextBtn = document.getElementById('nextBtn');
@@ -23351,10 +23409,10 @@ document.addEventListener('keydown', function(e) {
     nextQuestion();
     return;
   }
-  // 结果页不再用回车自动返回首页（避免误触退回），需手动点“返回首页”
+  // 结果页不再用回车自动返回首页（避免误触退回），需手动点"返回首页"
 });
 </script>
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260717-1031</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260717-1114</div>
   <script src="kb.js"></script>
 </body>
 </html>
