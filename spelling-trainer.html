@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260717-1114">
+<meta name="build-version" content="20260720-1014">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>词汇拼写训练营</title>
 <style>
@@ -22762,8 +22762,345 @@ const WORDS = [
     "explain": "【知识点】think-thought /θɪŋk - θɔːt/ = 想，认为（过去式 thought）<br>【主题】MC23（生日礼物）"
   },
 
+  {
+    "en": "parking",
+    "cn": "停车",
+    "ph": "/ˈpɑːrkɪŋ/",
+    "topic": "MC06 餐厅选择",
+    "opts": [{"cn":"停车","en":"parking"},{"cn":"空位场地","en":"space"},{"cn":"免费","en":"free"},{"cn":"等候","en":"wait"}],
+    "explain": "【知识点】parking /ˈpɑːrkɪŋ/ = 停车，n.停车，parking space 停车位，free parking 免费停车<br>【主题】MC06 餐厅选择"
+  },
+  {
+    "en": "space",
+    "cn": "空位场地",
+    "ph": "/speɪs/",
+    "topic": "MC06 餐厅选择",
+    "opts": [{"cn":"空位场地","en":"space"},{"cn":"免费","en":"free"},{"cn":"等候","en":"wait"},{"cn":"份量","en":"portion"}],
+    "explain": "【知识点】space /speɪs/ = 空位场地，n.空位场地<br>【主题】MC06 餐厅选择"
+  },
+  {
+    "en": "free",
+    "cn": "免费",
+    "ph": "/friː/",
+    "topic": "MC06 餐厅选择",
+    "opts": [{"cn":"免费","en":"free"},{"cn":"等候","en":"wait"},{"cn":"份量","en":"portion"},{"cn":"速度","en":"speed"}],
+    "explain": "【知识点】free /friː/ = 免费，adj.免费的，free parking 免费停车<br>【主题】MC06 餐厅选择"
+  },
+  {
+    "en": "wait",
+    "cn": "等候",
+    "ph": "/weɪt/",
+    "topic": "MC06 餐厅选择",
+    "opts": [{"cn":"等候","en":"wait"},{"cn":"份量","en":"portion"},{"cn":"速度","en":"speed"},{"cn":"干净整洁","en":"cleanliness"}],
+    "explain": "【知识点】wait /weɪt/ = 等候，v.等候，waiting time 等候时间<br>【主题】MC06 餐厅选择"
+  },
+  {
+    "en": "portion",
+    "cn": "份量",
+    "ph": "/ˈpɔːrʃn/",
+    "topic": "MC06 餐厅选择",
+    "opts": [{"cn":"份量","en":"portion"},{"cn":"速度","en":"speed"},{"cn":"干净整洁","en":"cleanliness"},{"cn":"健康","en":"healthy"}],
+    "explain": "【知识点】portion /ˈpɔːrʃn/ = 份量，n.一份（食物），portion size 菜品份量<br>【主题】MC06 餐厅选择"
+  },
+  {
+    "en": "speed",
+    "cn": "速度",
+    "ph": "/spiːd/",
+    "topic": "MC06 餐厅选择",
+    "opts": [{"cn":"速度","en":"speed"},{"cn":"干净整洁","en":"cleanliness"},{"cn":"健康","en":"healthy"},{"cn":"新鲜","en":"fresh"}],
+    "explain": "【知识点】speed /spiːd/ = 速度，n.速度，food speed 出餐速度<br>【主题】MC06 餐厅选择"
+  },
+  {
+    "en": "cleanliness",
+    "cn": "干净整洁",
+    "ph": "/ˈklenlinəs/",
+    "topic": "MC06 餐厅选择",
+    "opts": [{"cn":"干净整洁","en":"cleanliness"},{"cn":"健康","en":"healthy"},{"cn":"新鲜","en":"fresh"},{"cn":"主厨","en":"chef"}],
+    "explain": "【知识点】cleanliness /ˈklenlinəs/ = 干净整洁，n.干净整洁<br>【主题】MC06 餐厅选择"
+  },
+  {
+    "en": "healthy",
+    "cn": "健康",
+    "ph": "/ˈhelθi/",
+    "topic": "MC06 餐厅选择",
+    "opts": [{"cn":"健康","en":"healthy"},{"cn":"新鲜","en":"fresh"},{"cn":"主厨","en":"chef"},{"cn":"招牌","en":"signature"}],
+    "explain": "【知识点】healthy /ˈhelθi/ = 健康，adj.健康的<br>【主题】MC06 餐厅选择"
+  },
+  {
+    "en": "fresh",
+    "cn": "新鲜",
+    "ph": "/freʃ/",
+    "topic": "MC06 餐厅选择",
+    "opts": [{"cn":"新鲜","en":"fresh"},{"cn":"主厨","en":"chef"},{"cn":"招牌","en":"signature"},{"cn":"菜肴","en":"dish"}],
+    "explain": "【知识点】fresh /freʃ/ = 新鲜，adj.新鲜的，fresh produce 新鲜农产品<br>【主题】MC06 餐厅选择"
+  },
+  {
+    "en": "chef",
+    "cn": "主厨",
+    "ph": "/ʃef/",
+    "topic": "MC06 餐厅选择",
+    "opts": [{"cn":"主厨","en":"chef"},{"cn":"招牌","en":"signature"},{"cn":"菜肴","en":"dish"},{"cn":"受欢迎","en":"popular"}],
+    "explain": "【知识点】chef /ʃef/ = 主厨，n.主厨厨师<br>【主题】MC06 餐厅选择"
+  },
+  {
+    "en": "signature",
+    "cn": "招牌",
+    "ph": "/ˈsɪɡnətʃər/",
+    "topic": "MC06 餐厅选择",
+    "opts": [{"cn":"招牌","en":"signature"},{"cn":"菜肴","en":"dish"},{"cn":"受欢迎","en":"popular"},{"cn":"放松","en":"relaxing"}],
+    "explain": "【知识点】signature /ˈsɪɡnətʃər/ = 招牌，adj.招牌的，signature dish 招牌菜<br>【主题】MC06 餐厅选择"
+  },
+  {
+    "en": "dish",
+    "cn": "菜肴",
+    "ph": "/dɪʃ/",
+    "topic": "MC06 餐厅选择",
+    "opts": [{"cn":"菜肴","en":"dish"},{"cn":"受欢迎","en":"popular"},{"cn":"放松","en":"relaxing"},{"cn":"氛围","en":"atmosphere"}],
+    "explain": "【知识点】dish /dɪʃ/ = 菜肴，n.菜肴<br>【主题】MC06 餐厅选择"
+  },
+  {
+    "en": "popular",
+    "cn": "受欢迎",
+    "ph": "/ˈpɑːpjələr/",
+    "topic": "MC06 餐厅选择",
+    "opts": [{"cn":"受欢迎","en":"popular"},{"cn":"放松","en":"relaxing"},{"cn":"氛围","en":"atmosphere"},{"cn":"昂贵","en":"expensive"}],
+    "explain": "【知识点】popular /ˈpɑːpjələr/ = 受欢迎，adj.受欢迎的<br>【主题】MC06 餐厅选择"
+  },
+  {
+    "en": "relaxing",
+    "cn": "放松",
+    "ph": "/rɪˈlæksɪŋ/",
+    "topic": "MC06 餐厅选择",
+    "opts": [{"cn":"放松","en":"relaxing"},{"cn":"氛围","en":"atmosphere"},{"cn":"昂贵","en":"expensive"},{"cn":"吵闹","en":"noisy"}],
+    "explain": "【知识点】relaxing /rɪˈlæksɪŋ/ = 放松，adj.令人放松的，the most relaxing atmosphere 最令人放松的氛围<br>【主题】MC06 餐厅选择"
+  },
+  {
+    "en": "atmosphere",
+    "cn": "氛围",
+    "ph": "/ˈætməsfɪr/",
+    "topic": "MC06 餐厅选择",
+    "opts": [{"cn":"氛围","en":"atmosphere"},{"cn":"昂贵","en":"expensive"},{"cn":"吵闹","en":"noisy"},{"cn":"素食者","en":"vegetarian"}],
+    "explain": "【知识点】atmosphere /ˈætməsfɪr/ = 氛围，n.氛围<br>【主题】MC06 餐厅选择"
+  },
+  {
+    "en": "expensive",
+    "cn": "昂贵",
+    "ph": "/ɪkˈspensɪv/",
+    "topic": "MC06 餐厅选择",
+    "opts": [{"cn":"昂贵","en":"expensive"},{"cn":"吵闹","en":"noisy"},{"cn":"素食者","en":"vegetarian"},{"cn":"菜系","en":"cuisine"}],
+    "explain": "【知识点】expensive /ɪkˈspensɪv/ = 昂贵，adj.昂贵的<br>【主题】MC06 餐厅选择"
+  },
+  {
+    "en": "noisy",
+    "cn": "吵闹",
+    "ph": "/ˈnɔɪzi/",
+    "topic": "MC06 餐厅选择",
+    "opts": [{"cn":"吵闹","en":"noisy"},{"cn":"素食者","en":"vegetarian"},{"cn":"菜系","en":"cuisine"},{"cn":"辛辣","en":"spicy"}],
+    "explain": "【知识点】noisy /ˈnɔɪzi/ = 吵闹，adj.吵闹的<br>【主题】MC06 餐厅选择"
+  },
+  {
+    "en": "vegetarian",
+    "cn": "素食者",
+    "ph": "/ˌvedʒəˈteriən/",
+    "topic": "MC06 餐厅选择",
+    "opts": [{"cn":"素食者","en":"vegetarian"},{"cn":"菜系","en":"cuisine"},{"cn":"辛辣","en":"spicy"},{"cn":"停车","en":"parking"}],
+    "explain": "【知识点】vegetarian /ˌvedʒəˈteriən/ = 素食者，n.素食者<br>【主题】MC06 餐厅选择"
+  },
+  {
+    "en": "cuisine",
+    "cn": "菜系",
+    "ph": "/kwɪˈziːn/",
+    "topic": "MC06 餐厅选择",
+    "opts": [{"cn":"菜系","en":"cuisine"},{"cn":"辛辣","en":"spicy"},{"cn":"停车","en":"parking"},{"cn":"空位场地","en":"space"}],
+    "explain": "【知识点】cuisine /kwɪˈziːn/ = 菜系，n.菜系特色美食<br>【主题】MC06 餐厅选择"
+  },
+  {
+    "en": "spicy",
+    "cn": "辛辣",
+    "ph": "/ˈspaɪsi/",
+    "topic": "MC06 餐厅选择",
+    "opts": [{"cn":"辛辣","en":"spicy"},{"cn":"停车","en":"parking"},{"cn":"空位场地","en":"space"},{"cn":"免费","en":"free"}],
+    "explain": "【知识点】spicy /ˈspaɪsi/ = 辛辣，adj.辛辣的<br>【主题】MC06 餐厅选择"
+  },
+  {
+    "en": "oversize",
+    "cn": "宽松",
+    "ph": "/ˌoʊvərˈsaɪz/",
+    "topic": "MC02 服装购物",
+    "opts": [{"cn":"宽松","en":"oversize"},{"cn":"休闲","en":"casual"},{"cn":"正式","en":"formal"},{"cn":"肥大","en":"baggy"}],
+    "explain": "【知识点】oversize /ˌoʊvərˈsaɪz/ = 宽松，adj.宽松大版型<br>【主题】MC02 服装购物"
+  },
+  {
+    "en": "casual",
+    "cn": "休闲",
+    "ph": "/ˈkæʒuəl/",
+    "topic": "MC02 服装购物",
+    "opts": [{"cn":"休闲","en":"casual"},{"cn":"正式","en":"formal"},{"cn":"肥大","en":"baggy"},{"cn":"棉","en":"cotton"}],
+    "explain": "【知识点】casual /ˈkæʒuəl/ = 休闲，adj.休闲的<br>【主题】MC02 服装购物"
+  },
+  {
+    "en": "formal",
+    "cn": "正式",
+    "ph": "/ˈfɔːrml/",
+    "topic": "MC02 服装购物",
+    "opts": [{"cn":"正式","en":"formal"},{"cn":"肥大","en":"baggy"},{"cn":"棉","en":"cotton"},{"cn":"丝绸","en":"silk"}],
+    "explain": "【知识点】formal /ˈfɔːrml/ = 正式，adj.正式的<br>【主题】MC02 服装购物"
+  },
+  {
+    "en": "baggy",
+    "cn": "肥大",
+    "ph": "/ˈbæɡi/",
+    "topic": "MC02 服装购物",
+    "opts": [{"cn":"肥大","en":"baggy"},{"cn":"棉","en":"cotton"},{"cn":"丝绸","en":"silk"},{"cn":"皮革","en":"leather"}],
+    "explain": "【知识点】baggy /ˈbæɡi/ = 肥大，adj.宽松肥大的<br>【主题】MC02 服装购物"
+  },
+  {
+    "en": "cotton",
+    "cn": "棉",
+    "ph": "/ˈkɑːtn/",
+    "topic": "MC02 服装购物",
+    "opts": [{"cn":"棉","en":"cotton"},{"cn":"丝绸","en":"silk"},{"cn":"皮革","en":"leather"},{"cn":"牛仔布","en":"denim"}],
+    "explain": "【知识点】cotton /ˈkɑːtn/ = 棉，n.棉<br>【主题】MC02 服装购物"
+  },
+  {
+    "en": "silk",
+    "cn": "丝绸",
+    "ph": "/sɪlk/",
+    "topic": "MC02 服装购物",
+    "opts": [{"cn":"丝绸","en":"silk"},{"cn":"皮革","en":"leather"},{"cn":"牛仔布","en":"denim"},{"cn":"收银台","en":"counter"}],
+    "explain": "【知识点】silk /sɪlk/ = 丝绸，n.丝绸<br>【主题】MC02 服装购物"
+  },
+  {
+    "en": "leather",
+    "cn": "皮革",
+    "ph": "/ˈleðər/",
+    "topic": "MC02 服装购物",
+    "opts": [{"cn":"皮革","en":"leather"},{"cn":"牛仔布","en":"denim"},{"cn":"收银台","en":"counter"},{"cn":"零售","en":"retail"}],
+    "explain": "【知识点】leather /ˈleðər/ = 皮革，n.皮革<br>【主题】MC02 服装购物"
+  },
+  {
+    "en": "denim",
+    "cn": "牛仔布",
+    "ph": "/ˈdenɪm/",
+    "topic": "MC02 服装购物",
+    "opts": [{"cn":"牛仔布","en":"denim"},{"cn":"收银台","en":"counter"},{"cn":"零售","en":"retail"},{"cn":"古着","en":"vintage"}],
+    "explain": "【知识点】denim /ˈdenɪm/ = 牛仔布，n.牛仔布<br>【主题】MC02 服装购物"
+  },
+  {
+    "en": "counter",
+    "cn": "收银台",
+    "ph": "/ˈkaʊntər/",
+    "topic": "MC02 服装购物",
+    "opts": [{"cn":"收银台","en":"counter"},{"cn":"零售","en":"retail"},{"cn":"古着","en":"vintage"},{"cn":"复古","en":"retro"}],
+    "explain": "【知识点】counter /ˈkaʊntər/ = 收银台，n.收银柜台<br>【主题】MC02 服装购物"
+  },
+  {
+    "en": "retail",
+    "cn": "零售",
+    "ph": "/ˈriːteɪl/",
+    "topic": "MC02 服装购物",
+    "opts": [{"cn":"零售","en":"retail"},{"cn":"古着","en":"vintage"},{"cn":"复古","en":"retro"},{"cn":"宽松","en":"oversize"}],
+    "explain": "【知识点】retail /ˈriːteɪl/ = 零售，n.零售<br>【主题】MC02 服装购物"
+  },
+  {
+    "en": "vintage",
+    "cn": "古着",
+    "ph": "/ˈvɪntɪdʒ/",
+    "topic": "MC02 服装购物",
+    "opts": [{"cn":"古着","en":"vintage"},{"cn":"复古","en":"retro"},{"cn":"宽松","en":"oversize"},{"cn":"休闲","en":"casual"}],
+    "explain": "【知识点】vintage /ˈvɪntɪdʒ/ = 古着，adj.古着复古<br>【主题】MC02 服装购物"
+  },
+  {
+    "en": "retro",
+    "cn": "复古",
+    "ph": "/ˈretrəʊ/",
+    "topic": "MC02 服装购物",
+    "opts": [{"cn":"复古","en":"retro"},{"cn":"宽松","en":"oversize"},{"cn":"休闲","en":"casual"},{"cn":"正式","en":"formal"}],
+    "explain": "【知识点】retro /ˈretrəʊ/ = 复古，adj.复古的<br>【主题】MC02 服装购物"
+  },
+  {
+    "en": "seriously",
+    "cn": "严重",
+    "ph": "/ˈsɪriəsli/",
+    "topic": "MC27 愿望虚拟",
+    "opts": [{"cn":"严重","en":"seriously"},{"cn":"相同","en":"identical"},{"cn":"抓住","en":"grasp"},{"cn":"低语","en":"whisper"}],
+    "explain": "【知识点】seriously /ˈsɪriəsli/ = 严重，adv.严重地，seriously ill 病重<br>【主题】MC27 愿望虚拟"
+  },
+  {
+    "en": "identical",
+    "cn": "相同",
+    "ph": "/aɪˈdentɪkl/",
+    "topic": "MC27 愿望虚拟",
+    "opts": [{"cn":"相同","en":"identical"},{"cn":"抓住","en":"grasp"},{"cn":"低语","en":"whisper"},{"cn":"缓解","en":"relieve"}],
+    "explain": "【知识点】identical /aɪˈdentɪkl/ = 相同，adj.完全相同的<br>【主题】MC27 愿望虚拟"
+  },
+  {
+    "en": "grasp",
+    "cn": "抓住",
+    "ph": "/ɡræsp/",
+    "topic": "MC27 愿望虚拟",
+    "opts": [{"cn":"抓住","en":"grasp"},{"cn":"低语","en":"whisper"},{"cn":"缓解","en":"relieve"},{"cn":"晒黑","en":"tanned"}],
+    "explain": "【知识点】grasp /ɡræsp/ = 抓住，v.紧紧抓住<br>【主题】MC27 愿望虚拟"
+  },
+  {
+    "en": "whisper",
+    "cn": "低语",
+    "ph": "/ˈwɪspər/",
+    "topic": "MC27 愿望虚拟",
+    "opts": [{"cn":"低语","en":"whisper"},{"cn":"缓解","en":"relieve"},{"cn":"晒黑","en":"tanned"},{"cn":"苍白","en":"pale"}],
+    "explain": "【知识点】whisper /ˈwɪspər/ = 低语，v.低声说<br>【主题】MC27 愿望虚拟"
+  },
+  {
+    "en": "relieve",
+    "cn": "缓解",
+    "ph": "/rɪˈliːv/",
+    "topic": "MC27 愿望虚拟",
+    "opts": [{"cn":"缓解","en":"relieve"},{"cn":"晒黑","en":"tanned"},{"cn":"苍白","en":"pale"},{"cn":"严重","en":"seriously"}],
+    "explain": "【知识点】relieve /rɪˈliːv/ = 缓解，v.消除缓解<br>【主题】MC27 愿望虚拟"
+  },
+  {
+    "en": "tanned",
+    "cn": "晒黑",
+    "ph": "/tænd/",
+    "topic": "MC27 愿望虚拟",
+    "opts": [{"cn":"晒黑","en":"tanned"},{"cn":"苍白","en":"pale"},{"cn":"严重","en":"seriously"},{"cn":"相同","en":"identical"}],
+    "explain": "【知识点】tanned /tænd/ = 晒黑，adj.晒成小麦肤色<br>【主题】MC27 愿望虚拟"
+  },
+  {
+    "en": "pale",
+    "cn": "苍白",
+    "ph": "/peɪl/",
+    "topic": "MC27 愿望虚拟",
+    "opts": [{"cn":"苍白","en":"pale"},{"cn":"严重","en":"seriously"},{"cn":"相同","en":"identical"},{"cn":"抓住","en":"grasp"}],
+    "explain": "【知识点】pale /peɪl/ = 苍白，adj.苍白的<br>【主题】MC27 愿望虚拟"
+  },
+  {
+    "en": "recommend",
+    "cn": "推荐",
+    "ph": "/ˌrekəˈmend/",
+    "topic": "餐饮服务口语",
+    "opts": [{"cn":"推荐","en":"recommend"},{"cn":"特色菜","en":"special"},{"cn":"停车","en":"parking"},{"cn":"空位场地","en":"space"}],
+    "explain": "【知识点】recommend /ˌrekəˈmend/ = 推荐，v.推荐<br>【主题】餐饮服务口语"
+  },
+  {
+    "en": "special",
+    "cn": "特色菜",
+    "ph": "/ˈspeʃl/",
+    "topic": "餐饮服务口语",
+    "opts": [{"cn":"特色菜","en":"special"},{"cn":"停车","en":"parking"},{"cn":"空位场地","en":"space"},{"cn":"免费","en":"free"}],
+    "explain": "【知识点】special /ˈspeʃl/ = 特色菜，n.特色菜<br>【主题】餐饮服务口语"
+  },
+  {
+    "en": "bland",
+    "cn": "寡淡",
+    "ph": "/blænd/",
+    "topic": "用餐场景",
+    "opts": [{"cn":"寡淡","en":"bland"},{"cn":"停车","en":"parking"},{"cn":"空位场地","en":"space"},{"cn":"免费","en":"free"}],
+    "explain": "【知识点】bland /blænd/ = 寡淡，adj.寡淡无味<br>【主题】用餐场景"
+  },
+
 ];
-const TOPICS = ['全部','租房','运动','购物','办公','手机','性格','情绪','职场','旅行','搭配','否定表达','狼来了','看医生','祈使句','坐飞机','交通出行','入住酒店','点餐用餐','问路方向','购物消费','出入境','简单聊天','时态动词','完成时搭配','情态搭配','从句引导词','药店看病','职业工作','面试求职','性格描述','短语动词','日常生活','助动词与be动词','通勤职场','旅行度假','餐饮美食','生活事物','飞行场景','露营装备','职场时间','土地往事','房产租赁','展会商务','描述家乡', 'MC01 工作职业', 'MC02 购物', 'MC03 餐厅点餐', 'MC04 家庭家人', 'MC05 飞机遇险', 'MC06 选择餐厅', 'MC07 外貌描述', 'MC08 旅行假期', 'MC09 旅行游玩', 'MC10 家乡描述', 'MC11 倒霉趣事', 'MC12 海滩趣事', 'MC13 幽默娱乐', 'MC14 租房', 'MC15 童话寓言', 'MC16 药房买药', 'MC17 健身运动', 'MC18 健康计划', 'MC19 洗手间趣事', 'MC20 能力才艺', 'MC21 露营装备', 'MC22 工作时间', 'MC23 生日礼物', 'MC24 考试通过', 'MC25 算命占卜', 'MC26 问路·速配', 'MC27 临终愿望', 'MC28 请假·健康饮食', 'MC29 相亲速配', 'MC30 目的地选择', 'MC31 园艺挖土', 'MC32 面试求职', 'MC33 求职面试', 'MC34 单身生活', 'MC35 开车提神', 'MC36 手机APP', 'MC37 销售推销', 'MC38 借用文具', 'MC39 跳蚤市场', 'MC40 抢劫意外'];
+const TOPICS = ['全部','租房','运动','购物','办公','手机','性格','情绪','职场','旅行','搭配','否定表达','狼来了','看医生','祈使句','坐飞机','交通出行','入住酒店','点餐用餐','问路方向','购物消费','出入境','简单聊天','时态动词','完成时搭配','情态搭配','从句引导词','药店看病','职业工作','面试求职','性格描述','短语动词','日常生活','助动词与be动词','通勤职场','旅行度假','餐饮美食','生活事物','飞行场景','露营装备','职场时间','土地往事','房产租赁','展会商务','描述家乡', 'MC01 工作职业', 'MC02 购物', 'MC03 餐厅点餐', 'MC04 家庭家人', 'MC05 飞机遇险', 'MC06 选择餐厅', 'MC07 外貌描述', 'MC08 旅行假期', 'MC09 旅行游玩', 'MC10 家乡描述', 'MC11 倒霉趣事', 'MC12 海滩趣事', 'MC13 幽默娱乐', 'MC14 租房', 'MC15 童话寓言', 'MC16 药房买药', 'MC17 健身运动', 'MC18 健康计划', 'MC19 洗手间趣事', 'MC20 能力才艺', 'MC21 露营装备', 'MC22 工作时间', 'MC23 生日礼物', 'MC24 考试通过', 'MC25 算命占卜', 'MC26 问路·速配', 'MC27 临终愿望', 'MC28 请假·健康饮食', 'MC29 相亲速配', 'MC30 目的地选择', 'MC31 园艺挖土', 'MC32 面试求职', 'MC33 求职面试', 'MC34 单身生活', 'MC35 开车提神', 'MC36 手机APP', 'MC37 销售推销', 'MC38 借用文具', 'MC39 跳蚤市场', 'MC40 抢劫意外','MC06 餐厅选择','MC02 服装购物','MC27 愿望虚拟','餐饮服务口语','用餐场景'];
 
 // ====== 状态 ======
 let totalScore = 0;
@@ -23412,7 +23749,7 @@ document.addEventListener('keydown', function(e) {
   // 结果页不再用回车自动返回首页（避免误触退回），需手动点"返回首页"
 });
 </script>
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260717-1114</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260720-1014</div>
   <script src="kb.js"></script>
 </body>
 </html>
