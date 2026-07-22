@@ -185,17 +185,10 @@
     if (!nav || !document.getElementById('grammar')) return; // 仅在手册页
     if (document.getElementById('kb')) return;              // 防重复注入
 
-    // 纯 CSS tab：创建隐藏 radio + <label for>，点击 label 即切换，无需 JS
-    var radio = document.createElement('input');
-    radio.type = 'radio';
-    radio.name = 'htab';
-    radio.id = 'htab-kb';
-    radio.className = 'htab-radio';
-    document.body.insertBefore(radio, document.body.firstChild);
-
-    var btn = document.createElement('label');
+    // 纯 CSS tab：用原生锚点 <a href="#kb"> 触发 :target 切换，完全不依赖 JS / ~ 兄弟选择器
+    var btn = document.createElement('a');
     btn.className = 'nav-btn';
-    btn.setAttribute('for', 'htab-kb');
+    btn.href = '#kb';
     btn.setAttribute('data-tab', 'kb');
     btn.innerHTML = '📥 <span class="nav-label-desktop">我的知识库</span><span class="nav-label-mobile">知识库</span>';
     var inner = nav.querySelector('.nav-inner') || nav;

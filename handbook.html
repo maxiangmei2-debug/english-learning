@@ -3,7 +3,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260722-1641">
+<meta name="build-version" content="20260722-1723">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>英语学习手册</title>
 <style>
@@ -69,14 +69,15 @@
     white-space: nowrap;
   }
   .nav-btn:hover { background: var(--gray-100); color: var(--gray-800); }
-  /* 选中态高亮：由 radio :checked 驱动，无需 JS */
-  #htab-grammar:checked ~ .nav .nav-btn[for="htab-grammar"],
-  #htab-vocab:checked   ~ .nav .nav-btn[for="htab-vocab"],
-  #htab-phrase:checked  ~ .nav .nav-btn[for="htab-phrase"],
-  #htab-scene:checked   ~ .nav .nav-btn[for="htab-scene"],
-  #htab-errors:checked  ~ .nav .nav-btn[for="htab-errors"],
-  #htab-review:checked  ~ .nav .nav-btn[for="htab-review"],
-  #htab-kb:checked      ~ .nav .nav-btn[for="htab-kb"] {
+  /* 选中态高亮：跟随 :target */
+  :root:has(#grammar:target) .nav-btn[href="#grammar"],
+  :root:has(#vocab:target)   .nav-btn[href="#vocab"],
+  :root:has(#phrase:target)  .nav-btn[href="#phrase"],
+  :root:has(#scene:target)   .nav-btn[href="#scene"],
+  :root:has(#errors:target)  .nav-btn[href="#errors"],
+  :root:has(#review:target)  .nav-btn[href="#review"],
+  :root:has(#kb:target)      .nav-btn[href="#kb"],
+  :root:not(:has(.section:target)) .nav-btn[href="#grammar"] {
     background: var(--primary); color: white;
   }
 
@@ -98,12 +99,11 @@
   }
   .header p { font-size: 16px; color: var(--gray-600); }
 
-  /* 纯 CSS tab 控制器：radio :checked 即显示对应 section，完全不依赖 JavaScript */
   .htab-radio {
     position: absolute; width: 1px; height: 1px;
     opacity: 0; pointer-events: none; left: -9999px;
   }
-  /* 多层隐藏：防止某些浏览器/扩展/阅读模式强制 display:block 导致多 section 同时显示 */
+  /* 纯 CSS tab：用 :target 原生锚点切换，不依赖任何 JS、不依赖 ~ 兄弟选择器，兼容性最强 */
   .section {
     display: none !important;
     visibility: hidden !important;
@@ -111,14 +111,19 @@
     height: 0 !important;
     overflow: hidden !important;
     pointer-events: none !important;
+    scroll-margin-top: 72px;
   }
-  #htab-grammar:checked ~ .container #grammar,
-  #htab-vocab:checked   ~ .container #vocab,
-  #htab-phrase:checked  ~ .container #phrase,
-  #htab-scene:checked   ~ .container #scene,
-  #htab-errors:checked  ~ .container #errors,
-  #htab-review:checked  ~ .container #review,
-  #htab-kb:checked      ~ .container #kb {
+  /* 有锚点时显示对应 section */
+  .section:target {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    overflow: visible !important;
+    pointer-events: auto !important;
+  }
+  /* 无锚点时默认显示「语法速查」 */
+  :root:not(:has(.section:target)) #grammar {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
@@ -490,13 +495,13 @@
 
 <nav class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="back-link">← <span class="back-label-desktop">返回首页</span></a>
-    <label class="nav-btn" for="htab-grammar" data-tab="grammar">📖 <span class="nav-label-desktop">语法速查</span><span class="nav-label-mobile">语法</span></label>
-    <label class="nav-btn" for="htab-vocab" data-tab="vocab">🏷️ <span class="nav-label-desktop">主题词汇</span><span class="nav-label-mobile">词汇</span></label>
-    <label class="nav-btn" for="htab-phrase" data-tab="phrase">🔗 <span class="nav-label-desktop">必背搭配</span><span class="nav-label-mobile">搭配</span></label>
-    <label class="nav-btn" for="htab-scene" data-tab="scene">💬 <span class="nav-label-desktop">场景句型</span><span class="nav-label-mobile">句型</span></label>
-    <label class="nav-btn" for="htab-errors" data-tab="errors">🚫 <span class="nav-label-desktop">易错清单</span><span class="nav-label-mobile">易错</span></label>
-    <label class="nav-btn" for="htab-review" data-tab="review">🃏 <span class="nav-label-desktop">速记卡片</span><span class="nav-label-mobile">卡片</span></label>
+    <a href="index.html?v=20260722-1723" class="back-link">← <span class="back-label-desktop">返回首页</span></a>
+    <a class="nav-btn" href="#grammar" data-tab="grammar">📖 <span class="nav-label-desktop">语法速查</span><span class="nav-label-mobile">语法</span></a>
+    <a class="nav-btn" href="#vocab" data-tab="vocab">🏷️ <span class="nav-label-desktop">主题词汇</span><span class="nav-label-mobile">词汇</span></a>
+    <a class="nav-btn" href="#phrase" data-tab="phrase">🔗 <span class="nav-label-desktop">必背搭配</span><span class="nav-label-mobile">搭配</span></a>
+    <a class="nav-btn" href="#scene" data-tab="scene">💬 <span class="nav-label-desktop">场景句型</span><span class="nav-label-mobile">句型</span></a>
+    <a class="nav-btn" href="#errors" data-tab="errors">🚫 <span class="nav-label-desktop">易错清单</span><span class="nav-label-mobile">易错</span></a>
+    <a class="nav-btn" href="#review" data-tab="review">🃏 <span class="nav-label-desktop">速记卡片</span><span class="nav-label-mobile">卡片</span></a>
   </div>
 </nav>
 
@@ -6456,21 +6461,15 @@
 </div>
 
 <script>
-// Tab switching - 主 tab 已由纯 CSS (radio :checked) 驱动，无需 JS。
-// 此函数保留以兼容「我的知识库」(kb.js) 等动态 tab：同步对应 radio 的选中态，
-// CSS 的 :checked 规则会自动显示对应 section 并高亮导航。
+// Tab switching - 主 tab 已由纯 CSS (:target) 驱动，无需 JS。
+// 此函数保留以兼容「我的知识库」(kb.js) 等动态 tab：通过设置 location.hash
+// 触发 :target 规则显示对应 section 并高亮导航。
 function switchTab(tabId) {
-  var radio = document.getElementById('htab-' + tabId);
-  if (radio) { radio.checked = true; }
-  var btns = document.querySelectorAll('.nav-btn');
-  for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('active'); }
-  var targetBtn = document.querySelector('.nav-btn[data-tab="' + tabId + '"]');
-  if (targetBtn) targetBtn.classList.add('active');
-  try { window.scrollTo(0, 0); } catch(e) {}
+  if (tabId) { try { if (location.hash !== '#' + tabId) location.hash = tabId; } catch(e) {} }
 }
 
-// 双保险：事件委托兜底（部分手机 WebView / 浏览器扩展会抑制 inline onclick，
-// 在 .nav 容器上监听 click 比依赖 onclick 属性更稳定）
+// 双保险：事件委托兜底（部分手机 WebView / 浏览器扩展会抑制默认行为时，
+// 在 .nav 容器上监听 click 并手动设置 hash，比依赖原生锚点跳转更稳定）
 (function(){
   function findBtn(node){
     while (node && node !== document) {
@@ -7033,10 +7032,10 @@ renderFlipCards(flipData);
 })();
 </script>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260722-1641</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260722-1723</div>
 
 
-  <script src="kb.js"></script>
+  <script src="kb.js?v=20260722-1723"></script>
 <script>
 (function(){
   function spkText(raw){
