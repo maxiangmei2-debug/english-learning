@@ -184,12 +184,22 @@
     var nav = document.querySelector('nav');
     if (!nav || !document.getElementById('grammar')) return; // 仅在手册页
     if (document.getElementById('kb')) return;              // 防重复注入
-    var btn = document.createElement('button');
+
+    // 纯 CSS tab：创建隐藏 radio + <label for>，点击 label 即切换，无需 JS
+    var radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'htab';
+    radio.id = 'htab-kb';
+    radio.className = 'htab-radio';
+    document.body.insertBefore(radio, document.body.firstChild);
+
+    var btn = document.createElement('label');
     btn.className = 'nav-btn';
+    btn.setAttribute('for', 'htab-kb');
     btn.setAttribute('data-tab', 'kb');
-    btn.setAttribute('onclick', "switchTab('kb')");
     btn.innerHTML = '📥 <span class="nav-label-desktop">我的知识库</span><span class="nav-label-mobile">知识库</span>';
-    nav.appendChild(btn);
+    var inner = nav.querySelector('.nav-inner') || nav;
+    inner.appendChild(btn);
 
     var sec = document.createElement('div');
     sec.className = 'section';

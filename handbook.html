@@ -3,7 +3,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260722-1410">
+<meta name="build-version" content="20260722-1545">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>英语学习手册</title>
 <style>
@@ -69,7 +69,16 @@
     white-space: nowrap;
   }
   .nav-btn:hover { background: var(--gray-100); color: var(--gray-800); }
-  .nav-btn.active { background: var(--primary); color: white; }
+  /* 选中态高亮：由 radio :checked 驱动，无需 JS */
+  #htab-grammar:checked ~ .nav .nav-btn[for="htab-grammar"],
+  #htab-vocab:checked   ~ .nav .nav-btn[for="htab-vocab"],
+  #htab-phrase:checked  ~ .nav .nav-btn[for="htab-phrase"],
+  #htab-scene:checked   ~ .nav .nav-btn[for="htab-scene"],
+  #htab-errors:checked  ~ .nav .nav-btn[for="htab-errors"],
+  #htab-review:checked  ~ .nav .nav-btn[for="htab-review"],
+  #htab-kb:checked      ~ .nav .nav-btn[for="htab-kb"] {
+    background: var(--primary); color: white;
+  }
 
   /* Nav label visibility defaults */
   .nav-label-desktop { display: inline; }
@@ -89,9 +98,19 @@
   }
   .header p { font-size: 16px; color: var(--gray-600); }
 
-  /* Section */
+  /* 纯 CSS tab 控制器：radio :checked 即显示对应 section，完全不依赖 JavaScript */
+  .htab-radio {
+    position: absolute; width: 1px; height: 1px;
+    opacity: 0; pointer-events: none; left: -9999px;
+  }
   .section { display: none; }
-  .section.active { display: block; }
+  #htab-grammar:checked ~ .container #grammar { display: block; }
+  #htab-vocab:checked   ~ .container #vocab   { display: block; }
+  #htab-phrase:checked  ~ .container #phrase  { display: block; }
+  #htab-scene:checked   ~ .container #scene   { display: block; }
+  #htab-errors:checked  ~ .container #errors  { display: block; }
+  #htab-review:checked  ~ .container #review  { display: block; }
+  #htab-kb:checked      ~ .container #kb       { display: block; }
 
   .section-title {
     font-size: 22px; font-weight: 700; color: var(--gray-900);
@@ -446,15 +465,23 @@
 </head>
 <body>
 
+<!-- 纯 CSS tab 控制器：不依赖任何 JavaScript，兼容所有浏览器/WebView -->
+<input class="htab-radio" type="radio" name="htab" id="htab-grammar" checked>
+<input class="htab-radio" type="radio" name="htab" id="htab-vocab">
+<input class="htab-radio" type="radio" name="htab" id="htab-phrase">
+<input class="htab-radio" type="radio" name="htab" id="htab-scene">
+<input class="htab-radio" type="radio" name="htab" id="htab-errors">
+<input class="htab-radio" type="radio" name="htab" id="htab-review">
+
 <nav class="nav">
   <div class="nav-inner">
     <a href="index.html" class="back-link">← <span class="back-label-desktop">返回首页</span></a>
-    <button class="nav-btn active" data-tab="grammar" onclick="switchTab('grammar')">📖 <span class="nav-label-desktop">语法速查</span><span class="nav-label-mobile">语法</span></button>
-    <button class="nav-btn" data-tab="vocab" onclick="switchTab('vocab')">🏷️ <span class="nav-label-desktop">主题词汇</span><span class="nav-label-mobile">词汇</span></button>
-    <button class="nav-btn" data-tab="phrase" onclick="switchTab('phrase')">🔗 <span class="nav-label-desktop">必背搭配</span><span class="nav-label-mobile">搭配</span></button>
-    <button class="nav-btn" data-tab="scene" onclick="switchTab('scene')">💬 <span class="nav-label-desktop">场景句型</span><span class="nav-label-mobile">句型</span></button>
-    <button class="nav-btn" data-tab="errors" onclick="switchTab('errors')">🚫 <span class="nav-label-desktop">易错清单</span><span class="nav-label-mobile">易错</span></button>
-    <button class="nav-btn" data-tab="review" onclick="switchTab('review')">🃏 <span class="nav-label-desktop">速记卡片</span><span class="nav-label-mobile">卡片</span></button>
+    <label class="nav-btn" for="htab-grammar" data-tab="grammar">📖 <span class="nav-label-desktop">语法速查</span><span class="nav-label-mobile">语法</span></label>
+    <label class="nav-btn" for="htab-vocab" data-tab="vocab">🏷️ <span class="nav-label-desktop">主题词汇</span><span class="nav-label-mobile">词汇</span></label>
+    <label class="nav-btn" for="htab-phrase" data-tab="phrase">🔗 <span class="nav-label-desktop">必背搭配</span><span class="nav-label-mobile">搭配</span></label>
+    <label class="nav-btn" for="htab-scene" data-tab="scene">💬 <span class="nav-label-desktop">场景句型</span><span class="nav-label-mobile">句型</span></label>
+    <label class="nav-btn" for="htab-errors" data-tab="errors">🚫 <span class="nav-label-desktop">易错清单</span><span class="nav-label-mobile">易错</span></label>
+    <label class="nav-btn" for="htab-review" data-tab="review">🃏 <span class="nav-label-desktop">速记卡片</span><span class="nav-label-mobile">卡片</span></label>
   </div>
 </nav>
 
@@ -6414,16 +6441,16 @@
 </div>
 
 <script>
-// Tab switching - inline onclick handler (maximally compatible)
+// Tab switching - 主 tab 已由纯 CSS (radio :checked) 驱动，无需 JS。
+// 此函数保留以兼容「我的知识库」(kb.js) 等动态 tab：同步对应 radio 的选中态，
+// CSS 的 :checked 规则会自动显示对应 section 并高亮导航。
 function switchTab(tabId) {
+  var radio = document.getElementById('htab-' + tabId);
+  if (radio) { radio.checked = true; }
   var btns = document.querySelectorAll('.nav-btn');
-  var sections = document.querySelectorAll('.section');
   for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('active'); }
-  for (var i = 0; i < sections.length; i++) { sections[i].classList.remove('active'); }
   var targetBtn = document.querySelector('.nav-btn[data-tab="' + tabId + '"]');
-  var targetSection = document.getElementById(tabId);
   if (targetBtn) targetBtn.classList.add('active');
-  if (targetSection) targetSection.classList.add('active');
   try { window.scrollTo(0, 0); } catch(e) {}
 }
 
@@ -6991,7 +7018,7 @@ renderFlipCards(flipData);
 })();
 </script>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260722-1410</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260722-1545</div>
 
 
   <script src="kb.js"></script>
