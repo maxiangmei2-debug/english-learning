@@ -3,7 +3,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260722-1545">
+<meta name="build-version" content="20260722-1641">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>英语学习手册</title>
 <style>
@@ -103,14 +103,29 @@
     position: absolute; width: 1px; height: 1px;
     opacity: 0; pointer-events: none; left: -9999px;
   }
-  .section { display: none; }
-  #htab-grammar:checked ~ .container #grammar { display: block; }
-  #htab-vocab:checked   ~ .container #vocab   { display: block; }
-  #htab-phrase:checked  ~ .container #phrase  { display: block; }
-  #htab-scene:checked   ~ .container #scene   { display: block; }
-  #htab-errors:checked  ~ .container #errors  { display: block; }
-  #htab-review:checked  ~ .container #review  { display: block; }
-  #htab-kb:checked      ~ .container #kb       { display: block; }
+  /* 多层隐藏：防止某些浏览器/扩展/阅读模式强制 display:block 导致多 section 同时显示 */
+  .section {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+  }
+  #htab-grammar:checked ~ .container #grammar,
+  #htab-vocab:checked   ~ .container #vocab,
+  #htab-phrase:checked  ~ .container #phrase,
+  #htab-scene:checked   ~ .container #scene,
+  #htab-errors:checked  ~ .container #errors,
+  #htab-review:checked  ~ .container #review,
+  #htab-kb:checked      ~ .container #kb {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    overflow: visible !important;
+    pointer-events: auto !important;
+  }
 
   .section-title {
     font-size: 22px; font-weight: 700; color: var(--gray-900);
@@ -493,7 +508,7 @@
 </div>
 
 <!-- ==================== 语法速查 ==================== -->
-<div class="section active" id="grammar">
+<div class="section" id="grammar">
   <div class="section-title"><span class="icon">📖</span> 语法速查</div>
 
   <div class="grid-2">
@@ -7018,7 +7033,7 @@ renderFlipCards(flipData);
 })();
 </script>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260722-1545</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260722-1641</div>
 
 
   <script src="kb.js"></script>
