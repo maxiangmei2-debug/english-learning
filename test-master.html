@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260720-1014">
+<meta name="build-version" content="20260722-0857">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
 <style>
@@ -26562,6 +26562,12 @@ const Q = {
         "no pay parking"
       ],
       "ans": 0,
+      "optNotes": [
+        "✔ 免费停车。free=免费的，parking=停车（动名词），固定搭配。",
+        "park 是名词「公园」或动词「停放」，表「停车」这个名词概念要用 parking，不能用 park。",
+        "cheap=便宜的，不是免费；「免费」只能用 free。",
+        "中式直译，英语里没有 no pay parking 这种说法。"
+      ],
       "explain": "<span class='highlight'>free parking</span> 免费停车，free 在这里是'免费的'。"
     },
     {
@@ -26578,6 +26584,12 @@ const Q = {
         "take off"
       ],
       "ans": 1,
+      "optNotes": [
+        "put on=穿上（强调动作，已经穿好），不含「试」的意思。",
+        "✔ 试穿。可分离短语动词，代词 it 要放中间：try it on / try on the dress。",
+        "wear=穿着（状态，正穿在身上），不是「试穿」。",
+        "take off=脱下，意思正好相反。"
+      ],
       "explain": "<span class='highlight'>try it on</span> 试穿（可分离短语动词），it 放在中间。try on the dress = try it on。"
     },
     {
@@ -26594,6 +26606,12 @@ const Q = {
         "buy healing"
       ],
       "ans": 1,
+      "optNotes": [
+        "生造搭配，英语固定说法是 retail therapy，不说 shopping therapy。",
+        "✔ 逛街解压购物。retail=零售，therapy=疗愈，合起来指用购物疗愈心情。",
+        "cure 指「治愈疾病」，不能这样搭配。",
+        "中式直译，英语无 buy healing 这种说法。"
+      ],
       "explain": "<span class='highlight'>retail therapy</span> 逛街解压购物。therapy 本身是'疗愈'的意思。"
     },
     {
@@ -26610,6 +26628,12 @@ const Q = {
         "House free"
       ],
       "ans": 1,
+      "optNotes": [
+        "意思对（这是免费的），但餐厅「本店赠送/请客」的地道说法是 It is on the house。",
+        "✔ 免单、本店请客（餐厅惯用语），= It is free。",
+        "No money=没钱，意思完全不同。",
+        "House free 语序错误，英语无此表达。"
+      ],
       "explain": "<span class='highlight'>It\'s on the house.</span> 免费赠送/免单（餐厅用语），= It\'s free."
     },
     {
@@ -26626,6 +26650,12 @@ const Q = {
         "remove from sb"
       ],
       "ans": 1,
+      "optNotes": [
+        "字面「拿走痛苦」，不是固定搭配，英语不这样说。",
+        "✔ 消除某人的痛苦/烦恼。固定结构 relieve sb of sth，relieve=缓解、消除。",
+        "delete=删除（用于文件、数据），不能修饰 pain（痛苦）。",
+        "remove from sb 搭配不完整，也不表示「消除痛苦」。"
+      ],
       "explain": "<span class='highlight'>relieve sb of sth</span> 消除某人的痛苦/烦恼。relieve 是'缓解消除'。"
     },
     {
@@ -26642,6 +26672,12 @@ const Q = {
         "make a seat"
       ],
       "ans": 1,
+      "optNotes": [
+        "book a seat 多用于影院、车票的「订座」；餐厅订位地道说法是 get a table。",
+        "✔ 订到座位（餐厅语境）。It is hard to get a table=很难订到位子。",
+        "reserve 后一般接 a table/seat，reserve chair 不地道。",
+        "make a seat 无此搭配，「预订座位」不用 make。"
+      ],
       "explain": "<span class='highlight'>get a table</span> 在餐厅语境表示'订到座位'。It\'s hard to get a table 很难订到位子。"
     }
   ],
@@ -38892,13 +38928,14 @@ function showExplain(q, isCorrect, userAns) {
     html += `<div style="margin-top:14px;"><div style="font-size:13px;font-weight:700;color:var(--gray-600);margin-bottom:8px;">📝 选项解析</div>`;
     q.opts.forEach(function(opt, idx) {
       var isRight = idx === q.ans;
-      var en = OPTION_ZH_TO_EN[String(opt).trim()] || '';
+      var note = q.optNotes && q.optNotes[idx] ? q.optNotes[idx] : '';
+      var en = !note ? (OPTION_ZH_TO_EN[String(opt).trim()] || '') : '';
       var label = String.fromCharCode(65 + idx);
       html += '<div style="display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border-radius:8px;margin-bottom:6px;background:' + (isRight ? 'rgba(16,185,129,0.08)' : 'var(--gray-50)') + ';border:1px solid ' + (isRight ? 'rgba(16,185,129,0.25)' : 'var(--gray-200)') + ';">' +
         '<div style="font-weight:700;color:' + (isRight ? 'var(--success)' : 'var(--gray-400)') + ';min-width:20px;">' + label + '</div>' +
         '<div style="flex:1;">' +
           '<div style="font-weight:' + (isRight ? '600' : 'normal') + ';color:' + (isRight ? 'var(--success)' : 'var(--gray-800)') + ';">' + escapeHtml(String(opt)) + (isRight ? ' <span style="font-size:12px;">✅ 正确答案</span>' : '') + '</div>' +
-          (en ? '<div style="font-size:12px;color:var(--primary);margin-top:2px;">英文对应：' + escapeHtml(en) + '</div>' : '') +
+          (note ? '<div style="font-size:12px;color:var(--gray-600);margin-top:3px;line-height:1.5;">' + note + '</div>' : (en ? '<div style="font-size:12px;color:var(--primary);margin-top:2px;">英文对应：' + escapeHtml(en) + '</div>' : '')) +
         '</div>' +
       '</div>';
     });
@@ -39947,7 +39984,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260720-1014</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260722-0857</div>
   <script src="kb.js"></script>
 </body>
 </html>
