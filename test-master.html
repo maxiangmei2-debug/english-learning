@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260723-0944">
+<meta name="build-version" content="20260723-1019">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
 <style>
@@ -213,6 +213,13 @@
     color:#2563EB; font-weight:600; margin-left:0; vertical-align:middle;
   }
   .skip-stage-btn:hover { border-color:#3B82F6; background:#DBEAFE; color:#1D4ED8; }
+  .next-top-btn {
+    display:inline-flex; align-items:center; gap:4px; padding:4px 12px;
+    border-radius:16px; border:1.5px solid #C4B5FD; background:#F5F3FF;
+    font-size:15px; cursor:pointer; transition:all 0.2s; touch-action:manipulation;
+    color:#7C3AED; font-weight:600; margin-left:0; vertical-align:middle;
+  }
+  .next-top-btn:hover { border-color:#8B5CF6; background:#EDE9FE; color:#5B21B6; }
   .master-mark-btn {
     font-size:15px; font-weight:600; padding:12px 22px; border-radius:24px;
     border:2px solid #A7F3D0; background:#ECFDF5; color:#059669; cursor:pointer;
@@ -440,7 +447,7 @@
 </style>
 </head>
 <body>
-<a href="index.html?v=20260723-0944" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+<a href="index.html?v=20260723-1019" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
 
 <!-- ====== 首页 ====== -->
 <div class="home-page" id="homePage">
@@ -38685,11 +38692,12 @@ function renderQuestion() {
   let bmIcon = isBookmarked ? '⭐' : '☆';
   let isMasteredQ = masteredSet.has(q.id);
   let inMasteredMode = (typeof isMasteredMode !== 'undefined' && isMasteredMode);
+  let nextTopBtn = `<button class="next-top-btn" onclick="window.nextTopQuestion()" title="跳到下一题（未作答将标记为跳过）">下一题 →</button>`;
   let skipBtn = inMasteredMode ? '' :
     `<button class="skip-stage-btn" onclick="window.skipStageCurrent()" title="跳过当前复习阶段，直接推进到下一阶段（不会标记掌握，下一阶段仍会按曲线出现）">⏭ 跳过该阶段</button>`;
   let masterBtn = inMasteredMode ? '' :
     `<button class="master-btn${isMasteredQ?' mastered':''}" onclick="window.manualMarkMastered()" title="标记为已掌握，这道题以后不再出现">${isMasteredQ?'✅ 已掌握':'✅ 标掌握'}</button>`;
-  let html = `<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;"><div class="q-type-badge ${badgeClass}">${q.badge}</div><div style="display:flex;gap:8px;align-items:center;">${skipBtn}${masterBtn}<button class="bm-btn${bmClass}" id="bmBtn" onclick="window.toggleBookmark('${q.id}')" title="${isBookmarked?'取消收藏':'收藏此题'}">${bmIcon} 收藏</button></div></div>`;
+  let html = `<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;"><div class="q-type-badge ${badgeClass}">${q.badge}</div><div style="display:flex;gap:8px;align-items:center;">${nextTopBtn}${skipBtn}${masterBtn}<button class="bm-btn${bmClass}" id="bmBtn" onclick="window.toggleBookmark('${q.id}')" title="${isBookmarked?'取消收藏':'收藏此题'}">${bmIcon} 收藏</button></div></div>`;
   html += `<div class="q-history" id="qHistory">${renderHistoryHtml(q)}</div>`;
 
   if(q.type === 'choice' || q.type === 'sent-app') {
@@ -39053,6 +39061,12 @@ function nextQuestion() {
   if(qIndex >= questions.length || lives <= 0) endTest();
   else renderQuestion();
 }
+
+// 顶部"下一题"按钮：未作答则跳过，已作答则进入下一题
+window.nextTopQuestion = function() {
+  if (!answered) skipQuestion();
+  else nextQuestion();
+};
 
 // ====== SKIP QUESTION ======
 var skipQuestion = window.skipQuestion = function() {
@@ -39709,7 +39723,7 @@ init();
       // Add a focus banner on the test page header area
       var banner = document.createElement('div');
       banner.id = 'focusBanner';
-      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260723-0944" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
+      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260723-1019" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
       var testPage = document.getElementById('testPage');
       if (testPage) {
         var topBar = testPage.querySelector('.test-top-bar');
@@ -40010,7 +40024,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260723-0944</div>
-  <script src="kb.js?v=20260723-0944"></script>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260723-1019</div>
+  <script src="kb.js?v=20260723-1019"></script>
 </body>
 </html>
