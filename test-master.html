@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260723-1019">
+<meta name="build-version" content="20260723-1117">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
 <style>
@@ -447,7 +447,7 @@
 </style>
 </head>
 <body>
-<a href="index.html?v=20260723-1019" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+<a href="index.html?v=20260723-1117" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
 
 <!-- ====== 首页 ====== -->
 <div class="home-page" id="homePage">
@@ -18870,10 +18870,10 @@ const Q = {
       ],
       "ans": 3,
       "optNotes": [
-        {"zh": "沉迷刷手机、看手机上的内容。", "en": "scroll on one's phone / play on one's phone"},
-        {"zh": "用现金付款。", "en": "pay in cash"},
-        {"zh": "每天上下班通勤。", "en": "commute to work"},
-        {"zh": "✔ 帮某人摆脱困境/解围。out 强调渡过难关，区别于一般 help sb。", "en": "help sb out"}
+        "scroll on one's phone / play on one's phone",
+        "pay in cash",
+        "commute to work",
+        "help sb out"
       ],
       "explain": "📌 动词短语：<span class=\"right\">help sb out</span> = \"帮某人摆脱困境/解围\"，out 强调渡过难关，区别于一般 help sb。<br>✅ Can you help me out?<br>💡 解围 help out。",
       "tip": "help sb out → 帮某人解围"
@@ -38937,7 +38937,7 @@ function showExplain(q, isCorrect, userAns) {
   html += `<div class="explain-title">${isCorrect ? '✅ 答对了！' : '❌ 答错了'} 解析：</div>`;
   html += `<div class="explain-body">${q.explain}</div>`;
 
-  // 词汇/选择类题目：展示所有选项的对应英文/中文，便于一次记住多个相关表达
+  // 词汇/选择类题目：每个选项都展示对应的翻译（中文选项→英文对应，英文选项→中文对应）
   if (q.type === 'choice' && q.opts && q.opts.length > 0) {
     html += `<div style="margin-top:14px;"><div style="font-size:13px;font-weight:700;color:var(--gray-600);margin-bottom:8px;">📝 选项解析</div>`;
     q.opts.forEach(function(opt, idx) {
@@ -38949,27 +38949,27 @@ function showExplain(q, isCorrect, userAns) {
           note = rawNote.zh || '';
           noteEn = rawNote.en || '';
         } else {
-          note = rawNote;
+          noteEn = rawNote; // 字符串 optNotes 默认视为英文对应
         }
       }
-      // 兜底：若 optNotes 未提供英文，尝试全局中文→英文映射
-      if (!noteEn) {
-        noteEn = OPTION_ZH_TO_EN[String(opt).trim()] || '';
-      }
+      var optStr = String(opt).trim();
+      // 判断选项是中文还是英文
+      var optIsChinese = /[\u4e00-\u9fa5]/.test(optStr);
+      // 兜底：若 optNotes 未提供翻译，从全局映射表查
+      if (!noteEn) noteEn = OPTION_ZH_TO_EN[optStr] || '';
+      if (!note && !noteEn) note = OPTION_EN_TO_ZH[optStr] || '';
       var label = String.fromCharCode(65 + idx);
-      var optLine = escapeHtml(String(opt));
-      // 若选项本身是英文且 note 是中文释义，则把英文选项也作为 noteEn 展示
-      if (/^[a-zA-Z\s'\-_.!?'"]+$/.test(String(opt).trim()) && note && !noteEn) {
-        noteEn = optLine;
-        optLine = note; // 把中文释义放主行
-        note = '';
-      }
       html += '<div style="display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border-radius:8px;margin-bottom:6px;background:' + (isRight ? 'rgba(16,185,129,0.08)' : 'var(--gray-50)') + ';border:1px solid ' + (isRight ? 'rgba(16,185,129,0.25)' : 'var(--gray-200)') + ';">' +
         '<div style="font-weight:700;color:' + (isRight ? 'var(--success)' : 'var(--gray-400)') + ';min-width:20px;">' + label + '</div>' +
         '<div style="flex:1;">' +
-          '<div style="font-weight:' + (isRight ? '600' : 'normal') + ';color:' + (isRight ? 'var(--success)' : 'var(--gray-800)') + ';">' + optLine + (isRight ? ' <span style="font-size:12px;">✅ 正确答案</span>' : '') + '</div>' +
-          (noteEn ? '<div style="font-size:12px;color:var(--primary);margin-top:2px;font-weight:600;">英文对应：' + escapeHtml(noteEn) + '</div>' : '') +
-          (note ? '<div style="font-size:12px;color:var(--gray-600);margin-top:3px;line-height:1.5;">' + note + '</div>' : '') +
+          '<div style="font-weight:' + (isRight ? '600' : 'normal') + ';color:' + (isRight ? 'var(--success)' : 'var(--gray-800)') + ';">' + escapeHtml(optStr) + (isRight ? ' <span style="font-size:12px;">✅ 正确答案</span>' : '') + '</div>' +
+          // 中文选项 → 展示英文对应；英文选项 → 展示中文释义
+          (optIsChinese ? (
+            (noteEn ? '<div style="font-size:12px;color:var(--primary);margin-top:2px;font-weight:600;">英文对应：' + escapeHtml(noteEn) + '</div>' : '')
+            + (note ? '<div style="font-size:12px;color:var(--gray-600);margin-top:3px;line-height:1.5;">' + note + '</div>' : '')
+          ) : (
+            (note ? '<div style="font-size:12px;color:var(--primary);margin-top:2px;font-weight:600;">中文释义：' + escapeHtml(note) + '</div>' : (noteEn ? '<div style="font-size:12px;color:var(--primary);margin-top:2px;font-weight:600;">中文释义：' + escapeHtml(noteEn) + '</div>' : ''))
+          )) +
         '</div>' +
       '</div>';
     });
@@ -39650,27 +39650,34 @@ var activeTopics = [];
   }
 })();
 
-// ===== Vocab option reverse lookup (show English for all Chinese option meanings) =====
+// ===== Bidirectional option lookup (ZH↔EN) from ALL question categories =====
 function extractEnWordFromQuestion(qtext) {
   if (!qtext) return null;
   var m = qtext.match(/<span class="en">([^<]+)<\/span>/);
   if (m) return m[1].trim();
-  // match a quoted or plain English word/phrase at the start of the question
-  m = qtext.match(/^[“”"']?\s*([A-Za-z][A-Za-z0-9\s\-'’]{1,})\s*[“”"']?/);
+  // match quoted English word/phrase in question (e.g., 「help sb out」, "get a table")
+  m = qtext.match(/[「《""']?\s*([A-Za-z][A-Za-z0-9\s'’\-]+(?:\s+[A-Za-z][A-Za-z0-9\s'’\-]+)*)\s*[」》""']?/);
   if (m) return m[1].trim();
   return null;
 }
 var OPTION_ZH_TO_EN = {};
-(function buildOptionZhToEn(){
-  (Q.vocab || []).forEach(function(q){
-    if (q.type !== 'choice') return;
-    var en = extractEnWordFromQuestion(q.q);
-    if (!en) return;
-    var ansIdx = q.ans;
-    if (typeof ansIdx !== 'number' || !q.opts || !q.opts[ansIdx]) return;
-    var zh = String(q.opts[ansIdx]).trim();
-    if (!zh) return;
-    if (!OPTION_ZH_TO_EN[zh]) OPTION_ZH_TO_EN[zh] = en;
+var OPTION_EN_TO_ZH = {};
+(function buildOptionMap(){
+  var cats = ['vocab','phrase','scene','error','grammar'];
+  cats.forEach(function(ck){
+    (Q[ck] || []).forEach(function(q){
+      if (q.type !== 'choice') return;
+      if (!q.opts || typeof q.ans !== 'number') return;
+      var en = extractEnWordFromQuestion(q.q) || '';
+      var ansZh = String(q.opts[q.ans]).trim();
+      // ZH→EN: correct answer's Chinese maps to the English word from question
+      if (ansZh && en && !OPTION_ZH_TO_EN[ansZh]) OPTION_ZH_TO_EN[ansZh] = en;
+      // EN→ZH: for each English option, map to the correct Chinese answer
+      q.opts.forEach(function(opt, idx){
+        var s = String(opt).trim();
+        if (/^[a-zA-Z]/.test(s) && ansZh && !OPTION_EN_TO_ZH[s]) OPTION_EN_TO_ZH[s] = ansZh;
+      });
+    });
   });
 })();
 
@@ -39723,7 +39730,7 @@ init();
       // Add a focus banner on the test page header area
       var banner = document.createElement('div');
       banner.id = 'focusBanner';
-      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260723-1019" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
+      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260723-1117" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
       var testPage = document.getElementById('testPage');
       if (testPage) {
         var topBar = testPage.querySelector('.test-top-bar');
@@ -40024,7 +40031,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260723-1019</div>
-  <script src="kb.js?v=20260723-1019"></script>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260723-1117</div>
+  <script src="kb.js?v=20260723-1117"></script>
 </body>
 </html>
