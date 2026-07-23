@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260723-1117">
+<meta name="build-version" content="20260723-1125">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
 <style>
@@ -447,7 +447,7 @@
 </style>
 </head>
 <body>
-<a href="index.html?v=20260723-1117" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+<a href="index.html?v=20260723-1125" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
 
 <!-- ====== 首页 ====== -->
 <div class="home-page" id="homePage">
@@ -39660,6 +39660,13 @@ function extractEnWordFromQuestion(qtext) {
   if (m) return m[1].trim();
   return null;
 }
+function extractZhFromQuestion(qtext) {
+  // Extract Chinese meaning from brackets/parentheses in question
+  if (!qtext) return null;
+  var m = qtext.match(/[（(]\s*([\u4e00-\u9fa5][\u4e00-\u9fa5\s，,、；;：:。！!？?]+)\s*[）)]/);
+  if (m) return m[1].trim();
+  return null;
+}
 var OPTION_ZH_TO_EN = {};
 var OPTION_EN_TO_ZH = {};
 (function buildOptionMap(){
@@ -39672,10 +39679,11 @@ var OPTION_EN_TO_ZH = {};
       var ansZh = String(q.opts[q.ans]).trim();
       // ZH→EN: correct answer's Chinese maps to the English word from question
       if (ansZh && en && !OPTION_ZH_TO_EN[ansZh]) OPTION_ZH_TO_EN[ansZh] = en;
-      // EN→ZH: for each English option, map to the correct Chinese answer
+      // EN→ZH: try bracket Chinese first, then correct answer as fallback
+      var zhMeaning = extractZhFromQuestion(q.q) || ansZh;
       q.opts.forEach(function(opt, idx){
         var s = String(opt).trim();
-        if (/^[a-zA-Z]/.test(s) && ansZh && !OPTION_EN_TO_ZH[s]) OPTION_EN_TO_ZH[s] = ansZh;
+        if (/^[a-zA-Z]/.test(s) && zhMeaning && !OPTION_EN_TO_ZH[s]) OPTION_EN_TO_ZH[s] = zhMeaning;
       });
     });
   });
@@ -39730,7 +39738,7 @@ init();
       // Add a focus banner on the test page header area
       var banner = document.createElement('div');
       banner.id = 'focusBanner';
-      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260723-1117" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
+      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260723-1125" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
       var testPage = document.getElementById('testPage');
       if (testPage) {
         var topBar = testPage.querySelector('.test-top-bar');
@@ -40031,7 +40039,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260723-1117</div>
-  <script src="kb.js?v=20260723-1117"></script>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260723-1125</div>
+  <script src="kb.js?v=20260723-1125"></script>
 </body>
 </html>
