@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260723-1125">
+<meta name="build-version" content="20260723-1345">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
 <style>
@@ -447,7 +447,7 @@
 </style>
 </head>
 <body>
-<a href="index.html?v=20260723-1125" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+<a href="index.html?v=20260723-1345" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
 
 <!-- ====== 首页 ====== -->
 <div class="home-page" id="homePage">
@@ -988,16 +988,16 @@ const Q = {
       "type": "choice",
       "badge": "语法",
       "q": "\"I am ___ waking up early.\" — 我习惯了早起。选？",
-      "hint": "仍在做的习惯",
+      "hint": "仍在做的习惯；注意题干后面已经有 waking",
       "opts": [
         "used to",
         "use to",
         "used to doing",
         "used to do"
       ],
-      "ans": 2,
-      "explain": "【知识点】be used to doing = 现在习惯于<br><br><span class=\"right\">am used to + doing</span> = 习惯于（仍在做）<br><span class=\"wrong\">used to + do</span> = 过去常做（已停）<br><br>【对比表】<br>• I am used to <span class=\"right\">drinking</span> coffee. → 现在习惯喝咖啡<br>• I <span class=\"wrong\">used to</span> drink coffee. → 过去常喝咖啡（现在不喝了）<br><br>【be的变化】<br>• I <span class=\"right\">am</span> used to... → 现在习惯<br>• She <span class=\"right\">is</span> used to... → 现在习惯<br>• They <span class=\"right\">are</span> used to... → 现在习惯<br><br>【易错点】<br>❌ I am used to <span class=\"wrong\">drink</span> coffee. → 错！后接doing<br>✅ I am used to <span class=\"right\">drinking</span> coffee. → 正确<br><br>【记忆口诀】<br>am/is/are used to + doing → 现在<br>used to + do → 过去（已停）",
-      "tip": ""
+      "ans": 0,
+      "explain": "【知识点】be used to + doing = 现在习惯于<br><br>题干后面已经给出 <span class=\"right\">waking</span>，因此空格处只需要填 <span class=\"right\">used to</span>，完整句子为：<br>✅ I am <span class=\"right\">used to</span> waking up early. → 我习惯了早起（仍在做）<br><br>如果选 <span class=\"wrong\">used to doing</span>，句子会变成 ❌ I am used to <span class=\"wrong\">doing waking</span> up early.，doing 和 waking 重复，语法错误。<br><br>【对比表】<br>• I am used to <span class=\"right\">waking</span> up early. → 现在习惯早起<br>• I <span class=\"wrong\">used to</span> wake up early. → 过去常早起（现在不了）<br><br>【记忆口诀】<br>am/is/are used to + doing → 现在习惯<br>used to + do → 过去常做（已停）",
+      "tip": "题干已有 doing/waking 时，空格不要再重复 doing"
     },
     {
       "id": "g29",
@@ -39738,7 +39738,7 @@ init();
       // Add a focus banner on the test page header area
       var banner = document.createElement('div');
       banner.id = 'focusBanner';
-      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260723-1125" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
+      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260723-1345" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
       var testPage = document.getElementById('testPage');
       if (testPage) {
         var topBar = testPage.querySelector('.test-top-bar');
@@ -40039,7 +40039,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260723-1125</div>
-  <script src="kb.js?v=20260723-1125"></script>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260723-1345</div>
+  <script src="kb.js?v=20260723-1345"></script>
 </body>
 </html>
