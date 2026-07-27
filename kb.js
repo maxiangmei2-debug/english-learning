@@ -37,6 +37,14 @@
   }
   function saveRaw(arr) { localStorage.setItem(KB_KEY, JSON.stringify(arr)); }
   function getEntries() { return loadRaw(); }
+  // 按级别过滤：无 level 字段视为 B1
+  function getEntriesByLevel(level) {
+    var all = loadRaw();
+    return all.filter(function (e) {
+      var lv = e.level || 'B1';
+      return lv === level;
+    });
+  }
   function getByType(t) { return loadRaw().filter(function (e) { return e.type === t; }); }
 
   function upsert(entry) {
@@ -117,7 +125,8 @@
 
   function applyToTestMaster() {
     if (typeof Q === 'undefined') return;
-    var entries = getEntries();
+    var lv = (function () { try { return localStorage.getItem('english_level') === 'B2' ? 'B2' : 'B1'; } catch (e) { return 'B1'; } })();
+    var entries = getEntriesByLevel(lv);
     if (!entries.length) return;
     var allMeanings = entries.map(function (e) { return e.meaning || '（释义）'; });
     entries.forEach(function (e) {
@@ -154,14 +163,16 @@
   }
   function applyToVocabGame() {
     if (typeof VOCAB === 'undefined') return;
-    var list = getEntries()
+    var lv = (function () { try { return localStorage.getItem('english_level') === 'B2' ? 'B2' : 'B1'; } catch (e) { return 'B1'; } })();
+    var list = getEntriesByLevel(lv)
       .filter(function (e) { return e.type === 'word' || e.type === 'phrase'; })
       .map(function (e) { return [e.content, e.meaning || '']; });
     if (list.length) VOCAB['📥 我的知识库'] = list;
   }
   function applyToSpelling() {
     if (typeof WORDS === 'undefined') return;
-    var entries = getEntries().filter(function (e) { return e.type === 'word' || e.type === 'phrase'; });
+    var lv = (function () { try { return localStorage.getItem('english_level') === 'B2' ? 'B2' : 'B1'; } catch (e) { return 'B1'; } })();
+    var entries = getEntriesByLevel(lv).filter(function (e) { return e.type === 'word' || e.type === 'phrase'; });
     var all = entries.map(function (e) { return { cn: e.meaning || '', en: e.content }; });
     entries.forEach(function (e) {
       var correct = { cn: e.meaning || '', en: e.content };
@@ -197,7 +208,8 @@
     var sec = document.createElement('div');
     sec.className = 'section';
     sec.id = 'kb';
-    var entries = getEntries();
+    var lv = (function () { try { return localStorage.getItem('english_level') === 'B2' ? 'B2' : 'B1'; } catch (e) { return 'B1'; } })();
+    var entries = getEntriesByLevel(lv);
     var html = '<div class="section-title"><span class="icon">📥</span> 我的知识库</div>';
     html += '<p style="color:var(--gray-600);font-size:13px;margin-bottom:12px;">你日常维护的学习内容，自动同步到这里。去「英语学习中心 → 我的知识库」中添加 / 编辑。</p>';
     if (!entries.length) {
@@ -266,12 +278,14 @@
   // 从整段文本（每行一条）批量解析并保存，返回统计
   function addFromText(text) {
     var lines = (text || '').split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
+    var lv = (function () { try { return localStorage.getItem('english_level') === 'B2' ? 'B2' : 'B1'; } catch (e) { return 'B1'; } })();
     var stats = { total: 0, word: 0, phrase: 0, sentence: 0, grammar: 0, error: 0 };
     lines.forEach(function (line) {
       var e = parseEntry(line);
       if (!e) return;
       e.id = 'kb_' + Date.now() + '_' + Math.floor(Math.random() * 1e6).toString(36);
       e.createdAt = Date.now();
+      e.level = lv;          // 记录所属级别，便于 B1/B2 分离
       upsert(e);
       stats.total++;
       stats[e.type] = (stats[e.type] || 0) + 1;
@@ -283,7 +297,8 @@
     var container = document.querySelector('.container');
     if (!container) return;
     if (document.getElementById('kbSelfStudy')) return; // 防重复
-    var entries = getEntries();
+    var lv = (function () { try { return localStorage.getItem('english_level') === 'B2' ? 'B2' : 'B1'; } catch (e) { return 'B1'; } })();
+    var entries = getEntriesByLevel(lv);
     var typeName = { word: '单词', phrase: '搭配', sentence: '句型', grammar: '语法', error: '易错' };
     var sec = document.createElement('div');
     sec.className = 'progress-section';
@@ -319,7 +334,7 @@
 
   /* ---------------- 暴露 API ---------------- */
   window.KB = {
-    getEntries: getEntries, getByType: getByType, upsert: upsert, remove: removeEntry,
+    getEntries: getEntries, getEntriesByLevel: getEntriesByLevel, getByType: getByType, upsert: upsert, remove: removeEntry,
     exportJSON: exportJSON, importJSON: importJSON,
     pushSync: pushSync, pullSync: pullSync, ensureGist: ensureGist,
     loadSyncCfg: loadSyncCfg, saveSyncCfg: saveSyncCfg, apply: apply,
