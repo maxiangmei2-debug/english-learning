@@ -31,13 +31,15 @@
   function applyCards(root) {
     root = root || document;
     var lv = get();
-    var cards = root.querySelectorAll('[data-level]');
-    for (var i = 0; i < cards.length; i++) {
-      var c = cards[i];
+    var leveled = root.querySelectorAll('[data-level]');
+    for (var i = 0; i < leveled.length; i++) {
+      var c = leveled[i];
       c.style.display = (c.getAttribute('data-level') === lv) ? '' : 'none';
     }
-    // 无 data-level 的 .card 默认是 B1：B2 模式下隐藏
-    if (lv === 'B2') {
+    // 仅在使用分级约定的页面（存在已分级卡片，如手册）才隐藏未分级 .card，
+    // 避免误伤入口页/模块页等以 .card 作为导航或结构容器的页面。
+    // 注意：手册速记卡为 .flip-card，不在此选择器范围内，由各自渲染逻辑按级别过滤。
+    if (lv === 'B2' && leveled.length > 0) {
       var def = root.querySelectorAll('.card:not([data-level])');
       for (var j = 0; j < def.length; j++) def[j].style.display = 'none';
     }
