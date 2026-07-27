@@ -7,10 +7,10 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260727-1721">
+<meta name="build-version" content="20260727-1744">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>词汇拼写训练营</title>
-<script src="level-config.js?v=20260727-1721"></script>
+<script src="level-config.js?v=20260727-1744"></script>
 <style>
   :root {
     --primary:#6366F1; --primary-light:#EEF2FF; --primary-dark:#4F46E5;
@@ -266,7 +266,7 @@
 </style>
 </head>
 <body>
-<a href="index.html?v=20260727-1721" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+<a href="index.html?v=20260727-1744" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
 
 <!-- ===== 首页 ===== -->
 <div class="home-page" id="homePage">
@@ -34017,11 +34017,16 @@ function srsToolbarHtml(q) {
   var box = getSrs(q.en).box;
   return `<div class="srs-toolbar" style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
     <span class="srs-badge" style="font-size:12px;font-weight:700;color:#6D28D9;background:#EDE9FE;padding:4px 10px;border-radius:20px;">📦 ${stageLabel(box)}</span>
-    <div style="display:flex;gap:6px;">
+    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+      <button id="topNextBtn" onclick="nextQuestion()" title="进入下一题" style="display:none;font-size:12px;padding:5px 10px;border:1px solid #6366F1;color:#fff;background:#6366F1;border-radius:8px;cursor:pointer;font-weight:700;">下一题 →</button>
       <button onclick="skipCurrentStage()" title="跳过当前复习阶段，直接进入下一档间隔（不标记熟练）" style="font-size:12px;padding:5px 10px;border:1px solid #3B82F6;color:#2563EB;background:#fff;border-radius:8px;cursor:pointer;font-weight:600;">⏭ 跳过该阶段</button>
       <button onclick="markCurrentMastered()" title="标记为已熟练，以后不再出现（可在首页移出重练）" style="font-size:12px;padding:5px 10px;border:1px solid #10B981;color:#059669;background:#fff;border-radius:8px;cursor:pointer;font-weight:600;">✅ 已标熟</button>
     </div>
   </div>`;
+}
+function showNextBtns() {
+  var b = document.getElementById('nextBtn'); if (b) b.style.display = 'block';
+  var t = document.getElementById('topNextBtn'); if (t) t.style.display = 'inline-block';
 }
 function markCurrentMastered() {
   const q = questions[qIndex];
@@ -34094,7 +34099,7 @@ function selectOpt(idx, selectedCn, correctCn, btn) {
   // 显示解析
   showExplainForEn2Cn(questions[qIndex], isCorrect, selectedCn);
 
-  document.getElementById('nextBtn').style.display = 'block';
+  showNextBtns();
   updateScoreBar();
 }
 
@@ -34168,7 +34173,7 @@ function renderCn2En(q, area) {
     inp.addEventListener('keydown', function(e){
       if(e.key === 'Enter'){
         e.preventDefault();
-        if(!answered) submitSpell(q.en);
+        if(!answered) { submitSpell(q.en); e.stopPropagation(); } // 阻止冒泡，避免提交瞬间被全局监听器重复跳题
         else nextQuestion();
       }
     });
@@ -34187,7 +34192,7 @@ function submitSpell(correctEn) {
   const isCorrect = val === correctLower;
 
   inp.className = 'spell-input ' + (isCorrect ? 'correct' : 'wrong');
-  inp.disabled = true;
+  inp.readOnly = true; // 保持可聚焦，回车仍可触发跳下一题（区别于 disabled 会丢失 keydown）
 
   if(isCorrect) {
     correctCount++;
@@ -34203,7 +34208,7 @@ function submitSpell(correctEn) {
 
   // 显示解析
   showExplainForCn2En(questions[qIndex], isCorrect, val);
-  document.getElementById('nextBtn').style.display = 'block';
+  showNextBtns();
   updateScoreBar();
   // 答错：自动聚焦「再拼一遍」巩固框（移植自打字冲刺的强化记忆）
   if(!isCorrect) { setTimeout(function(){ var r=document.getElementById('spellInput2'); if(r) r.focus(); }, 120); }
@@ -34243,7 +34248,7 @@ function showExplainForCn2En(q, isCorrect, userAns) {
     <div class="spell-practice-title">✍️ 再拼一遍巩固记忆</div>
     <div class="spell-practice-row">
       <span class="spell-practice-word">${q.cn}</span>
-      <input class="spell-practice-input" id="spellInput2" placeholder="再拼一次..." autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();checkSpellPractice2('${q.en.replace(/'/g,"\\'")}')}">
+      <input class="spell-practice-input" id="spellInput2" placeholder="再拼一次..." autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault(); if(this.dataset.done==='1'){nextQuestion();} else {checkSpellPractice2('${q.en.replace(/'/g,"\\'")}')}}">
       <button class="spell-practice-btn" onclick="checkSpellPractice2('${q.en.replace(/'/g,"\\'")}')">检查</button>
       <span class="spell-practice-result" id="spellResult2"></span>
     </div>
@@ -34283,10 +34288,12 @@ function checkSpellPractice2(correctEn) {
   if(!val) { showToast('请输入英文'); return; }
   if(val === correct) {
     inp.className = 'spell-practice-input correct';
-    res.textContent = '✅';
+    inp.dataset.done = '1'; // 已拼对：回车即可跳下一题
+    res.textContent = '✅ 回车进入下一题';
     res.style.color = 'var(--success)';
   } else {
     inp.className = 'spell-practice-input wrong';
+    inp.dataset.done = '';
     res.textContent = '❌ ' + correctEn;
     res.style.color = 'var(--danger)';
   }
@@ -34313,8 +34320,9 @@ function showMainAnswer(ans) {
     // 看了答案 = 未掌握，SRS 视为答错，保持到期尽快再练
     updateSrs(questions[qIndex].en, false);
     showExplainForCn2En(questions[qIndex], false, '（看了答案）');
-    document.getElementById('nextBtn').style.display = 'block';
-    setTimeout(function(){ var r=document.getElementById('spellInput2'); if(r) r.focus(); }, 120);
+    showNextBtns();
+    // 看完答案后把焦点移回主输入框，以便「回车直接进入下一题」
+    setTimeout(function(){ var m=document.getElementById('mainSpellInput'); if(m && !m.readOnly) m.focus(); }, 120);
   }
 }
 
@@ -34453,14 +34461,8 @@ document.addEventListener('keydown', function(e) {
   if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
     return;
   }
-  // 关键修复：Chrome 下 disabled 会让输入框失焦，导致全局 handler 误判跳题。
-  // 如果主拼写输入框存在且 disabled=true，说明 submitSpell 刚执行完（答案已判断、解析正在显示），
-  // 此时禁止全局回车跳题，等用户看完解析后手动点"下一题"或再次回车。
-  var mainSpell = document.getElementById('mainSpellInput');
-  if (mainSpell && mainSpell.disabled) {
-    return;
-  }
   // 仅在练习页、且"下一题"按钮可见时，回车进入下一题
+  // （主拼写输入框提交时已是 readOnly 而非 disabled，其内部 keydown 会自行跳题；此处兜底处理焦点不在输入框时的回车）
   var practicePage = document.getElementById('practicePage');
   var onPractice = practicePage && practicePage.classList.contains('active');
   var nextBtn = document.getElementById('nextBtn');
@@ -34471,7 +34473,7 @@ document.addEventListener('keydown', function(e) {
   // 结果页不再用回车自动返回首页（避免误触退回），需手动点"返回首页"
 });
 </script>
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260727-1721</div>
-  <script src="kb.js?v=20260727-1721"></script>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260727-1744</div>
+  <script src="kb.js?v=20260727-1744"></script>
 </body>
 </html>
