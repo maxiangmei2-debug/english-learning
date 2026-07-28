@@ -7,10 +7,10 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260728-1415">
+<meta name="build-version" content="20260728-1515">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>词汇拼写训练营</title>
-<script src="level-config.js?v=20260728-1415"></script>
+<script src="level-config.js?v=20260728-1515"></script>
 <style>
   :root {
     --primary:#6366F1; --primary-light:#EEF2FF; --primary-dark:#4F46E5;
@@ -266,7 +266,7 @@
 </style>
 </head>
 <body>
-<a href="index.html?v=20260728-1415" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+<a href="index.html?v=20260728-1515" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
 
 <!-- ===== 首页 ===== -->
 <div class="home-page" id="homePage">
@@ -33870,6 +33870,19 @@ function stageLabel(box){ if(box>=SRS_MAX_BOX) return '已掌握'; var n=['新�
 
 // ====== 初始化 ======
 function init() {
+  // 首次加载：从 localStorage 恢复主题选择（无记录则默认全选）
+  var level = (typeof EnglishLevel !== 'undefined' && EnglishLevel.get) ? EnglishLevel.get() : 'B1';
+  var savedKey = 'spelltrainer_topics_' + level;
+  try {
+    var saved = localStorage.getItem(savedKey);
+    if (saved) { selectedTopics = JSON.parse(saved); }
+  } catch(e) { selectedTopics = []; }
+  // 如果没有保存的选择，默认全部选中
+  var inWords = {};
+  (WORDS||[]).forEach(function(w){ if(w && w.topic) inWords[w.topic] = 1; });
+  var shownTopics = TOPICS.filter(function(t) { return t !== '全部' && inWords[t]; });
+  if (selectedTopics.length === 0) selectedTopics = [...shownTopics];
+  
   renderCatBar();
   updateHomeStats();
 }
@@ -33879,25 +33892,13 @@ function renderCatBar() {
   // 仅显示本级别实际有词的主题（B2 模式不显示 B1 主题）
   var inWords = {};
   (WORDS||[]).forEach(function(w){ if(w && w.topic) inWords[w.topic] = 1; });
-  var level = (typeof EnglishLevel !== 'undefined' && EnglishLevel.get) ? EnglishLevel.get() : 'B1';
   // 过滤掉不属于当前级别的主题
   var shownTopics = TOPICS.filter(function(t) {
     if (t === '全部') return false; // 不再显示"全部"按钮
     return inWords[t]; // 只显示有词的主题
   });
-  // 恢复 localStorage 保存的主题选择
-  var savedKey = 'spelltrainer_topics_' + level;
-  var saved = localStorage.getItem(savedKey);
-  if (saved) {
-    try { selectedTopics = JSON.parse(saved); } catch(e) { selectedTopics = []; }
-  }
-  // 如果没有保存的选择，默认全部选中
-  if (!selectedTopics || selectedTopics.length === 0) {
-    selectedTopics = [...shownTopics];
-  }
-  // 只保留实际存在的主题
+  // 只保留实际存在的主题（不强制恢复空数组，允许用户主动全不选）
   selectedTopics = selectedTopics.filter(function(t) { return shownTopics.indexOf(t) >= 0; });
-  if (selectedTopics.length === 0) selectedTopics = [...shownTopics];
   
   var allSelected = selectedTopics.length === shownTopics.length;
   bar.innerHTML = shownTopics.map(function(t) {
@@ -33939,7 +33940,9 @@ function toggleTopic(t) {
   }
   saveTopics();
   renderCatBar();
-}function toggleAllTopics() {
+}
+
+function toggleAllTopics() {
   var level = (typeof EnglishLevel !== 'undefined' && EnglishLevel.get) ? EnglishLevel.get() : 'B1';
   var inWords = {};
   (WORDS||[]).forEach(function(w){ if (w && w.topic) inWords[w.topic] = 1; });
@@ -33957,7 +33960,7 @@ function toggleTopic(t) {
   var key = 'spelltrainer_topics_' + level;
   localStorage.setItem(key, JSON.stringify(selectedTopics));
 }function countWordsInTopics() {
-  if (selectedTopics.length === 0) return WORDS.length;
+  if (selectedTopics.length === 0) return 0; // 全不选=0词
   return (WORDS||[]).filter(function(w) { return selectedTopics.indexOf(w.topic) >= 0; }).length;
 }
 
@@ -33984,12 +33987,11 @@ function startPractice(mode) {
 
   // 过滤题目：使用多选主题列表
   var topicSet = new Set(selectedTopics);
-  var allSelected = topicSet.size === 0;
-  let pool = allSelected ? [...WORDS] : WORDS.filter(w => topicSet.has(w.topic));
+  let pool = topicSet.size === 0 ? [] : WORDS.filter(w => topicSet.has(w.topic));
   // 为缺少选项(opts)的单词自动生成干扰项，避免渲染崩溃
   pool = pool.map(w => ensureOpts(w, pool));
   if(pool.length === 0) {
-    showToast('该主题暂无题目');
+    showToast(topicSet.size === 0 ? '请先选择至少一个主题' : '该主题暂无题目');
     return;
   }
 
@@ -34555,7 +34557,7 @@ document.addEventListener('keydown', function(e) {
   // 结果页不再用回车自动返回首页（避免误触退回），需手动点"返回首页"
 });
 </script>
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260728-1415</div>
-  <script src="kb.js?v=20260728-1415"></script>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260728-1515</div>
+  <script src="kb.js?v=20260728-1515"></script>
 </body>
 </html>

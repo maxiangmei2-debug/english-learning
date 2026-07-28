@@ -7,10 +7,10 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260728-1415">
+<meta name="build-version" content="20260728-1515">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
-<script src="level-config.js?v=20260728-1415"></script>
+<script src="level-config.js?v=20260728-1515"></script>
 <style>
   :root {
     --primary: #6366F1;
@@ -451,7 +451,7 @@
 </style>
 </head>
 <body>
-<a href="index.html?v=20260728-1415" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+<a href="index.html?v=20260728-1515" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
 
 <!-- ====== 首页 ====== -->
 <div class="home-page" id="homePage">
@@ -42864,6 +42864,7 @@ function init() {
     bar.appendChild(btn);
   });
   updateHomeStats();
+  loadTestTopics(); // 首次加载默认全选
   renderTestTopicBar();
 
   // 预热语音列表（部分浏览器需等待 voiceschanged 事件才会填充嗓音）
@@ -42891,11 +42892,9 @@ function renderTestTopicBar() {
   var bar = document.getElementById('topicBar');
   if (!bar) return;
   var shownTopics = getTestTopicList();
-  // 加载已保存的主题选择
-  if (selectedTopics.length === 0) loadTestTopics();
   // 过滤掉已不存在的主题
   selectedTopics = selectedTopics.filter(function(t) { return shownTopics.indexOf(t) >= 0; });
-  if (selectedTopics.length === 0) selectedTopics = [...shownTopics]; // 默认全选
+  // 注意：不再强制恢复空数组为全选，允许用户主动全不选
   var allSelected = selectedTopics.length === shownTopics.length;
   bar.innerHTML = shownTopics.map(t => {
     var checked = selectedTopics.indexOf(t) >= 0;
@@ -42917,7 +42916,6 @@ function toggleTestTopic(t) {
   var idx = selectedTopics.indexOf(t);
   if (idx >= 0) selectedTopics.splice(idx, 1);
   else selectedTopics.push(t);
-  if (selectedTopics.length === 0) selectedTopics = [...getTestTopicList()]; // 全不选→等效全部
   saveTestTopics();
   renderTestTopicBar();
 }
@@ -42925,11 +42923,10 @@ function toggleTestTopic(t) {
 function toggleAllTestTopics() {
   var shownTopics = getTestTopicList();
   if (selectedTopics.length === shownTopics.length) {
-    selectedTopics = []; // 全选→全不选→自动恢复全部
+    selectedTopics = []; // 全选→全不选
   } else {
     selectedTopics = [...shownTopics]; // 全选
   }
-  if (selectedTopics.length === 0) selectedTopics = [...shownTopics]; // 不能真的空
   saveTestTopics();
   renderTestTopicBar();
 }
@@ -42945,12 +42942,12 @@ function loadTestTopics() {
     var saved = localStorage.getItem('testmaster_topics_' + lv);
     if (saved) { selectedTopics = JSON.parse(saved); return; }
   } catch(e) {}
-  selectedTopics = []; // 默认空=全部，会在 renderTestTopicBar 里补齐
+  // 首次加载（无 localStorage）→默认全选
+  selectedTopics = [...getTestTopicList()];
 }
 
 // 主题过滤：返回 true 表示该题在选中的主题范围内
 function isTopicSelected(q) {
-  if (selectedTopics.length === 0) return true;
   if (!q.topic) return true; // 无 topic 的题默认包含
   return selectedTopics.indexOf(q.topic) >= 0;
 }
@@ -43045,7 +43042,7 @@ function startMode(mode) {
       }
     });
     if (mpool.length === 0) {
-      showToast('还没有已掌握的题！每道题连对达标后会自动加入');
+      showToast(selectedTopics.length === 0 ? '请先选择至少一个主题！' : '还没有已掌握的题！每道题连对达标后会自动加入');
       return;
     }
     questions = freqWeightedShuffle(freqBoostWrong(mpool)).slice(0, Math.min(mpool.length, cfg.total));
@@ -43061,13 +43058,17 @@ function startMode(mode) {
       }
     });
     if (bpool.length === 0) {
-      showToast('还没有收藏任何题目！先在练习中点击 ☆ 收藏吧');
+      showToast(selectedTopics.length === 0 ? '请先选择至少一个主题！' : '还没有收藏任何题目！先在练习中点击 ☆ 收藏吧');
       return;
     }
     questions = freqWeightedShuffle(freqBoostWrong(bpool)).slice(0, Math.min(bpool.length, cfg.total));
   } else if (mode === 'mixed') {
     // 综合大挑战：覆盖全部维度，到期题优先
     questions = buildMixedQuestions(cfg.total, Object.keys(Q));
+    if (questions.length < 3) {
+      showToast(selectedTopics.length === 0 ? '请先选择至少一个主题！' : '该范围题目太少，请选择更多类别！');
+      return;
+    }
   } else {
     // 其它模式：艾宾浩斯调度（到期题优先，错的优先，不足补未到期）
     let typeFilter = null;
@@ -43076,7 +43077,7 @@ function startMode(mode) {
     if (mode === 'judge') typeFilter = q => q.type === 'judge' || q.type === 'sent-app';
     questions = pickDueQuestions(cfg.total, typeFilter);
     if (questions.length < 3) {
-      showToast('该范围题目太少，请选择更多类别！');
+      showToast(selectedTopics.length === 0 ? '请先选择至少一个主题！' : '该范围题目太少，请选择更多类别！');
       return;
     }
   }
@@ -44172,6 +44173,7 @@ function goHome() {
   clearInterval(timerInterval);
   showPage('home');
   updateHomeStats();
+  loadTestTopics();
   renderTestTopicBar();
 }
 
@@ -44293,7 +44295,7 @@ init();
       // Add a focus banner on the test page header area
       var banner = document.createElement('div');
       banner.id = 'focusBanner';
-      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260728-1415" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
+      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260728-1515" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
       var testPage = document.getElementById('testPage');
       if (testPage) {
         var topBar = testPage.querySelector('.test-top-bar');
@@ -44597,7 +44599,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260728-1415</div>
-  <script src="kb.js?v=20260728-1415"></script>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260728-1515</div>
+  <script src="kb.js?v=20260728-1515"></script>
 </body>
 </html>
