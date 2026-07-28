@@ -130,6 +130,7 @@
     if (!entries.length) return;
     var allMeanings = entries.map(function (e) { return e.meaning || '（释义）'; });
     entries.forEach(function (e) {
+      if (e.noTest) return; // 仅作参考、不适合出选择题的条目（如语法规则）跳过
       var cat = CAT_MAP[e.type];
       if (!cat || !Q[cat]) return;
       var correct = e.meaning || '（释义）';
@@ -155,6 +156,7 @@
   }
   function buildExplain(e) {
     var s = '【我的知识库】<br>';
+    if (e.ph) s += '<span class="ph">' + escapeHtml(e.ph) + '</span><br>';
     s += '<span class="en">' + escapeHtml(e.content) + '</span> = ' + escapeHtml(e.meaning || '') + '<br>';
     if (e.example) s += '例句：' + escapeHtml(e.example) + '<br>';
     if (e.exampleZh) s += '翻译：' + escapeHtml(e.exampleZh) + '<br>';
@@ -180,7 +182,7 @@
       while (pool.length < 3) pool.push({ cn: '（其他）', en: 'other' });
       var opts = [correct].concat(pool);
       var item = {
-        en: e.content, cn: e.meaning || '', ph: '', topic: '我的知识库',
+        en: e.content, cn: e.meaning || '', ph: e.ph || '', topic: '我的知识库',
         opts: opts,
         explain: '【我的知识库】' +
           (e.example ? ('例句：' + escapeHtml(e.example) + '<br>') : '') +
@@ -220,6 +222,7 @@
         html += '<div class="card" style="margin-bottom:14px;">';
         html += '<div class="card-title">' + escapeHtml(e.content) + ' <span class="badge badge-' + btype + '">' + (TYPE_NAME[e.type] || '') + '</span></div>';
         html += '<div style="font-size:14px;margin:6px 0;"><b>释义：</b>' + escapeHtml(e.meaning || '') + '</div>';
+        if (e.ph) html += '<div style="font-size:13px;margin:4px 0;color:#0d9488;" class="en">🔊 ' + escapeHtml(e.ph) + '</div>';
         if (e.example) html += '<div style="font-size:13px;margin:4px 0;" class="en">📌 ' + escapeHtml(e.example) + '</div>';
         if (e.exampleZh) html += '<div style="font-size:13px;color:#666;">' + escapeHtml(e.exampleZh) + '</div>';
         if (e.note) html += '<div style="font-size:13px;margin-top:6px;color:#7c3aed;">📝 ' + escapeHtml(e.note) + '</div>';
@@ -314,6 +317,7 @@
         html += '<div style="font-weight:700;color:#111827;">' + escapeHtml(e.content) +
           ' <span style="font-size:11px;padding:2px 8px;border-radius:12px;background:#ede9fe;color:#6d28d9;">' + (typeName[e.type] || '') + '</span></div>';
         if (e.meaning) html += '<div style="font-size:14px;color:#374151;margin-top:4px;">释义：' + escapeHtml(e.meaning) + '</div>';
+        if (e.ph) html += '<div style="font-size:13px;color:#0d9488;margin-top:2px;" class="en">🔊 ' + escapeHtml(e.ph) + '</div>';
         if (e.example) html += '<div style="font-size:13px;color:#7c3aed;margin-top:4px;">📌 ' + escapeHtml(e.example) + '</div>';
         if (e.note) html += '<div style="font-size:13px;color:#6b7280;margin-top:4px;">📝 ' + escapeHtml(e.note) + '</div>';
         html += '</div>';
@@ -322,6 +326,82 @@
     }
     sec.innerHTML = html;
     container.appendChild(sec);
+  }
+
+  /* ---------------- 内置种子内容（一次性注入，按内容去重） ---------------- */
+  // 把高频基础词（星期 / 月份 / 序数词 / 日期句型）作为默认知识库，
+  // 用户首次打开任意模块即自动注入到 5 个学习模块；已手动添加过的不会重复。
+  var SEED_KEY = 'english_kb_seed_v';
+  var KB_SEED = {
+    version: '20260728-core-time',
+    items: [
+      // —— 星期 ——
+      { id: 'seed_monday',    content: 'Monday',    meaning: '星期一', type: 'word', ph: '/ˈmʌndeɪ/',     level: 'B1' },
+      { id: 'seed_tuesday',   content: 'Tuesday',   meaning: '星期二', type: 'word', ph: '/ˈtjuːzdeɪ/',   level: 'B1' },
+      { id: 'seed_wednesday', content: 'Wednesday', meaning: '星期三', type: 'word', ph: '/ˈwenzdeɪ/',    level: 'B1' },
+      { id: 'seed_thursday',  content: 'Thursday',  meaning: '星期四', type: 'word', ph: '/ˈθɜːrzdeɪ/',  level: 'B1' },
+      { id: 'seed_friday',    content: 'Friday',    meaning: '星期五', type: 'word', ph: '/ˈfraɪdeɪ/',   level: 'B1' },
+      { id: 'seed_saturday',  content: 'Saturday',  meaning: '星期六', type: 'word', ph: '/ˈsætərdeɪ/',  level: 'B1' },
+      { id: 'seed_sunday',    content: 'Sunday',    meaning: '星期日', type: 'word', ph: '/ˈsʌndeɪ/',     level: 'B1' },
+      // —— 月份 ——
+      { id: 'seed_january',   content: 'January',   meaning: '一月',   type: 'word', ph: '/ˈdʒænjueri/',  level: 'B1' },
+      { id: 'seed_february',  content: 'February',  meaning: '二月',   type: 'word', ph: '/ˈfebrueri/',   level: 'B1' },
+      { id: 'seed_march',     content: 'March',     meaning: '三月',   type: 'word', ph: '/mɑːrtʃ/',     level: 'B1' },
+      { id: 'seed_april',     content: 'April',     meaning: '四月',   type: 'word', ph: '/ˈeɪprəl/',    level: 'B1' },
+      { id: 'seed_may',       content: 'May',       meaning: '五月',   type: 'word', ph: '/meɪ/',        level: 'B1' },
+      { id: 'seed_june',      content: 'June',      meaning: '六月',   type: 'word', ph: '/dʒuːn/',      level: 'B1' },
+      { id: 'seed_july',      content: 'July',      meaning: '七月',   type: 'word', ph: '/dʒuˈlaɪ/',    level: 'B1' },
+      { id: 'seed_august',    content: 'August',    meaning: '八月',   type: 'word', ph: '/ˈɔːɡəst/',    level: 'B1' },
+      { id: 'seed_september', content: 'September', meaning: '九月',   type: 'word', ph: '/sepˈtembər/', level: 'B1' },
+      { id: 'seed_october',   content: 'October',   meaning: '十月',   type: 'word', ph: '/ɑːkˈtoʊbər/', level: 'B1' },
+      { id: 'seed_november',  content: 'November',  meaning: '十一月', type: 'word', ph: '/noʊˈvembər/', level: 'B1' },
+      { id: 'seed_december',  content: 'December',  meaning: '十二月', type: 'word', ph: '/dɪˈsembər/',  level: 'B1' },
+      // —— 序数词（第几，1st–12th）——
+      { id: 'seed_first',    content: 'first',    meaning: '第一（1st）',  type: 'word', ph: '/fɜːrst/',   level: 'B1' },
+      { id: 'seed_second',   content: 'second',   meaning: '第二（2nd）',  type: 'word', ph: '/ˈsekənd/',  level: 'B1' },
+      { id: 'seed_third',    content: 'third',    meaning: '第三（3rd）',  type: 'word', ph: '/θɜːrd/',   level: 'B1' },
+      { id: 'seed_fourth',   content: 'fourth',   meaning: '第四（4th）',  type: 'word', ph: '/fɔːrθ/',   level: 'B1' },
+      { id: 'seed_fifth',    content: 'fifth',    meaning: '第五（5th）',  type: 'word', ph: '/fɪfθ/',    level: 'B1' },
+      { id: 'seed_sixth',    content: 'sixth',    meaning: '第六（6th）',  type: 'word', ph: '/sɪksθ/',   level: 'B1' },
+      { id: 'seed_seventh',  content: 'seventh',  meaning: '第七（7th）',  type: 'word', ph: '/ˈsevnθ/',  level: 'B1' },
+      { id: 'seed_eighth',   content: 'eighth',   meaning: '第八（8th）',  type: 'word', ph: '/eɪtθ/',    level: 'B1' },
+      { id: 'seed_ninth',    content: 'ninth',    meaning: '第九（9th）',  type: 'word', ph: '/naɪnθ/',   level: 'B1' },
+      { id: 'seed_tenth',    content: 'tenth',    meaning: '第十（10th）', type: 'word', ph: '/tenθ/',    level: 'B1' },
+      { id: 'seed_eleventh', content: 'eleventh', meaning: '第十一（11th）', type: 'word', ph: '/ɪˈlevnθ/', level: 'B1' },
+      { id: 'seed_twelfth',  content: 'twelfth',  meaning: '第十二（12th）', type: 'word', ph: '/twelfθ/',  level: 'B1' },
+      // —— 实用搭配 / 句型（含经典易错点 on/in）——
+      { id: 'seed_on_monday', content: 'on Monday',     meaning: '在星期一（表“在周几”用 on）', type: 'phrase', level: 'B1' },
+      { id: 'seed_in_july',   content: 'in July',       meaning: '在七月（表“在几月”用 in）',   type: 'phrase', level: 'B1' },
+      { id: 'seed_what_day',  content: 'What day is it today?', meaning: '今天是星期几？', type: 'sentence', level: 'B1' },
+      { id: 'seed_what_date', content: "What's the date today?", meaning: '今天是几月几号？', type: 'sentence', level: 'B1' },
+      { id: 'seed_birthday',  content: 'My birthday is on May 1st.', meaning: '我的生日在五月一号。', type: 'sentence', level: 'B1' },
+      // —— 序数词构成规则（仅展示，不进测试题）——
+      { id: 'seed_ordinal_rule', content: '序数词（第几）构成规则', noTest: true, type: 'grammar', level: 'B1',
+        meaning: '1、2、3 特殊：first / second / third（缩写 1st / 2nd / 3rd）；其余多数直接加 -th（4th fourth, 6th sixth…）。注意拼写变化：5→fifth，8→eighth，9→ninth，12→twelfth。十几（13–19）在基数词后加 -th（thirteenth）；整十（20/30）把 y 变 ie 加 -th（twentieth, thirtieth）；21/22/23 用 1st/2nd/3rd（twenty-first = 21st）。' }
+    ]
+  };
+  function runSeed() {
+    try {
+      var cur = localStorage.getItem(SEED_KEY);
+      if (cur === KB_SEED.version) return; // 本版本种子已注入过
+      var arr = loadRaw();
+      var exists = function (content) {
+        var c = (content || '').toLowerCase();
+        return arr.some(function (e) { return (e.content || '').toLowerCase() === c; });
+      };
+      KB_SEED.items.forEach(function (it) {
+        if (exists(it.content)) return; // 用户已手动添加过同内容则跳过，避免重复
+        arr.push({
+          id: it.id, content: it.content, meaning: it.meaning || '',
+          type: it.type, level: it.level || 'B1',
+          ph: it.ph || '', example: it.example || '', exampleZh: it.exampleZh || '',
+          note: it.note || '', noTest: !!it.noTest,
+          createdAt: Date.now(), updatedAt: Date.now()
+        });
+      });
+      saveRaw(arr);
+      localStorage.setItem(SEED_KEY, KB_SEED.version);
+    } catch (e) { console.warn('KB seed', e); }
   }
 
   function apply() {
@@ -344,7 +424,7 @@
   /* ---------------- 启动：配置了云同步则先拉取再注入 ---------------- */
   (function boot() {
     var cfg = loadSyncCfg();
-    function run() { apply(); }
+    function run() { runSeed(); apply(); }
     if (cfg && cfg.token && cfg.gist) {
       pullSync().then(run, run);
     } else {
