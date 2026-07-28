@@ -7,10 +7,10 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260727-1744">
+<meta name="build-version" content="20260728-1415">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>词汇拼写训练营</title>
-<script src="level-config.js?v=20260727-1744"></script>
+<script src="level-config.js?v=20260728-1415"></script>
 <style>
   :root {
     --primary:#6366F1; --primary-light:#EEF2FF; --primary-dark:#4F46E5;
@@ -60,10 +60,10 @@
   .cat-label{font-size:13px;color:rgba(255,255,255,0.7);font-weight:600;margin-bottom:8px;}
   .cat-bar{display:flex;flex-wrap:wrap;gap:6px;}
   .cat-btn{
-    padding:7px 14px;border-radius:18px;border:1.5px solid rgba(255,255,255,0.35);
-    background:rgba(255,255,255,0.12);color:white;font-size:12px;
+    padding:5px 10px;border-radius:14px;border:1.5px solid rgba(255,255,255,0.35);
+    background:rgba(255,255,255,0.12);color:white;font-size:11px;
     cursor:pointer;transition:all 0.2s;font-weight:500;
-    touch-action:manipulation;user-select:none;
+    touch-action:manipulation;user-select:none;display:inline-flex;align-items:center;gap:4px;
   }
   .cat-btn:hover{background:rgba(255,255,255,0.25);}
   .cat-btn.active{background:white;color:var(--primary);border-color:white;}
@@ -266,7 +266,7 @@
 </style>
 </head>
 <body>
-<a href="index.html?v=20260727-1744" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+<a href="index.html?v=20260728-1415" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
 
 <!-- ===== 首页 ===== -->
 <div class="home-page" id="homePage">
@@ -317,10 +317,14 @@
     </div>
   </div>
 
-  <!-- 分类选择 -->
+  <!-- 主题多选 -->
   <div class="cat-section">
-    <div class="cat-label">选择主题</div>
-    <div class="cat-bar" id="catBar"></div>
+    <div class="cat-label" style="display:flex;align-items:center;justify-content:space-between;">
+      <span>主题多选（勾选要练的主题）</span>
+      <button id="toggleAllTopics" onclick="toggleAllTopics()" style="font-size:11px;padding:4px 10px;border-radius:12px;border:1px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.15);color:white;cursor:pointer;font-weight:600;">全选/全不选</button>
+    </div>
+    <div class="cat-bar" id="catBar" style="gap:4px;"></div>
+    <div id="topicCount" style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:6px;"></div>
   </div>
 </div>
 
@@ -33817,7 +33821,7 @@ let maxCombo = 0;
 let currentCombo = 0;
 let masteredSet = new Set();
 let currentMode = ''; // en2cn, cn2en, mix, spellall
-let currentTopic = '全部';
+let selectedTopics = []; // 多选主题数组，空=全部主题
 let questions = [];
 let qIndex = 0;
 let answered = false;
@@ -33875,17 +33879,90 @@ function renderCatBar() {
   // 仅显示本级别实际有词的主题（B2 模式不显示 B1 主题）
   var inWords = {};
   (WORDS||[]).forEach(function(w){ if(w && w.topic) inWords[w.topic] = 1; });
-  if (currentTopic !== '全部' && !inWords[currentTopic]) currentTopic = '全部';
-  var shown = TOPICS.filter(function(t){ return t === '全部' || inWords[t]; });
-  bar.innerHTML = shown.map(t =>
-    `<button class="cat-btn ${t===currentTopic?'active':''}" onclick="selectTopic('${t}')">${t==='全部'?'🔄 全部':t}</button>`
-  ).join('');
+  var level = (typeof EnglishLevel !== 'undefined' && EnglishLevel.get) ? EnglishLevel.get() : 'B1';
+  // 过滤掉不属于当前级别的主题
+  var shownTopics = TOPICS.filter(function(t) {
+    if (t === '全部') return false; // 不再显示"全部"按钮
+    return inWords[t]; // 只显示有词的主题
+  });
+  // 恢复 localStorage 保存的主题选择
+  var savedKey = 'spelltrainer_topics_' + level;
+  var saved = localStorage.getItem(savedKey);
+  if (saved) {
+    try { selectedTopics = JSON.parse(saved); } catch(e) { selectedTopics = []; }
+  }
+  // 如果没有保存的选择，默认全部选中
+  if (!selectedTopics || selectedTopics.length === 0) {
+    selectedTopics = [...shownTopics];
+  }
+  // 只保留实际存在的主题
+  selectedTopics = selectedTopics.filter(function(t) { return shownTopics.indexOf(t) >= 0; });
+  if (selectedTopics.length === 0) selectedTopics = [...shownTopics];
+  
+  var allSelected = selectedTopics.length === shownTopics.length;
+  bar.innerHTML = shownTopics.map(function(t) {
+    var checked = selectedTopics.indexOf(t) >= 0;
+    return '<button class="cat-btn ' + (checked ? 'active' : '') + '" onclick="toggleTopic(\'' + t.replace(/'/g, "\\'") + '\')" style="font-size:11px;">' + 
+      (checked ? '✅ ' : '☐ ') + t + '</button>';
+  }).join('');
+  // 更新计数提示
+  var countEl = document.getElementById('topicCount');
+  if (countEl) {
+    if (allSelected) {
+      countEl.textContent = '已选全部主题（共 ' + shownTopics.length + ' 个）';
+    } else {
+      countEl.textContent = '已选 ' + selectedTopics.length + '/' + shownTopics.length + ' 个主题 · 将练 ' + countWordsInTopics() + ' 词';
+    }
+  }
+  // 更新全选按钮文字
+  var toggleBtn = document.getElementById('toggleAllTopics');
+  if (toggleBtn) toggleBtn.textContent = allSelected ? '全不选' : '全选';
 }
 
-function selectTopic(t) {
-  currentTopic = t;
+function toggleTopic(t) {
+  var idx = selectedTopics.indexOf(t);
+  if (idx >= 0) {
+    selectedTopics.splice(idx, 1);
+  } else {
+    selectedTopics.push(t);
+  }
+  // 如果全选了，等同于全部
+  var level = (typeof EnglishLevel !== 'undefined' && EnglishLevel.get) ? EnglishLevel.get() : 'B1';
+  var inWords = {};
+  (WORDS||[]).forEach(function(w){ if (w && w.topic) inWords[w.topic] = 1; });
+  var shownTopics = TOPICS.filter(function(t) { return t !== '全部' && inWords[t]; });
+  if (selectedTopics.length === shownTopics.length) {
+    // 全选状态，清空数组表示"全部"
+  } else if (selectedTopics.length === 0) {
+    // 全不选，默认选全部
+    selectedTopics = [...shownTopics];
+  }
+  saveTopics();
   renderCatBar();
+}function toggleAllTopics() {
+  var level = (typeof EnglishLevel !== 'undefined' && EnglishLevel.get) ? EnglishLevel.get() : 'B1';
+  var inWords = {};
+  (WORDS||[]).forEach(function(w){ if (w && w.topic) inWords[w.topic] = 1; });
+  var shownTopics = TOPICS.filter(function(t) { return t !== '全部' && inWords[t]; });
+  var allSelected = selectedTopics.length === shownTopics.length;
+  if (allSelected) {
+    selectedTopics = []; // 全不选
+  } else {
+    selectedTopics = [...shownTopics]; // 全选
+  }
+  saveTopics();
+  renderCatBar();
+}function saveTopics() {
+  var level = (typeof EnglishLevel !== 'undefined' && EnglishLevel.get) ? EnglishLevel.get() : 'B1';
+  var key = 'spelltrainer_topics_' + level;
+  localStorage.setItem(key, JSON.stringify(selectedTopics));
+}function countWordsInTopics() {
+  if (selectedTopics.length === 0) return WORDS.length;
+  return (WORDS||[]).filter(function(w) { return selectedTopics.indexOf(w.topic) >= 0; }).length;
 }
+
+function updateHomeStats() {}
+
 
 function updateHomeStats() {
   document.getElementById('hScore').textContent = totalScore;
@@ -33905,8 +33982,10 @@ function startPractice(mode) {
   correctCount = 0;
   wrongCount = 0;
 
-  // 过滤题目
-  let pool = currentTopic === '全部' ? [...WORDS] : WORDS.filter(w => w.topic === currentTopic);
+  // 过滤题目：使用多选主题列表
+  var topicSet = new Set(selectedTopics);
+  var allSelected = topicSet.size === 0;
+  let pool = allSelected ? [...WORDS] : WORDS.filter(w => topicSet.has(w.topic));
   // 为缺少选项(opts)的单词自动生成干扰项，避免渲染崩溃
   pool = pool.map(w => ensureOpts(w, pool));
   if(pool.length === 0) {
@@ -34363,6 +34442,7 @@ function showResult() {
 
 function goHome() {
   updateHomeStats();
+  renderCatBar();
   showPage('homePage');
 }
 
@@ -34437,7 +34517,9 @@ function removeMastered(id) {
       homeLink.parentNode.insertBefore(spLink, homeLink.nextSibling);
     }
     if (TOPICS.indexOf(t) >= 0) {
-      currentTopic = t;
+      selectedTopics = [t];
+      saveTopics();
+      renderCatBar();
       // Add focus banner on home page
       var banner = document.createElement('div');
       banner.id = 'focusBanner';
@@ -34473,7 +34555,7 @@ document.addEventListener('keydown', function(e) {
   // 结果页不再用回车自动返回首页（避免误触退回），需手动点"返回首页"
 });
 </script>
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260727-1744</div>
-  <script src="kb.js?v=20260727-1744"></script>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260728-1415</div>
+  <script src="kb.js?v=20260728-1415"></script>
 </body>
 </html>
