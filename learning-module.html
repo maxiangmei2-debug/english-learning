@@ -7,10 +7,10 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260728-1624">
+<meta name="build-version" content="20260729-0858">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>学习模块</title>
-<script src="level-config.js?v=20260728-1624"></script>
+<script src="level-config.js?v=20260729-0858"></script>
 <style>
 :root {
   --primary: #6366F1; --primary-light: #EEF2FF;
@@ -203,7 +203,7 @@ body {
 <body>
 
 <div class="top-bar">
-  <a href="study-plan.html?v=20260728-1624">← 学习计划</a>
+  <a href="study-plan.html?v=20260729-0858">← 学习计划</a>
   <h1 id="moduleTitle">学习模块</h1>
   <span id="sessionBadge" class="badge">第1课</span>
 </div>
@@ -221,7 +221,7 @@ var unitId = getParam('unit');
 var sessionIdx = parseInt(getParam('session') || '0');
 
 // ====== Module data ======
-var MODULES = {
+var MODULES = { // B2-APPEND-MODULES
   u1: {
     phase: '基础语法', theme: '时态基础', icon: '⏰',
     time: '20分钟', sessionLabel: '学习新知',
@@ -1642,6 +1642,784 @@ var MODULES = {
     ]
   }
 
+,
+
+  b2u10: {
+    phase: "📗 B2 教材",
+    theme: "胶囊旅馆",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 胶囊旅馆 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">program</td><td>/ˈprəʊɡræm/</td><td>电视节目；节目</td></tr><tr><td class=\"en\">guest</td><td>/ɡest/</td><td>客人；来宾</td></tr><tr><td class=\"en\">capsule</td><td>/ˈkæpsjuːl/</td><td>胶囊；胶囊舱（本课指旅馆小舱）</td></tr><tr><td class=\"en\">explain</td><td>/ɪkˈspleɪn/</td><td>解释；说明</td></tr><tr><td class=\"en\">space</td><td>/speɪs/</td><td>空间；空地</td></tr><tr><td class=\"en\">cramped</td><td>/kræmpt/</td><td>狭窄拥挤的；空间狭小的</td></tr><tr><td class=\"en\">convenient</td><td>/kənˈviːniənt/</td><td>方便的；便利的</td></tr><tr><td class=\"en\">locker</td><td>/ˈlɒkə(r)/</td><td>储物柜；带锁小柜</td></tr><tr><td class=\"en\">personal</td><td>/ˈpɜːsənl/</td><td>个人的；私人的</td></tr><tr><td class=\"en\">belongings</td><td>/bɪˈlɒŋɪŋz/</td><td>个人财物； belongings</td></tr><tr><td class=\"en\">alarm clock</td><td>/əˈlɑːm klɒk/</td><td>闹钟</td></tr><tr><td class=\"en\">spread out</td><td>/spred aʊt/</td><td>分散的；铺开的</td></tr><tr><td class=\"en\">comfortable</td><td>/ˈkʌmftəbl/</td><td>舒适的</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 胶囊旅馆 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">情态动词表可能性：must / may / can / could / might</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 It can sometimes take hours to go from one part of the city to another.</div><div style=\"font-size:13px;color:var(--gray-600);\">用情态动词表达对事情的推测，把握程度不同：must≈90%（有依据的强推断），may≈50%，can≈35%（表示一般情况/客观可能），could/might≈25%（较低可能性的猜测）。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">must + 动词原形 / must have done 表肯定推测</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 Look at that fancy car! They must have a lot of money.</div><div style=\"font-size:13px;color:var(--gray-600);\">must 用于基于证据对现在或过去状况作高度确信的肯定推测；对现在的否定推测用 can't，不可用 mustn't（mustn't 表禁止）。</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 胶囊旅馆 句型",
+        content: "<div class=\"example-box\">Tokyo is an exciting city, but it's also very spread out.  <span style=\"color:var(--gray-600);\">— 东京是一座令人兴奋的城市，但它也很分散（面积很大）。</span></div><div class=\"example-box\">When I don't feel like going all the way home, I sometimes stay in a capsule hotel.  <span style=\"color:var(--gray-600);\">— 当我不想一路回家时，我有时会住胶囊旅馆。</span></div><div class=\"example-box\">A capsule hotel is a hotel with lots of small rooms, and they're very cramped.  <span style=\"color:var(--gray-600);\">— 胶囊旅馆是拥有许多小房间的旅馆，而且这些房间非常狭窄拥挤。</span></div><div class=\"example-box\">The hotel is cheap and very convenient, with lockers to keep your personal belongings.  <span style=\"color:var(--gray-600);\">— 这家旅馆便宜而且非常方便，还有储物柜可以保管你的个人财物。</span></div><div class=\"example-box\">It can sometimes take hours to go from one part of the city to another.  <span style=\"color:var(--gray-600);\">— 从城市的一头到另一头有时要花好几个小时。</span></div>"
+      }
+    ]
+  },
+  b2u11: {
+    phase: "📗 B2 教材",
+    theme: "餐厅点餐、饮食选择与日常生活",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 餐厅点餐、饮食选择与日常生活 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">menu</td><td>/ˈmenjuː/</td><td>菜单</td></tr><tr><td class=\"en\">order</td><td>/ˈɔːdə(r)/</td><td>点餐</td></tr><tr><td class=\"en\">recommend</td><td>/ˌrekəˈmend/</td><td>推荐</td></tr><tr><td class=\"en\">donut</td><td>/ˈdəʊnʌt/</td><td>甜甜圈</td></tr><tr><td class=\"en\">yogurt</td><td>/ˈjəʊɡə(r)t/</td><td>酸奶</td></tr><tr><td class=\"en\">seafood</td><td>/ˈsiːfuːd/</td><td>海鲜</td></tr><tr><td class=\"en\">broccoli</td><td>/ˈbrɒkəli/</td><td>西兰花</td></tr><tr><td class=\"en\">calorie</td><td>/ˈkæləri/</td><td>卡路里</td></tr><tr><td class=\"en\">prefer</td><td>/prɪˈfɜː(r)/</td><td>更喜欢</td></tr><tr><td class=\"en\">healthy</td><td>/ˈhelθi/</td><td>健康的</td></tr><tr><td class=\"en\">rental</td><td>/ˈrentl/</td><td>租赁</td></tr><tr><td class=\"en\">deposit</td><td>/dɪˈpɒzɪt/</td><td>押金</td></tr><tr><td class=\"en\">vehicle</td><td>/ˈviːəkl/</td><td>车辆</td></tr><tr><td class=\"en\">petrol</td><td>/ˈpetrəl/</td><td>汽油</td></tr><tr><td class=\"en\">steering wheel</td><td>/ˈstɪərɪŋ wiːl/</td><td>方向盘</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 餐厅点餐、饮食选择与日常生活 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">must / mustn't / have to 表必须/禁止/不得不</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I must finish homework now. / I had to get up early yesterday.</div><div style=\"font-size:13px;color:var(--gray-600);\">must 表主观必须（无过去式，过去用 had to）；mustn't 严禁、绝对不准；have to 表客观不得不（过去 had to）；don't have to 表不必（无 haven't to）</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">双宾语结构（动词+人+物 = 动词+物+to/for+人）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 give me a book = give a book to me; buy me a house = buy a house for me</div><div style=\"font-size:13px;color:var(--gray-600);\">to 类：give/pass/send/show/tell/sell（传递/给予）；for 类：buy/make/get/book/bring（为某人做/买）</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">if 条件句三类（零/一/二条件句）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 If you eat vegetables, you stay healthy. / If I go to the flea market, I will buy a second-hand table. / If I were you, I would not skip breakfast.</div><div style=\"font-size:13px;color:var(--gray-600);\">零条件句表客观真理（If+现, 主+现）；第一条件句表将来可能（If+现, 主+will）；第二条件句表虚拟假设（If+过, 主+would）</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">recommend 后接 doing 不接 to do（易错）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I recommend eating more vegetables.</div><div style=\"font-size:13px;color:var(--gray-600);\">✅ recommend doing / recommend sb to do / recommend that (should) do；❌ recommend to do</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 餐厅点餐、饮食选择与日常生活 句型",
+        content: "<div class=\"example-box\">May I take your order?  <span style=\"color:var(--gray-600);\">— 我可以为您点餐吗？</span></div><div class=\"example-box\">What do you recommend?  <span style=\"color:var(--gray-600);\">— 你有什么推荐？</span></div><div class=\"example-box\">I recommend eating more vegetables.  <span style=\"color:var(--gray-600);\">— 我建议多吃蔬菜。</span></div><div class=\"example-box\">If I were you, I would not skip breakfast.  <span style=\"color:var(--gray-600);\">— 如果我是你，我不会不吃早饭。</span></div><div class=\"example-box\">Could you give me a discount?  <span style=\"color:var(--gray-600);\">— 能给我打折吗？</span></div><div class=\"example-box\">We have a deal.  <span style=\"color:var(--gray-600);\">— 成交。</span></div>"
+      }
+    ]
+  },
+  b2u12: {
+    phase: "📗 B2 教材",
+    theme: "家庭亲属",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 家庭亲属 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">nuclear family</td><td>/ˈnjuːkliə ˈfæməli/</td><td>核心家庭</td></tr><tr><td class=\"en\">extended family</td><td>/ɪkˈstendɪd ˈfæməli/</td><td>大家庭</td></tr><tr><td class=\"en\">relatives</td><td>/ˈrelətɪvz/</td><td>亲戚统称</td></tr><tr><td class=\"en\">siblings</td><td>/ˈsɪblɪŋz/</td><td>兄弟姐妹（不分长幼）</td></tr><tr><td class=\"en\">cousins</td><td>/ˈkʌznz/</td><td>堂/表兄弟姐妹</td></tr><tr><td class=\"en\">nephew</td><td>/ˈnefjuː/</td><td>侄子、外甥</td></tr><tr><td class=\"en\">niece</td><td>/niːs/</td><td>侄女、外甥女</td></tr><tr><td class=\"en\">generation</td><td>/ˌdʒenəˈreɪʃn/</td><td>一代人、一辈</td></tr><tr><td class=\"en\">biological parents</td><td></td><td>亲生父母</td></tr><tr><td class=\"en\">adoptive parents</td><td></td><td>养父母</td></tr><tr><td class=\"en\">step parents</td><td></td><td>继父母</td></tr><tr><td class=\"en\">in-law</td><td></td><td>姻亲（婚姻带来的无血缘亲属）</td></tr><tr><td class=\"en\">picture</td><td>/ˈpɪktʃə(r)/</td><td>照片</td></tr><tr><td class=\"en\">child</td><td>/tʃaɪld/</td><td>孩子</td></tr><tr><td class=\"en\">complicated</td><td>/ˈkɒmplɪkeɪtɪd/</td><td>复杂的</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 家庭亲属 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">并列连词 and / or 使用规则</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 Do you have brothers or sisters? / I have a brother and a sister.</div><div style=\"font-size:13px;color:var(--gray-600);\">疑问句、否定句并列人/物只用 or；肯定陈述句并列人/物只用 and</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">最高级表排行</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 the eldest / the youngest / the second eldest</div><div style=\"font-size:13px;color:var(--gray-600);\">用 the + 最高级表示长幼排行（最年长/最小/排行第二）</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">What 引导感叹句</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 What a great picture!</div><div style=\"font-size:13px;color:var(--gray-600);\">结构：What a + 形容词 + 可数名词单数！</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">一般过去时被动语态</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 It was taken at …</div><div style=\"font-size:13px;color:var(--gray-600);\">结构：was/were + 过去分词，描述已拍摄的照片等</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 家庭亲属 句型",
+        content: "<div class=\"example-box\">What a great picture!  <span style=\"color:var(--gray-600);\">— 多好看的照片啊！</span></div><div class=\"example-box\">It was taken at …  <span style=\"color:var(--gray-600);\">— 照片拍摄于……</span></div><div class=\"example-box\">Do you have any brothers or sisters?  <span style=\"color:var(--gray-600);\">— 你有兄弟姐妹吗？</span></div><div class=\"example-box\">No, I'm an only child.  <span style=\"color:var(--gray-600);\">— 不，我是独生子女。</span></div><div class=\"example-box\">Is that typical in Mexico?  <span style=\"color:var(--gray-600);\">— 在墨西哥那很普遍吗？</span></div><div class=\"example-box\">It's much quieter since I moved out.  <span style=\"color:var(--gray-600);\">— 自从我搬出去后，安静多了。</span></div>"
+      }
+    ]
+  },
+  b2u13: {
+    phase: "📗 B2 教材",
+    theme: "个人理财",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 个人理财 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">on air</td><td>/ˌɒn ˈeə(r)/</td><td>正在广播（电台/电视）</td></tr><tr><td class=\"en\">utility</td><td>/juːˈtɪləti/</td><td>公用事业（水电煤气等公共服务）</td></tr><tr><td class=\"en\">top-up</td><td>/ˈtɒp ʌp/</td><td>充值；追加付款</td></tr><tr><td class=\"en\">balance</td><td>/ˈbæləns/</td><td>余额；结余</td></tr><tr><td class=\"en\">minimum</td><td>/ˈmɪnɪməm/</td><td>最小的；最低的</td></tr><tr><td class=\"en\">debt</td><td>/det/</td><td>债务；欠款</td></tr><tr><td class=\"en\">income</td><td>/ˈɪnkʌm/</td><td>收入；所得</td></tr><tr><td class=\"en\">spending</td><td>/ˈspendɪŋ/</td><td>支出；开销</td></tr><tr><td class=\"en\">subscription</td><td>/səbˈskrɪpʃn/</td><td>订阅（服务）</td></tr><tr><td class=\"en\">luxury</td><td>/ˈlʌkʃəri/</td><td>奢侈品；享受</td></tr><tr><td class=\"en\">afford</td><td>/əˈfɔːd/</td><td>负担得起；买得起</td></tr><tr><td class=\"en\">regret</td><td>/rɪˈɡret/</td><td>后悔；遗憾</td></tr><tr><td class=\"en\">advice</td><td>/ədˈvaɪs/</td><td>建议；劝告</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 个人理财 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">提建议的情态动词：should / had better / must / need(s) to</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 Bella needs to save more money and cancel unused subscriptions.</div><div style=\"font-size:13px;color:var(--gray-600);\">should 表一般建议；had better 表较强建议（带告诫意味）；must 表“必须”；need(s) to 表“需要做”。语气由弱到强，按语境选择。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">否定建议：shouldn't / doesn't have to</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 You shouldn't use your credit card for everything.</div><div style=\"font-size:13px;color:var(--gray-600);\">shouldn't 劝人不要做某事；doesn't have to 表示“不必/没必要”，与 mustn't（禁止）含义不同，不要混淆。</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 个人理财 句型",
+        content: "<div class=\"example-box\">I pay for many monthly apps and services, but I forget about some and don't even use them.  <span style=\"color:var(--gray-600);\">— 我为许多按月订阅的应用和服务付费，却忘了其中一些，甚至根本不用它们。</span></div><div class=\"example-box\">My money just seems to disappear each month, and I never have any left to save.  <span style=\"color:var(--gray-600);\">— 我的钱好像每个月都凭空消失，从没剩下可以存下的。</span></div><div class=\"example-box\">Buying a coffee every morning adds up to a lot of money at the end of the month.  <span style=\"color:var(--gray-600);\">— 每天早上买一杯咖啡，到月底累计起来是一笔不小的钱。</span></div><div class=\"example-box\">I use my credit card for everything, but my debt feels like it's not going down.  <span style=\"color:var(--gray-600);\">— 我什么都用信用卡付，但我的债务好像一直降不下来。</span></div><div class=\"example-box\">You should make a budget and track where your money goes.  <span style=\"color:var(--gray-600);\">— 你应该做一份预算，并追踪你的钱都花到哪儿了。</span></div>"
+      }
+    ]
+  },
+  b2u14: {
+    phase: "📗 B2 教材",
+    theme: "侦探推理与谋杀谜案",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 侦探推理与谋杀谜案 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">investigate</td><td>/ɪnˈvestɪɡeɪt/</td><td>调查</td></tr><tr><td class=\"en\">murder</td><td>/ˈmɜːdə(r)/</td><td>谋杀；凶杀</td></tr><tr><td class=\"en\">harsh</td><td>/hɑːʃ/</td><td>严厉的；苛刻的</td></tr><tr><td class=\"en\">staff</td><td>/stɑːf/</td><td>员工；全体职员</td></tr><tr><td class=\"en\">distant</td><td>/ˈdɪstənt/</td><td>疏远的；冷漠的</td></tr><tr><td class=\"en\">loyal</td><td>/ˈlɔɪəl/</td><td>忠诚的</td></tr><tr><td class=\"en\">suspect</td><td>/ˈsʌspekt/</td><td>嫌疑犯；可疑的人</td></tr><tr><td class=\"en\">evidence</td><td>/ˈevɪdəns/</td><td>证据；迹象</td></tr><tr><td class=\"en\">eyesight</td><td>/ˈaɪsaɪt/</td><td>视力</td></tr><tr><td class=\"en\">shed</td><td>/ʃed/</td><td>棚屋；小屋</td></tr><tr><td class=\"en\">pale</td><td>/peɪl/</td><td>苍白的（因生病或情绪）</td></tr><tr><td class=\"en\">swear</td><td>/sweə(r)/</td><td>发誓；郑重承诺</td></tr><tr><td class=\"en\">motive</td><td>/ˈməʊtɪv/</td><td>动机</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 侦探推理与谋杀谜案 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">过去进行时描述案发时正在做的事 (was/were + doing)</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I was sitting in the living room, reading the newspaper.</div><div style=\"font-size:13px;color:var(--gray-600);\">询问或描述案发当时某人正在做什么用过去进行时；常与 when + 一般过去时连用，表示较长的动作被较短动作打断（如 When he was killed, I was in the kitchen）。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">情态动词表推断：must be / might have killed</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 The killer must be Billy because he argued with his father about money.</div><div style=\"font-size:13px;color:var(--gray-600);\">对现在状况的肯定推断用 must be；对过去动作的推测用 might have done / must have done（如 ... might have killed Mr. West because of money）。</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 侦探推理与谋杀谜案 句型",
+        content: "<div class=\"example-box\">Heavy rain was falling when William West was found dead in his house.  <span style=\"color:var(--gray-600);\">— 当威廉·韦斯特被发现死在屋里时，外面正下着大雨。</span></div><div class=\"example-box\">Billy had often argued with his father about money.  <span style=\"color:var(--gray-600);\">— 比利常因钱的事和父亲争吵。</span></div><div class=\"example-box\">The sound of the rain covered the noises in the house.  <span style=\"color:var(--gray-600);\">— 雨声掩盖了屋里的动静。</span></div><div class=\"example-box\">I saw Billy run upstairs angrily after arguing with Mr. West.  <span style=\"color:var(--gray-600);\">— 我看见比利和韦斯特先生争吵后愤怒地跑上楼。</span></div><div class=\"example-box\">The evidence points to Billy since he looked pale and frightened near the bathroom.  <span style=\"color:var(--gray-600);\">— 证据指向比利，因为他在浴室附近显得苍白而惊恐。</span></div>"
+      }
+    ]
+  },
+  b2u15: {
+    phase: "📗 B2 教材",
+    theme: "乐园出行（主题公园游玩）",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 乐园出行（主题公园游玩） 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">theme park</td><td>/θiːm pɑːk/</td><td>主题公园</td></tr><tr><td class=\"en\">astronaut</td><td>/ˈæstrənɔːt/</td><td>宇航员</td></tr><tr><td class=\"en\">locksmith</td><td>/ˈlɒksmɪθ/</td><td>锁匠</td></tr><tr><td class=\"en\">porridge</td><td>/ˈpɒrɪdʒ/</td><td>粥</td></tr><tr><td class=\"en\">nanny</td><td>/ˈnæni/</td><td>保姆</td></tr><tr><td class=\"en\">My feet are killing me</td><td>/maɪ fiːt ɑː(r) ˈkɪlɪŋ miː/</td><td>我的脚疼死了</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 乐园出行（主题公园游玩） 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">现在完成时（Present Perfect）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I have been to Beijing. / I have lived here for 5 years.</div><div style=\"font-size:13px;color:var(--gray-600);\">结构：have/has + 过去分词；三大用法：①人生经历（ever/already）②持续状态（for/since）③过去动作对现在造成影响</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">not … any more = no more 不再……</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I do not eat fast food any more.</div><div style=\"font-size:13px;color:var(--gray-600);\">表示'再也不……'，与 no more 同义，常与否定句连用</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 乐园出行（主题公园游玩） 句型",
+        content: "<div class=\"example-box\">I have been to Beijing.  <span style=\"color:var(--gray-600);\">— 我去过北京。</span></div><div class=\"example-box\">Which places have you been to?  <span style=\"color:var(--gray-600);\">— 你去过哪些地方？</span></div><div class=\"example-box\">I have lived here for 5 years.  <span style=\"color:var(--gray-600);\">— 我在这里住了5年。</span></div><div class=\"example-box\">It's great to see you!  <span style=\"color:var(--gray-600);\">— 很高兴见到你！</span></div><div class=\"example-box\">My feet are killing me.  <span style=\"color:var(--gray-600);\">— 我的脚疼死了。</span></div><div class=\"example-box\">Are you hungry? — I have eaten dinner.  <span style=\"color:var(--gray-600);\">— 你饿吗？——我吃过晚饭了。</span></div>"
+      }
+    ]
+  },
+  b2u16: {
+    phase: "📗 B2 教材",
+    theme: "旅游建议与游客贴士",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 旅游建议与游客贴士 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">ideally</td><td>/aɪˈdiːəli/</td><td>理想地；最合适地</td></tr><tr><td class=\"en\">ought to</td><td>/ˈɔːt tə/</td><td>应该（表建议）</td></tr><tr><td class=\"en\">in advance</td><td>/ɪn ədˈvɑːns/</td><td>提前；事先</td></tr><tr><td class=\"en\">several</td><td>/ˈsevrəl/</td><td>几个；若干</td></tr><tr><td class=\"en\">sight</td><td>/saɪt/</td><td>景色；名胜</td></tr><tr><td class=\"en\">tour</td><td>/tʊə(r)/</td><td>游览；旅行</td></tr><tr><td class=\"en\">available</td><td>/əˈveɪləbl/</td><td>可获得的；可买到的</td></tr><tr><td class=\"en\">major</td><td>/ˈmeɪdʒə(r)/</td><td>主要的；重要的</td></tr><tr><td class=\"en\">tourist attraction</td><td>/ˈtʊərɪst əˈtrækʃn/</td><td>旅游景点</td></tr><tr><td class=\"en\">website</td><td>/ˈwebsaɪt/</td><td>网站</td></tr><tr><td class=\"en\">latest</td><td>/ˈleɪtɪst/</td><td>最新的；最近的</td></tr><tr><td class=\"en\">event</td><td>/ɪˈvent/</td><td>活动；事件</td></tr><tr><td class=\"en\">go off</td><td>/ɡəʊ ɒf/</td><td>离开（尤指去做某事）</td></tr><tr><td class=\"en\">mind</td><td>/maɪnd/</td><td>介意；在意</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 旅游建议与游客贴士 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">不定式作表语 (to do)</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 His dream is to make a lot of money and travel around the world.</div><div style=\"font-size:13px;color:var(--gray-600);\">当主语是 dream, job, goal, plan, thing 等表示“目标/内容”的名词时，常用不定式(to do)作表语说明具体内容；否定在 to 前加 not，如 is not to try to do too much。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">ought to 表建议</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 You ought to decide in advance which sights you most want to see.</div><div style=\"font-size:13px;color:var(--gray-600);\">ought to + 动词原形表示“应该/应当”，与 should 近义，常用于给出建议或推荐；否定为 ought not to。</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 旅游建议与游客贴士 句型",
+        content: "<div class=\"example-box\">One important thing to remember is not to try to do too much in a short time.  <span style=\"color:var(--gray-600);\">— 要记住的重要一点是，别试图在短时间内做太多事。</span></div><div class=\"example-box\">Ideally, you should start planning before you get here.  <span style=\"color:var(--gray-600);\">— 理想情况下，你应该在到达之前就开始计划。</span></div><div class=\"example-box\">You ought to decide in advance which sights you most want to see.  <span style=\"color:var(--gray-600);\">— 你应该提前决定最想看哪些景点。</span></div><div class=\"example-box\">Several companies offer bus tours that stop at all the major tourist attractions.  <span style=\"color:var(--gray-600);\">— 好几家公司提供在各大旅游景点停靠的巴士游。</span></div><div class=\"example-box\">Don't be afraid to ask questions, and New Yorkers don't mind giving directions.  <span style=\"color:var(--gray-600);\">— 别不敢问路，纽约人也不介意给人指路。</span></div>"
+      }
+    ]
+  },
+  b2u17: {
+    phase: "📗 B2 教材",
+    theme: "租房、健身与职场沟通",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 租房、健身与职场沟通 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">receptionist</td><td></td><td>前台</td></tr><tr><td class=\"en\">facility / facilities</td><td></td><td>设施</td></tr><tr><td class=\"en\">furnished</td><td></td><td>（房屋）带家具的</td></tr><tr><td class=\"en\">deposit</td><td></td><td>押金</td></tr><tr><td class=\"en\">elevator / lift</td><td></td><td>电梯</td></tr><tr><td class=\"en\">pedestrian</td><td></td><td>行人</td></tr><tr><td class=\"en\">independence</td><td></td><td>独立</td></tr><tr><td class=\"en\">rent</td><td></td><td>租金；租用</td></tr><tr><td class=\"en\">subway / tube</td><td></td><td>地铁（英式/美式）</td></tr><tr><td class=\"en\">public transportation</td><td></td><td>公共交通</td></tr><tr><td class=\"en\">cardio</td><td></td><td>有氧运动</td></tr><tr><td class=\"en\">weight training / lifting</td><td></td><td>力量训练</td></tr><tr><td class=\"en\">trainer</td><td></td><td>训练师；教练</td></tr><tr><td class=\"en\">gym</td><td></td><td>健身房</td></tr><tr><td class=\"en\">participant</td><td></td><td>参与者</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 租房、健身与职场沟通 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">the + 比较级，the + 比较级（越……越……）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 The closer the better.</div><div style=\"font-size:13px;color:var(--gray-600);\">结构：the + 比较级，the + 比较级，表示'越……越……'</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">so ... that ...（结果状语从句）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 It was so expensive that I couldn't afford it.</div><div style=\"font-size:13px;color:var(--gray-600);\">so + 形容词/副词 + that 引导结果状语从句，表'太……以至于……'</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">be out of / run out of（耗尽、用完）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 My phone is out of power. / I ran out of money.</div><div style=\"font-size:13px;color:var(--gray-600);\">run out of 主语是人（用尽某物）；be out of 表状态（没电/没钱）</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 租房、健身与职场沟通 句型",
+        content: "<div class=\"example-box\">How much is the rent?  <span style=\"color:var(--gray-600);\">— 租金多少？</span></div><div class=\"example-box\">How many bedrooms does it have?  <span style=\"color:var(--gray-600);\">— 有多少间卧室？</span></div><div class=\"example-box\">Is it furnished?  <span style=\"color:var(--gray-600);\">— 房子带家具吗？</span></div><div class=\"example-box\">How much is the deposit?  <span style=\"color:var(--gray-600);\">— 押金多少？</span></div><div class=\"example-box\">It's 5 minutes by subway.  <span style=\"color:var(--gray-600);\">— 乘地铁5分钟。</span></div><div class=\"example-box\">Is there a gym nearby?  <span style=\"color:var(--gray-600);\">— 附近有健身房吗？</span></div>"
+      }
+    ]
+  },
+  b2u18: {
+    phase: "📗 B2 教材",
+    theme: "犯罪新闻听力",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 犯罪新闻听力 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">crime</td><td></td><td>犯罪</td></tr><tr><td class=\"en\">robber</td><td>/ˈrɒbə(r)/</td><td>抢劫犯</td></tr><tr><td class=\"en\">scene</td><td></td><td>现场</td></tr><tr><td class=\"en\">newsman</td><td></td><td>新闻记者</td></tr><tr><td class=\"en\">umbrella</td><td></td><td>雨伞</td></tr><tr><td class=\"en\">bench</td><td></td><td>长椅</td></tr><tr><td class=\"en\">apologize</td><td></td><td>道歉</td></tr><tr><td class=\"en\">co-worker</td><td></td><td>同事</td></tr><tr><td class=\"en\">vending machine</td><td></td><td>自动售货机</td></tr><tr><td class=\"en\">yell</td><td></td><td>大喊</td></tr><tr><td class=\"en\">grab</td><td></td><td>抓住；抢走</td></tr><tr><td class=\"en\">trip</td><td></td><td>绊倒</td></tr><tr><td class=\"en\">kick</td><td></td><td>踢；赶走</td></tr><tr><td class=\"en\">position</td><td>/pəˈzɪʃn/</td><td>职位；岗位；位置</td></tr><tr><td class=\"en\">idiom</td><td>/ˈɪdiəm/</td><td>习语；成语；固定惯用语</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 犯罪新闻听力 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">过去进行时（Past Continuous）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I was minding my own business. / While I was running, I tripped.</div><div style=\"font-size:13px;color:var(--gray-600);\">结构：was/were + doing；表示过去某一时刻正在进行的动作，常与 when/while 连用</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">when &amp; while 用法区别</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 while + 进行时（持续动作）；when + 瞬间动作/进行时</div><div style=\"font-size:13px;color:var(--gray-600);\">while 接持续动作，when 接瞬间动作或进行时；经典句型：主语 + was/were doing + when + 一般过去时（正在做……这时突然……）</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">动词过去式双写规则</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 trip → tripped / step → stepped / stop → stopped</div><div style=\"font-size:13px;color:var(--gray-600);\">重读闭音节、辅+元+辅结尾的动词，双写末尾辅音再加 ed</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">反身代词</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 hurt oneself 伤到自己</div><div style=\"font-size:13px;color:var(--gray-600);\">反身代词 oneself 随主语变化（myself/yourself/himself/herself…）</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 犯罪新闻听力 句型",
+        content: "<div class=\"example-box\">I was minding my own business.  <span style=\"color:var(--gray-600);\">— 我当时只是在做自己的事。</span></div><div class=\"example-box\">I heard a woman yelling for help.  <span style=\"color:var(--gray-600);\">— 我听见一位女士大喊救命。</span></div><div class=\"example-box\">Two robbers were grabbing her bag.  <span style=\"color:var(--gray-600);\">— 两个劫匪正在抢她的包。</span></div><div class=\"example-box\">While I was running, I tripped and fell.  <span style=\"color:var(--gray-600);\">— 我跑的时候绊倒摔倒了。</span></div><div class=\"example-box\">The robbers got kicked off the bus because they didn't pay.  <span style=\"color:var(--gray-600);\">— 劫匪因为没买票被赶下公交车。</span></div><div class=\"example-box\">My co-worker is stuck in a vending machine.  <span style=\"color:var(--gray-600);\">— 我的同事卡在自动售货机里了。</span></div>"
+      }
+    ]
+  },
+  b2u19: {
+    phase: "📗 B2 教材",
+    theme: "情绪表达与竞赛经历",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 情绪表达与竞赛经历 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">competition</td><td></td><td>比赛；竞赛</td></tr><tr><td class=\"en\">competitor</td><td></td><td>竞争者；对手</td></tr><tr><td class=\"en\">confident</td><td></td><td>自信的</td></tr><tr><td class=\"en\">disappointed</td><td></td><td>失望的</td></tr><tr><td class=\"en\">furious</td><td></td><td>狂怒的；暴怒的</td></tr><tr><td class=\"en\">strict</td><td></td><td>严厉的</td></tr><tr><td class=\"en\">rude</td><td></td><td>粗鲁的；无礼的</td></tr><tr><td class=\"en\">impatient</td><td></td><td>不耐烦的；急躁的</td></tr><tr><td class=\"en\">nervous / anxious / upset / stressed</td><td></td><td>紧张的/焦虑的/沮丧的/有压力的</td></tr><tr><td class=\"en\">broke</td><td></td><td>没钱的；破产的</td></tr><tr><td class=\"en\">waste</td><td></td><td>浪费</td></tr><tr><td class=\"en\">outstrip</td><td></td><td>超过；超越</td></tr><tr><td class=\"en\">ahead</td><td></td><td>在前面；领先</td></tr><tr><td class=\"en\">power bank</td><td></td><td>充电宝</td></tr><tr><td class=\"en\">positive thinking</td><td></td><td>积极思考</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 情绪表达与竞赛经历 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">used to do sth.（过去常常做某事）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I used to do cardio every day.</div><div style=\"font-size:13px;color:var(--gray-600);\">表示过去的习惯，现在已不再做；对比 be used to doing sth.（习惯于做某事）</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">would 表虚拟/推测</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I would be sad if I lost the game.</div><div style=\"font-size:13px;color:var(--gray-600);\">would 用于描述假设的感受（虚拟语气），常与 if 从句搭配</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">一般过去时（描述过去经历）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 Last year, I took part in a competition.</div><div style=\"font-size:13px;color:var(--gray-600);\">用于描述过去的经历、动作</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 情绪表达与竞赛经历 句型",
+        content: "<div class=\"example-box\">Do you like taking part in competitions?  <span style=\"color:var(--gray-600);\">— 你喜欢参加比赛吗？</span></div><div class=\"example-box\">It can improve me and help me grow up quickly.  <span style=\"color:var(--gray-600);\">— 它能提升我，让我快速成长。</span></div><div class=\"example-box\">How did you feel at that time?  <span style=\"color:var(--gray-600);\">— 你当时感觉怎么样？</span></div><div class=\"example-box\">I felt sad and disappointed.  <span style=\"color:var(--gray-600);\">— 我感到难过和失望。</span></div><div class=\"example-box\">I would be sad if I lost it.  <span style=\"color:var(--gray-600);\">— 如果我输了，我会难过。</span></div><div class=\"example-box\">I didn't prepare it well.  <span style=\"color:var(--gray-600);\">— 我准备得不好。</span></div>"
+      }
+    ]
+  },
+  b2u20: {
+    phase: "📗 B2 教材",
+    theme: "完美道歉的艺术（航空危机与致歉）",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 完美道歉的艺术（航空危机与致歉） 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">furious</td><td>/ˈfjʊriəs/</td><td>狂怒的，暴怒的</td></tr><tr><td class=\"en\">frustration</td><td>/frʌˈstreɪʃn/</td><td>挫败感，沮丧</td></tr><tr><td class=\"en\">deserve</td><td>/dɪˈzɜːrv/</td><td>应得，值得</td></tr><tr><td class=\"en\">heartfelt</td><td>/ˈhɑːrtfelt/</td><td>衷心的，诚挚的</td></tr><tr><td class=\"en\">compensation</td><td>/ˌkɑːmpenˈseɪʃn/</td><td>赔偿，补偿</td></tr><tr><td class=\"en\">apology</td><td>/əˈpɑːlədʒi/</td><td>道歉，致歉</td></tr><tr><td class=\"en\">airline</td><td>/ˈerlaɪn/</td><td>航空公司</td></tr><tr><td class=\"en\">passenger</td><td>/ˈpæsɪndʒər/</td><td>乘客，旅客</td></tr><tr><td class=\"en\">inconvenience</td><td>/ˌɪnkənˈviːniəns/</td><td>不便，麻烦</td></tr><tr><td class=\"en\">anxiety</td><td>/æŋˈzaɪəti/</td><td>焦虑，不安</td></tr><tr><td class=\"en\">delay</td><td>/dɪˈleɪ/</td><td>延误，推迟</td></tr><tr><td class=\"en\">cancel</td><td>/ˈkænsl/</td><td>取消</td></tr><tr><td class=\"en\">admit</td><td>/ədˈmɪt/</td><td>承认</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 完美道歉的艺术（航空危机与致歉） 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">make up to someone</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 He bought her favorite flowers to make up to her for forgetting their anniversary.</div><div style=\"font-size:13px;color:var(--gray-600);\">意为为谋私利而对某人过分友好或奉承；make up to sb for sth 表示为某事而讨好某人。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">make up for something</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 Dad said he hoped this trip would make up for all the times he was away.</div><div style=\"font-size:13px;color:var(--gray-600);\">意为通过做某事来纠正错误，或减轻某事的不良影响；常与表示损失、缺席的宾语搭配。</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 完美道歉的艺术（航空危机与致歉） 句型",
+        content: "<div class=\"example-box\">The U.S. was hit by a heavy snowstorm, which caused hundreds of flights to be canceled.  <span style=\"color:var(--gray-600);\">— 美国遭遇了一场猛烈的暴风雪，导致数百个航班被取消。</span></div><div class=\"example-box\">People were furious with Jet Blue.  <span style=\"color:var(--gray-600);\">— 人们对捷蓝航空怒不可遏。</span></div><div class=\"example-box\">His apology was heartfelt.  <span style=\"color:var(--gray-600);\">— 他的道歉是发自肺腑的。</span></div><div class=\"example-box\">He also offered every passenger compensation to make up for it.  <span style=\"color:var(--gray-600);\">— 他还向当天的每位乘客提供赔偿，以弥补损失。</span></div><div class=\"example-box\">In short, he followed the three rules for a perfect apology.  <span style=\"color:var(--gray-600);\">— 简而言之，他遵守了完美道歉的三条规则。</span></div>"
+      }
+    ]
+  },
+  b2u21: {
+    phase: "📗 B2 教材",
+    theme: "电影《消防员》与婚姻中的道歉与宽恕",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 电影《消防员》与婚姻中的道歉与宽恕 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">firefighter</td><td>/ˈfaɪərfaɪtər/</td><td>消防员</td></tr><tr><td class=\"en\">be about to</td><td>/bi əˈbaʊt tu/</td><td>即将，正要</td></tr><tr><td class=\"en\">fall apart</td><td>/fɔːl əˈpɑːrt/</td><td>破裂，崩溃</td></tr><tr><td class=\"en\">argument</td><td>/ˈɑːrɡjumənt/</td><td>争吵，争论</td></tr><tr><td class=\"en\">encouragement</td><td>/ɪnˈkɜːrɪdʒmənt/</td><td>鼓励，激励</td></tr><tr><td class=\"en\">flirt</td><td>/flɜːt/</td><td>调情，打情骂俏</td></tr><tr><td class=\"en\">warn</td><td>/wɔːrn/</td><td>警告，提醒</td></tr><tr><td class=\"en\">tearfully</td><td>/ˈtɪrfəli/</td><td>含泪地，泪眼汪汪地</td></tr><tr><td class=\"en\">apologize</td><td>/əˈpɑːlədʒaɪz/</td><td>道歉</td></tr><tr><td class=\"en\">selfish</td><td>/ˈselfɪʃ/</td><td>自私的</td></tr><tr><td class=\"en\">trample</td><td>/ˈtræmp(ə)l/</td><td>践踏，无视（感情/权利）</td></tr><tr><td class=\"en\">forgive</td><td>/fərˈɡɪv/</td><td>原谅，宽恕</td></tr><tr><td class=\"en\">divorce</td><td>/dɪˈvɔːrs/</td><td>离婚</td></tr><tr><td class=\"en\">be able to</td><td>/bi ˈeɪbl tu/</td><td>能够</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 电影《消防员》与婚姻中的道歉与宽恕 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">should have done</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I have loved other things when I should have loved you.</div><div style=\"font-size:13px;color:var(--gray-600);\">表示过去本该做某事却没做，含责备或惋惜的虚拟语气；'to love you' 是正确之事，但说话人没做。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">shouldn't have done</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I shouldn't have bought this many things.</div><div style=\"font-size:13px;color:var(--gray-600);\">表示过去本不该做某事却做了，同样为虚拟语气，表达对已发生之事的懊悔。</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 电影《消防员》与婚姻中的道歉与宽恕 句型",
+        content: "<div class=\"example-box\">I am sorry. I have been so selfish.  <span style=\"color:var(--gray-600);\">— 对不起。我一直这么自私。</span></div><div class=\"example-box\">I have trampled on you with my words and with my actions.  <span style=\"color:var(--gray-600);\">— 我用言语和行为践踏了你。</span></div><div class=\"example-box\">I have loved other things when I should have loved you.  <span style=\"color:var(--gray-600);\">— 在我本该爱你的时候，我却爱上了别的东西。</span></div><div class=\"example-box\">I am hoping, I am praying, that somehow you would be able to forgive me too.  <span style=\"color:var(--gray-600);\">— 我希望，我祈祷，你也能以某种方式原谅我。</span></div><div class=\"example-box\">I do not want to live the rest of my life without you.  <span style=\"color:var(--gray-600);\">— 我不想在没有你的余生里度过。</span></div>"
+      }
+    ]
+  },
+  b2u22: {
+    phase: "📗 B2 教材",
+    theme: "B2 综合复习（语法·健身·协商·俚语）",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 B2 综合复习（语法·健身·协商·俚语） 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">aerobic</td><td></td><td>有氧的</td></tr><tr><td class=\"en\">treadmill</td><td></td><td>跑步机</td></tr><tr><td class=\"en\">fitness freak</td><td></td><td>健身狂魔</td></tr><tr><td class=\"en\">couch potato</td><td></td><td>宅家懒人</td></tr><tr><td class=\"en\">work out</td><td></td><td>锻炼健身</td></tr><tr><td class=\"en\">deal-breaker</td><td></td><td>底线，不可妥协条件</td></tr><tr><td class=\"en\">deadlock</td><td></td><td>谈判僵局</td></tr><tr><td class=\"en\">compromise</td><td></td><td>妥协；折中协议</td></tr><tr><td class=\"en\">reciprocate</td><td></td><td>回馈；回报</td></tr><tr><td class=\"en\">afford</td><td></td><td>负担得起</td></tr><tr><td class=\"en\">fasten</td><td></td><td>系紧</td></tr><tr><td class=\"en\">stapler</td><td></td><td>订书机</td></tr><tr><td class=\"en\">scissors</td><td></td><td>剪刀</td></tr><tr><td class=\"en\">disappointed</td><td></td><td>感到失望的</td></tr><tr><td class=\"en\">excited</td><td></td><td>兴奋的</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 B2 综合复习（语法·健身·协商·俚语） 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">第二条件句（虚拟语气）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 If I were rich, I would buy a big house.</div><div style=\"font-size:13px;color:var(--gray-600);\">If + 一般过去时，主句 would + 动词原形；be 动词统一用 were，表达现实难以实现的假设。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">频率副词的位置</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 We seldom fasten seat belts in the back seat.</div><div style=\"font-size:13px;color:var(--gray-600);\">never-&gt;always 排序；置于实义动词前、be 动词后。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">同源形容词 -ing/-ed 区分</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I am disappointed with his behavior. / The movie is disappointing.</div><div style=\"font-size:13px;color:var(--gray-600);\">-ed 修饰人，表人的感受；-ing 修饰事物，表事物本身性质。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">be going to do 表计划</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I'm going to buy new stationery.</div><div style=\"font-size:13px;color:var(--gray-600);\">表个人主观计划、打算，区别于 will 的临时决定。</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 B2 综合复习（语法·健身·协商·俚语） 句型",
+        content: "<div class=\"example-box\">This rule is a deal-breaker for us.  <span style=\"color:var(--gray-600);\">— 这条规则是我们无法退让的底线。</span></div><div class=\"example-box\">Their conversation fell into deadlock.  <span style=\"color:var(--gray-600);\">— 双方谈话陷入了僵局。</span></div><div class=\"example-box\">Don't freak out when facing difficulties.  <span style=\"color:var(--gray-600);\">— 面对困难时不要慌乱失控。</span></div><div class=\"example-box\">We usually work out on the treadmill.  <span style=\"color:var(--gray-600);\">— 我们常在跑步机上健身。</span></div><div class=\"example-box\">I'm interested in daily fitness.  <span style=\"color:var(--gray-600);\">— 我对日常健身很感兴趣。</span></div>"
+      }
+    ]
+  },
+  b2u23: {
+    phase: "📗 B2 教材",
+    theme: "生活习惯健康",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 生活习惯健康 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">addict</td><td>/ˈædɪkt/</td><td>成瘾者</td></tr><tr><td class=\"en\">abuse</td><td>/əˈbjuːz/</td><td>滥用；过度做某事</td></tr><tr><td class=\"en\">organic</td><td>/ɔːˈɡænɪk/</td><td>有机的</td></tr><tr><td class=\"en\">refined carbohydrates</td><td>/rɪˈfaɪnd ˌkɑːbəʊˈhaɪdreɪts/</td><td>精制碳水</td></tr><tr><td class=\"en\">self-disciplined</td><td>/ˌself ˈdɪsəplɪnd/</td><td>自律的</td></tr><tr><td class=\"en\">stressful</td><td>/ˈstresfl/</td><td>充满压力的</td></tr><tr><td class=\"en\">gossip</td><td>/ˈɡɒsɪp/</td><td>闲聊；八卦</td></tr><tr><td class=\"en\">gin</td><td>/dʒɪn/</td><td>金酒</td></tr><tr><td class=\"en\">vodka</td><td>/ˈvɒdkə/</td><td>伏特加</td></tr><tr><td class=\"en\">rum</td><td>/rʌm/</td><td>朗姆酒</td></tr><tr><td class=\"en\">brandy</td><td>/ˈbrændi/</td><td>白兰地</td></tr><tr><td class=\"en\">beer</td><td>/bɪə(r)/</td><td>啤酒</td></tr><tr><td class=\"en\">wine</td><td>/waɪn/</td><td>葡萄酒</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 生活习惯健康 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">used to do 过去习惯性动作</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I used to drink a lot of alcohol, but now I quit.</div><div style=\"font-size:13px;color:var(--gray-600);\">主语 + used to + 动词原形；过去经常做某事，现在已经不再做。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">keep + doing 持续/反复做某事</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 She keeps answering me every time I speak.</div><div style=\"font-size:13px;color:var(--gray-600);\">动作不停重复，带有厌烦、持续的情绪。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">情态动词表建议（should/ought to/might/could）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 You should see a doctor.</div><div style=\"font-size:13px;color:var(--gray-600);\">直接建议用 should/ought to；委婉建议用 might/could/can。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">现在完成时 Present Perfect</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I have lived here for 5 years.</div><div style=\"font-size:13px;color:var(--gray-600);\">have/has + 过去分词；表持续状态（for + 时段）或人生经历（ever/already）。</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 生活习惯健康 句型",
+        content: "<div class=\"example-box\">I don't have a regular schedule for sleeping.  <span style=\"color:var(--gray-600);\">— 我没有规律的睡眠作息。</span></div><div class=\"example-box\">I have a strict diet. I only eat organic &amp; healthy food.  <span style=\"color:var(--gray-600);\">— 我饮食很严格。只吃有机健康食品。</span></div><div class=\"example-box\">When I feel sad, I eat junk food to cheer myself up.  <span style=\"color:var(--gray-600);\">— 难过时，我吃垃圾食品让自己开心。</span></div><div class=\"example-box\">I used to drink a lot of alcohol, but now I quit.  <span style=\"color:var(--gray-600);\">— 我以前常喝酒，但现在戒了。</span></div><div class=\"example-box\">I get fully charged after a nap.  <span style=\"color:var(--gray-600);\">— 小睡之后我满血复活。</span></div>"
+      }
+    ]
+  },
+  b2u24: {
+    phase: "📗 B2 教材",
+    theme: "露营出行",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 露营出行 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">T-shirt</td><td>/ˈtiː ʃɜːt/</td><td>T恤衫</td></tr><tr><td class=\"en\">sunglasses</td><td>/ˈsʌnɡlɑːsɪz/</td><td>太阳镜（复数）</td></tr><tr><td class=\"en\">raincoat</td><td>/ˈreɪnkəʊt/</td><td>雨衣</td></tr><tr><td class=\"en\">sun hat</td><td>/sʌn hæt/</td><td>遮阳帽</td></tr><tr><td class=\"en\">tent</td><td>/tent/</td><td>帐篷</td></tr><tr><td class=\"en\">flashlight</td><td>/ˈflæʃlaɪt/</td><td>手电筒（美式）</td></tr><tr><td class=\"en\">wet wipes</td><td>/wet waɪps/</td><td>湿纸巾</td></tr><tr><td class=\"en\">insect repellent</td><td>/ˈɪnsekt rɪˈpelənt/</td><td>驱虫剂；驱虫喷雾</td></tr><tr><td class=\"en\">first aid kit</td><td>/fɜːst eɪd kɪt/</td><td>急救包</td></tr><tr><td class=\"en\">power bank</td><td>/ˈpaʊə bæŋk/</td><td>充电宝</td></tr><tr><td class=\"en\">bottled water</td><td>/ˈbɒtlɪd ˈwɔːtə(r)/</td><td>瓶装水</td></tr><tr><td class=\"en\">weather forecast</td><td>/ˈweðə ˈfɔːkɑːst/</td><td>天气预报</td></tr><tr><td class=\"en\">suggest</td><td>/səˈdʒest/</td><td>建议</td></tr><tr><td class=\"en\">nephew</td><td>/ˈnefjuː/</td><td>侄子；外甥</td></tr><tr><td class=\"en\">sneakers</td><td>/ˈsniːkəz/</td><td>运动鞋（美式）</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 露营出行 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">be going to 表计划（将来时）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 You're going camping for the weekend.</div><div style=\"font-size:13px;color:var(--gray-600);\">主语 + am/is/are + going + doing，表示提前规划好的近期安排；与 will 临时决定相对。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">形容词性物主代词 you vs your</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 your nephew 你的侄子</div><div style=\"font-size:13px;color:var(--gray-600);\">your 是形容词性物主代词，修饰名词表所属；you 是人称代词不能修饰名词。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">第二条件句（虚拟语气）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 If it were sunny today, we would have a picnic.</div><div style=\"font-size:13px;color:var(--gray-600);\">If + 过去式（be 一律用 were），主句 would + 原形；表达与现在事实相反的假设。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">形容词比较级 A + be + 比较级 + than + B</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 Wet wipes are better than paper plates.</div><div style=\"font-size:13px;color:var(--gray-600);\">better 是 good 的比较级。</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 露营出行 句型",
+        content: "<div class=\"example-box\">I am going camping this weekend.  <span style=\"color:var(--gray-600);\">— 这周末我打算去露营。</span></div><div class=\"example-box\">I suggest bringing wet wipes.  <span style=\"color:var(--gray-600);\">— 我建议带上湿纸巾。</span></div><div class=\"example-box\">Take a first aid kit in case of emergency.  <span style=\"color:var(--gray-600);\">— 带上急救包，以防突发状况。</span></div><div class=\"example-box\">A sun hat protects us from the strong sun.  <span style=\"color:var(--gray-600);\">— 遮阳帽可以帮我们防晒。</span></div><div class=\"example-box\">There is no need to take too many snacks.  <span style=\"color:var(--gray-600);\">— 没必要带太多零食。</span></div>"
+      }
+    ]
+  },
+  b2u25: {
+    phase: "📗 B2 教材",
+    theme: "反转面试——在求职面试中主动提问",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 反转面试——在求职面试中主动提问 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">land</td><td>/lænd/</td><td>成功获得，得到</td></tr><tr><td class=\"en\">homework</td><td>/ˈhoʊmwɜːrk/</td><td>（引申）准备工作，前期调研</td></tr><tr><td class=\"en\">cross fingers</td><td>/krɔːs ˈfɪŋɡərz/</td><td>交叉手指（祈求好运）</td></tr><tr><td class=\"en\">candidate</td><td>/ˈkændɪdət/</td><td>候选人，应聘者</td></tr><tr><td class=\"en\">flip</td><td>/flɪp/</td><td>翻转，转变（方向/角色）</td></tr><tr><td class=\"en\">interview</td><td>/ˈɪntərvjuː/</td><td>面试，访谈</td></tr><tr><td class=\"en\">company</td><td>/ˈkʌmpəni/</td><td>公司，企业</td></tr><tr><td class=\"en\">impression</td><td>/ɪmˈpreʃn/</td><td>印象</td></tr><tr><td class=\"en\">confidence</td><td>/ˈkɑːnfɪdəns/</td><td>自信，信心</td></tr><tr><td class=\"en\">opportunity</td><td>/ˌɑːpərˈtuːnəti/</td><td>机会，机遇</td></tr><tr><td class=\"en\">career</td><td>/kəˈrɪr/</td><td>职业，事业</td></tr><tr><td class=\"en\">research</td><td>/rɪˈsɜːrtʃ/</td><td>研究，调查</td></tr><tr><td class=\"en\">goal</td><td>/ɡoʊl/</td><td>目标</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 反转面试——在求职面试中主动提问 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">do your homework (idiomatic use)</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 Make sure you do your homework before going into that meeting.</div><div style=\"font-size:13px;color:var(--gray-600);\">此处 homework 不是学校作业，而是指事先认真研究某主题或情况，以便充分了解并成功应对；常与 before + 动名词连用。</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 反转面试——在求职面试中主动提问 句型",
+        content: "<div class=\"example-box\">Finally! You've landed an interview for a great job.  <span style=\"color:var(--gray-600);\">— 终于！你获得了一个好工作的面试机会。</span></div><div class=\"example-box\">A job interview is not a one-way conversation.  <span style=\"color:var(--gray-600);\">— 工作面试不是一场单向的对话。</span></div><div class=\"example-box\">Come prepared with a few questions that show you're serious about the job.  <span style=\"color:var(--gray-600);\">— 带着几个能表明你认真对待这份工作的问题做好准备。</span></div><div class=\"example-box\">The questions you ask will also help you make a good impression.  <span style=\"color:var(--gray-600);\">— 你提出的问题也有助于你留下好印象。</span></div><div class=\"example-box\">Flip the interview! Be confident and ask the questions that will help you decide if this is the job for you.  <span style=\"color:var(--gray-600);\">— 反转面试！要自信，提出能帮你判断这是否适合你的工作的问题。</span></div>"
+      }
+    ]
+  },
+  b2u26: {
+    phase: "📗 B2 教材",
+    theme: "节日博览会——多元文化节日介绍与对比",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 节日博览会——多元文化节日介绍与对比 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">theme</td><td>/θiːm/</td><td>主题</td></tr><tr><td class=\"en\">couplet</td><td>/ˈkʌplət/</td><td>对联，对句</td></tr><tr><td class=\"en\">reunion</td><td>/ˌriːˈjuːniən/</td><td>团聚，重聚</td></tr><tr><td class=\"en\">firecracker</td><td>/ˈfaɪərkrækər/</td><td>鞭炮</td></tr><tr><td class=\"en\">envelope</td><td>/ˈenvəloʊp/</td><td>信封</td></tr><tr><td class=\"en\">lunar</td><td>/ˈluːnər/</td><td>月亮的，阴历的</td></tr><tr><td class=\"en\">appreciate</td><td>/əˈpriːʃieɪt/</td><td>欣赏，感激</td></tr><tr><td class=\"en\">legend</td><td>/ˈledʒənd/</td><td>传说</td></tr><tr><td class=\"en\">herb</td><td>/ɜːrb/</td><td>草药</td></tr><tr><td class=\"en\">commemorate</td><td>/kəˈmeməreɪt/</td><td>纪念</td></tr><tr><td class=\"en\">religious</td><td>/rɪˈlɪdʒəs/</td><td>宗教的</td></tr><tr><td class=\"en\">trick-or-treat</td><td>/trɪk ɔːr triːt/</td><td>不给糖就捣蛋（万圣节习俗）</td></tr><tr><td class=\"en\">carve</td><td>/kɑːrv/</td><td>雕刻</td></tr><tr><td class=\"en\">spooky</td><td>/ˈspuːki/</td><td>诡异的，阴森可怕的</td></tr><tr><td class=\"en\">hospitality</td><td>/ˌhɑːspɪˈtæləti/</td><td>好客，殷勤款待</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 节日博览会——多元文化节日介绍与对比 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">It is celebrated on / It falls on ... (节日日期表达)</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 It is celebrated on the 15th day of the 8th lunar month.</div><div style=\"font-size:13px;color:var(--gray-600);\">介绍节日日期时，可用被动语态 be celebrated on 或不及物短语 fall on；lunar 表示阴历/农历，区别于 solar（阳历）。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">Typical activities include ... / One of the most important foods is ...</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 Typical activities include eating mooncakes and appreciating the full moon.</div><div style=\"font-size:13px;color:var(--gray-600);\">介绍习俗常用 include + 动名词列举活动；最高级结构 one of the + 形容词最高级 + 名词复数，表示'最……之一'。</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 节日博览会——多元文化节日介绍与对比 句型",
+        content: "<div class=\"example-box\">The festival I want to introduce is the Spring Festival.  <span style=\"color:var(--gray-600);\">— 我想介绍的节日是春节。</span></div><div class=\"example-box\">It is celebrated on the Lunar New Year, usually late January or February.  <span style=\"color:var(--gray-600);\">— 它在农历新年庆祝，通常在1月下旬或2月。</span></div><div class=\"example-box\">Typical activities include eating mooncakes and appreciating the full moon.  <span style=\"color:var(--gray-600);\">— 典型的活动包括吃月饼和赏月。</span></div><div class=\"example-box\">This festival is important because it brings family reunion.  <span style=\"color:var(--gray-600);\">— 这个节日很重要，因为它带来家庭团聚。</span></div><div class=\"example-box\">Unlike Group 1's festival, our festival focuses on family reunion.  <span style=\"color:var(--gray-600);\">— 与第一组的节日不同，我们的节日侧重于家庭团聚。</span></div>"
+      }
+    ]
+  },
+  b2u27: {
+    phase: "📗 B2 教材",
+    theme: "网络购物经历与故事",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 网络购物经历与故事 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">elegant</td><td>/ˈelɪɡənt/</td><td>优雅的；精美的</td></tr><tr><td class=\"en\">desperate</td><td>/ˈdespərət/</td><td>绝望的；不顾一切的</td></tr><tr><td class=\"en\">take a chance</td><td>/teɪk ə tʃæns/</td><td>冒险一试；碰运气</td></tr><tr><td class=\"en\">vintage</td><td>/ˈvɪntɪdʒ/</td><td>老式的；优质的（尤指过去产的）</td></tr><tr><td class=\"en\">pricey</td><td>/ˈpraɪsi/</td><td>昂贵的</td></tr><tr><td class=\"en\">rug</td><td>/rʌɡ/</td><td>小地毯；垫子</td></tr><tr><td class=\"en\">anniversary</td><td>/ˌænɪˈvɜːrsəri/</td><td>周年纪念日</td></tr><tr><td class=\"en\">manufacturer</td><td>/ˌmænjəˈfæktʃərər/</td><td>制造商</td></tr><tr><td class=\"en\">shipping</td><td>/ˈʃɪpɪŋ/</td><td>运输；运费</td></tr><tr><td class=\"en\">copy</td><td>/ˈkɑːpi/</td><td>一册；副本</td></tr><tr><td class=\"en\">blame</td><td>/bleɪm/</td><td>责备；归咎于</td></tr><tr><td class=\"en\">quality</td><td>/ˈkwɑːləti/</td><td>质量</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 网络购物经历与故事 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">You get what you pay for.（一分钱一分货）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 A: That cheap camera I bought is broken already.  B: Well, you get what you pay for.</div><div style=\"font-size:13px;color:var(--gray-600);\">该短语用于：当你以为以极低价格买到了高质量商品，结果却发现质量与所付价格相符（实际很差）时。意为便宜没好货／一分钱一分货，常带自嘲或提醒的语气。</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 网络购物经历与故事 句型",
+        content: "<div class=\"example-box\">I saw an online photo of a rug that was perfect for my room.  <span style=\"color:var(--gray-600);\">— 我在网上看到一张非常适合我房间的地毯照片。</span></div><div class=\"example-box\">When it came, I was surprised.  <span style=\"color:var(--gray-600);\">— 当它送到时，我很惊讶。</span></div><div class=\"example-box\">I couldn't believe it!  <span style=\"color:var(--gray-600);\">— 我简直不敢相信！</span></div><div class=\"example-box\">It was the exact model!  <span style=\"color:var(--gray-600);\">— 正是那个型号！</span></div><div class=\"example-box\">Grandpa was so happy.  <span style=\"color:var(--gray-600);\">— 爷爷非常高兴。</span></div>"
+      }
+    ]
+  },
+  b2u28: {
+    phase: "📗 B2 教材",
+    theme: "问路",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 问路 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">direction</td><td>/dəˈrekʃn/</td><td>方向；指引</td></tr><tr><td class=\"en\">corner</td><td>/ˈkɔːnə(r)/</td><td>拐角；街角</td></tr><tr><td class=\"en\">cross</td><td></td><td>穿过（马路）</td></tr><tr><td class=\"en\">avenue</td><td></td><td>大道（宽阔主干道）</td></tr><tr><td class=\"en\">block</td><td></td><td>街区</td></tr><tr><td class=\"en\">colleague</td><td></td><td>同事</td></tr><tr><td class=\"en\">clinic</td><td></td><td>诊所</td></tr><tr><td class=\"en\">grocery store</td><td></td><td>杂货店</td></tr><tr><td class=\"en\">laundromat</td><td></td><td>自助洗衣店</td></tr><tr><td class=\"en\">concert</td><td></td><td>音乐会</td></tr><tr><td class=\"en\">stadium</td><td></td><td>体育场</td></tr><tr><td class=\"en\">gallery</td><td></td><td>画廊</td></tr><tr><td class=\"en\">neon lights</td><td></td><td>霓虹灯</td></tr><tr><td class=\"en\">ingredient</td><td></td><td>食材</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 问路 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">方位介词辨析（near/close to/next to/in front of/behind）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 The bank is next to the post office.</div><div style=\"font-size:13px;color:var(--gray-600);\">near 大范围；close to 靠近；next to 紧挨着（=beside）；in front of 外部前面；behind 后面。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">路名与介词搭配（on/at/onto）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 Turn right onto Western Avenue at the second crossing.</div><div style=\"font-size:13px;color:var(--gray-600);\">on 用于街道名；at 用于路口/拐角；onto 转弯后进入新路。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">look for vs find 辨析</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I am looking for my keys, but I can't find them.</div><div style=\"font-size:13px;color:var(--gray-600);\">look for 强调寻找过程；find 强调找到结果。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">不定式作后置定语（名词 + to do）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 things to look at 可以观赏的事物</div><div style=\"font-size:13px;color:var(--gray-600);\">不定式修饰前面名词，翻译：可供……的。</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 问路 句型",
+        content: "<div class=\"example-box\">Go straight in that direction.  <span style=\"color:var(--gray-600);\">— 朝那个方向直走。</span></div><div class=\"example-box\">It's not very far from here.  <span style=\"color:var(--gray-600);\">— 它离这里不远。</span></div><div class=\"example-box\">It's just a few minutes from here.  <span style=\"color:var(--gray-600);\">— 离这里只有几分钟路程。</span></div><div class=\"example-box\">How can I get to the Museum of Modern Art?  <span style=\"color:var(--gray-600);\">— 我该如何去往现代艺术博物馆？</span></div><div class=\"example-box\">The restaurant is across from the gallery.  <span style=\"color:var(--gray-600);\">— 餐厅就在画廊正对面。</span></div>"
+      }
+    ]
+  },
+  b2u29: {
+    phase: "📗 B2 教材",
+    theme: "派对邀请与出行指路",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 派对邀请与出行指路 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">countryside</td><td>/ˈkʌntrisaɪd/</td><td>乡村；郊外</td></tr><tr><td class=\"en\">instruction</td><td>/ɪnˈstrʌkʃ(ə)n/</td><td>指示；使用说明</td></tr><tr><td class=\"en\">motorway</td><td>/ˈmoʊtərweɪ/</td><td>高速公路</td></tr><tr><td class=\"en\">invitation</td><td>/ˌɪnvɪˈteɪʃn/</td><td>邀请；请柬</td></tr><tr><td class=\"en\">celebrate</td><td>/ˈselɪbreɪt/</td><td>庆祝</td></tr><tr><td class=\"en\">cousin</td><td>/ˈkʌzn/</td><td>堂/表兄弟姐妹</td></tr><tr><td class=\"en\">directions</td><td>/dəˈrekʃənz/</td><td>方向；指路说明</td></tr><tr><td class=\"en\">exit</td><td>/ˈeɡzɪt/</td><td>出口；驶出</td></tr><tr><td class=\"en\">public transport</td><td>/ˈpʌblɪk ˈtrænspɔːrt/</td><td>公共交通</td></tr><tr><td class=\"en\">close friends</td><td>/kloʊs frendz/</td><td>亲密的朋友</td></tr><tr><td class=\"en\">pick up</td><td>/pɪk ʌp/</td><td>接（人）；搭载</td></tr><tr><td class=\"en\">organize</td><td>/ˈɔːrɡənaɪz/</td><td>组织；筹备</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 派对邀请与出行指路 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">anyway 的用法（结束/转换话题、补充说明、尽管如此）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 Anyway, have fun at work. / He didn't get the invitation, but he came anyway.</div><div style=\"font-size:13px;color:var(--gray-600);\">anyway 常用于：①结束对话或转换话题；②打断后回到原话题；③确认或支持刚提到的观点（如 it was my fault, and anyway...）；④表示某事'尽管如此'仍发生（but... anyway）。位置灵活，口语中很常用。</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 派对邀请与出行指路 句型",
+        content: "<div class=\"example-box\">I'm organizing a little party for my birthday.  <span style=\"color:var(--gray-600);\">— 我正在为我的生日筹备一个小派对。</span></div><div class=\"example-box\">We're going to have it at my cousin's house.  <span style=\"color:var(--gray-600);\">— 我们将在我表姐家举办。</span></div><div class=\"example-box\">She lives in the countryside in a nice big house with a swimming pool.  <span style=\"color:var(--gray-600);\">— 她住在乡村一栋带游泳池的大房子里。</span></div><div class=\"example-box\">If you take the car, drive straight on Forest Road until you get to the motorway.  <span style=\"color:var(--gray-600);\">— 如果你开车，就沿森林路一直直走到高速公路。</span></div><div class=\"example-box\">I can't wait.  <span style=\"color:var(--gray-600);\">— 我等不及了。</span></div>"
+      }
+    ]
+  },
+  b2u30: {
+    phase: "📗 B2 教材",
+    theme: "人物性格特质",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 人物性格特质 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">lighten up</td><td>/ˈlaɪtn ʌp/</td><td>放松点；别太认真</td></tr><tr><td class=\"en\">mood</td><td>/muːd/</td><td>心情；情绪</td></tr><tr><td class=\"en\">fed up with</td><td>/fed ʌp wɪð/</td><td>受够了的；厌烦的</td></tr><tr><td class=\"en\">bad-tempered</td><td>/ˌbæd ˈtempərd/</td><td>脾气暴躁的</td></tr><tr><td class=\"en\">patient</td><td>/ˈpeɪʃnt/</td><td>有耐心的</td></tr><tr><td class=\"en\">creative</td><td>/kriˈeɪtɪv/</td><td>有创造力的</td></tr><tr><td class=\"en\">forgetful</td><td>/fərˈɡetfl/</td><td>健忘的</td></tr><tr><td class=\"en\">reliable</td><td>/rɪˈlaɪəbl/</td><td>可靠的</td></tr><tr><td class=\"en\">strict</td><td>/strɪkt/</td><td>严格的</td></tr><tr><td class=\"en\">generous</td><td>/ˈdʒenərəs/</td><td>慷慨的</td></tr><tr><td class=\"en\">hardworking</td><td>/ˌhɑːrd ˈwɜːrkɪŋ/</td><td>勤奋的</td></tr><tr><td class=\"en\">punctual</td><td>/ˈpʌŋktʃuəl/</td><td>守时的</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 人物性格特质 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">wish 表达愿望（与现在/过去事实相反）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I wish I could see you next week. / I wish I weren't sick. / I wish I had listened to my mom.</div><div style=\"font-size:13px;color:var(--gray-600);\">用 wish 谈论想要但不可能的事。①表现在的愿望用过去式（did/were）：I wish I weren't sick（事实：我是生病的）；②表过去的愿望用过去完成时（had done）：I wish I had listened（事实：我没听）。注意虚拟语气中一律用 were 而非 was。</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 人物性格特质 句型",
+        content: "<div class=\"example-box\">My manager is pretty disorganized.  <span style=\"color:var(--gray-600);\">— 我的经理相当没条理。</span></div><div class=\"example-box\">My cousin is punctual.  <span style=\"color:var(--gray-600);\">— 我的表妹很守时。</span></div><div class=\"example-box\">The boss needs to lighten up.  <span style=\"color:var(--gray-600);\">— 老板需要放松点／别太严肃。</span></div><div class=\"example-box\">Mary's so generous - she's always giving her friends presents.  <span style=\"color:var(--gray-600);\">— 玛丽很慷慨——总是给朋友送礼物。</span></div><div class=\"example-box\">He gets angry so easily.  <span style=\"color:var(--gray-600);\">— 他很容易生气。</span></div>"
+      }
+    ]
+  },
+  b2u31: {
+    phase: "📗 B2 教材",
+    theme: "情绪状态与个人优势",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 情绪状态与个人优势 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">surprised</td><td>/səˈpraɪzd/</td><td>感到惊讶的</td></tr><tr><td class=\"en\">surprising</td><td></td><td>令人惊讶的</td></tr><tr><td class=\"en\">tricky</td><td></td><td>狡猾的；棘手的</td></tr><tr><td class=\"en\">strength</td><td></td><td>优点；力量</td></tr><tr><td class=\"en\">weakness</td><td></td><td>缺点</td></tr><tr><td class=\"en\">analyze</td><td>/ˈænəlaɪz/</td><td>分析</td></tr><tr><td class=\"en\">organized</td><td></td><td>有条理的</td></tr><tr><td class=\"en\">efficient</td><td></td><td>高效的</td></tr><tr><td class=\"en\">requirement</td><td></td><td>要求</td></tr><tr><td class=\"en\">develop</td><td></td><td>培养；发展</td></tr><tr><td class=\"en\">adapt</td><td></td><td>适应</td></tr><tr><td class=\"en\">express</td><td></td><td>表达</td></tr><tr><td class=\"en\">specialize</td><td></td><td>专攻</td></tr><tr><td class=\"en\">relationship</td><td></td><td>关系</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 情绪状态与个人优势 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">wish sb. + 名词 双宾语结构</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I wish him luck.</div><div style=\"font-size:13px;color:var(--gray-600);\">wish 后接人 + 名词表祝愿，不接形容词（不可用 I wish him lucky）。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">one of + 复数名词 + 单数谓语动词</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 One of my friends is tall.</div><div style=\"font-size:13px;color:var(--gray-600);\">one of + 复数名词，谓语用单数；strength 优点，weakness 缺点。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">by + doing 方式状语</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I develop it by practicing every day.</div><div style=\"font-size:13px;color:var(--gray-600);\">by + 动名词表示通过某种方式；develop 培养。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">介词后接动名词（at/in/to + doing）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 be good at doing sth. / adapt to doing sth.</div><div style=\"font-size:13px;color:var(--gray-600);\">at/in/to 为介词，后接名词或动名词。</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 情绪状态与个人优势 句型",
+        content: "<div class=\"example-box\">I think one of my strengths is perseverance.  <span style=\"color:var(--gray-600);\">— 我认为我的优点之一是毅力。</span></div><div class=\"example-box\">I wish him luck.  <span style=\"color:var(--gray-600);\">— 祝他好运。</span></div><div class=\"example-box\">When you run into some problems, stay calm.  <span style=\"color:var(--gray-600);\">— 当你遇到问题时，保持冷静。</span></div><div class=\"example-box\">I develop it by practicing every day.  <span style=\"color:var(--gray-600);\">— 我通过每天练习来培养它。</span></div><div class=\"example-box\">It makes work smoother.  <span style=\"color:var(--gray-600);\">— 这让工作更顺畅。</span></div>"
+      }
+    ]
+  },
+  b2u32: {
+    phase: "📗 B2 教材",
+    theme: "更改会议时间",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 更改会议时间 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">postpone</td><td>/poʊˈspoʊn/</td><td>推迟；延期</td></tr><tr><td class=\"en\">agenda</td><td>/əˈdʒendə/</td><td>议程；会议事项</td></tr><tr><td class=\"en\">updated</td><td>/ˌʌpˈdeɪtɪd/</td><td>更新的；最新的</td></tr><tr><td class=\"en\">invite</td><td>/ˈɪnvaɪt/</td><td>邀请（非正式/口语）</td></tr><tr><td class=\"en\">schedule</td><td>/ˈskedʒuːl/</td><td>安排；排定</td></tr><tr><td class=\"en\">cancel</td><td>/ˈkænsl/</td><td>取消</td></tr><tr><td class=\"en\">presentation</td><td>/ˌpreznˈteɪʃn/</td><td>演示；报告</td></tr><tr><td class=\"en\">colleague</td><td>/ˈkɑːliːɡ/</td><td>同事</td></tr><tr><td class=\"en\">confirm</td><td>/kənˈfɜːrm/</td><td>确认</td></tr><tr><td class=\"en\">preparation</td><td>/ˌprepəˈreɪʃn/</td><td>准备</td></tr><tr><td class=\"en\">suit</td><td>/suːt/</td><td>适合；对……方便</td></tr><tr><td class=\"en\">bring forward</td><td>/brɪŋ ˈfɔːrwərd/</td><td>提前（时间）</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 更改会议时间 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">invite 作名词（非正式/口语用法）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 Thanks for the invite! / Did you send out the invites to the party? / She didn't get an invite to the wedding.</div><div style=\"font-size:13px;color:var(--gray-600);\">invite 作名词是 invitation（邀请）的口语化、非正式说法，多用于日常对话，不宜用于正式写作。正式场合应使用 invitation。</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 更改会议时间 句型",
+        content: "<div class=\"example-box\">Do you have a minute to talk about the meeting next Tuesday?  <span style=\"color:var(--gray-600);\">— 你有空聊聊下周二会议的事吗？</span></div><div class=\"example-box\">Would it be possible to move it?  <span style=\"color:var(--gray-600);\">— 可以把时间改一下吗？</span></div><div class=\"example-box\">We could postpone it to the afternoon, to 1 p.m.  <span style=\"color:var(--gray-600);\">— 我们可以把它推迟到下午1点。</span></div><div class=\"example-box\">I'm looking forward to presenting it.  <span style=\"color:var(--gray-600);\">— 我很期待做这个报告。</span></div><div class=\"example-box\">I'll send an email to everyone to confirm the time has changed.  <span style=\"color:var(--gray-600);\">— 我会发邮件给所有人，确认时间已经更改。</span></div>"
+      }
+    ]
+  },
+  b2u33: {
+    phase: "📗 B2 教材",
+    theme: "外貌、性格与职场面试",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 外貌、性格与职场面试 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">appearance</td><td></td><td>外貌；外表</td></tr><tr><td class=\"en\">beard</td><td></td><td>络腮胡</td></tr><tr><td class=\"en\">mustache</td><td></td><td>上唇小胡子</td></tr><tr><td class=\"en\">bald</td><td></td><td>秃顶的；脱发的</td></tr><tr><td class=\"en\">slim</td><td></td><td>苗条的</td></tr><tr><td class=\"en\">punctual</td><td></td><td>守时的</td></tr><tr><td class=\"en\">reliable</td><td></td><td>可靠的</td></tr><tr><td class=\"en\">creative</td><td></td><td>有创造力的</td></tr><tr><td class=\"en\">responsible</td><td></td><td>有责任心的</td></tr><tr><td class=\"en\">hard-working</td><td></td><td>勤奋的</td></tr><tr><td class=\"en\">position</td><td></td><td>岗位；职位</td></tr><tr><td class=\"en\">qualified</td><td></td><td>有资格的；胜任的</td></tr><tr><td class=\"en\">competent</td><td></td><td>有能力的；称职的</td></tr><tr><td class=\"en\">brand</td><td></td><td>品牌</td></tr><tr><td class=\"en\">trustworthy</td><td></td><td>值得信赖的</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 外貌、性格与职场面试 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">人称三单（she/he 后动词加 s）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 She wears a baseball cap.</div><div style=\"font-size:13px;color:var(--gray-600);\">she/he 后面动词要加 s（wears/has）；漏 s 为高频错误。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">be skillful at + 技能 vs be skillful in + 领域</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 be skillful at cooking / be skillful in management</div><div style=\"font-size:13px;color:var(--gray-600);\">at 后接具体动作/技能；in 后接抽象领域/范围。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">一般现在时三单主语动词加 s</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 this position requires a lot of travel</div><div style=\"font-size:13px;color:var(--gray-600);\">this position/he/she 作主语，后面动词加 s（不能用 need）。</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">定语从句（that 可省略）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 the experience (that) we need</div><div style=\"font-size:13px;color:var(--gray-600);\">关系代词 that 可省略，面试写作高频。</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 外貌、性格与职场面试 句型",
+        content: "<div class=\"example-box\">He's pretty tall, with dark brown hair, and he has a beard.  <span style=\"color:var(--gray-600);\">— 他很高，深棕色头发，留着络腮胡。</span></div><div class=\"example-box\">She is always punctual and reliable.  <span style=\"color:var(--gray-600);\">— 她总是守时又可靠。</span></div><div class=\"example-box\">I am fully qualified for this role, with 3 years of relevant experience.  <span style=\"color:var(--gray-600);\">— 我完全胜任这个岗位，有三年相关经验。</span></div><div class=\"example-box\">This brand is famous for high quality and good design.  <span style=\"color:var(--gray-600);\">— 这个品牌以高品质和好设计闻名。</span></div><div class=\"example-box\">Don't judge a person by appearance.  <span style=\"color:var(--gray-600);\">— 不要以貌取人。</span></div>"
+      }
+    ]
+  },
+  b2u34: {
+    phase: "📗 B2 教材",
+    theme: "综合语法与日常交际（条件句/健身/谈判）",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 综合语法与日常交际（条件句/健身/谈判） 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">aerobic</td><td></td><td>有氧的</td></tr><tr><td class=\"en\">treadmill</td><td></td><td>跑步机</td></tr><tr><td class=\"en\">couch potato</td><td></td><td>宅家懒人</td></tr><tr><td class=\"en\">fitness freak</td><td></td><td>健身狂魔</td></tr><tr><td class=\"en\">deal-breaker</td><td></td><td>底线、不可妥协条件</td></tr><tr><td class=\"en\">deadlock</td><td></td><td>谈判僵局</td></tr><tr><td class=\"en\">reciprocate</td><td></td><td>回馈、回报</td></tr><tr><td class=\"en\">afford</td><td></td><td>负担得起</td></tr><tr><td class=\"en\">disappointed</td><td></td><td>感到失望的</td></tr><tr><td class=\"en\">exciting</td><td></td><td>令人兴奋的</td></tr><tr><td class=\"en\">interested</td><td></td><td>感兴趣的</td></tr><tr><td class=\"en\">fasten</td><td></td><td>系紧</td></tr><tr><td class=\"en\">storage</td><td></td><td>内存、储存空间</td></tr><tr><td class=\"en\">negotiation</td><td></td><td>协商洽谈</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 综合语法与日常交际（条件句/健身/谈判） 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">四类条件句</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 If I were rich, I would buy a big house.</div><div style=\"font-size:13px;color:var(--gray-600);\">零条件句(客观真理)用一般现在时；第一条件句(将来可能)用will；第二条件句(虚拟)用一般过去时+would，be动词用were；第三条件句(过去遗憾)用had done + would have done</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">very/so/too/to 程度词辨析</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 He is so kind that everyone likes him.</div><div style=\"font-size:13px;color:var(--gray-600);\">very只修饰形/副加深程度；so...that...如此以至于；too+形表示超标，too...to...太而不能；to+动原表目的</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">同源形容词 -ing/-ed 区分</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I am disappointed with his behavior.</div><div style=\"font-size:13px;color:var(--gray-600);\">修饰人用-ed(感到…)；修饰事物/事件用-ing(令人…)。搭配：be disappointed at/with/about, be excited about, be interested in, be tired of/from</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">频率副词</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 We seldom fasten seat belts in the back seat.</div><div style=\"font-size:13px;color:var(--gray-600);\">排序never→rarely→seldom→occasionally→sometimes→often→usually→always；放在实义动词前、be动词后</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 综合语法与日常交际（条件句/健身/谈判） 句型",
+        content: "<div class=\"example-box\">If you boil water, it becomes hot.  <span style=\"color:var(--gray-600);\">— 把水烧开，水温就会升高。</span></div><div class=\"example-box\">This rule is a deal-breaker for us.  <span style=\"color:var(--gray-600);\">— 这条规则是我们无法退让的底线。</span></div><div class=\"example-box\">I put my feet up to rest after workout.  <span style=\"color:var(--gray-600);\">— 运动过后我抬脚放松休息。</span></div><div class=\"example-box\">Don't freak out when facing difficulties.  <span style=\"color:var(--gray-600);\">— 面对困难时不要慌乱失控。</span></div><div class=\"example-box\">The movie is really disappointing.  <span style=\"color:var(--gray-600);\">— 这部影片着实令人失望。</span></div><div class=\"example-box\">He is a fitness freak and loves doing aerobics.  <span style=\"color:var(--gray-600);\">— 他是健身狂人，酷爱做有氧运动。</span></div>"
+      }
+    ]
+  },
+  b2u35: {
+    phase: "📗 B2 教材",
+    theme: "驾驶提神与憨豆短片（车辆/道路/身体部位）",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 驾驶提神与憨豆短片（车辆/道路/身体部位） 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">SUV</td><td>/ˌes juː ˈviː/</td><td>城市越野汽车</td></tr><tr><td class=\"en\">headlights</td><td>/ˈhedlaɪts/</td><td>汽车前大灯</td></tr><tr><td class=\"en\">rearview mirror</td><td>/ˌrɪəvjuː ˈmɪrə(r)/</td><td>车内后视镜</td></tr><tr><td class=\"en\">windshield</td><td>/ˈwɪndʃiːld/</td><td>汽车前挡风玻璃</td></tr><tr><td class=\"en\">wrist</td><td>/rɪst/</td><td>手腕</td></tr><tr><td class=\"en\">eyelid</td><td>/ˈaɪlɪd/</td><td>眼皮</td></tr><tr><td class=\"en\">temple</td><td>/ˈtempl/</td><td>太阳穴</td></tr><tr><td class=\"en\">balm</td><td>/bɑːm/</td><td>清凉油、提神药膏</td></tr><tr><td class=\"en\">doze off</td><td>/dəʊz ɒf/</td><td>犯困、打盹</td></tr><tr><td class=\"en\">slap</td><td>/slæp/</td><td>拍打</td></tr><tr><td class=\"en\">stretch</td><td>/stretʃ/</td><td>伸展（四肢）</td></tr><tr><td class=\"en\">sleepy</td><td>/ˈsliːpi/</td><td>昏昏欲睡的</td></tr><tr><td class=\"en\">alert</td><td>/əˈlɜːt/</td><td>清醒、警觉的</td></tr><tr><td class=\"en\">spacious</td><td>/ˈspeɪʃəs/</td><td>宽敞的</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 驾驶提神与憨豆短片（车辆/道路/身体部位） 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">目的状语区分 in order to vs so that</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 He bites his wrist in order to stay awake.</div><div style=\"font-size:13px;color:var(--gray-600);\">in order to + 动词原形(后接动作，无完整句子)；so that + 完整主谓从句(常配can/could)</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">s 后清辅音浊化发音规则</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 matchbox /ˈmædʒbɒks/</div><div style=\"font-size:13px;color:var(--gray-600);\">清辅音/p//t//k/在字母s后口语浊化：s+p→/b/、s+t→/d/、s+k→/g/</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">并列连词 and/or 规则</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 Do you have brothers or sisters?</div><div style=\"font-size:13px;color:var(--gray-600);\">疑问/否定句并列只用or；肯定陈述句并列人/物只用and</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">副词 almost 固定位置</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 He almost dozes off.</div><div style=\"font-size:13px;color:var(--gray-600);\">almost放实义动词前、be动词后；不能说He dozes almost off</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 驾驶提神与憨豆短片（车辆/道路/身体部位） 句型",
+        content: "<div class=\"example-box\">He takes the car's cigarette lighter from the car.  <span style=\"color:var(--gray-600);\">— 他从车里拿走了点烟器。</span></div><div class=\"example-box\">He burns his finger with the heat of the cigarette lighter.  <span style=\"color:var(--gray-600);\">— 他用点烟器的高温烫伤了手指。</span></div><div class=\"example-box\">His finger hurts a lot.  <span style=\"color:var(--gray-600);\">— 他的手指疼得厉害。</span></div><div class=\"example-box\">He finds a matchbox and gets a new idea.  <span style=\"color:var(--gray-600);\">— 他找到一个火柴盒，想到了新办法。</span></div><div class=\"example-box\">However, it still doesn't work, and he almost dozes off again.  <span style=\"color:var(--gray-600);\">— 然而还是没用，他差点又打起瞌睡。</span></div><div class=\"example-box\">The woman in the passenger seat looks shocked.  <span style=\"color:var(--gray-600);\">— 副驾驶座上的女人看起来很震惊。</span></div>"
+      }
+    ]
+  },
+  b2u36: {
+    phase: "📗 B2 教材",
+    theme: "手机应用与办公用品（频率副词/at all）",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 手机应用与办公用品（频率副词/at all） 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">usually</td><td>/ˈjuːʒuəli/</td><td>通常</td></tr><tr><td class=\"en\">seldom</td><td>/ˈseldəm/</td><td>不常</td></tr><tr><td class=\"en\">occasionally</td><td>/əˈkeɪʒnəli/</td><td>偶尔</td></tr><tr><td class=\"en\">always</td><td>/ˈɔːlweɪz/</td><td>总是</td></tr><tr><td class=\"en\">stapler</td><td>/ˈsteɪplə(r)/</td><td>订书机</td></tr><tr><td class=\"en\">rubber band</td><td>/ˈrʌbə bænd/</td><td>橡皮筋</td></tr><tr><td class=\"en\">scissors</td><td>/ˈsɪzəz/</td><td>剪刀</td></tr><tr><td class=\"en\">tape</td><td>/teɪp/</td><td>胶带</td></tr><tr><td class=\"en\">eraser</td><td>/ɪˈreɪzə(r)/</td><td>橡皮</td></tr><tr><td class=\"en\">calculator</td><td>/ˈkælkjuleɪtə(r)/</td><td>计算器</td></tr><tr><td class=\"en\">fasten</td><td>/ˈfɑːsn/</td><td>系紧</td></tr><tr><td class=\"en\">storage</td><td>/ˈstɔːrɪdʒ/</td><td>储存、内存</td></tr><tr><td class=\"en\">limited</td><td>/ˈlɪmɪtɪd/</td><td>有限的</td></tr><tr><td class=\"en\">smartphone</td><td>/ˈsmɑːtfəʊn/</td><td>智能手机</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 手机应用与办公用品（频率副词/at all） 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">频率副词位置</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 We seldom fasten our seat belts.</div><div style=\"font-size:13px;color:var(--gray-600);\">放在实义动词前、be动词后；sometimes位置灵活，可放句首/句中/句尾</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">at all 用法</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I don't use this app at all.</div><div style=\"font-size:13px;color:var(--gray-600);\">否定句not…at all一点也不；疑问句at all到底、究竟；口语Not at all.表示不客气</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">because of vs because</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 because of + 名词 = due to + 名词</div><div style=\"font-size:13px;color:var(--gray-600);\">because of后接名词/短语；because后接完整句子</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">make + 宾语 + 形容词</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 make using a smartphone much easier</div><div style=\"font-size:13px;color:var(--gray-600);\">使某物变得……，make + 宾语 + 形容词结构</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 手机应用与办公用品（频率副词/at all） 句型",
+        content: "<div class=\"example-box\">How do you usually keep in touch with your friends?  <span style=\"color:var(--gray-600);\">— 你通常怎么和朋友保持联系？</span></div><div class=\"example-box\">We seldom fasten our seat belts in the back seat.  <span style=\"color:var(--gray-600);\">— 我们很少在后座系安全带。</span></div><div class=\"example-box\">Overall, these five apps are very helpful and will make using a smartphone much easier for everyone.  <span style=\"color:var(--gray-600);\">— 总的来说，这5个软件非常有用，会让所有人使用手机更方便。</span></div><div class=\"example-box\">I don't use this app at all.  <span style=\"color:var(--gray-600);\">— 我根本不用这个软件。</span></div>"
+      }
+    ]
+  },
+  b2u37: {
+    phase: "📗 B2 教材",
+    theme: "餐厅点餐、饮食偏好、租车与购物砍价",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 餐厅点餐、饮食偏好、租车与购物砍价 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">menu</td><td>/ˈmenjuː/</td><td>菜单</td></tr><tr><td class=\"en\">recommend</td><td>/ˌrekəˈmend/</td><td>推荐</td></tr><tr><td class=\"en\">yogurt</td><td>/ˈjəʊɡə(r)t/</td><td>酸奶</td></tr><tr><td class=\"en\">seafood</td><td>/ˈsiːfuːd/</td><td>海鲜</td></tr><tr><td class=\"en\">broccoli</td><td>/ˈbrɒkəli/</td><td>西兰花</td></tr><tr><td class=\"en\">delicious</td><td>/dɪˈlɪʃəs/</td><td>美味的</td></tr><tr><td class=\"en\">spicy</td><td>/ˈspaɪsi/</td><td>辣的</td></tr><tr><td class=\"en\">healthy</td><td>/ˈhelθi/</td><td>健康的</td></tr><tr><td class=\"en\">calorie</td><td>/ˈkæləri/</td><td>卡路里</td></tr><tr><td class=\"en\">rental</td><td>/ˈrentl/</td><td>租赁</td></tr><tr><td class=\"en\">deposit</td><td>/dɪˈpɒzɪt/</td><td>押金</td></tr><tr><td class=\"en\">vehicle</td><td>/ˈviːəkl/</td><td>车辆</td></tr><tr><td class=\"en\">prefer</td><td>/prɪˈfɜː(r)/</td><td>更喜欢</td></tr><tr><td class=\"en\">comfortable</td><td>/ˈkʌmfətəbl/</td><td>舒适的</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 餐厅点餐、饮食偏好、租车与购物砍价 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">must / mustn't / have to 家族</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I had to get up early yesterday.</div><div style=\"font-size:13px;color:var(--gray-600);\">must主观必须无过去式(过去用had to，须配过去时间)；mustn't严禁；don't/doesn't have to不必(绝对没有haven't to)</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">双宾语 to/for 规则</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 buy me a house = buy a house for me</div><div style=\"font-size:13px;color:var(--gray-600);\">动词+人+物 = 动词+物+to/for+人；to传递/给予(give/pass/send/show/tell/sell)；for为某人做/买(buy/make/get/book/bring)</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">do / be 用法</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 When do you open? / What is your opening time?</div><div style=\"font-size:13px;color:var(--gray-600);\">有实义动词用do；只有名词/形容词用be</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">if 条件句三种句型</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 If I were you, I would not skip breakfast.</div><div style=\"font-size:13px;color:var(--gray-600);\">零条件句(客观真理，一般现在)；第一条件句(将来真实，will do)；第二条件句(虚拟假设，一般过去+would)</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 餐厅点餐、饮食偏好、租车与购物砍价 句型",
+        content: "<div class=\"example-box\">What do you recommend?  <span style=\"color:var(--gray-600);\">— 你有什么推荐？</span></div><div class=\"example-box\">I recommend eating more vegetables.  <span style=\"color:var(--gray-600);\">— 我建议多吃蔬菜。</span></div><div class=\"example-box\">I prefer the small car with low fuel consumption.  <span style=\"color:var(--gray-600);\">— 我更喜欢低油耗的小车。</span></div><div class=\"example-box\">We have a deal.  <span style=\"color:var(--gray-600);\">— 成交。</span></div><div class=\"example-box\">If I go to the flea market, I will buy a second-hand table.  <span style=\"color:var(--gray-600);\">— 如果我去跳蚤市场，我会买个二手桌子。</span></div><div class=\"example-box\">I had to get up early yesterday.  <span style=\"color:var(--gray-600);\">— 我昨天不得不早起。</span></div>"
+      }
+    ]
+  },
+  b2u38: {
+    phase: "📗 B2 教材",
+    theme: "借物表达、办公用品与可数性（双宾语/must）",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 借物表达、办公用品与可数性（双宾语/must） 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">stapler</td><td>/ˈsteɪplə(r)/</td><td>订书机</td></tr><tr><td class=\"en\">rubber band</td><td>/ˈrʌbə bænd/</td><td>橡皮筋</td></tr><tr><td class=\"en\">scissors</td><td>/ˈsɪzəz/</td><td>剪刀</td></tr><tr><td class=\"en\">eraser</td><td>/ɪˈreɪzə(r)/</td><td>橡皮</td></tr><tr><td class=\"en\">calculator</td><td>/ˈkælkjuleɪtə(r)/</td><td>计算器</td></tr><tr><td class=\"en\">envelope</td><td>/ˈenvələʊp/</td><td>信封</td></tr><tr><td class=\"en\">highlighter</td><td>/ˈhaɪlaɪtə(r)/</td><td>荧光笔</td></tr><tr><td class=\"en\">marker</td><td>/ˈmɑːkə(r)/</td><td>马克笔</td></tr><tr><td class=\"en\">loan</td><td>/ləʊn/</td><td>贷款</td></tr><tr><td class=\"en\">discount</td><td>/ˈdɪskaʊnt/</td><td>折扣</td></tr><tr><td class=\"en\">counter offer</td><td>/ˈkaʊntə ˈɒfə(r)/</td><td>还价</td></tr><tr><td class=\"en\">accommodation</td><td>/əˌkɒməˈdeɪʃn/</td><td>住宿</td></tr><tr><td class=\"en\">convenient</td><td>/kənˈviːniənt/</td><td>方便的</td></tr><tr><td class=\"en\">curly</td><td>/ˈkɜːli/</td><td>卷曲的</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 借物表达、办公用品与可数性（双宾语/must） 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">borrow / lend / loan 用法</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I can lend you my stapler.</div><div style=\"font-size:13px;color:var(--gray-600);\">borrow借入(borrow sth. from sb.，错误borrow sb. sth.)；lend借出(过去lent，lend sb. sth.=lend sth. to sb.)；loan正式借出/银行贷款</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">名词可数/不可数 &amp; 单复数</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 a pair of scissors</div><div style=\"font-size:13px;color:var(--gray-600);\">成双物品永远复数(scissors)；可数stapler(a stapler)、rubber band；不可数tape(some tape不能说a tape)</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">双宾语 to/for 规则</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 lend sb. sth. = lend sth. to sb.</div><div style=\"font-size:13px;color:var(--gray-600);\">动词+人+物=动词+物+to/for+人；to传递/借出(lend/loan/give)；for为某人做/买(buy/make)</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">must 家族</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I had to get up early yesterday.</div><div style=\"font-size:13px;color:var(--gray-600);\">must主观必须无过去式(过去had to须配过去时间)；mustn't严禁不准；don't/doesn't have to不必(无haven't to)</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 借物表达、办公用品与可数性（双宾语/must） 句型",
+        content: "<div class=\"example-box\">Do you have pen and paper I can borrow?  <span style=\"color:var(--gray-600);\">— 你有没有我可以借的笔和纸？</span></div><div class=\"example-box\">I can lend you my stapler.  <span style=\"color:var(--gray-600);\">— 我可以借给你我的订书机。</span></div><div class=\"example-box\">The bank agreed to loan me the money for the new house.  <span style=\"color:var(--gray-600);\">— 银行同意贷款给我买新房。</span></div><div class=\"example-box\">You mustn't skip meals.  <span style=\"color:var(--gray-600);\">— 你严禁不吃饭。</span></div><div class=\"example-box\">I don't have to skip breakfast.  <span style=\"color:var(--gray-600);\">— 我不必不吃早饭。</span></div>"
+      }
+    ]
+  },
+  b2u39: {
+    phase: "📗 B2 教材",
+    theme: "跳蚤市场购物与砍价（问路/材质/双宾语）",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 跳蚤市场购物与砍价（问路/材质/双宾语） 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">flea market</td><td>/fliː ˈmɑːkɪt/</td><td>跳蚤市场</td></tr><tr><td class=\"en\">thrift store</td><td>/ˈθrɪft stɔːr/</td><td>二手店</td></tr><tr><td class=\"en\">stall</td><td>/stɔːl/</td><td>摊位</td></tr><tr><td class=\"en\">sunglasses</td><td>/ˈsʌnɡlɑːsɪz/</td><td>墨镜</td></tr><tr><td class=\"en\">discount</td><td>/ˈdɪskaʊnt/</td><td>折扣</td></tr><tr><td class=\"en\">dollar</td><td>/ˈdɒlə(r)/</td><td>美元</td></tr><tr><td class=\"en\">credit card</td><td>/ˈkredɪt kɑːd/</td><td>信用卡</td></tr><tr><td class=\"en\">receipt</td><td>/rɪˈsiːt/</td><td>收据</td></tr><tr><td class=\"en\">refund</td><td>/ˈrɪːfʌnd/</td><td>退款</td></tr><tr><td class=\"en\">second-hand</td><td>/ˌsekəndˈhænd/</td><td>二手的</td></tr><tr><td class=\"en\">brand new</td><td>/brænd njuː/</td><td>全新的</td></tr><tr><td class=\"en\">cheap</td><td>/tʃiːp/</td><td>便宜的</td></tr><tr><td class=\"en\">expensive</td><td>/ɪkˈspensɪv/</td><td>贵的</td></tr><tr><td class=\"en\">scratch</td><td>/ˈskrætʃ/</td><td>划痕</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 跳蚤市场购物与砍价（问路/材质/双宾语） 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">do vs be 判断规则</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 When do you open? / What is your opening time?</div><div style=\"font-size:13px;color:var(--gray-600);\">有动作动词用do；只有名词/形容词用be</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">双宾语 to/for</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 give me the book = give the book to me</div><div style=\"font-size:13px;color:var(--gray-600);\">传递给→to(give/pass/send/show/tell/sell)；为某人做→for(buy/make/get/book/bring)</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">副词前不加介词</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 go home (✅) / go to home (❌)</div><div style=\"font-size:13px;color:var(--gray-600);\">there/here/home/upstairs方向副词前不加to；go to school中school是名词要加to</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">折扣逻辑</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 9折 = 10% discount；90% discount = 打1折</div><div style=\"font-size:13px;color:var(--gray-600);\">discount=减去的百分比；pay in cash(方式) vs pay by credit card(工具)；on sale单数</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 跳蚤市场购物与砍价（问路/材质/双宾语） 句型",
+        content: "<div class=\"example-box\">How much is it?  <span style=\"color:var(--gray-600);\">— 多少钱？</span></div><div class=\"example-box\">Could you give me a discount?  <span style=\"color:var(--gray-600);\">— 能打折吗？</span></div><div class=\"example-box\">I can't afford it.  <span style=\"color:var(--gray-600);\">— 我买不起。</span></div><div class=\"example-box\">It's in good condition.  <span style=\"color:var(--gray-600);\">— 状况很好。</span></div><div class=\"example-box\">The flea market is full of stalls.  <span style=\"color:var(--gray-600);\">— 跳蚤市场满是摊位。</span></div><div class=\"example-box\">We have a deal.  <span style=\"color:var(--gray-600);\">— 成交。</span></div>"
+      }
+    ]
+  },
+  b2u40: {
+    phase: "📗 B2 教材",
+    theme: "娱乐兴趣与犯罪新闻听力（过去进行时/反身代词）",
+    icon: "📘",
+    time: "20分钟",
+    sessionLabel: "B2 精读",
+    level: "B2",
+    modules: [
+      {
+        type: "vocab",
+        title: "📘 娱乐兴趣与犯罪新闻听力（过去进行时/反身代词） 词汇",
+        content: "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">classical</td><td></td><td>古典音乐</td></tr><tr><td class=\"en\">comedy</td><td></td><td>喜剧片</td></tr><tr><td class=\"en\">thriller</td><td></td><td>惊悚片</td></tr><tr><td class=\"en\">documentary</td><td></td><td>纪录片</td></tr><tr><td class=\"en\">reality shows</td><td></td><td>真人秀</td></tr><tr><td class=\"en\">crime</td><td></td><td>犯罪</td></tr><tr><td class=\"en\">robber</td><td></td><td>抢劫犯</td></tr><tr><td class=\"en\">umbrella</td><td></td><td>雨伞</td></tr><tr><td class=\"en\">co-worker</td><td></td><td>同事</td></tr><tr><td class=\"en\">vending machine</td><td></td><td>自动售货机</td></tr><tr><td class=\"en\">yell</td><td></td><td>大喊</td></tr><tr><td class=\"en\">grab</td><td></td><td>抓住、抢走</td></tr><tr><td class=\"en\">trip</td><td></td><td>绊倒</td></tr><tr><td class=\"en\">idiom</td><td></td><td>习语、成语</td></tr></tbody></table></div>"
+      },
+      {
+        type: "grammar",
+        title: "📖 娱乐兴趣与犯罪新闻听力（过去进行时/反身代词） 语法",
+        content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">过去进行时</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I was minding my own business.</div><div style=\"font-size:13px;color:var(--gray-600);\">结构was/were + doing；表示过去某一刻正在做的动作，常配when/while</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">when &amp; while 用法区别</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 While I was running, I tripped.</div><div style=\"font-size:13px;color:var(--gray-600);\">while + 进行时(持续动作)；when + 瞬间动作/进行时</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">动词过去式双写规则</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 trip → tripped</div><div style=\"font-size:13px;color:var(--gray-600);\">重读闭音节、辅+元+辅结尾，双写末尾辅音加ed(step→stepped, stop→stopped)</div></div><div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">反身代词</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 hurt oneself 伤到自己</div><div style=\"font-size:13px;color:var(--gray-600);\">反身代词用于强调动作回到主语自身</div></div>"
+      },
+      {
+        type: "sentence",
+        title: "💬 娱乐兴趣与犯罪新闻听力（过去进行时/反身代词） 句型",
+        content: "<div class=\"example-box\">I was minding my own business.  <span style=\"color:var(--gray-600);\">— 我当时只是在做自己的事。</span></div><div class=\"example-box\">I heard a woman yelling for help.  <span style=\"color:var(--gray-600);\">— 我听见一位女士大喊救命。</span></div><div class=\"example-box\">Two robbers were grabbing her bag.  <span style=\"color:var(--gray-600);\">— 两个劫匪正在抢她的包。</span></div><div class=\"example-box\">While I was running, I tripped and fell.  <span style=\"color:var(--gray-600);\">— 我跑的时候绊倒摔倒了。</span></div><div class=\"example-box\">The robbers got kicked off the bus because they didn't pay.  <span style=\"color:var(--gray-600);\">— 劫匪因为没买票被赶下公交车。</span></div><div class=\"example-box\">What kind of music do you like?  <span style=\"color:var(--gray-600);\">— 你喜欢哪种音乐？</span></div>"
+      }
+    ]
+  }
+
 };
 
 /* ===== 级别过滤 (B1/B2) ===== */
@@ -1703,7 +2481,7 @@ function renderModule() {
 
   // Bottom navigation
   html += '<div class="complete-area">';
-  html += '<a href="study-plan.html?v=20260728-1624" class="btn btn-primary">← 返回学习计划打卡</a>';
+  html += '<a href="study-plan.html?v=20260729-0858" class="btn btn-primary">← 返回学习计划打卡</a>';
   html += '</div>';
 
   document.getElementById('moduleContent').innerHTML = html;
@@ -1722,8 +2500,8 @@ if (!unitId || !MODULES[unitId]) {
 renderModule();
 </script>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260728-1624</div>
-  <script src="kb.js?v=20260728-1624"></script>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260729-0858</div>
+  <script src="kb.js?v=20260729-0858"></script>
 <script>
 (function(){
   function spkText(raw){
