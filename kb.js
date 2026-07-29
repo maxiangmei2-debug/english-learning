@@ -123,14 +123,21 @@
   var BADGE_MAP = { word: '单词', phrase: '搭配', sentence: '句型', grammar: '语法', error: '易错' };
   var TYPE_NAME = { word: '单词', phrase: '短语/搭配', sentence: '句型', grammar: '语法', error: '易错' };
 
+  function isTestable(e) {
+    if (e.noTest) return false;
+    var m = (e.meaning || '').trim();
+    if (!m || m === '（释义）') return false;               // 无释义或占位符，无法出“意思是？”题
+    if (e.type === 'grammar') return false;                // 语法规则/搭配模板不适合当前选择题形式
+    if (/[→＋+\：]/.test(e.content || '')) return false;    // 变形/组合规则也跳过
+    return true;
+  }
   function applyToTestMaster() {
     if (typeof Q === 'undefined') return;
     var lv = (function () { try { return localStorage.getItem('english_level') === 'B2' ? 'B2' : 'B1'; } catch (e) { return 'B1'; } })();
-    var entries = getEntriesByLevel(lv);
+    var entries = getEntriesByLevel(lv).filter(isTestable);
     if (!entries.length) return;
     var allMeanings = entries.map(function (e) { return e.meaning || '（释义）'; });
     entries.forEach(function (e) {
-      if (e.noTest) return; // 仅作参考、不适合出选择题的条目（如语法规则）跳过
       var cat = CAT_MAP[e.type];
       if (!cat || !Q[cat]) return;
       var correct = e.meaning || '（释义）';
@@ -239,9 +246,10 @@
   function classifyType(raw, content) {
     raw = raw || '';
     content = (content || '').trim();
-    // 1) 语法：含语法关键词，或纯中文长解释
+    // 1) 语法：含语法关键词，或纯中文长解释，或含规则符号（+ / →）
     if (/(时态|语法|被动|从句|分词|结构是|表示|用法|过去式|将来时|现在完成|过去完成|进行时|虚拟|条件句|比较级|最高级|感叹句|祈使句|tense|grammar)/i.test(raw)) return 'grammar';
     if (/[一-鿿]/.test(raw) && raw.length > 24 && /[。；;]/.test(raw)) return 'grammar';
+    if (/[→＋+]/.test(content) && /[一-鿿]/.test(raw)) return 'grammar';
     // 2) 句子：以标点结尾 或 含主谓结构
     if (/[.?!。？！]$/.test(content)) return 'sentence';
     if (/\b(is|are|was|were|do|does|did|have|has|can|will|would|should|may|might|must|I|you|he|she|we|they|it)\b/i.test(content) && /[.?!。？！]/.test(content)) return 'sentence';
@@ -333,7 +341,7 @@
   // 用户首次打开任意模块即自动注入到 5 个学习模块；已手动添加过的不会重复。
   var SEED_KEY = 'english_kb_seed_v';
   var KB_SEED = {
-    version: '20260728-core-time',
+    version: '20260729-kbfix',
     items: [
       // —— 星期 ——
       { id: 'seed_monday',    content: 'Monday',    meaning: '星期一', type: 'word', ph: '/ˈmʌndeɪ/',     level: 'B1' },
@@ -404,6 +412,24 @@
     } catch (e) { console.warn('KB seed', e); }
   }
 
+  /* ---------------- 历史数据迁移：把不适合选择题的条目标记为 noTest ---------------- */
+  function migrateKB() {
+    var arr = loadRaw();
+    var changed = false;
+    arr.forEach(function (e) {
+      if (e.noTest) return;
+      var m = (e.meaning || '').trim();
+      var c = (e.content || '').trim();
+      // 语法规则、释义为空/占位符、含规则符号的条目，都不适合出“是什么意思”选择题
+      if (e.type === 'grammar' || !m || m === '（释义）' || /[→＋+\：]/.test(c)) {
+        e.noTest = true;
+        e.updatedAt = Date.now();
+        changed = true;
+      }
+    });
+    if (changed) saveRaw(arr);
+  }
+
   function apply() {
     try { applyToHandbook(); } catch (e) { console.warn('KB→handbook', e); }
     try { applyToTestMaster(); } catch (e) { console.warn('KB→testmaster', e); }
@@ -424,7 +450,7 @@
   /* ---------------- 启动：配置了云同步则先拉取再注入 ---------------- */
   (function boot() {
     var cfg = loadSyncCfg();
-    function run() { runSeed(); apply(); }
+    function run() { migrateKB(); runSeed(); apply(); }
     if (cfg && cfg.token && cfg.gist) {
       pullSync().then(run, run);
     } else {
