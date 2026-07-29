@@ -249,7 +249,8 @@
     // 1) 语法：含语法关键词，或纯中文长解释，或含规则符号（+ / →）
     if (/(时态|语法|被动|从句|分词|结构是|表示|用法|过去式|将来时|现在完成|过去完成|进行时|虚拟|条件句|比较级|最高级|感叹句|祈使句|tense|grammar)/i.test(raw)) return 'grammar';
     if (/[一-鿿]/.test(raw) && raw.length > 24 && /[。；;]/.test(raw)) return 'grammar';
-    if (/[→＋+]/.test(content) && /[一-鿿]/.test(raw)) return 'grammar';
+    if (/→/.test(content)) return 'grammar';                     // 变形/转换规则，如 sixteen → sixteenth
+    if (/[＋+]/.test(content) && /[一-鿿]/.test(raw)) return 'grammar'; // 搭配模板，如 on + 星期
     // 2) 句子：以标点结尾 或 含主谓结构
     if (/[.?!。？！]$/.test(content)) return 'sentence';
     if (/\b(is|are|was|were|do|does|did|have|has|can|will|would|should|may|might|must|I|you|he|she|we|they|it)\b/i.test(content) && /[.?!。？！]/.test(content)) return 'sentence';
