@@ -5,7 +5,7 @@
 
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta name="build-version" content="20260730-0915">
+<meta name="build-version" content="20260730-1059">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>课后练习 · 英语学习</title>
 <style>
@@ -57,7 +57,7 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 </head>
 <body>
 
-<a href="index.html?v=20260730-0915" class="back">← 返回英语学习中心</a>
+<a href="index.html?v=20260730-1059" class="back">← 返回英语学习中心</a>
 
 <div class="topbar">
   <h1>📝 课后练习</h1>
@@ -298,7 +298,10 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
   }
 
   function switchLesson(lesson) {
-    if (current && current !== lesson) persist(); // 先存当前
+    lesson = (lesson || '').trim();
+    if (!lesson) return;
+    if (lesson === current) return; // 同一课号不重复加载/重渲染，避免破坏正在输入的字段
+    if (current) persist(); // 先存当前
     $('lesson').value = lesson;
     loadLesson(lesson);
   }
