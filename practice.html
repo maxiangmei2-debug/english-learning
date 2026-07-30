@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <link rel="icon" href="data:,">
+
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta name="build-version" content="20260730-0915">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>课后练习 · 英语学习</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f3f4f6;color:#1f2937;padding:16px;max-width:820px;margin:0 auto;padding-bottom:80px}
+.topbar{background:linear-gradient(135deg,#6366F1,#8B5CF6);color:#fff;border-radius:18px;padding:18px;margin-bottom:16px}
+.topbar h1{font-size:21px;margin-bottom:4px}
+.topbar p{font-size:12px;opacity:.85}
+.lessonrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.lessonrow label{font-size:14px;font-weight:600}
+#lesson{font-size:15px;padding:9px 12px;border:1px solid #c7d2fe;border-radius:12px;background:#fff;color:#1f2937;min-width:200px;flex:1}
+#lesson:focus{outline:none;border-color:#6366F1;box-shadow:0 0 0 3px #e0e7ff}
+#saveStatus{font-size:12px;color:#d1fae5;font-weight:600;white-space:nowrap}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 4px 16px rgba(0,0,0,.05)}
+.card h2{font-size:16px;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.card .sub{font-size:12px;color:#6b7280;margin-bottom:12px;line-height:1.6}
+.subsec{margin-bottom:14px}
+.subsec .t{font-size:14px;font-weight:700;color:#4338ca;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.row{display:flex;gap:6px;margin-bottom:6px;align-items:center}
+.row input,.row textarea{flex:1;padding:9px 11px;border:1px solid #d1d5db;border-radius:10px;font-size:14px;font-family:inherit;background:#fff;resize:vertical;line-height:1.5}
+.row input:focus,.row textarea:focus{outline:none;border-color:#6366F1;box-shadow:0 0 0 3px #e0e7ff}
+.del{background:#fee2e2;color:#dc2626;border:none;border-radius:10px;width:34px;height:34px;font-size:16px;cursor:pointer;flex:0 0 auto;font-weight:700}
+.del:hover{background:#fecaca}
+.addbtn{background:#eef2ff;color:#4f46e5;border:none;border-radius:10px;padding:7px 14px;font-size:13px;font-weight:600;cursor:pointer;margin-top:2px}
+.addbtn:hover{background:#e0e7ff}
+.tbl{width:100%;border-collapse:collapse;margin-bottom:8px}
+.tbl th{font-size:12px;color:#6b7280;text-align:left;padding:6px 8px;border-bottom:2px solid #e5e7eb}
+.tbl td{padding:4px 4px;vertical-align:top}
+.tbl input,.tbl textarea{width:100%;padding:8px 9px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:inherit;background:#fff;resize:vertical;line-height:1.5}
+.tbl input:focus,.tbl textarea:focus{outline:none;border-color:#6366F1;box-shadow:0 0 0 2px #e0e7ff}
+.tbl .del{width:30px;height:30px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.chip{background:#ede9fe;color:#6d28d9;border:1px solid #ddd6fe;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer}
+.chip:hover{background:#ddd6fe}
+.chip.active{background:#8B5CF6;color:#fff;border-color:#8B5CF6}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.btn{font-family:inherit;cursor:pointer;border:none;border-radius:12px;font-size:13px;font-weight:700;padding:9px 14px;transition:.15s}
+.btn-ghost{background:#eef2ff;color:#4f46e5}
+.btn-ghost:hover{background:#e0e7ff}
+.btn-line{background:#fff;color:#6b7280;border:1px solid #d1d5db}
+.btn-line:hover{background:#f9fafb}
+.hint{font-size:12px;color:#6b7280;background:#f9fafb;border-left:3px solid #c7d2fe;padding:9px 11px;border-radius:8px;margin-top:12px;line-height:1.7}
+a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;font-weight:600;margin-bottom:12px}
+.empty{color:#9ca3af;font-size:13px;text-align:center;padding:14px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 18px;border-radius:12px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:99999}
+#toast.show{opacity:.95}
+@media(max-width:560px){.topbar h1{font-size:18px}}
+</style>
+</head>
+<body>
+
+<a href="index.html?v=20260730-0915" class="back">← 返回英语学习中心</a>
+
+<div class="topbar">
+  <h1>📝 课后练习</h1>
+  <p>每节课后按模板记录 · 按 MC 课号自动存档 · 手机电脑都能用</p>
+  <div class="lessonrow">
+    <label for="lesson">课程：</label>
+    <input id="lesson" list="mcList" placeholder="选择或输入课号，如 MC07" autocomplete="off">
+    <datalist id="mcList"></datalist>
+    <span id="saveStatus"></span>
+  </div>
+</div>
+
+<div class="toolbar">
+  <button class="btn btn-ghost" id="btnCopy">📋 复制为文本</button>
+  <button class="btn btn-line" id="btnExport">⬇️ 导出备份</button>
+  <button class="btn btn-line" id="btnImport">⬆️ 导入备份</button>
+  <input type="file" id="fileImport" accept="application/json" style="display:none">
+</div>
+
+<!-- 板块一：口语总结辅助材料 -->
+<div class="card">
+  <h2>🗣️ 口语总结辅助材料</h2>
+  <div class="sub">来自《BP口语总结辅助材料》：记录实用词汇/句型，文章大意与个人观点填关键词即可。</div>
+
+  <div class="subsec">
+    <div class="t">① Useful Vocabularies &amp; Phrases（实用词汇 / 短语）</div>
+    <div id="sec-vocab"></div>
+    <button class="addbtn" data-add="vocab">＋ 添加一行</button>
+  </div>
+
+  <div class="subsec">
+    <div class="t">② Useful Sentence patterns（实用句型）</div>
+    <div id="sec-patterns"></div>
+    <button class="addbtn" data-add="patterns">＋ 添加一行</button>
+  </div>
+
+  <div class="subsec">
+    <div class="t">③ Main ideas of the article（文章大意 · 关键词）</div>
+    <div id="sec-mainIdeas"></div>
+    <button class="addbtn" data-add="mainIdeas">＋ 添加一行</button>
+  </div>
+
+  <div class="subsec">
+    <div class="t">④ Your Opinions（个人观点 · 关键词）</div>
+    <div id="sec-opinions"></div>
+    <button class="addbtn" data-add="opinions">＋ 添加一行</button>
+  </div>
+</div>
+
+<!-- 板块二：句子提取与解析 -->
+<div class="card">
+  <h2>🔍 句子提取与解析</h2>
+  <div class="sub">来自《练习》：手写/精读句子提取后，逐句做语法解析与翻译。可无限追加。</div>
+  <table class="tbl">
+    <thead>
+      <tr><th style="width:30%">原句 / 修正后</th><th style="width:35%">语法解析</th><th style="width:30%">中文翻译</th><th style="width:5%"></th></tr>
+    </thead>
+    <tbody id="sec-sentences"></tbody>
+  </table>
+  <button class="addbtn" data-add="sentences">＋ 添加一行</button>
+</div>
+
+<!-- 已存档课程 -->
+<div class="card">
+  <h2>📚 已存档课程</h2>
+  <div class="sub">点击课号可切换查看 / 继续编辑。数据保存在本机浏览器，建议定期导出备份。</div>
+  <div class="chips" id="chips"><span class="empty">还没有存档，先在上面选个课号开始写吧</span></div>
+</div>
+
+<div class="hint">
+  💡 全部内容会<b>自动保存</b>（无需点保存按钮）。切换课号时当前内容也会先存好。<br>
+  💡 想长期留存或换设备：点「导出备份」下载 JSON，新设备点「导入备份」即可恢复。<br>
+  💡 复制为文本后可直接粘贴到 Word / 笔记里。
+</div>
+
+<div id="toast"></div>
+
+<script>
+(function () {
+  'use strict';
+  var KEY = 'english_practice';
+  var LIST_FIELDS = ['vocab', 'patterns', 'mainIdeas', 'opinions'];
+
+  function loadAll() { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { return {}; } }
+  function saveAll(o) { localStorage.setItem(KEY, JSON.stringify(o)); }
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return (s == null ? '' : String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  var store = loadAll();
+  var current = '';
+  var data = emptyData();
+  var saveTimer = null;
+
+  function emptyData() {
+    return { vocab: [], patterns: [], mainIdeas: [], opinions: [], sentences: [], updatedAt: 0 };
+  }
+  function blankSentence() { return { orig: '', fixed: '', grammar: '', trans: '' }; }
+
+  function nowLesson() { return ($('lesson').value || '').trim(); }
+
+  function loadLesson(lesson) {
+    current = lesson;
+    data = store[lesson] ? JSON.parse(JSON.stringify(store[lesson])) : emptyData();
+    ensurePlaceholder();
+    renderAll();
+    renderChips();
+  }
+
+  // 保证每个列表至少有一行占位，方便输入
+  function ensurePlaceholder() {
+    LIST_FIELDS.forEach(function (f) {
+      if (!Array.isArray(data[f]) || data[f].length === 0) data[f] = [''];
+    });
+    if (!Array.isArray(data.sentences) || data.sentences.length === 0) data.sentences = [blankSentence()];
+  }
+
+  function renderAll() {
+    LIST_FIELDS.forEach(function (f) { renderList(f); });
+    renderSentences();
+  }
+
+  function renderList(field) {
+    var box = $('sec-' + field);
+    box.innerHTML = '';
+    (data[field] || []).forEach(function (val, i) {
+      var row = document.createElement('div');
+      row.className = 'row';
+      var inp = document.createElement('input');
+      inp.type = 'text';
+      inp.value = val;
+      inp.setAttribute('data-field', field);
+      inp.setAttribute('data-i', i);
+      inp.placeholder = placeholderFor(field);
+      var del = document.createElement('button');
+      del.className = 'del'; del.type = 'button'; del.textContent = '×';
+      del.setAttribute('data-del', field); del.setAttribute('data-i', i);
+      row.appendChild(inp); row.appendChild(del);
+      box.appendChild(row);
+    });
+  }
+
+  function placeholderFor(field) {
+    return ({
+      vocab: '如：sustainable / make a difference',
+      patterns: '如：It is + adj. + to do',
+      mainIdeas: '关键词即可，如：环保 / 个人责任',
+      opinions: '关键词即可，如：我同意因为…'
+    })[field] || '';
+  }
+
+  function renderSentences() {
+    var tb = $('sec-sentences');
+    tb.innerHTML = '';
+    (data.sentences || []).forEach(function (s, i) {
+      var tr = document.createElement('tr');
+      var cells = [
+        { key: 'orig', ph: '原句，修正后可覆盖', tag: 'textarea', rows: 2 },
+        { key: 'grammar', ph: '语法解析', tag: 'textarea', rows: 2 },
+        { key: 'trans', ph: '中文翻译', tag: 'textarea', rows: 2 }
+      ];
+      cells.forEach(function (c) {
+        var td = document.createElement('td');
+        var el = document.createElement(c.tag);
+        el.setAttribute('data-field', 'sentences');
+        el.setAttribute('data-i', i);
+        el.setAttribute('data-key', c.key);
+        el.placeholder = c.ph;
+        if (c.tag === 'textarea') el.rows = c.rows;
+        el.value = s[c.key] || '';
+        td.appendChild(el); tr.appendChild(td);
+      });
+      var tdDel = document.createElement('td');
+      var del = document.createElement('button');
+      del.className = 'del'; del.type = 'button'; del.textContent = '×';
+      del.setAttribute('data-del', 'sentences'); del.setAttribute('data-i', i);
+      tdDel.appendChild(del); tr.appendChild(tdDel);
+      tb.appendChild(tr);
+    });
+  }
+
+  function renderChips() {
+    var box = $('chips');
+    var keys = Object.keys(store).filter(function (k) { return hasContent(store[k]); }).sort();
+    if (!keys.length) { box.innerHTML = '<span class="empty">还没有存档，先在上面选个课号开始写吧</span>'; return; }
+    box.innerHTML = '';
+    keys.forEach(function (k) {
+      var c = document.createElement('span');
+      c.className = 'chip' + (k === current ? ' active' : '');
+      c.textContent = k;
+      c.onclick = function () { switchLesson(k); };
+      box.appendChild(c);
+    });
+  }
+
+  function hasContent(d) {
+    if (!d) return false;
+    var ok = false;
+    LIST_FIELDS.forEach(function (f) { (d[f] || []).forEach(function (v) { if ((v || '').trim()) ok = true; }); });
+    (d.sentences || []).forEach(function (s) { if ((s.orig||'').trim()||(s.grammar||'').trim()||(s.trans||'').trim()) ok = true; });
+    return ok;
+  }
+
+  // 从 DOM 收集并清洗数据
+  function collect() {
+    LIST_FIELDS.forEach(function (f) {
+      var arr = [];
+      $('sec-' + f).querySelectorAll('input[data-field="' + f + '"]').forEach(function (inp) {
+        arr[parseInt(inp.getAttribute('data-i'), 10)] = inp.value;
+      });
+      data[f] = arr.filter(function (v) { return (v || '').trim(); });
+    });
+    var sents = [];
+    $('sec-sentences').querySelectorAll('tr').forEach(function (tr, i) {
+      var o = { orig: '', fixed: '', grammar: '', trans: '' };
+      tr.querySelectorAll('[data-field="sentences"]').forEach(function (el) {
+        o[el.getAttribute('data-key')] = el.value;
+      });
+      if ((o.orig||'').trim() || (o.grammar||'').trim() || (o.trans||'').trim()) sents.push(o);
+    });
+    data.sentences = sents;
+  }
+
+  function persist() {
+    collect();
+    if (!current) return;
+    data.updatedAt = Date.now();
+    if (hasContent(data)) store[current] = JSON.parse(JSON.stringify(data));
+    else delete store[current];
+    saveAll(store);
+    var t = new Date();
+    $('saveStatus').textContent = '✓ 已保存 ' + ('0'+t.getHours()).slice(-2) + ':' + ('0'+t.getMinutes()).slice(-2);
+    renderChips();
+  }
+
+  function scheduleSave() {
+    if (saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(persist, 400);
+  }
+
+  function switchLesson(lesson) {
+    if (current && current !== lesson) persist(); // 先存当前
+    $('lesson').value = lesson;
+    loadLesson(lesson);
+  }
+
+  // 事件委托：输入 -> 收集 -> 防抖保存
+  document.body.addEventListener('input', function (e) {
+    var el = e.target;
+    if (el.matches && el.matches('[data-field]')) scheduleSave();
+  });
+  // 删除行
+  document.body.addEventListener('click', function (e) {
+    var del = e.target;
+    if (del.matches && del.matches('.del')) {
+      var field = del.getAttribute('data-del');
+      var i = parseInt(del.getAttribute('data-i'), 10);
+      if (field === 'sentences') data.sentences.splice(i, 1);
+      else { data[field].splice(i, 1); if (data[field].length === 0) data[field] = ['']; }
+      if (field === 'sentences') renderSentences(); else renderList(field);
+      scheduleSave();
+      return;
+    }
+    var add = e.target;
+    if (add.matches && add.matches('.addbtn')) {
+      var f = add.getAttribute('data-add');
+      if (f === 'sentences') data.sentences.push(blankSentence());
+      else data[f].push('');
+      if (f === 'sentences') renderSentences(); else renderList(f);
+      // 聚焦最后一个输入
+      var sec = (f === 'sentences') ? $('sec-sentences') : $('sec-' + f);
+      var last = sec.querySelectorAll('[data-field]');
+      if (last.length) last[last.length - 1].focus();
+      scheduleSave();
+    }
+  });
+
+  // 课号变化
+  $('lesson').addEventListener('change', function () {
+    var v = nowLesson();
+    if (v) switchLesson(v);
+  });
+  $('lesson').addEventListener('keydown', function (e) { if (e.key === 'Enter') { this.blur(); var v = nowLesson(); if (v) switchLesson(v); } });
+
+  // 复制为文本
+  $('btnCopy').onclick = function () {
+    if (!current) { toast('请先选择课号'); return; }
+    collect();
+    var L = [];
+    L.push('【' + current + ' 课后练习】');
+    L.push('');
+    L.push('一、口语总结辅助材料');
+    L.push('1. Useful Vocabularies & Phrases');
+    (data.vocab.length ? data.vocab : ['（空）']).forEach(function (v, i) { L.push('   ' + (i+1) + '. ' + v); });
+    L.push('2. Useful Sentence patterns');
+    (data.patterns.length ? data.patterns : ['（空）']).forEach(function (v, i) { L.push('   ' + (i+1) + '. ' + v); });
+    L.push('3. Main ideas of the article');
+    (data.mainIdeas.length ? data.mainIdeas : ['（空）']).forEach(function (v, i) { L.push('   ' + (i+1) + '. ' + v); });
+    L.push('4. Your Opinions');
+    (data.opinions.length ? data.opinions : ['（空）']).forEach(function (v, i) { L.push('   ' + (i+1) + '. ' + v); });
+    L.push('');
+    L.push('二、句子提取与解析');
+    if (data.sentences.length) {
+      data.sentences.forEach(function (s, i) {
+        L.push('  ' + (i+1) + '. 原句/修正后：' + (s.orig || ''));
+        L.push('     语法解析：' + (s.grammar || ''));
+        L.push('     中文翻译：' + (s.trans || ''));
+      });
+    } else { L.push('  （空）'); }
+    var text = L.join('\n');
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ toast('已复制为文本，可粘贴到 Word'); }, function(){ fallbackCopy(text); });
+    } else { fallbackCopy(text); }
+  };
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); toast('已复制为文本，可粘贴到 Word'); } catch (e) { toast('复制失败，请手动选择'); }
+    document.body.removeChild(ta);
+  }
+
+  // 导出
+  $('btnExport').onclick = function () {
+    var blob = new Blob([JSON.stringify(store, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = '课后练习备份_' + new Date().toISOString().slice(0,10) + '.json';
+    a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+    toast('已导出备份 JSON');
+  };
+  // 导入
+  $('btnImport').onclick = function () { $('fileImport').click(); };
+  $('fileImport').onchange = function () {
+    var f = this.files[0]; if (!f) return;
+    var rd = new FileReader();
+    rd.onload = function () {
+      try {
+        var imp = JSON.parse(rd.result);
+        if (typeof imp !== 'object' || Array.isArray(imp)) throw new Error('格式不对');
+        var n = 0;
+        Object.keys(imp).forEach(function (k) { store[k] = imp[k]; n++; });
+        saveAll(store);
+        if (current) loadLesson(current); else renderChips();
+        toast('已导入 ' + n + ' 个课程');
+      } catch (e) { toast('导入失败：' + e.message); }
+    };
+    rd.readAsText(f);
+    this.value = '';
+  };
+
+  function toast(msg) {
+    var t = $('toast'); t.textContent = msg; t.classList.add('show');
+    setTimeout(function () { t.classList.remove('show'); }, 1800);
+  }
+
+  // 初始化：填充课号下拉（MC01–MC40）
+  (function initMC() {
+    var dl = $('mcList');
+    for (var i = 1; i <= 40; i++) { var o = document.createElement('option'); o.value = 'MC' + ('0'+i).slice(-2); dl.appendChild(o); }
+  })();
+
+  // 离开前保存
+  window.addEventListener('beforeunload', function () { if (current) { collect(); data.updatedAt = Date.now(); if (hasContent(data)) store[current] = JSON.parse(JSON.stringify(data)); else delete store[current]; saveAll(store); } });
+
+  renderChips();
+})();
+</script>
+</body>
+</html>
