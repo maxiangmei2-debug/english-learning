@@ -7,10 +7,10 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260731-0924">
+<meta name="build-version" content="20260731-0947">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
-<script src="level-config.js?v=20260731-0924"></script>
+<script src="level-config.js?v=20260731-0947"></script>
 <style>
   :root {
     --primary: #6366F1;
@@ -451,7 +451,7 @@
 </style>
 </head>
 <body>
-<a href="index.html?v=20260731-0924" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+<a href="index.html?v=20260731-0947" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
 
 <!-- ====== 首页 ====== -->
 <div class="home-page" id="homePage">
@@ -58213,8 +58213,6 @@ function isBadQuestion(q) {
     // 题干被「」括起的内容是纯中文（如「搭配」）→ 中文条目不适合出“英文→中文”选择题
     var qm = (q.q || '').match(/[「"]([^」"]+)[」"]/);
     if (qm && /[\u4e00-\u9fff]/.test(qm[1])) return true;
-    // 题干明确是中文条目（已由 kb.js 内容过滤，但再防一次）
-    if (/[\u4e00-\u9fff]/.test(q.q || '') && /的意思是\？$/.test(q.q || '')) return true;
     // 句型题（sentence 类）的干扰项不应是单词/搭配的中文释义：若选项中混入“月份/星期/第X”
     if (q.q && q.q.indexOf('这句话的意思是') >= 0) {
       if (opts.some(function (o) { return /(月|星期|周[一二三四五六日]|第[一二三四五六七八九十]+|月\()/.test(String(o)); })) return true;
@@ -60064,7 +60062,7 @@ init();
       // Add a focus banner on the test page header area
       var banner = document.createElement('div');
       banner.id = 'focusBanner';
-      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260731-0924" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
+      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260731-0947" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
       var testPage = document.getElementById('testPage');
       if (testPage) {
         var topBar = testPage.querySelector('.test-top-bar');
@@ -60368,7 +60366,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260731-0924</div>
-  <script src="kb.js?v=20260731-0924"></script>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260731-0947</div>
+  <script src="kb.js?v=20260731-0947"></script>
 </body>
 </html>
