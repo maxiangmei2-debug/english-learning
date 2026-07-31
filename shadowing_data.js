@@ -36,7 +36,11 @@ window.SHADOWING_DATA = [
    "伦敦以盛大的方式庆祝除夕夜。成千上万的人来到泰晤士河畔，天黑之后，烟花照亮夜空，伦敦著名钟楼里的大本钟在午夜敲响。第二天，人们与家人朋友吃一顿大餐、去散步，或者就在家里放松休息。",
    "成人之日",
    "在日本，人们在每年一月的第二个星期一庆祝成人之日（Seijin no hi）。在这个节日里，日本会向在去年4月2日至今年4月1日期间年满20岁的人表示祝贺。在日本文化中，这是青少年成为成年人、开始承担成人责任的年龄。年轻女性通常穿传统和服，年轻男性则常穿西式西装，他们会参加所在地区的典礼。典礼结束后，他们会收到小礼物，并与朋友一起庆祝。"
-  ]
+  ],
+  "annotations": {
+   "linking": [],
+   "elision": []
+  }
  },
  {
   "mc": "MC02",
@@ -78,7 +82,217 @@ window.SHADOWING_DATA = [
    "可以。这是一种有很多小房间的旅馆。其实那算不上是房间，而是两米长、一米宽、只有一米高的空间。换句话说，非常拥挤！但这家旅馆便宜又很方便。",
    "那每个小房间里——或者我该说每个空间里——有什么？",
    "嗯，每个胶囊里都有一张床、一台电视、一盏阅读灯、一台收音机和闹钟。旅馆还配有储物柜，你可以把个人物品锁在里面。"
-  ]
+  ],
+  "annotations": {
+   "linking": [
+    {
+     "left": "tonight",
+     "right": "is"
+    },
+    {
+     "left": "tell",
+     "right": "us"
+    },
+    {
+     "left": "us",
+     "right": "a"
+    },
+    {
+     "left": "bit",
+     "right": "about"
+    },
+    {
+     "left": "as",
+     "right": "an"
+    },
+    {
+     "left": "out.",
+     "right": "It"
+    },
+    {
+     "left": "an",
+     "right": "exciting"
+    },
+    {
+     "left": "it’s",
+     "right": "also"
+    },
+    {
+     "left": "spread",
+     "right": "out."
+    },
+    {
+     "left": "don't",
+     "right": "feel"
+    },
+    {
+     "left": "part",
+     "right": "of"
+    },
+    {
+     "left": "When",
+     "right": "I"
+    },
+    {
+     "left": "a",
+     "right": "capsule"
+    },
+    {
+     "left": "in",
+     "right": "a"
+    },
+    {
+     "left": "that",
+     "right": "is?"
+    },
+    {
+     "left": "It's",
+     "right": "a"
+    },
+    {
+     "left": "lots",
+     "right": "of"
+    },
+    {
+     "left": "that",
+     "right": "are"
+    },
+    {
+     "left": "In",
+     "right": "other"
+    },
+    {
+     "left": "hotel",
+     "right": "is"
+    },
+    {
+     "left": "cheap",
+     "right": "and"
+    },
+    {
+     "left": "little",
+     "right": "room,"
+    },
+    {
+     "left": "or",
+     "right": "should"
+    },
+    {
+     "left": "what's",
+     "right": "inside"
+    },
+    {
+     "left": "should",
+     "right": "I"
+    },
+    {
+     "left": "or",
+     "right": "should"
+    },
+    {
+     "left": "should",
+     "right": "I"
+    },
+    {
+     "left": "inside",
+     "right": "every"
+    },
+    {
+     "left": "TV,",
+     "right": "a"
+    },
+    {
+     "left": "there's",
+     "right": "a"
+    },
+    {
+     "left": "TV,",
+     "right": "a"
+    },
+    {
+     "left": "an",
+     "right": "alarm"
+    },
+    {
+     "left": "and",
+     "right": "an"
+    },
+    {
+     "left": "where",
+     "right": "you"
+    },
+    {
+     "left": "clock.",
+     "right": "The"
+    }
+   ],
+   "elision": [
+    {
+     "word": "moment,",
+     "char": "t"
+    },
+    {
+     "word": "working",
+     "char": "ki"
+    },
+    {
+     "word": "hours",
+     "char": "ou"
+    },
+    {
+     "word": "part",
+     "char": "rt"
+    },
+    {
+     "word": "another.",
+     "char": "h"
+    },
+    {
+     "word": "home,",
+     "char": "e"
+    },
+    {
+     "word": "hotel?",
+     "char": "tel"
+    },
+    {
+     "word": "is?",
+     "char": "s"
+    },
+    {
+     "word": "that",
+     "char": "at"
+    },
+    {
+     "word": "by",
+     "char": "b"
+    },
+    {
+     "word": "cramped!",
+     "char": "d"
+    },
+    {
+     "word": "space?",
+     "char": "pa"
+    },
+    {
+     "word": "bed,",
+     "char": "ed"
+    },
+    {
+     "word": "BRAD:",
+     "char": "D"
+    },
+    {
+     "word": "light,",
+     "char": "ht"
+    },
+    {
+     "word": "radio,",
+     "char": "io"
+    }
+   ]
+  }
  },
  {
   "mc": "MC03",
@@ -112,7 +326,11 @@ window.SHADOWING_DATA = [
    "3) 如果你活到100岁，你希望收到什么样的生日祝福？",
    "4) 你认为如今的年轻人生日庆祝方式正在改变吗？如何改变？",
    "5) 在你的国家，还有哪些重要的庆祝活动？（例如婚礼）"
-  ]
+  ],
+  "annotations": {
+   "linking": [],
+   "elision": []
+  }
  },
  {
   "mc": "MC04",
@@ -204,7 +422,173 @@ window.SHADOWING_DATA = [
    "旅馆外的一个男人。他跟着我们进了旅馆。幸运的是，旅馆接待员追了出去，把包拿了回来。之后就一切正常了。我们去观光，参观了几家博物馆——你知道的，都是些平常的事。但后来，在最后那个晚上，旅馆停电了。",
    "那你们大家都做了什么？",
    "嗯，我先去找经理，但她已经走了。前台的人有一些蜡烛，所有客人都一起坐在酒吧区唱歌。其实最后还挺好玩的。那大概是这趟假期最棒的部分。"
-  ]
+  ],
+  "annotations": {
+   "linking": [
+    {
+     "left": "did",
+     "right": "it"
+    },
+    {
+     "left": "days",
+     "right": "in"
+    },
+    {
+     "left": "stopped",
+     "right": "in"
+    },
+    {
+     "left": "lots",
+     "right": "of"
+    },
+    {
+     "left": "left",
+     "right": "Aswan,"
+    },
+    {
+     "left": "engine",
+     "right": "stopped"
+    },
+    {
+     "left": "stopped",
+     "right": "working."
+    },
+    {
+     "left": "But",
+     "right": "on"
+    },
+    {
+     "left": "just",
+     "right": "after"
+    },
+    {
+     "left": "Oh",
+     "right": "no!"
+    },
+    {
+     "left": "happened",
+     "right": "next?"
+    },
+    {
+     "left": "spent",
+     "right": "an"
+    },
+    {
+     "left": "life",
+     "right": "on"
+    },
+    {
+     "left": "life",
+     "right": "on"
+    },
+    {
+     "left": "In",
+     "right": "a"
+    },
+    {
+     "left": "was",
+     "right": "a"
+    },
+    {
+     "left": "did",
+     "right": "it"
+    },
+    {
+     "left": "Just",
+     "right": "after"
+    },
+    {
+     "left": "we'd",
+     "right": "arrived."
+    },
+    {
+     "left": "Who",
+     "right": "took"
+    },
+    {
+     "left": "took",
+     "right": "it?"
+    },
+    {
+     "left": "followed",
+     "right": "us"
+    },
+    {
+     "left": "us",
+     "right": "into"
+    },
+    {
+     "left": "it",
+     "right": "back."
+    },
+    {
+     "left": "got",
+     "right": "it"
+    },
+    {
+     "left": "she'd",
+     "right": "already"
+    },
+    {
+     "left": "person",
+     "right": "at"
+    },
+    {
+     "left": "bar",
+     "right": "area"
+    },
+    {
+     "left": "probably",
+     "right": "the"
+    },
+    {
+     "left": "was",
+     "right": "a"
+    },
+    {
+     "left": "lot",
+     "right": "of"
+    },
+    {
+     "left": "fun",
+     "right": "in"
+    }
+   ],
+   "elision": [
+    {
+     "word": "thecruisetook",
+     "char": "ok"
+    },
+    {
+     "word": "reception",
+     "char": "ec"
+    },
+    {
+     "word": "arrived.",
+     "char": "rr"
+    },
+    {
+     "word": "outside",
+     "char": "ut"
+    },
+    {
+     "word": "back.",
+     "char": "ac"
+    },
+    {
+     "word": "museums",
+     "char": "eu"
+    },
+    {
+     "word": "sat",
+     "char": "sa"
+    },
+    {
+     "word": "area",
+     "char": "re"
+    }
+   ]
+  }
  },
  {
   "mc": "MC05",
@@ -218,7 +602,11 @@ window.SHADOWING_DATA = [
   },
   "translations": [
    "你和你的朋友刚刚创办了一家名叫“Money Matters”的小型金融服务公司，通过广播为人们提供理财建议。现在你们正在做第一档广播节目的直播，全城各地的人都在拨打你们的热线，分享他们个人的消费习惯。"
-  ]
+  ],
+  "annotations": {
+   "linking": [],
+   "elision": []
+  }
  },
  {
   "mc": "MC06",
@@ -245,7 +633,209 @@ window.SHADOWING_DATA = [
    "我热爱我的工作——和人打交道、帮助他们——但它也常常让人倍感压力。我必须长时间工作，包括周末，有时还要处理非常严重的问题。如今要当护士，你必须在学校表现优秀——尤其是数学、科学和英语。然后你还得先拿到护理学位才能找到工作。你还需要善于做决定和团队合作。有很多规则要记住：不洗手不能进病房；不能独自搬动病人。当你和重病患者打交道时，你做的每一个决定都至关重要。",
    "做我这份工作，你需要接受两到三年的培训——通常是在一家公司工作的同时进行。没有资质，你不能独自去别人家里开始修理东西。现在我有自己的公司。我通常每周工作大约45到50个小时。可能会很累。当然，你必须小心，尤其是累的时候。有很多健康和安全规定。比如，你必须总是关掉主电源。我听说有个人忘了，差点死掉。不过，也有好的方面——你不必穿西装，也不用去开很多会，而且我很享受自己当老板。",
    "我做投资银行……要入行，我需要一个好的大学学位，还要善于沟通。你必须享受拼命工作……我工作时间很长，每周一百个小时甚至更多。而且，我得应对很大的压力……我管理着别人数以百万英镑计的钱。你也不能放松，因为如果出了问题，你就会亏钱——亏的是别人的钱。我想我也喜欢这一点——很刺激。但这份工作并不轻松，有时我觉得自己所做的不那么有用。"
-  ]
+  ],
+  "annotations": {
+   "linking": [
+    {
+     "left": "people",
+     "right": "and"
+    },
+    {
+     "left": "but",
+     "right": "it's"
+    },
+    {
+     "left": "and",
+     "right": "sometimes"
+    },
+    {
+     "left": "become",
+     "right": "a"
+    },
+    {
+     "left": "well",
+     "right": "at"
+    },
+    {
+     "left": "have",
+     "right": "to"
+    },
+    {
+     "left": "get",
+     "right": "a"
+    },
+    {
+     "left": "of",
+     "right": "rules"
+    },
+    {
+     "left": "in",
+     "right": "a"
+    },
+    {
+     "left": "lots",
+     "right": "of"
+    },
+    {
+     "left": "lift",
+     "right": "a"
+    },
+    {
+     "left": "your",
+     "right": "own."
+    },
+    {
+     "left": "patient",
+     "right": "on"
+    },
+    {
+     "left": "make",
+     "right": "is"
+    },
+    {
+     "left": "with",
+     "right": "a"
+    },
+    {
+     "left": "your",
+     "right": "own"
+    },
+    {
+     "left": "without",
+     "right": "a"
+    },
+    {
+     "left": "work",
+     "right": "about"
+    },
+    {
+     "left": "hours",
+     "right": "a"
+    },
+    {
+     "left": "And,",
+     "right": "of"
+    },
+    {
+     "left": "and",
+     "right": "safety"
+    },
+    {
+     "left": "switch",
+     "right": "off"
+    },
+    {
+     "left": "good",
+     "right": "things,"
+    },
+    {
+     "left": "and",
+     "right": "I"
+    },
+    {
+     "left": "I'm",
+     "right": "in"
+    },
+    {
+     "left": "get",
+     "right": "in"
+    },
+    {
+     "left": "needed",
+     "right": "a"
+    },
+    {
+     "left": "working",
+     "right": "really"
+    },
+    {
+     "left": "with",
+     "right": "a"
+    },
+    {
+     "left": "because",
+     "right": "if"
+    },
+    {
+     "left": "it's",
+     "right": "exciting."
+    },
+    {
+     "left": "that",
+     "right": "-"
+    },
+    {
+     "left": "not",
+     "right": "an"
+    },
+    {
+     "left": "what",
+     "right": "I"
+    },
+    {
+     "left": "sometimes",
+     "right": "I"
+    }
+   ],
+   "elision": [
+    {
+     "word": "very",
+     "char": "ry"
+    },
+    {
+     "word": "before",
+     "char": "fo"
+    },
+    {
+     "word": "hands.",
+     "char": "n"
+    },
+    {
+     "word": "patient",
+     "char": "i"
+    },
+    {
+     "word": "important.",
+     "char": "p"
+    },
+    {
+     "word": "qualification.",
+     "char": "lif"
+    },
+    {
+     "word": "work",
+     "char": "k"
+    },
+    {
+     "word": "can",
+     "char": "a"
+    },
+    {
+     "word": "especially",
+     "char": "ll"
+    },
+    {
+     "word": "There",
+     "char": "T"
+    },
+    {
+     "word": "and",
+     "char": "n"
+    },
+    {
+     "word": "good",
+     "char": "g"
+    },
+    {
+     "word": "enjoy",
+     "char": "jo"
+    },
+    {
+     "word": "because",
+     "char": "e"
+    }
+   ]
+  }
  },
  {
   "mc": "MC07",
@@ -319,7 +909,11 @@ window.SHADOWING_DATA = [
    "1.艺术型 2.常规型 3.企业型 4.研究型 5.现实型 6.社会型 □医生 □会计 □画家 □侦探 □木匠 □护士 □程序员 □发明家 □政治家 □模特 □工厂工人 □作家 □摄影师 □秘书 □销售员 □心理学家 □记者 □教师 用下表帮助你复述主要意思。",
    "提示问题 你的答案",
    "1 / 2"
-  ]
+  ],
+  "annotations": {
+   "linking": [],
+   "elision": []
+  }
  },
  {
   "mc": "MC08",
@@ -343,7 +937,11 @@ window.SHADOWING_DATA = [
    "凶案发生在下午，就在韦斯特先生告诉妻子他要去洗澡后不久。雨声掩盖了屋里的动静，所以很难确切知道发生了什么。侦探认为，是屋里的某个人杀了他。你是调查威廉·韦斯特死因的侦探小组的一员。",
    "现在，你的任务就是倾听嫌疑人、收集证据，并判断谁是凶手。",
    "威廉 萨莉 比利 约翰 艾米莉亚"
-  ]
+  ],
+  "annotations": {
+   "linking": [],
+   "elision": []
+  }
  },
  {
   "mc": "MC09",
@@ -377,7 +975,11 @@ window.SHADOWING_DATA = [
    "以下关于文章的说法是正确（T）还是错误（F）？把错误的改正过来。",
    "2. 在Chinbra，学生大部分时间都在学习普通话。",
    "3. 查尔斯·唐认为生意出错主要是因为语言问题。"
-  ]
+  ],
+  "annotations": {
+   "linking": [],
+   "elision": []
+  }
  },
  {
   "mc": "MC10",
@@ -419,7 +1021,257 @@ window.SHADOWING_DATA = [
    "哦，有，很多。好几家公司都提供公交车游览，会在所有主要旅游景点停靠。买一张通票是个好主意，这样你可以在任何想去的地方上下车。你应该访问我们的网站，了解最新的旅游线路和特别活动。",
    "我明白了。那对游客来说，纽约是一座安全的城市吗？",
    "它比世界上许多城市都安全。但就像在任何大城市一样，你仍然应该小心。比如，不要独自离开，尤其是在晚上。也不要害怕问问题。就连美国游客来到这里也得寻求帮助。你会发现纽约人相当友好。他们喜欢欢迎游客来到自己的城市，也不介意给人指路。"
-  ]
+  ],
+  "annotations": {
+   "linking": [
+    {
+     "left": "safe",
+     "right": "and"
+    },
+    {
+     "left": "safe",
+     "right": "and"
+    },
+    {
+     "left": "in",
+     "right": "a"
+    },
+    {
+     "left": "in",
+     "right": "a"
+    },
+    {
+     "left": "One",
+     "right": "important"
+    },
+    {
+     "left": "in",
+     "right": "a"
+    },
+    {
+     "left": "Ideally,",
+     "right": "you"
+    },
+    {
+     "left": "in",
+     "right": "advance"
+    },
+    {
+     "left": "decide",
+     "right": "in"
+    },
+    {
+     "left": "in",
+     "right": "advance"
+    },
+    {
+     "left": "tours",
+     "right": "available?"
+    },
+    {
+     "left": "stop",
+     "right": "at"
+    },
+    {
+     "left": "off",
+     "right": "wherever"
+    },
+    {
+     "left": "It's",
+     "right": "a"
+    },
+    {
+     "left": "good",
+     "right": "idea"
+    },
+    {
+     "left": "get",
+     "right": "on"
+    },
+    {
+     "left": "and",
+     "right": "off"
+    },
+    {
+     "left": "on",
+     "right": "and"
+    },
+    {
+     "left": "our",
+     "right": "website"
+    },
+    {
+     "left": "website",
+     "right": "to"
+    },
+    {
+     "left": "and",
+     "right": "special"
+    },
+    {
+     "left": "visit",
+     "right": "our"
+    },
+    {
+     "left": "find",
+     "right": "out"
+    },
+    {
+     "left": "out",
+     "right": "about"
+    },
+    {
+     "left": "tours",
+     "right": "and"
+    },
+    {
+     "left": "special",
+     "right": "events."
+    },
+    {
+     "left": "And",
+     "right": "is"
+    },
+    {
+     "left": "York",
+     "right": "a"
+    },
+    {
+     "left": "than",
+     "right": "many"
+    },
+    {
+     "left": "in",
+     "right": "the"
+    },
+    {
+     "left": "world.",
+     "right": "But"
+    },
+    {
+     "left": "cities",
+     "right": "in"
+    },
+    {
+     "left": "like",
+     "right": "in"
+    },
+    {
+     "left": "off",
+     "right": "on"
+    },
+    {
+     "left": "especially",
+     "right": "at"
+    },
+    {
+     "left": "off",
+     "right": "on"
+    },
+    {
+     "left": "visitors",
+     "right": "have"
+    },
+    {
+     "left": "Even",
+     "right": "American"
+    },
+    {
+     "left": "come",
+     "right": "here."
+    },
+    {
+     "left": "are",
+     "right": "pretty"
+    },
+    {
+     "left": "Yorkers",
+     "right": "are"
+    },
+    {
+     "left": "city",
+     "right": "and"
+    }
+   ],
+   "elision": [
+    {
+     "word": "pleasant?",
+     "char": "t"
+    },
+    {
+     "word": "Woman:",
+     "char": "a"
+    },
+    {
+     "word": "should",
+     "char": "ho"
+    },
+    {
+     "word": "available?",
+     "char": "le"
+    },
+    {
+     "word": "companies",
+     "char": "ie"
+    },
+    {
+     "word": "should",
+     "char": "s"
+    },
+    {
+     "word": "and",
+     "char": "a"
+    },
+    {
+     "word": "special",
+     "char": "eci"
+    },
+    {
+     "word": "and",
+     "char": "n"
+    },
+    {
+     "word": "Interviewer:",
+     "char": "e"
+    },
+    {
+     "word": "New",
+     "char": "e"
+    },
+    {
+     "word": "York",
+     "char": "or"
+    },
+    {
+     "word": "visitors?",
+     "char": "or"
+    },
+    {
+     "word": "visitors?",
+     "char": "rs"
+    },
+    {
+     "word": "city,",
+     "char": "ity"
+    },
+    {
+     "word": "careful.",
+     "char": "ul"
+    },
+    {
+     "word": "own,",
+     "char": "n"
+    },
+    {
+     "word": "Yorkers",
+     "char": "rs"
+    },
+    {
+     "word": "directions.",
+     "char": "s"
+    }
+   ]
+  }
  },
  {
   "mc": "MC11",
@@ -465,7 +1317,11 @@ window.SHADOWING_DATA = [
    "c. 骆驼摔跤",
    "d. 掷棒",
    "e. 科尼岛北极熊跳水"
-  ]
+  ],
+  "annotations": {
+   "linking": [],
+   "elision": []
+  }
  },
  {
   "mc": "MC12",
@@ -547,7 +1403,197 @@ window.SHADOWING_DATA = [
    "我倒认为恰恰相反。",
    "你在干什么？",
    "稍微改改而已，仅此而已。我是说，你难道不想轰轰烈烈、火力全开地走一回，找点乐子吗？"
-  ]
+  ],
+  "annotations": {
+   "linking": [
+    {
+     "left": "What",
+     "right": "are"
+    },
+    {
+     "left": "What",
+     "right": "is"
+    },
+    {
+     "left": "What",
+     "right": "is"
+    },
+    {
+     "left": "Come",
+     "right": "on,"
+    },
+    {
+     "left": "give",
+     "right": "it"
+    },
+    {
+     "left": "What",
+     "right": "is"
+    },
+    {
+     "left": "is",
+     "right": "it?"
+    },
+    {
+     "left": "it",
+     "right": "back!"
+    },
+    {
+     "left": "Give",
+     "right": "it"
+    },
+    {
+     "left": "It",
+     "right": "was"
+    },
+    {
+     "left": "was",
+     "right": "on"
+    },
+    {
+     "left": "was",
+     "right": "a"
+    },
+    {
+     "left": "called",
+     "right": "it"
+    },
+    {
+     "left": "it",
+     "right": "a"
+    },
+    {
+     "left": "make",
+     "right": "a"
+    },
+    {
+     "left": "list",
+     "right": "of"
+    },
+    {
+     "left": "of",
+     "right": "all"
+    },
+    {
+     "left": "in",
+     "right": "our"
+    },
+    {
+     "left": "“make",
+     "right": "a"
+    },
+    {
+     "left": "“Help",
+     "right": "a"
+    },
+    {
+     "left": "“Laugh",
+     "right": "until"
+    },
+    {
+     "left": "until",
+     "right": "I"
+    },
+    {
+     "left": "this",
+     "right": "is"
+    },
+    {
+     "left": "is",
+     "right": "extremely"
+    },
+    {
+     "left": "would",
+     "right": "argue"
+    },
+    {
+     "left": "exact",
+     "right": "opposite."
+    },
+    {
+     "left": "are",
+     "right": "you"
+    },
+    {
+     "left": "What",
+     "right": "are"
+    },
+    {
+     "left": "that's",
+     "right": "all."
+    },
+    {
+     "left": "have",
+     "right": "a"
+    }
+   ],
+   "elision": [
+    {
+     "word": "on,",
+     "char": "o"
+    },
+    {
+     "word": "What",
+     "char": "at"
+    },
+    {
+     "word": "back!",
+     "char": "a"
+    },
+    {
+     "word": "freshman’s",
+     "char": "es"
+    },
+    {
+     "word": "professor",
+     "char": "r"
+    },
+    {
+     "word": "our",
+     "char": "r"
+    },
+    {
+     "word": "lives,",
+     "char": "li"
+    },
+    {
+     "word": "...kick",
+     "char": "k"
+    },
+    {
+     "word": "redo",
+     "char": "re"
+    },
+    {
+     "word": "but",
+     "char": "bu"
+    },
+    {
+     "word": "pointless",
+     "char": "tl"
+    },
+    {
+     "word": "pointless",
+     "char": "s"
+    },
+    {
+     "word": "little",
+     "char": "ittl"
+    },
+    {
+     "word": "that's",
+     "char": "t"
+    },
+    {
+     "word": "balls,",
+     "char": "ls"
+    },
+    {
+     "word": "fun?",
+     "char": "n"
+    }
+   ]
+  }
  },
  {
   "mc": "MC13",
@@ -561,7 +1607,11 @@ window.SHADOWING_DATA = [
   },
   "translations": [
    "你正在参加一场“介绍我的朋友”社交活动。每位参与者都要介绍一位朋友，而不是介绍自己。活动的目的是帮助参与者拓展交友圈，从而结识新朋友。"
-  ]
+  ],
+  "annotations": {
+   "linking": [],
+   "elision": []
+  }
  },
  {
   "mc": "MC14",
@@ -613,7 +1663,193 @@ window.SHADOWING_DATA = [
    "那买东西的事呢，詹妮弗？",
    "根据我们的调查结果，男孩和女孩通常会把买回来的食品杂货收拾归位。",
    "真让人意外！"
-  ]
+  ],
+  "annotations": {
+   "linking": [
+    {
+     "left": "Have",
+     "right": "It"
+    },
+    {
+     "left": "take",
+     "right": "a"
+    },
+    {
+     "left": "all",
+     "right": "of"
+    },
+    {
+     "left": "of",
+     "right": "men"
+    },
+    {
+     "left": "all",
+     "right": "of"
+    },
+    {
+     "left": "Later",
+     "right": "on"
+    },
+    {
+     "left": "on",
+     "right": "in"
+    },
+    {
+     "left": "calls",
+     "right": "and"
+    },
+    {
+     "left": "family",
+     "right": "psychologist,"
+    },
+    {
+     "left": "for",
+     "right": "the"
+    },
+    {
+     "left": "who’ll",
+     "right": "answer"
+    },
+    {
+     "left": "family",
+     "right": "psychologist,"
+    },
+    {
+     "left": "person",
+     "right": "in"
+    },
+    {
+     "left": "percent",
+     "right": "of"
+    },
+    {
+     "left": "don't",
+     "right": "help"
+    },
+    {
+     "left": "pick",
+     "right": "up"
+    },
+    {
+     "left": "clothes",
+     "right": "and"
+    },
+    {
+     "left": "They",
+     "right": "don’t"
+    },
+    {
+     "left": "what",
+     "right": "about"
+    },
+    {
+     "left": "percent",
+     "right": "of"
+    },
+    {
+     "left": "explained",
+     "right": "that"
+    },
+    {
+     "left": "take",
+     "right": "out"
+    },
+    {
+     "left": "boys",
+     "right": "and"
+    },
+    {
+     "left": "girls",
+     "right": "and"
+    },
+    {
+     "left": "dishes,",
+     "right": "and"
+    },
+    {
+     "left": "what",
+     "right": "about"
+    },
+    {
+     "left": "Well,",
+     "right": "according"
+    },
+    {
+     "left": "boys",
+     "right": "and"
+    },
+    {
+     "left": "That’s",
+     "right": "surprising!"
+    }
+   ],
+   "elision": [
+    {
+     "word": "families.",
+     "char": "m"
+    },
+    {
+     "word": "John?",
+     "char": "n"
+    },
+    {
+     "word": "psychologist,",
+     "char": "ch"
+    },
+    {
+     "word": "Jennifer?",
+     "char": "r"
+    },
+    {
+     "word": "don't",
+     "char": "n"
+    },
+    {
+     "word": "that",
+     "char": "hat"
+    },
+    {
+     "word": "things,",
+     "char": "gs"
+    },
+    {
+     "word": "around.",
+     "char": "d"
+    },
+    {
+     "word": "Jennifer?",
+     "char": "er"
+    },
+    {
+     "word": "kitchen?”",
+     "char": "e"
+    },
+    {
+     "word": "cook,",
+     "char": "ok"
+    },
+    {
+     "word": "and",
+     "char": "an"
+    },
+    {
+     "word": "usually",
+     "char": "all"
+    },
+    {
+     "word": "dishes,",
+     "char": "es"
+    },
+    {
+     "word": "up.",
+     "char": "p"
+    },
+    {
+     "word": "Jennifer?",
+     "char": "er"
+    }
+   ]
+  }
  },
  {
   "mc": "MC15",
@@ -653,7 +1889,11 @@ window.SHADOWING_DATA = [
    "2）首席执行官解释了捷蓝航空将如何在未来避免同样的问题。",
    "检查一下你的理解 2",
    "阅读文章并回答问题。"
-  ]
+  ],
+  "annotations": {
+   "linking": [],
+   "elision": []
+  }
  },
  {
   "mc": "MC16",
@@ -680,7 +1920,105 @@ window.SHADOWING_DATA = [
    "我需要你明白一件事。对不起。我一直以来都太自私了。过去七年里，我用言语和行为践踏了你。我本该爱你，却爱上了别的东西。最近几周，上帝让我对你生出了一份从未有过的爱。我祈求他宽恕我，也希望、祈祷……你能以某种方式也原谅我。凯瑟琳，我无法想象没有你的余生该怎么过。",
    "凯勒布，我本该下周把那些离婚文件交给我的律师。我只是……我需要一点时间……想一想。",
    "你需要多少时间都可以。"
-  ]
+  ],
+  "annotations": {
+   "linking": [
+    {
+     "left": "trampled",
+     "right": "on"
+    },
+    {
+     "left": "loved",
+     "right": "other"
+    },
+    {
+     "left": "when",
+     "right": "I"
+    },
+    {
+     "left": "should",
+     "right": "have"
+    },
+    {
+     "left": "God",
+     "right": "has"
+    },
+    {
+     "left": "never",
+     "right": "had"
+    },
+    {
+     "left": "I",
+     "right": "am"
+    },
+    {
+     "left": "And",
+     "right": "I’d"
+    },
+    {
+     "left": "I’d",
+     "right": "asked"
+    },
+    {
+     "left": "asked",
+     "right": "him"
+    },
+    {
+     "left": "And",
+     "right": "I"
+    },
+    {
+     "left": "able",
+     "right": "to"
+    },
+    {
+     "left": "forgive",
+     "right": "me"
+    },
+    {
+     "left": "do",
+     "right": "not"
+    },
+    {
+     "left": "rest",
+     "right": "of"
+    }
+   ],
+   "elision": [
+    {
+     "word": "loved",
+     "char": "e"
+    },
+    {
+     "word": "you",
+     "char": "ou"
+    },
+    {
+     "word": "that",
+     "char": "t"
+    },
+    {
+     "word": "before.",
+     "char": "or"
+    },
+    {
+     "word": "that",
+     "char": "t"
+    },
+    {
+     "word": "I",
+     "char": "I"
+    },
+    {
+     "word": "somehow",
+     "char": "s"
+    },
+    {
+     "word": "forgive",
+     "char": "for"
+    }
+   ]
+  }
  },
  {
   "mc": "MC17",
@@ -694,7 +2032,11 @@ window.SHADOWING_DATA = [
   },
   "translations": [
    "我想推荐一部名叫《泰坦尼克号》的电影。它是一部爱情片，于 1997 年上映。该片由詹姆斯·卡梅隆执导，莱昂纳多·迪卡普里奥和凯特·温斯莱特主演。故事讲述两个背景不同的年轻人相遇并相爱的经历。"
-  ]
+  ],
+  "annotations": {
+   "linking": [],
+   "elision": []
+  }
  },
  {
   "mc": "MC18",
@@ -716,7 +2058,153 @@ window.SHADOWING_DATA = [
    "整个巴西都庆祝狂欢节，但最著名的派对是在里约。整座城市用彩灯和彩带装饰起来，美极了。",
    "每个人都非常友好——尤其是对来自其他国家的游客。狂欢节最精彩的部分是盛大的游行。那些服装令人难以置信——人们要花好几个月来制作。",
    "看着真是棒极了。每个人都在街上跳桑巴舞。如果有一天你有幸有机会，我真心推荐你去里约过狂欢节。"
-  ]
+  ],
+  "annotations": {
+   "linking": [
+    {
+     "left": "from",
+     "right": "a"
+    },
+    {
+     "left": "that",
+     "right": "I"
+    },
+    {
+     "left": "when",
+     "right": "I"
+    },
+    {
+     "left": "was",
+     "right": "in"
+    },
+    {
+     "left": "for",
+     "right": "four"
+    },
+    {
+     "left": "It's",
+     "right": "a"
+    },
+    {
+     "left": "Carnival",
+     "right": "in"
+    },
+    {
+     "left": "you",
+     "right": "need"
+    },
+    {
+     "left": "book",
+     "right": "a"
+    },
+    {
+     "left": "in",
+     "right": "advance"
+    },
+    {
+     "left": "but",
+     "right": "the"
+    },
+    {
+     "left": "fill",
+     "right": "up"
+    },
+    {
+     "left": "all",
+     "right": "over"
+    },
+    {
+     "left": "in",
+     "right": "Rio."
+    },
+    {
+     "left": "colored",
+     "right": "lights"
+    },
+    {
+     "left": "is",
+     "right": "in"
+    },
+    {
+     "left": "lights",
+     "right": "and"
+    },
+    {
+     "left": "beautiful.",
+     "right": "Everyone"
+    },
+    {
+     "left": "from",
+     "right": "other"
+    },
+    {
+     "left": "part",
+     "right": "about"
+    },
+    {
+     "left": "costumes",
+     "right": "are"
+    },
+    {
+     "left": "work",
+     "right": "on"
+    },
+    {
+     "left": "for",
+     "right": "months."
+    },
+    {
+     "left": "Everyone",
+     "right": "dances"
+    }
+   ],
+   "elision": [
+    {
+     "word": "fantastic?",
+     "char": "tic"
+    },
+    {
+     "word": "something!",
+     "char": "th"
+    },
+    {
+     "word": "that",
+     "char": "th"
+    },
+    {
+     "word": "whole",
+     "char": "wh"
+    },
+    {
+     "word": "advance",
+     "char": "e"
+    },
+    {
+     "word": "in",
+     "char": "i"
+    },
+    {
+     "word": "February",
+     "char": "r"
+    },
+    {
+     "word": "celebrated",
+     "char": "ed"
+    },
+    {
+     "word": "other",
+     "char": "ot"
+    },
+    {
+     "word": "unbelievable",
+     "char": "a"
+    },
+    {
+     "word": "streets.",
+     "char": "et"
+    }
+   ]
+  }
  },
  {
   "mc": "MC19",
@@ -788,7 +2276,117 @@ window.SHADOWING_DATA = [
    "好，太好了——那我要给手机设置邮箱访问该找谁？也是玛丽亚吗？",
    "不，你得找在通讯部门工作的塞巴斯蒂安。他能帮你。他在那边，打印机旁边。",
    "谢谢。我稍后会自我介绍一下。"
-  ]
+  ],
+  "annotations": {
+   "linking": [
+    {
+     "left": "around",
+     "right": "and"
+    },
+    {
+     "left": "I'll",
+     "right": "introduce"
+    },
+    {
+     "left": "them",
+     "right": "all"
+    },
+    {
+     "left": "people",
+     "right": "over"
+    },
+    {
+     "left": "Got",
+     "right": "it,"
+    },
+    {
+     "left": "who's",
+     "right": "on"
+    },
+    {
+     "left": "Oh,",
+     "right": "you"
+    },
+    {
+     "left": "about",
+     "right": "it."
+    },
+    {
+     "left": "and",
+     "right": "who"
+    },
+    {
+     "left": "works",
+     "right": "in"
+    },
+    {
+     "left": "him",
+     "right": "over"
+    }
+   ],
+   "elision": [
+    {
+     "word": "Thanks.",
+     "char": "ks"
+    },
+    {
+     "word": "people",
+     "char": "e"
+    },
+    {
+     "word": "Luciana",
+     "char": "ci"
+    },
+    {
+     "word": "hair.",
+     "char": "ir"
+    },
+    {
+     "word": "dress?",
+     "char": "ss"
+    },
+    {
+     "word": "phone?",
+     "char": "e"
+    },
+    {
+     "word": "there",
+     "char": "he"
+    },
+    {
+     "word": "who's",
+     "char": "ho"
+    },
+    {
+     "word": "window?",
+     "char": "w"
+    },
+    {
+     "word": "shirt?",
+     "char": "sh"
+    },
+    {
+     "word": "shirt?",
+     "char": "rt"
+    },
+    {
+     "word": "who",
+     "char": "wh"
+    },
+    {
+     "word": "access?",
+     "char": "s"
+    },
+    {
+     "word": "Maria?",
+     "char": "ia"
+    },
+    {
+     "word": "Thanks.",
+     "char": "an"
+    }
+   ]
+  }
  },
  {
   "mc": "MC20",
@@ -900,7 +2498,205 @@ window.SHADOWING_DATA = [
    "哦，因为那是个愚蠢的梦。你能想象我做豆腐吗？哈哈哈哈……豆腐……不！我们每个人在这世上都有自己的位置。我的位置在这里，而你的位置是……",
    "我知道，就在这里。",
    "不，是在 2 号、5 号、7 号和 12 号桌。微笑服务。"
-  ]
+  ],
+  "annotations": {
+   "linking": [
+    {
+     "left": "had",
+     "right": "a"
+    },
+    {
+     "left": "had",
+     "right": "a"
+    },
+    {
+     "left": "was",
+     "right": "I…?"
+    },
+    {
+     "left": "I…?",
+     "right": "I"
+    },
+    {
+     "left": "What",
+     "right": "else"
+    },
+    {
+     "left": "would",
+     "right": "I"
+    },
+    {
+     "left": "soup",
+     "right": "is"
+    },
+    {
+     "left": "My",
+     "right": "son"
+    },
+    {
+     "left": "You",
+     "right": "don't"
+    },
+    {
+     "left": "This",
+     "right": "is"
+    },
+    {
+     "left": "is",
+     "right": "a"
+    },
+    {
+     "left": "sign",
+     "right": "of"
+    },
+    {
+     "left": "restaurant.Just",
+     "right": "as"
+    },
+    {
+     "left": "as",
+     "right": "I"
+    },
+    {
+     "left": "a",
+     "right": "game"
+    },
+    {
+     "left": "it",
+     "right": "over"
+    },
+    {
+     "left": "took",
+     "right": "it"
+    },
+    {
+     "left": "it",
+     "right": "over"
+    },
+    {
+     "left": "won",
+     "right": "it"
+    },
+    {
+     "left": "from",
+     "right": "a"
+    },
+    {
+     "left": "in",
+     "right": "a"
+    },
+    {
+     "left": "game",
+     "right": "of"
+    },
+    {
+     "left": "just",
+     "right": "a"
+    },
+    {
+     "left": "through",
+     "right": "our"
+    },
+    {
+     "left": "when",
+     "right": "I"
+    },
+    {
+     "left": "thought",
+     "right": "about"
+    },
+    {
+     "left": "was",
+     "right": "a"
+    },
+    {
+     "left": "place",
+     "right": "in"
+    },
+    {
+     "left": "Mine",
+     "right": "is"
+    },
+    {
+     "left": "yours",
+     "right": "is"
+    },
+    {
+     "left": "it’s",
+     "right": "at"
+    },
+    {
+     "left": "with",
+     "right": "a"
+    }
+   ],
+   "elision": [
+    {
+     "word": "Ping:Noodles?",
+     "char": "o"
+    },
+    {
+     "word": "Ping:Noodles?",
+     "char": "s"
+    },
+    {
+     "word": "noodles?",
+     "char": "es"
+    },
+    {
+     "word": "happy",
+     "char": "py"
+    },
+    {
+     "word": "took",
+     "char": "k"
+    },
+    {
+     "word": "game",
+     "char": "a"
+    },
+    {
+     "word": "of",
+     "char": "f"
+    },
+    {
+     "word": "it",
+     "char": "i"
+    },
+    {
+     "word": "Majiang.",
+     "char": "a"
+    },
+    {
+     "word": "dream.Weare",
+     "char": "a"
+    },
+    {
+     "word": "dream.Weare",
+     "char": "re"
+    },
+    {
+     "word": "ever…?I",
+     "char": "er"
+    },
+    {
+     "word": "else?",
+     "char": "e"
+    },
+    {
+     "word": "noodles?",
+     "char": "s"
+    },
+    {
+     "word": "tofu?",
+     "char": "u"
+    },
+    {
+     "word": "our",
+     "char": "ur"
+    }
+   ]
+  }
  },
  {
   "mc": "MC21",
@@ -918,7 +2714,11 @@ window.SHADOWING_DATA = [
    "你的船正在下沉！你只能游到附近一座荒芜的热带小岛，那里没有可饮用的水和食物。岛上遍布高耸的岩石山脉和丛林。",
    "白天，烈日无情，气温飙升至 40°C 以上。每天夜里，狂暴的风暴席卷全岛，气温骤降至 10°C 以下。更糟的是，岛上到处是毒蛇和其他危险动物。",
    "唯一能躲避野兽的安全之地是海滩，但涨潮时海滩会被海水完全淹没。"
-  ]
+  ],
+  "annotations": {
+   "linking": [],
+   "elision": []
+  }
  },
  {
   "mc": "MC22",
@@ -966,7 +2766,11 @@ window.SHADOWING_DATA = [
    "理解检测 2",
    "以下说法是对（T）还是错（F）？",
    "1) 你只应为面试官的问题准备答案。□对 □错　2) 询问培训机会表明你想学习。□对 □错　3) 打听面试官的职业经历不是个好主意。□对 □错　4) 你提出的问题也能影响面试官对你的看法。□对 □错　5) 求职面试只是为了让公司挑选合适的候选人。□对 □错"
-  ]
+  ],
+  "annotations": {
+   "linking": [],
+   "elision": []
+  }
  },
  {
   "mc": "MC23",
@@ -980,7 +2784,11 @@ window.SHADOWING_DATA = [
   },
   "translations": [
    "你在一家国际公司工作，同事们来自许多不同的国家。公司每周都会组织一次简短的文化分享活动，让员工更多地了解彼此的传统文化。本周的主题是节日与庆祝。你和同事将各自介绍自己文化中一个重要的节日，聆听他人的分享，然后讨论其中的异同，以及大家最想一起体验哪个节日。"
-  ]
+  ],
+  "annotations": {
+   "linking": [],
+   "elision": []
+  }
  },
  {
   "mc": "MC24",
@@ -1007,7 +2815,129 @@ window.SHADOWING_DATA = [
    "垃圾是个大问题。如果街上垃圾成堆，人们往往还会丢更多垃圾。他们看到垃圾，就觉得再添一点也无所谓。但如果你保持环境整洁，人们在街上扔垃圾前就会三思。",
    "涂鸦会让当地商家生气。但如果你专门划出一块涂鸦区，人们就不会在其他建筑上乱涂了。许多涂鸦艺术家画得很美，真的能改善一个地方的环境。",
    "夜晚的噪音是个常见问题。当你愤怒地指责吵闹的邻居时，他们只会继续制造噪音。但如果你冷静而礼貌地跟他们谈，他们很可能会听进去。如果你清楚地表达自己的感受，他们就会理解。"
-  ]
+  ],
+  "annotations": {
+   "linking": [
+    {
+     "left": "Garbage",
+     "right": "is"
+    },
+    {
+     "left": "is",
+     "right": "a"
+    },
+    {
+     "left": "And",
+     "right": "if"
+    },
+    {
+     "left": "is",
+     "right": "a"
+    },
+    {
+     "left": "lot",
+     "right": "of"
+    },
+    {
+     "left": "street,",
+     "right": "people"
+    },
+    {
+     "left": "more",
+     "right": "trash"
+    },
+    {
+     "left": "and",
+     "right": "think"
+    },
+    {
+     "left": "think",
+     "right": "it's"
+    },
+    {
+     "left": "think",
+     "right": "it's"
+    },
+    {
+     "left": "garbage",
+     "right": "and"
+    },
+    {
+     "left": "add",
+     "right": "a"
+    },
+    {
+     "left": "trash",
+     "right": "there."
+    },
+    {
+     "left": "trash",
+     "right": "on"
+    },
+    {
+     "left": "trash",
+     "right": "on"
+    },
+    {
+     "left": "make",
+     "right": "a"
+    },
+    {
+     "left": "is",
+     "right": "a"
+    },
+    {
+     "left": "to",
+     "right": "noisy"
+    },
+    {
+     "left": "making",
+     "right": "noise."
+    },
+    {
+     "left": "talk",
+     "right": "to"
+    },
+    {
+     "left": "And",
+     "right": "if"
+    },
+    {
+     "left": "clearly,",
+     "right": "they"
+    }
+   ],
+   "elision": [
+    {
+     "word": "trash",
+     "char": "as"
+    },
+    {
+     "word": "garbage",
+     "char": "ga"
+    },
+    {
+     "word": "But",
+     "char": "t"
+    },
+    {
+     "word": "throwing",
+     "char": "th"
+    },
+    {
+     "word": "twice",
+     "char": "ice"
+    },
+    {
+     "word": "clean,",
+     "char": "le"
+    },
+    {
+     "word": "politely,",
+     "char": "ly"
+    }
+   ]
+  }
  },
  {
   "mc": "MC25",
@@ -1031,7 +2961,11 @@ window.SHADOWING_DATA = [
    "明尼苏达州）",
    "那是我祖父 75 岁生日，我想送他一件特别的礼物。他年轻时会写一本关于钓鱼的书，但多年前在一场火灾中弄丢了唯一的一本。我试着在二手书店和网上书城再找一本。有个卖家声称能找到。他们没有任何评价，但我实在走投无路，就赌了一把。",
    "三天后书送到了！祖父高兴极了。这是我到目前为止买过的最棒的生日礼物！（哈里，芝加哥）祖母 80 岁生日时，我想给她买一台新咖啡机。她那台旧的不太好用了，但她总跟我们说她有多喜欢它。然而，厂家早已停产，当初卖它的那家老店也早就关门了。我花了很长时间，终于找到一个有货的卖家。价格不便宜，送货也慢得要命，但当祖母在生日那天打开盒子时，她的脸上绽放出光彩——正是那一款！盒子里还有一张店主手写的旧便条，写着“愿有更多快乐的冲泡时光！”（克洛伊，波特兰）"
-  ]
+  ],
+  "annotations": {
+   "linking": [],
+   "elision": []
+  }
  },
  {
   "mc": "MC26",
@@ -1093,7 +3027,349 @@ window.SHADOWING_DATA = [
    "那你这段时间在做什么呢？",
    "嗯，我几乎每天都去健身房锻炼。我需要保持很好的体能。我还在上表演课，这样在众人面前才不会紧张。我刚拍了一些照片，准备拿给城里的经纪人看。你想看看吗？",
    "当然。"
-  ]
+  ],
+  "annotations": {
+   "linking": [
+    {
+     "left": "kind",
+     "right": "of"
+    },
+    {
+     "left": "kind",
+     "right": "of"
+    },
+    {
+     "left": "job",
+     "right": "are"
+    },
+    {
+     "left": "job",
+     "right": "are"
+    },
+    {
+     "left": "up",
+     "right": "my"
+    },
+    {
+     "left": "up",
+     "right": "my"
+    },
+    {
+     "left": "made",
+     "right": "up"
+    },
+    {
+     "left": "I",
+     "right": "love"
+    },
+    {
+     "left": "love",
+     "right": "working"
+    },
+    {
+     "left": "see",
+     "right": "the"
+    },
+    {
+     "left": "day.",
+     "right": "I"
+    },
+    {
+     "left": "want",
+     "right": "a"
+    },
+    {
+     "left": "stuck",
+     "right": "in"
+    },
+    {
+     "left": "in",
+     "right": "an"
+    },
+    {
+     "left": "an",
+     "right": "office"
+    },
+    {
+     "left": "office",
+     "right": "all"
+    },
+    {
+     "left": "get",
+     "right": "out"
+    },
+    {
+     "left": "interested",
+     "right": "in"
+    },
+    {
+     "left": "interested",
+     "right": "in"
+    },
+    {
+     "left": "That's",
+     "right": "where"
+    },
+    {
+     "left": "interested",
+     "right": "in"
+    },
+    {
+     "left": "lot",
+     "right": "of"
+    },
+    {
+     "left": "point",
+     "right": "in"
+    },
+    {
+     "left": "kind",
+     "right": "of"
+    },
+    {
+     "left": "have",
+     "right": "a"
+    },
+    {
+     "left": "know,",
+     "right": "boring"
+    },
+    {
+     "left": "me.",
+     "right": "I"
+    },
+    {
+     "left": "is",
+     "right": "in"
+    },
+    {
+     "left": "to",
+     "right": "work"
+    },
+    {
+     "left": "in",
+     "right": "a"
+    },
+    {
+     "left": "in",
+     "right": "a"
+    },
+    {
+     "left": "work",
+     "right": "overseas,"
+    },
+    {
+     "left": "and",
+     "right": "that's"
+    },
+    {
+     "left": "that's",
+     "right": "a"
+    },
+    {
+     "left": "get",
+     "right": "into"
+    },
+    {
+     "left": "first,",
+     "right": "and"
+    },
+    {
+     "left": "way",
+     "right": "away."
+    },
+    {
+     "left": "kind",
+     "right": "of"
+    },
+    {
+     "left": "want",
+     "right": "a"
+    },
+    {
+     "left": "have",
+     "right": "in"
+    },
+    {
+     "left": "acting",
+     "right": "-"
+    },
+    {
+     "left": "get",
+     "right": "into"
+    },
+    {
+     "left": "break",
+     "right": "into"
+    },
+    {
+     "left": "But",
+     "right": "I"
+    },
+    {
+     "left": "what",
+     "right": "are"
+    },
+    {
+     "left": "work",
+     "right": "out"
+    },
+    {
+     "left": "work",
+     "right": "out"
+    },
+    {
+     "left": "And",
+     "right": "I'm"
+    },
+    {
+     "left": "day.",
+     "right": "I"
+    },
+    {
+     "left": "out",
+     "right": "at"
+    },
+    {
+     "left": "so",
+     "right": "that"
+    },
+    {
+     "left": "that",
+     "right": "I"
+    },
+    {
+     "left": "some",
+     "right": "pictures"
+    },
+    {
+     "left": "lessons",
+     "right": "as"
+    },
+    {
+     "left": "comfortable",
+     "right": "in"
+    },
+    {
+     "left": "front",
+     "right": "of"
+    },
+    {
+     "left": "the",
+     "right": "crowd."
+    },
+    {
+     "left": "that",
+     "right": "I"
+    },
+    {
+     "left": "the",
+     "right": "city."
+    },
+    {
+     "left": "to",
+     "right": "agents"
+    },
+    {
+     "left": "agents",
+     "right": "in"
+    },
+    {
+     "left": "see",
+     "right": "them?"
+    }
+   ],
+   "elision": [
+    {
+     "word": "for?",
+     "char": "r"
+    },
+    {
+     "word": "made",
+     "char": "ad"
+    },
+    {
+     "word": "made",
+     "char": "ad"
+    },
+    {
+     "word": "stuck",
+     "char": "ck"
+    },
+    {
+     "word": "want",
+     "char": "an"
+    },
+    {
+     "word": "Woman:",
+     "char": "m"
+    },
+    {
+     "word": "interested",
+     "char": "e"
+    },
+    {
+     "word": "working",
+     "char": "w"
+    },
+    {
+     "word": "working",
+     "char": "ing"
+    },
+    {
+     "word": "business?",
+     "char": "ss"
+    },
+    {
+     "word": "life.",
+     "char": "life"
+    },
+    {
+     "word": "know.",
+     "char": "n"
+    },
+    {
+     "word": "else",
+     "char": "e"
+    },
+    {
+     "word": "in",
+     "char": "i"
+    },
+    {
+     "word": "know",
+     "char": "k"
+    },
+    {
+     "word": "medical",
+     "char": "e"
+    },
+    {
+     "word": "mind?",
+     "char": "d"
+    },
+    {
+     "word": "like",
+     "char": "ke"
+    },
+    {
+     "word": "movies.",
+     "char": "ovi"
+    },
+    {
+     "word": "meantime?",
+     "char": "e"
+    },
+    {
+     "word": "like",
+     "char": "lik"
+    },
+    {
+     "word": "them?",
+     "char": "m"
+    }
+   ]
+  }
  },
  {
   "mc": "MC27",
@@ -1131,7 +3407,11 @@ window.SHADOWING_DATA = [
    "3) 即使你不使用社交媒体，关于你的个人信息也可能出现在上面。",
    "4) GDPR 允许用户要求公司删除他们的个人数据。",
    "5) 如果有人利用网络信息盗用你的身份，他们可能会以你的名义进行消费。"
-  ]
+  ],
+  "annotations": {
+   "linking": [],
+   "elision": []
+  }
  },
  {
   "mc": "MC28",
@@ -1153,7 +3433,169 @@ window.SHADOWING_DATA = [
   "translations": [
    "前几天我去买一条新牛仔裤。店里只有我一个顾客，却有两个店员。她们在聊周末干了什么。当我请求帮助时，她们只顾继续说个不停。太没礼貌了。我只是想知道几条牛仔裤的价格。最后，我决定直接离开商店。我觉得她们根本没注意到我在那儿。我当时想写封邮件向店长投诉，但后来给忘了。",
    "我觉得一种很无礼的行为是，当有人投诉时，商店或公司却不予回复。记得有一次我在网上买了一台 MP3 播放器，花了很多天才到货——差不多一个月。于是我写邮件投诉，却没收到任何回音。我是说，发封邮件道个歉很难吗？如果我是公司经理，我一定会确保回复每一位客户。我知道经营生意不容易。但如果你想让客户满意，就该回复他们的邮件。反正我不会再用那家公司了，我会改去本地商店。"
-  ]
+  ],
+  "annotations": {
+   "linking": [
+    {
+     "left": "customer",
+     "right": "in"
+    },
+    {
+     "left": "they",
+     "right": "did"
+    },
+    {
+     "left": "did",
+     "right": "at"
+    },
+    {
+     "left": "when",
+     "right": "I"
+    },
+    {
+     "left": "It",
+     "right": "was"
+    },
+    {
+     "left": "carried",
+     "right": "on"
+    },
+    {
+     "left": "to",
+     "right": "know"
+    },
+    {
+     "left": "the",
+     "right": "end,"
+    },
+    {
+     "left": "price",
+     "right": "of"
+    },
+    {
+     "left": "All",
+     "right": "I"
+    },
+    {
+     "left": "the",
+     "right": "shop."
+    },
+    {
+     "left": "then",
+     "right": "I"
+    },
+    {
+     "left": "that",
+     "right": "I"
+    },
+    {
+     "left": "think",
+     "right": "is"
+    },
+    {
+     "left": "rude",
+     "right": "is"
+    },
+    {
+     "left": "shops",
+     "right": "or"
+    },
+    {
+     "left": "I",
+     "right": "remember"
+    },
+    {
+     "left": "makes",
+     "right": "a"
+    },
+    {
+     "left": "bought",
+     "right": "an"
+    },
+    {
+     "left": "arrive",
+     "right": "-"
+    },
+    {
+     "left": "about",
+     "right": "a"
+    },
+    {
+     "left": "email",
+     "right": "to"
+    },
+    {
+     "left": "wrote",
+     "right": "an"
+    },
+    {
+     "left": "but",
+     "right": "I"
+    },
+    {
+     "left": "just",
+     "right": "to"
+    },
+    {
+     "left": "send",
+     "right": "an"
+    },
+    {
+     "left": "is",
+     "right": "it"
+    },
+    {
+     "left": "saying",
+     "right": "sorry?"
+    },
+    {
+     "left": "replied",
+     "right": "to"
+    },
+    {
+     "left": "company,",
+     "right": "I'd"
+    },
+    {
+     "left": "run",
+     "right": "a"
+    },
+    {
+     "left": "But",
+     "right": "if"
+    }
+   ],
+   "elision": [
+    {
+     "word": "noticed",
+     "char": "no"
+    },
+    {
+     "word": "complaint.",
+     "char": "l"
+    },
+    {
+     "word": "remember",
+     "char": "b"
+    },
+    {
+     "word": "bought",
+     "char": "gh"
+    },
+    {
+     "word": "mean,",
+     "char": "a"
+    },
+    {
+     "word": "emails.",
+     "char": "e"
+    },
+    {
+     "word": "won't",
+     "char": "o"
+    }
+   ]
+  }
  },
  {
   "mc": "MC29",
@@ -1189,7 +3631,197 @@ window.SHADOWING_DATA = [
    "就是 13A。你顺着那条路开，然后左转。右边第一栋大房子就是。",
    "明白了吗？如果你坐公交，可以乘 80 路到布朗斯维尔。到了给我打电话，会有人开车去接你。",
    "我等不及了。这一定会超级棒！"
-  ]
+  ],
+  "annotations": {
+   "linking": [
+    {
+     "left": "How's",
+     "right": "it"
+    },
+    {
+     "left": "phone",
+     "right": "on,"
+    },
+    {
+     "left": "thank",
+     "right": "you!"
+    },
+    {
+     "left": "this",
+     "right": "morning."
+    },
+    {
+     "left": "First",
+     "right": "of"
+    },
+    {
+     "left": "of",
+     "right": "all,"
+    },
+    {
+     "left": "received",
+     "right": "it"
+    },
+    {
+     "left": "nothing",
+     "right": "very"
+    },
+    {
+     "left": "nice",
+     "right": "of"
+    },
+    {
+     "left": "best",
+     "right": "and"
+    },
+    {
+     "left": "have",
+     "right": "it"
+    },
+    {
+     "left": "it",
+     "right": "at"
+    },
+    {
+     "left": "lives",
+     "right": "in"
+    },
+    {
+     "left": "lives",
+     "right": "in"
+    },
+    {
+     "left": "pool.",
+     "right": "I'd"
+    },
+    {
+     "left": "in",
+     "right": "a"
+    },
+    {
+     "left": "with",
+     "right": "a"
+    },
+    {
+     "left": "you",
+     "right": "there."
+    },
+    {
+     "left": "you",
+     "right": "the"
+    },
+    {
+     "left": "I'll",
+     "right": "send"
+    },
+    {
+     "left": "fun",
+     "right": "at"
+    },
+    {
+     "left": "straight",
+     "right": "on"
+    },
+    {
+     "left": "Exit",
+     "right": "13A."
+    },
+    {
+     "left": "You",
+     "right": "drive"
+    },
+    {
+     "left": "house",
+     "right": "on"
+    },
+    {
+     "left": "me",
+     "right": "when"
+    },
+    {
+     "left": "up",
+     "right": "in"
+    },
+    {
+     "left": "in",
+     "right": "a"
+    }
+   ],
+   "elision": [
+    {
+     "word": "right?",
+     "char": "ht"
+    },
+    {
+     "word": "That's",
+     "char": "ts"
+    },
+    {
+     "word": "so",
+     "char": "so"
+    },
+    {
+     "word": "best",
+     "char": "es"
+    },
+    {
+     "word": "pool.",
+     "char": "ool"
+    },
+    {
+     "word": "going",
+     "char": "oi"
+    },
+    {
+     "word": "instructions",
+     "char": "u"
+    },
+    {
+     "word": "OK?",
+     "char": "K"
+    },
+    {
+     "word": "hard,",
+     "char": "rd"
+    },
+    {
+     "word": "number",
+     "char": "nu"
+    },
+    {
+     "word": "phone?",
+     "char": "ne"
+    },
+    {
+     "word": "here",
+     "char": "her"
+    },
+    {
+     "word": "car?",
+     "char": "ar"
+    },
+    {
+     "word": "take",
+     "char": "tak"
+    },
+    {
+     "word": "Brownsville",
+     "char": "vill"
+    },
+    {
+     "word": "That's",
+     "char": "ha"
+    },
+    {
+     "word": "right.",
+     "char": "ig"
+    },
+    {
+     "word": "taking",
+     "char": "ing"
+    }
+   ]
+  }
  },
  {
   "mc": "MC30",
@@ -1281,7 +3913,11 @@ window.SHADOWING_DATA = [
    "______！______。",
    "真的吗？",
    "是啊。他太容易______了。我不知道______。"
-  ]
+  ],
+  "annotations": {
+   "linking": [],
+   "elision": []
+  }
  },
  {
   "mc": "MC31",
@@ -1319,7 +3955,11 @@ window.SHADOWING_DATA = [
    "3) 柳井正新的全球战略是在重要城市开设大型门店。",
    "讨论：",
    "你认为优衣库成功的原因是什么？"
-  ]
+  ],
+  "annotations": {
+   "linking": [],
+   "elision": []
+  }
  },
  {
   "mc": "MC32",
@@ -1411,7 +4051,181 @@ window.SHADOWING_DATA = [
    "好的。我很高兴这对你方便。我们真的很需要你到场，而且幸好不用取消会议。",
    "到时见。这段时间祝你周末愉快。",
    "你也是。"
-  ]
+  ],
+  "annotations": {
+   "linking": [
+    {
+     "left": "have",
+     "right": "a"
+    },
+    {
+     "left": "talk",
+     "right": "about"
+    },
+    {
+     "left": "have",
+     "right": "a"
+    },
+    {
+     "left": "bit",
+     "right": "of"
+    },
+    {
+     "left": "of",
+     "right": "a"
+    },
+    {
+     "left": "Would",
+     "right": "it"
+    },
+    {
+     "left": "move",
+     "right": "it?"
+    },
+    {
+     "left": "postpone",
+     "right": "it"
+    },
+    {
+     "left": "make",
+     "right": "it"
+    },
+    {
+     "left": "have",
+     "right": "another"
+    },
+    {
+     "left": "central",
+     "right": "office"
+    },
+    {
+     "left": "office",
+     "right": "at"
+    },
+    {
+     "left": "It's",
+     "right": "important"
+    },
+    {
+     "left": "Thanks",
+     "right": "a"
+    },
+    {
+     "left": "sent",
+     "right": "out?"
+    },
+    {
+     "left": "you",
+     "right": "need"
+    },
+    {
+     "left": "that's",
+     "right": "all"
+    },
+    {
+     "left": "report",
+     "right": "is"
+    },
+    {
+     "left": "Don't",
+     "right": "worry"
+    },
+    {
+     "left": "send",
+     "right": "an"
+    },
+    {
+     "left": "changed",
+     "right": "and"
+    },
+    {
+     "left": "with",
+     "right": "an"
+    },
+    {
+     "left": "Thanks,",
+     "right": "Anna."
+    },
+    {
+     "left": "and",
+     "right": "it's"
+    },
+    {
+     "left": "cancel",
+     "right": "it."
+    },
+    {
+     "left": "Have",
+     "right": "a"
+    },
+    {
+     "left": "weekend",
+     "right": "in"
+    },
+    {
+     "left": "you",
+     "right": "then."
+    }
+   ],
+   "elision": [
+    {
+     "word": "Tuesday?",
+     "char": "ay"
+    },
+    {
+     "word": "minute",
+     "char": "nu"
+    },
+    {
+     "word": "didn't",
+     "char": "dnt"
+    },
+    {
+     "word": "Yeah,",
+     "char": "Ye"
+    },
+    {
+     "word": "it?",
+     "char": "t"
+    },
+    {
+     "word": "example.",
+     "char": "ple"
+    },
+    {
+     "word": "Anna:",
+     "char": "na"
+    },
+    {
+     "word": "What",
+     "char": "Wh"
+    },
+    {
+     "word": "important",
+     "char": "por"
+    },
+    {
+     "word": "Anna.",
+     "char": "nn"
+    },
+    {
+     "word": "preparation?",
+     "char": "n"
+    },
+    {
+     "word": "out?",
+     "char": "t"
+    },
+    {
+     "word": "looking",
+     "char": "ing"
+    },
+    {
+     "word": "invite.",
+     "char": "vit"
+    }
+   ]
+  }
  },
  {
   "mc": "MC33",
@@ -1439,7 +4253,11 @@ window.SHADOWING_DATA = [
    "3.接下来，关于____，你最好……/这",
    "你觉得其他旅行社的哪些建议最有用？4.另一点关于____。你真的应该……/你不必……但最好……/……",
    "5.我们希望这些小贴士能帮助旅行者拥有安全愉快的旅程。感谢收听。"
-  ]
+  ],
+  "annotations": {
+   "linking": [],
+   "elision": []
+  }
  },
  {
   "mc": "MC34",
@@ -1479,7 +4297,11 @@ window.SHADOWING_DATA = [
    "(4) 哪些度假类型中你可以露营？",
    "(5) 哪些度假类型中你可能会登山？",
    "(6) 哪些度假类型中你可能需要特殊的衣物或鞋子？"
-  ]
+  ],
+  "annotations": {
+   "linking": [],
+   "elision": []
+  }
  },
  {
   "mc": "MC35",
@@ -1557,7 +4379,11 @@ window.SHADOWING_DATA = [
    "机场食物",
    "机场购物",
    "机场的舒适与放松"
-  ]
+  ],
+  "annotations": {
+   "linking": [],
+   "elision": []
+  }
  },
  {
   "mc": "MC36",
@@ -1624,7 +4450,121 @@ window.SHADOWING_DATA = [
    "等你做完这些工作、成为公司的风云人物之后，你真的觉得还能有更多时间陪我们吗？还是事情会变得更加失控？",
    "等等。等我到了那个位置、成了老板、百万富翁、大人物，我要做的第一件事就是雇一堆像我一样的笨蛋来替我把活儿全干完。这样一来，你、我和孩子们就能想干啥干啥了。你只要给我点时间。别用那种眼神看我。我只是说说而已。给我点支持，行吗？我爱你。去睡吧。",
    "迈克尔，你好好想想吧。"
-  ]
+  ],
+  "annotations": {
+   "linking": [
+    {
+     "left": "talked",
+     "right": "to"
+    },
+    {
+     "left": "have",
+     "right": "a"
+    },
+    {
+     "left": "Thank",
+     "right": "you"
+    },
+    {
+     "left": "That's",
+     "right": "a"
+    },
+    {
+     "left": "great",
+     "right": "idea."
+    },
+    {
+     "left": "Can",
+     "right": "I"
+    },
+    {
+     "left": "become",
+     "right": "a"
+    },
+    {
+     "left": "us,",
+     "right": "or"
+    },
+    {
+     "left": "have",
+     "right": "any"
+    },
+    {
+     "left": "get",
+     "right": "even"
+    },
+    {
+     "left": "out",
+     "right": "of"
+    },
+    {
+     "left": "for",
+     "right": "us,"
+    },
+    {
+     "left": "When",
+     "right": "I"
+    },
+    {
+     "left": "bunch",
+     "right": "of"
+    },
+    {
+     "left": "think",
+     "right": "about"
+    },
+    {
+     "left": "about",
+     "right": "it,"
+    }
+   ],
+   "elision": [
+    {
+     "word": "Thank",
+     "char": "ha"
+    },
+    {
+     "word": "ask",
+     "char": "as"
+    },
+    {
+     "word": "something?",
+     "char": "s"
+    },
+    {
+     "word": "something?",
+     "char": "g"
+    },
+    {
+     "word": "Yes.",
+     "char": "es"
+    },
+    {
+     "word": "company,",
+     "char": "ny"
+    },
+    {
+     "word": "become",
+     "char": "o"
+    },
+    {
+     "word": "you’re",
+     "char": "ou"
+    },
+    {
+     "word": "control?",
+     "char": "l"
+    },
+    {
+     "word": "do",
+     "char": "d"
+    },
+    {
+     "word": "hell",
+     "char": "hel"
+    }
+   ]
+  }
  },
  {
   "mc": "MC37",
@@ -1680,7 +4620,11 @@ window.SHADOWING_DATA = [
    "以下句子正确还是错误？",
    "1) 21世纪的技能不在英国的学校里教授。 □ 正确 □ 错误",
    "3) 雇主希望员工思考可能出现的问题。 □ 正确 □ 错误 4) 雇主喜欢员工在解决问题时富有创意。 □ 正确 □ 错误 5) 未来的员工需要能够用清晰、简洁的方式写作。 □ 正确 □ 错误 6) 21世纪人们彼此之间的沟通变少了。 □ 正确 □ 错误 7) 雇主不希望员工未经请示就做决定。 □ 正确 □ 错误"
-  ]
+  ],
+  "annotations": {
+   "linking": [],
+   "elision": []
+  }
  },
  {
   "mc": "MC38",
@@ -1837,7 +4781,157 @@ window.SHADOWING_DATA = [
    "哦，抱歉。嗯，嘿，蕾吉娜，照顾好自己。我",
    "哦，我也很好。嗯，你知道，周六是我的生日，我想问问你愿不愿意来参加我的派对。希望下周能见到你。",
    "我也是。[咳嗽] 拜拜。"
-  ]
+  ],
+  "annotations": {
+   "linking": [
+    {
+     "left": "This",
+     "right": "is"
+    },
+    {
+     "left": "think",
+     "right": "I"
+    },
+    {
+     "left": "and",
+     "right": "I"
+    },
+    {
+     "left": "have",
+     "right": "a"
+    },
+    {
+     "left": "party's",
+     "right": "fun."
+    },
+    {
+     "left": "And",
+     "right": "I"
+    },
+    {
+     "left": "wish",
+     "right": "I"
+    },
+    {
+     "left": "but",
+     "right": "I"
+    },
+    {
+     "left": "could,",
+     "right": "but"
+    },
+    {
+     "left": "hope",
+     "right": "so,"
+    },
+    {
+     "left": "class",
+     "right": "on"
+    },
+    {
+     "left": "night",
+     "right": "and"
+    },
+    {
+     "left": "Have",
+     "right": "a"
+    },
+    {
+     "left": "a",
+     "right": "great"
+    },
+    {
+     "left": "have",
+     "right": "a"
+    },
+    {
+     "left": "This",
+     "right": "is"
+    },
+    {
+     "left": "guess",
+     "right": "not."
+    }
+   ],
+   "elision": [
+    {
+     "word": "time?",
+     "char": "e"
+    },
+    {
+     "word": "7:30?",
+     "char": "30"
+    },
+    {
+     "word": "Scott.",
+     "char": "cot"
+    },
+    {
+     "word": "Albert.",
+     "char": "ert"
+    },
+    {
+     "word": "Friday",
+     "char": "r"
+    },
+    {
+     "word": "night",
+     "char": "igh"
+    },
+    {
+     "word": "Monday?",
+     "char": "ay"
+    },
+    {
+     "word": "though,",
+     "char": "ug"
+    },
+    {
+     "word": "Hello?",
+     "char": "llo"
+    },
+    {
+     "word": "Hello?",
+     "char": "llo"
+    },
+    {
+     "word": "Scott.",
+     "char": "ott"
+    },
+    {
+     "word": "Regina?",
+     "char": "na"
+    },
+    {
+     "word": "Hello?",
+     "char": "llo"
+    },
+    {
+     "word": "Regina?",
+     "char": "ina"
+    },
+    {
+     "word": "Albert.",
+     "char": "ert"
+    },
+    {
+     "word": "[coughs]",
+     "char": "g"
+    },
+    {
+     "word": "Hello?",
+     "char": "lo"
+    },
+    {
+     "word": "Fumiko?",
+     "char": "iko"
+    },
+    {
+     "word": "sorry.",
+     "char": "rry"
+    }
+   ]
+  }
  },
  {
   "mc": "MC39",
@@ -1889,7 +4983,125 @@ window.SHADOWING_DATA = [
    "电话簿。我负责监督实体电话簿的印刷。我干了20多年，在那之前，我是他们的销售与广告副总裁。面试官2：所以他们还在印电话簿吗？我的意思是，现在大家不都直接上网搜号码吗？面试官3：你觉得自己10年后会在哪里？",
    "我80岁的时候？面试官3：当然，是啊，随便吧。等等。我没意识到你已经70岁了。这个问题对你不太适用，是吧？我们要不把这个问题划掉，继续往下？",
    "你说了算，贾斯汀。面试官3：好吧，那道题去掉了。顺便说，你看起来气色真好。我是说，真的很好。而且你显然远远超出这份工作的要求，我们印象非常深刻。你面试表现很棒，搞定了，本。恭喜。你被录用为实习生了。"
-  ]
+  ],
+  "annotations": {
+   "linking": [
+    {
+     "left": "not",
+     "right": "at"
+    },
+    {
+     "left": "Class",
+     "right": "of"
+    },
+    {
+     "left": "was",
+     "right": "in"
+    },
+    {
+     "left": "charge",
+     "right": "of"
+    },
+    {
+     "left": "before",
+     "right": "that,"
+    },
+    {
+     "left": "sales",
+     "right": "and"
+    },
+    {
+     "left": "doesn't",
+     "right": "everyone"
+    },
+    {
+     "left": "yourself",
+     "right": "in"
+    },
+    {
+     "left": "When",
+     "right": "I'm"
+    },
+    {
+     "left": "I'm",
+     "right": "80?"
+    },
+    {
+     "left": "3:",
+     "right": "Yeah,"
+    },
+    {
+     "left": "That",
+     "right": "question"
+    },
+    {
+     "left": "does",
+     "right": "it?"
+    },
+    {
+     "left": "move",
+     "right": "on?"
+    },
+    {
+     "left": "nailed",
+     "right": "it,"
+    }
+   ],
+   "elision": [
+    {
+     "word": "intern",
+     "char": "te"
+    },
+    {
+     "word": "your",
+     "char": "ur"
+    },
+    {
+     "word": "Probably",
+     "char": "ro"
+    },
+    {
+     "word": "remember?",
+     "char": "er"
+    },
+    {
+     "word": "Interviewer",
+     "char": "e"
+    },
+    {
+     "word": "and",
+     "char": "nd"
+    },
+    {
+     "word": "their",
+     "char": "eir"
+    },
+    {
+     "word": "phonebooks?",
+     "char": "ks"
+    },
+    {
+     "word": "doesn't",
+     "char": "oe"
+    },
+    {
+     "word": "Interviewer",
+     "char": "ie"
+    },
+    {
+     "word": "numbers?",
+     "char": "rs"
+    },
+    {
+     "word": "Interviewer",
+     "char": "e"
+    },
+    {
+     "word": "on?",
+     "char": "n"
+    }
+   ]
+  }
  },
  {
   "mc": "MC40",
@@ -1911,6 +5123,228 @@ window.SHADOWING_DATA = [
   "translations": [
    "所以，虽然我希望能带来更好的消息，但事实是，今天你和我坐在这里，是因为这将是你在本公司的最后一周。员工1：这太荒谬了！我是个好员工，干了十多年，你们就这么对待我？员工2：你晚上怎么睡得着觉，兄弟？啊？你家还好吗？晚上睡得安稳吗？电还通着吗？暖气还开着吗？冰箱里还有吃的吗？油箱里还有油吗？周末打算带孩子们去Chuck E. Cheese之类的吗？我可不去。不，我的孩子们，我们什么都不会做。员工3：你说我该怎么跟他们说？",
    "也许你低估了职业转变对你孩子的积极影响。员工3：积极影响？我现在一年大概挣9万块。失业金是多少——一周250块？这就是你说的积极影响之一？我们会更“亲密”，因为我付不起房贷了。所以也许我们可以搬进某个不错的一居室公寓。*Chuck E. Cheese是一家美国家庭娱乐中心和连锁餐厅。"
-  ]
+  ],
+  "annotations": {
+   "linking": [
+    {
+     "left": "fact",
+     "right": "is"
+    },
+    {
+     "left": "and",
+     "right": "I"
+    },
+    {
+     "left": "wish",
+     "right": "I"
+    },
+    {
+     "left": "week",
+     "right": "of"
+    },
+    {
+     "left": "be",
+     "right": "your"
+    },
+    {
+     "left": "of",
+     "right": "employment"
+    },
+    {
+     "left": "This",
+     "right": "is"
+    },
+    {
+     "left": "been",
+     "right": "a"
+    },
+    {
+     "left": "this",
+     "right": "is"
+    },
+    {
+     "left": "They",
+     "right": "sleeping"
+    },
+    {
+     "left": "sleep",
+     "right": "at"
+    },
+    {
+     "left": "still",
+     "right": "on?"
+    },
+    {
+     "left": "on?",
+     "right": "Refrigerator"
+    },
+    {
+     "left": "on?",
+     "right": "Refrigerator"
+    },
+    {
+     "left": "still",
+     "right": "on?"
+    },
+    {
+     "left": "full",
+     "right": "of"
+    },
+    {
+     "left": "still",
+     "right": "on?"
+    },
+    {
+     "left": "full",
+     "right": "of"
+    },
+    {
+     "left": "No,",
+     "right": "my"
+    },
+    {
+     "left": "weekend",
+     "right": "or"
+    },
+    {
+     "left": "have",
+     "right": "on"
+    },
+    {
+     "left": "grand",
+     "right": "a"
+    },
+    {
+     "left": "make",
+     "right": "about"
+    },
+    {
+     "left": "about",
+     "right": "90"
+    },
+    {
+     "left": "Employee",
+     "right": "3:"
+    },
+    {
+     "left": "We'll",
+     "right": "get"
+    },
+    {
+     "left": "bucks",
+     "right": "a"
+    },
+    {
+     "left": "one",
+     "right": "of"
+    },
+    {
+     "left": "mortgage",
+     "right": "on"
+    },
+    {
+     "left": "mortgage",
+     "right": "on"
+    },
+    {
+     "left": "move",
+     "right": "into"
+    }
+   ],
+   "elision": [
+    {
+     "word": "company.",
+     "char": "o"
+    },
+    {
+     "word": "been",
+     "char": "be"
+    },
+    {
+     "word": "been",
+     "char": "n"
+    },
+    {
+     "word": "Huh?",
+     "char": "h"
+    },
+    {
+     "word": "man?",
+     "char": "n"
+    },
+    {
+     "word": "night?",
+     "char": "ht"
+    },
+    {
+     "word": "How",
+     "char": "o"
+    },
+    {
+     "word": "sleep",
+     "char": "ee"
+    },
+    {
+     "word": "How's",
+     "char": "ow"
+    },
+    {
+     "word": "at",
+     "char": "at"
+    },
+    {
+     "word": "on?",
+     "char": "n"
+    },
+    {
+     "word": "food?",
+     "char": "od"
+    },
+    {
+     "word": "gas?",
+     "char": "as"
+    },
+    {
+     "word": "something?",
+     "char": "ng"
+    },
+    {
+     "word": "something?",
+     "char": "e"
+    },
+    {
+     "word": "weekend",
+     "char": "e"
+    },
+    {
+     "word": "gonna",
+     "char": "n"
+    },
+    {
+     "word": "do",
+     "char": "d"
+    },
+    {
+     "word": "positive",
+     "char": "ive"
+    },
+    {
+     "word": "effects?",
+     "char": "ct"
+    },
+    {
+     "word": "week?",
+     "char": "eek"
+    },
+    {
+     "word": "to",
+     "char": "to"
+    },
+    {
+     "word": "apartment",
+     "char": "a"
+    }
+   ]
+  }
  }
 ];
