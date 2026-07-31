@@ -5,7 +5,7 @@
 
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta name="build-version" content="20260731-1344">
+<meta name="build-version" content="20260731-1407">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>课后练习 · 英语学习</title>
 <style>
@@ -49,7 +49,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .tbl{width:100%;border-collapse:collapse;margin-bottom:8px}
 .tbl th{font-size:12px;color:#6b7280;text-align:left;padding:6px 8px;border-bottom:2px solid #e5e7eb}
 .tbl td{padding:4px 4px;vertical-align:top}
-.tbl input,.tbl textarea{width:100%;padding:8px 9px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:inherit;background:#fff;resize:vertical;line-height:1.5;overflow:hidden}
+.tbl input,.tbl textarea{width:100%;padding:8px 9px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:inherit;background:#fff;resize:vertical;line-height:1.5;overflow-y:hidden;min-height:38px}
 .tbl input:focus,.tbl textarea:focus{outline:none;border-color:#6366F1;box-shadow:0 0 0 2px #e0e7ff}
 .tbl .del{width:30px;height:30px}
 
@@ -77,7 +77,7 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 </head>
 <body>
 
-<a href="index.html?v=20260731-1344" class="back">← 返回英语学习中心</a>
+<a href="index.html?v=20260731-1407" class="back">← 返回英语学习中心</a>
 
 <div class="topbar">
   <h1>📝 课后练习</h1>
@@ -347,9 +347,9 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
     (data.sentences || []).forEach(function (s, i) {
       var tr = document.createElement('tr');
       var cells = [
-        { key: 'orig', ph: '原句，修正后可覆盖，回车新增行', tag: 'textarea', rows: 2 },
-        { key: 'grammar', ph: '语法解析', tag: 'textarea', rows: 2 },
-        { key: 'trans', ph: '中文翻译', tag: 'textarea', rows: 2 }
+        { key: 'orig', ph: '原句，修正后可覆盖，回车新增行', tag: 'textarea' },
+        { key: 'grammar', ph: '语法解析', tag: 'textarea' },
+        { key: 'trans', ph: '中文翻译', tag: 'textarea' }
       ];
       cells.forEach(function (c) {
         var td = document.createElement('td');
@@ -358,7 +358,7 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
         el.setAttribute('data-i', i);
         el.setAttribute('data-key', c.key);
         el.placeholder = c.ph;
-        if (c.tag === 'textarea') el.rows = c.rows;
+        el.rows = 1; // 初始1行，由 autoResize 撑开
         el.value = s[c.key] || '';
         td.appendChild(el); tr.appendChild(td);
       });
@@ -368,17 +368,18 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
       del.setAttribute('data-del', 'sentences'); del.setAttribute('data-i', i);
       tdDel.appendChild(del); tr.appendChild(tdDel);
       tb.appendChild(tr);
+      // 每行追加后立即调整高度，确保长内容可见
+      tr.querySelectorAll('textarea').forEach(function (ta) { autoResize(ta); });
     });
-    // 自动调整所有 textarea 高度
-    setTimeout(autoResizeAll, 0);
   }
 
   // ===== 自动调整 textarea 高度 =====
   function autoResize(textarea) {
     if (!textarea) return;
+    // 先临时设为 auto，让浏览器计算真实内容高度
     textarea.style.height = 'auto';
     var scrollH = textarea.scrollHeight;
-    var minH = 38; // 最小高度
+    var minH = 38;
     textarea.style.height = Math.max(minH, scrollH) + 'px';
   }
 
