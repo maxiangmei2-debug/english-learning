@@ -5,7 +5,7 @@
 
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta name="build-version" content="20260731-0947">
+<meta name="build-version" content="20260731-1034">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>影子跟读 · 英语学习</title>
 <style>
@@ -53,26 +53,24 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 .translation.show{display:block}
 .translation.empty{color:#9ca3af;background:#f9fafb;border-left-color:#d1d5db}
 /* 单词 / 标注 */
-.w{cursor:pointer;border-radius:4px;padding:0 1px;transition:background .12s;position:relative;display:inline-block}
+.w{cursor:pointer;border-radius:4px;padding:0 1px;transition:background .12s;position:relative;display:inline}
 .w:hover{background:#fde68a}
-/* 连读：两个词之间的弧线 */
-.link-pair{position:relative;display:inline-block;white-space:nowrap}
-.link-pair::after{content:'';position:absolute;left:0;right:0;top:-8px;height:10px;border-top:2px solid #10B981;border-radius:50% 50% 0 0;pointer-events:none;opacity:.85}
-.link-pair .w{padding:0 2px}
-/* 略读：删除线 */
+/* 连读：⌒ 弧线符号（绿色，加粗） */
+.lnk{color:#059669;font-weight:800;font-size:15px;margin:0 1px;vertical-align:baseline;letter-spacing:-1px}
+/* 略读：删除线 + 略标记 */
 .strike{text-decoration:line-through;text-decoration-color:#db2777;text-decoration-thickness:2px;color:#9ca3af}
-/* 语调箭头 */
-.tone{position:relative;display:inline-block;padding-right:14px}
-.tone::after{position:absolute;right:-2px;top:-10px;font-size:14px;font-weight:800}
-.tone.fall::after{content:'↘';color:#3b82f6}
-.tone.rise::after{content:'↗';color:#f59e0b}
-.tone.list::after{content:'↗';color:#a855f7}
+.elide-mark{color:#db2777;font-size:9px;font-weight:800;vertical-align:super;margin-left:1px}
+/* 语调箭头（更大更醒目） */
+.tone{display:inline-block;font-size:16px;font-weight:900;margin-left:2px;vertical-align:baseline}
+.tone.fall{color:#3b82f6}
+.tone.rise{color:#f59e0b}
+.tone.list{color:#a855f7}
 /* 标注图例 */
-.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:#6b7280;margin-top:10px}
-.legend span{display:inline-flex;align-items:center;gap:5px}
-.legend .arc{display:inline-block;width:22px;height:8px;border-top:2px solid #10B981;border-radius:50% 50% 0 0}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:#6b7280;margin-top:10px;padding:8px 12px;background:#f9fafb;border-radius:10px}
+.legend span{display:inline-flex;align-items:center;gap:4px}
+.legend .lnk{font-size:16px}
 .legend .strk{text-decoration:line-through;text-decoration-color:#db2777;text-decoration-thickness:2px;color:#9ca3af}
-.legend .arrow{font-size:14px;font-weight:800}
+.legend .arrow{font-size:16px;font-weight:900}
 .hint{font-size:12px;color:#6b7280;background:#f9fafb;border-left:3px solid #ddd6fe;padding:11px 13px;border-radius:8px;margin-top:12px;line-height:1.8}
 .hint b{color:#6d28d9}
 .empty{color:#9ca3af;font-size:14px;text-align:center;padding:30px}
@@ -83,7 +81,7 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 </head>
 <body>
 
-<a href="index.html?v=20260731-0947" class="back">← 返回英语学习中心</a>
+<a href="index.html?v=20260731-1034" class="back">← 返回英语学习中心</a>
 
 <div class="topbar">
   <h1>🎙️ 影子跟读</h1>
@@ -115,15 +113,15 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 
 <div class="hint">
   💡 <b>怎么用：</b>点每段/每句话右侧的 🔊 喇叭，听一遍再跟着读（影子跟读）；点<b>任意单词</b>可单独听该词。<br>
-  💡 <b>连读 ⌒</b>：前一词尾是辅音、后一词首是元音时自然连读（如 <i>put it on</i>）。<b>略 / 弱</b>：功能词弱读形式或缩略/弱化词（如 <i>I'm、gonna、the→/ðə/</i>）。<br>
+  💡 <b>连读 ⌒</b>：前一词尾辅音 + 后一词首元音时自然连读（如 <i>put⌒it⌒on</i>）。<b>略读</b>：词尾塞音后接辅音时失去爆破（如 <i>wen<t>̶</t> to</i>）。<b>语调 ↗↘</b>：升调↗（一般疑问句）/ 降调↘（陈述句、特殊疑问句）。<br>
   💡 标注为<b>启发式提示</b>，仅供参考；语速调到 <b>0.6–0.8×</b> 更适合模仿跟读。
 </div>
 
 <div id="toast"></div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260731-0947</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260731-1034</div>
 
-<script src="shadowing_data.js?v=20260731-0947"></script>
+<script src="shadowing_data.js?v=20260731-1034"></script>
 <script>
 (function () {
   'use strict';
@@ -197,27 +195,31 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
   function alphaTail(w){ var m = w.match(/[a-zA-Z]+$/); return m ? m[0].toLowerCase() : ''; }
   function alphaHead(w){ var m = w.match(/^[a-zA-Z]+/); return m ? m[0].toLowerCase() : ''; }
 
-  // 连读：前词尾 + 后词首
+  // 连读：前词尾辅音 + 后词首元音 / R连读 / 元音+元音滑音
   function isLink(a, b){
     var A = alphaTail(a), B = alphaHead(b);
     if (!A || !B) return false;
     var aLast = A.slice(-1), bFirst = B[0];
-    if (isCons(aLast) && isVowel(bFirst)) return true;      // C+V
-    if (isVowel(aLast) && isVowel(bFirst)) return true;      // V+V 滑音
+    if (isCons(aLast) && isVowel(bFirst)) return true;      // 辅+元
+    if (isVowel(aLast) && isVowel(bFirst)) return true;      // 元+元 滑音
     if (aLast === 'r' && isVowel(bFirst)) return true;       // R 连读
     return false;
   }
 
-  // 略读：词尾塞音 /t,d,k,g,p,b/ 后接辅音（最常见 n+t 在 n't 中）
-  function unstressedParts(tk){
-    var s = tk.replace(/[\u2019]/g, "'");
-    var parts = [];
-    // n't 中的 t
-    var m = s.match(/^(.*n)('t)$/i);
-    if (m) { parts.push({pre:m[1], strike:m[2]}); return parts; }
-    // 词尾塞音 + 后接辅音（在 render 时由上下文决定，这里只返回候选）
-    if (/[tkdgpbd]$/i.test(s)) parts.push({pre:null, strike:s.slice(-1)});
-    return parts;
+  // 略读（失去爆破）：词尾塞音 /t,d,k,g,p,b/ 后接辅音开头词
+  var STOP_LETTERS = 'tdkgpb';
+  function isUnreleased(tk, nextTk){
+    if (!nextTk) return false;
+    var s = tk.replace(/[’]/g, "'");
+    var clean = s.replace(/[^a-zA-Z']/g, '');
+    if (!clean) return false;
+    var last = clean.slice(-1).toLowerCase();
+    if (STOP_LETTERS.indexOf(last) < 0) return false;
+    if (/n't$/i.test(s)) return false;  // n't 单独处理
+    var nextClean = alphaHead(nextTk);
+    if (!nextClean) return false;
+    var nextFirst = nextClean[0].toLowerCase();
+    return isCons(nextFirst);
   }
 
   function sentenceTone(sentence){
@@ -227,73 +229,73 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
     var first = sentence.split(/\s+/)[0].toLowerCase().replace(/[^a-z]/g,'');
     if (AUX.indexOf(first) >= 0) return 'rise';
     if (WH.indexOf(first) >= 0) return 'fall';
-    // 默认一般疑问句升调
     return 'rise';
   }
 
   function renderUnit(text){
     var toks = text.match(/[\w’']+|[^\w\s]+|\s+/g) || [text];
-    // 第一遍：识别每个 token 属性
     var info = [];
-    var prevWord = null;
+    var prevWordIdx = -1;
     for (var i=0;i<toks.length;i++){
       var tk = toks[i];
-      var inf = {tk:tk, isWord:false, clean:'', linkPrev:false, linkNext:false};
+      var inf = {tk:tk, isWord:false, clean:'', linkWithPrev:false, unreleased:false, nextWordTk:''};
       if (/^[\w’']+$/.test(tk)) {
         inf.isWord = true;
-        inf.clean = tk.toLowerCase().replace(/[^a-z’]/g,'').replace(/’/g,"'");
-        if (annotate && prevWord && isLink(prevWord.tk, tk)) {
-          inf.linkPrev = true;
-          prevWord.linkNext = true;
+        inf.clean = tk.toLowerCase().replace(/[^a-z’']/g,'').replace(/’/g, "'");
+        if (annotate && prevWordIdx >= 0 && isLink(toks[prevWordIdx], tk)) {
+          inf.linkWithPrev = true;
         }
-        prevWord = inf;
-      } else if (/[.!?]/.test(tk)) {
-        prevWord = null;
+        for (var j=i+1;j<toks.length;j++){
+          if (/^[\w’']+$/.test(toks[j])) { inf.nextWordTk = toks[j]; break; }
+        }
+        if (annotate && isUnreleased(tk, inf.nextWordTk)) {
+          inf.unreleased = true;
+        }
+        prevWordIdx = i;
+        info.push(inf);
+      } else {
+        if (/[.!?]/.test(tk)) prevWordIdx = -1;
+        info.push(inf);
       }
-      info.push(inf);
     }
-    // 第二遍：渲染
     var out = '';
-    var pairOpen = false;
     for (var i=0;i<info.length;i++){
       var inf = info[i];
       var tk = inf.tk;
       if (/^\s+$/.test(tk)) { out += tk; continue; }
       if (!inf.isWord) {
-        // 标点的语调
         if (annotate && /[.!?]/.test(tk)) {
           var tone = sentenceTone(text);
           out += '<span class="tone ' + tone + '">' + esc(tk) + '</span>';
         } else {
           out += esc(tk);
         }
-        if (/[.!?]/.test(tk)) { if (pairOpen) { out += '</span>'; pairOpen = false; } }
         continue;
       }
-      // 单词渲染
-      var wordHtml = renderWord(tk, inf.clean);
-      if (annotate && inf.linkNext && !pairOpen) {
-        out += '<span class="link-pair">' + wordHtml;
-        pairOpen = true;
-      } else if (annotate && inf.linkPrev && pairOpen) {
-        out += wordHtml + '</span>';
-        pairOpen = false;
-      } else {
-        if (pairOpen) { out += '</span>'; pairOpen = false; }
-        out += wordHtml;
+      // 连读弧线：在连读词之间插入 ⌒
+      if (annotate && inf.linkWithPrev) {
+        out += '<span class="lnk" title="连读 Linking">⌒</span>';
       }
+      out += renderWord(tk, inf.clean, inf.unreleased);
     }
-    if (pairOpen) out += '</span>';
     return out;
   }
 
-  function renderWord(tk, clean){
+  function renderWord(tk, clean, unreleased){
     var html = esc(tk);
     if (!annotate) return '<span class="w" data-w="' + esc(clean) + '">' + html + '</span>';
-    // 略读：n't
-    var s = tk.replace(/[\u2019]/g, "'");
+    var s = tk.replace(/[’]/g, "'");
+    // 略读1：n't 中的 t
     if (/n't$/i.test(s)) {
-      html = esc(s.slice(0, -1)) + '<span class="strike">' + esc(s.slice(-1)) + '</span>';
+      html = esc(s.slice(0, -2)) + '<span class="strike">' + esc(s.slice(-2)) + '</span>';
+      return '<span class="w" data-w="' + esc(clean) + '">' + html + '</span>';
+    }
+    // 略读2：词尾塞音失去爆破
+    if (unreleased) {
+      var last = s.slice(-1);
+      var rest = s.slice(0, -1);
+      html = esc(rest) + '<span class="strike">' + esc(last) + '</span><sup class="elide-mark">略</sup>';
+      return '<span class="w" data-w="' + esc(clean) + '">' + html + '</span>';
     }
     return '<span class="w" data-w="' + esc(clean) + '">' + html + '</span>';
   }
@@ -366,7 +368,7 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
     if (annotate) {
       var legend = document.createElement('div');
       legend.className = 'legend';
-      legend.innerHTML = '<span><i class="arc"></i> 连读 Linking</span><span><i class="strk">t</i> 略读 Unreleased</span><span><i class="arrow" style="color:#3b82f6">↘</i> 降调 <i class="arrow" style="color:#f59e0b">↗</i> 升调</span>';
+      legend.innerHTML = '<span><i class="lnk">⌒</i> 连读 Linking</span><span><i class="strk">t</i><sup class="elide-mark">略</sup> 略读 Unreleased</span><span><i class="arrow" style="color:#3b82f6">↘</i> 降调 <i class="arrow" style="color:#f59e0b">↗</i> 升调</span>';
       box.appendChild(legend);
     }
   }
