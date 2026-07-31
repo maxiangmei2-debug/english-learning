@@ -5,7 +5,7 @@
 
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta name="build-version" content="20260731-1034">
+<meta name="build-version" content="20260731-1344">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>课后练习 · 英语学习</title>
 <style>
@@ -31,12 +31,28 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .del:hover{background:#fecaca}
 .addbtn{background:#eef2ff;color:#4f46e5;border:none;border-radius:10px;padding:7px 14px;font-size:13px;font-weight:600;cursor:pointer;margin-top:2px}
 .addbtn:hover{background:#e0e7ff}
+
+/* === 紧凑 chip/tag 布局（词汇/短语） === */
+.tag-wrap{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:38px;padding:4px 0}
+.tag{display:inline-flex;align-items:center;gap:4px;background:#ede9fe;color:#6d28d9;border:1px solid #ddd6fe;border-radius:999px;padding:5px 10px 5px 12px;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s,border-color .15s;max-width:100%}
+.tag:hover{background:#ddd6fe;border-color:#c4b5fd}
+.tag .tag-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px}
+.tag .tag-del{background:none;border:none;color:#a78bfa;font-size:15px;cursor:pointer;padding:0 2px;line-height:1;font-weight:700;flex:0 0 auto}
+.tag .tag-del:hover{color:#dc2626}
+.tag-editing{background:#fff !important;border-color:#6366F1 !important;padding:3px 8px;border-radius:12px}
+.tag-editing input{border:none;outline:none;background:transparent;font-size:13px;font-weight:600;color:#1f2937;font-family:inherit;width:100%;min-width:60px;padding:2px 0}
+.tag-add-input{background:#f9fafb;border:1px dashed #c7d2fe;border-radius:999px;padding:5px 12px;font-size:13px;font-family:inherit;color:#4338ca;outline:none;min-width:100px;flex:0 1 140px}
+.tag-add-input:focus{border-color:#6366F1;background:#fff;box-shadow:0 0 0 3px #e0e7ff}
+.tag-add-input::placeholder{color:#a5b4fc}
+
+/* === 句子表格 === */
 .tbl{width:100%;border-collapse:collapse;margin-bottom:8px}
 .tbl th{font-size:12px;color:#6b7280;text-align:left;padding:6px 8px;border-bottom:2px solid #e5e7eb}
 .tbl td{padding:4px 4px;vertical-align:top}
-.tbl input,.tbl textarea{width:100%;padding:8px 9px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:inherit;background:#fff;resize:vertical;line-height:1.5}
+.tbl input,.tbl textarea{width:100%;padding:8px 9px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:inherit;background:#fff;resize:vertical;line-height:1.5;overflow:hidden}
 .tbl input:focus,.tbl textarea:focus{outline:none;border-color:#6366F1;box-shadow:0 0 0 2px #e0e7ff}
 .tbl .del{width:30px;height:30px}
+
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
 .chip{background:#ede9fe;color:#6d28d9;border:1px solid #ddd6fe;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer}
 .chip:hover{background:#ddd6fe}
@@ -52,12 +68,16 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 .empty{color:#9ca3af;font-size:13px;text-align:center;padding:14px}
 #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 18px;border-radius:12px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:99999}
 #toast.show{opacity:.95}
-@media(max-width:560px){.topbar h1{font-size:18px}}
+@media(max-width:560px){
+  .topbar h1{font-size:18px}
+  .tag .tag-text{max-width:120px}
+  .tag-add-input{min-width:80px;flex:1 1 100px}
+}
 </style>
 </head>
 <body>
 
-<a href="index.html?v=20260731-1034" class="back">← 返回英语学习中心</a>
+<a href="index.html?v=20260731-1344" class="back">← 返回英语学习中心</a>
 
 <div class="topbar">
   <h1>📝 课后练习</h1>
@@ -84,14 +104,12 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 
   <div class="subsec">
     <div class="t">① Useful Vocabularies &amp; Phrases（实用词汇 / 短语）</div>
-    <div id="sec-vocab"></div>
-    <button class="addbtn" data-add="vocab">＋ 添加一行</button>
+    <div class="tag-wrap" id="sec-vocab"></div>
   </div>
 
   <div class="subsec">
     <div class="t">② Useful Sentence patterns（实用句型）</div>
-    <div id="sec-patterns"></div>
-    <button class="addbtn" data-add="patterns">＋ 添加一行</button>
+    <div class="tag-wrap" id="sec-patterns"></div>
   </div>
 
   <div class="subsec">
@@ -110,7 +128,7 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 <!-- 板块二：句子提取与解析 -->
 <div class="card">
   <h2>🔍 句子提取与解析</h2>
-  <div class="sub">来自《练习》：手写/精读句子提取后，逐句做语法解析与翻译。可无限追加。</div>
+  <div class="sub">来自《练习》：手写/精读句子提取后，逐句做语法解析与翻译。可无限追加。回车自动新增一行。</div>
   <table class="tbl">
     <thead>
       <tr><th style="width:30%">原句 / 修正后</th><th style="width:35%">语法解析</th><th style="width:30%">中文翻译</th><th style="width:5%"></th></tr>
@@ -140,6 +158,7 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
   'use strict';
   var KEY = 'english_practice';
   var LIST_FIELDS = ['vocab', 'patterns', 'mainIdeas', 'opinions'];
+  var TAG_FIELDS = ['vocab', 'patterns']; // 使用紧凑 chip 布局的字段
 
   function loadAll() { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { return {}; } }
   function saveAll(o) { localStorage.setItem(KEY, JSON.stringify(o)); }
@@ -166,7 +185,6 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
     renderChips();
   }
 
-  // 保证每个列表至少有一行占位，方便输入
   function ensurePlaceholder() {
     LIST_FIELDS.forEach(function (f) {
       if (!Array.isArray(data[f]) || data[f].length === 0) data[f] = [''];
@@ -175,10 +193,124 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
   }
 
   function renderAll() {
-    LIST_FIELDS.forEach(function (f) { renderList(f); });
+    LIST_FIELDS.forEach(function (f) {
+      if (TAG_FIELDS.indexOf(f) >= 0) renderTags(f);
+      else renderList(f);
+    });
     renderSentences();
   }
 
+  // ===== 紧凑 chip/tag 布局渲染（vocab, patterns） =====
+  function renderTags(field) {
+    var box = $('sec-' + field);
+    box.innerHTML = '';
+    var arr = data[field] || [];
+    arr.forEach(function (val, i) {
+      if (!val && !val.trim()) return; // 跳过空占位
+      var tag = document.createElement('span');
+      tag.className = 'tag';
+      tag.setAttribute('data-field', field);
+      tag.setAttribute('data-i', i);
+      var txt = document.createElement('span');
+      txt.className = 'tag-text';
+      txt.textContent = val;
+      txt.title = val; // 长内容悬停可看全
+      var del = document.createElement('button');
+      del.className = 'tag-del';
+      del.type = 'button';
+      del.textContent = '×';
+      del.setAttribute('data-tag-del', field);
+      del.setAttribute('data-i', i);
+      tag.appendChild(txt);
+      tag.appendChild(del);
+      // 点击文字进入编辑模式
+      tag.addEventListener('click', function (e) {
+        if (e.target.classList.contains('tag-del')) return;
+        startTagEdit(tag, field, i);
+      });
+      box.appendChild(tag);
+    });
+    // 末尾添加输入框
+    var addInput = document.createElement('input');
+    addInput.type = 'text';
+    addInput.className = 'tag-add-input';
+    addInput.placeholder = placeholderFor(field);
+    addInput.setAttribute('data-tag-add', field);
+    box.appendChild(addInput);
+  }
+
+  function startTagEdit(tag, field, i) {
+    if (tag.classList.contains('tag-editing')) return;
+    var val = data[field][i] || '';
+    tag.classList.add('tag-editing');
+    tag.innerHTML = '';
+    var inp = document.createElement('input');
+    inp.type = 'text';
+    inp.value = val;
+    inp.setAttribute('data-field', field);
+    inp.setAttribute('data-i', i);
+    tag.appendChild(inp);
+    inp.focus();
+    inp.select();
+    // 回车或失焦完成编辑
+    inp.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        data[field][i] = inp.value;
+        if (inp.value.trim()) {
+          // 在当前标签后插入新输入框的值并新建标签
+          renderTags(field);
+          scheduleSave();
+          // 聚焦到添加输入框
+          var addInp = $('sec-' + field).querySelector('.tag-add-input');
+          if (addInp) addInp.focus();
+        } else {
+          // 空值则删除
+          data[field].splice(i, 1);
+          renderTags(field);
+          scheduleSave();
+        }
+      } else if (e.key === 'Escape') {
+        renderTags(field);
+      } else if (e.key === 'Tab') {
+        data[field][i] = inp.value;
+        if (!inp.value.trim()) { data[field].splice(i, 1); }
+        renderTags(field);
+        scheduleSave();
+        // Tab 跳到添加输入框
+        var addInp = $('sec-' + field).querySelector('.tag-add-input');
+        if (addInp) { e.preventDefault(); addInp.focus(); }
+      } else if (e.key === 'Backspace' && inp.value === '') {
+        // 空内容按退格删除此标签
+        e.preventDefault();
+        data[field].splice(i, 1);
+        renderTags(field);
+        scheduleSave();
+        // 聚焦到上一个标签或添加输入框
+        var box = $('sec-' + field);
+        var tags = box.querySelectorAll('.tag');
+        if (tags.length > 0) {
+          startTagEdit(tags[tags.length - 1], field, parseInt(tags[tags.length - 1].getAttribute('data-i'), 10));
+        } else {
+          var addInp = box.querySelector('.tag-add-input');
+          if (addInp) addInp.focus();
+        }
+      }
+    });
+    inp.addEventListener('blur', function () {
+      // 延迟处理，避免与回车冲突
+      setTimeout(function () {
+        if (tag.classList.contains('tag-editing')) {
+          data[field][i] = inp.value;
+          if (!inp.value.trim()) { data[field].splice(i, 1); }
+          renderTags(field);
+          scheduleSave();
+        }
+      }, 100);
+    });
+  }
+
+  // ===== 普通行布局渲染（mainIdeas, opinions） =====
   function renderList(field) {
     var box = $('sec-' + field);
     box.innerHTML = '';
@@ -201,20 +333,21 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 
   function placeholderFor(field) {
     return ({
-      vocab: '如：sustainable / make a difference',
-      patterns: '如：It is + adj. + to do',
-      mainIdeas: '关键词即可，如：环保 / 个人责任',
-      opinions: '关键词即可，如：我同意因为…'
+      vocab: '如：sustainable / make a difference，回车添加',
+      patterns: '如：It is + adj. + to do，回车添加',
+      mainIdeas: '关键词即可，如：环保 / 个人责任，回车添加',
+      opinions: '关键词即可，如：我同意因为…，回车添加'
     })[field] || '';
   }
 
+  // ===== 句子表格渲染 =====
   function renderSentences() {
     var tb = $('sec-sentences');
     tb.innerHTML = '';
     (data.sentences || []).forEach(function (s, i) {
       var tr = document.createElement('tr');
       var cells = [
-        { key: 'orig', ph: '原句，修正后可覆盖', tag: 'textarea', rows: 2 },
+        { key: 'orig', ph: '原句，修正后可覆盖，回车新增行', tag: 'textarea', rows: 2 },
         { key: 'grammar', ph: '语法解析', tag: 'textarea', rows: 2 },
         { key: 'trans', ph: '中文翻译', tag: 'textarea', rows: 2 }
       ];
@@ -235,6 +368,23 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
       del.setAttribute('data-del', 'sentences'); del.setAttribute('data-i', i);
       tdDel.appendChild(del); tr.appendChild(tdDel);
       tb.appendChild(tr);
+    });
+    // 自动调整所有 textarea 高度
+    setTimeout(autoResizeAll, 0);
+  }
+
+  // ===== 自动调整 textarea 高度 =====
+  function autoResize(textarea) {
+    if (!textarea) return;
+    textarea.style.height = 'auto';
+    var scrollH = textarea.scrollHeight;
+    var minH = 38; // 最小高度
+    textarea.style.height = Math.max(minH, scrollH) + 'px';
+  }
+
+  function autoResizeAll() {
+    document.querySelectorAll('.tbl textarea').forEach(function (ta) {
+      autoResize(ta);
     });
   }
 
@@ -262,7 +412,17 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 
   // 从 DOM 收集并清洗数据
   function collect() {
-    LIST_FIELDS.forEach(function (f) {
+    TAG_FIELDS.forEach(function (f) {
+      // 标签模式：从 data 数组直接收集（编辑时已同步）
+      // 但也要检查是否有正在编辑的 input
+      var editingInp = $('sec-' + f).querySelector('.tag-editing input[data-field="' + f + '"]');
+      if (editingInp) {
+        var idx = parseInt(editingInp.getAttribute('data-i'), 10);
+        if (idx < data[f].length) data[f][idx] = editingInp.value;
+      }
+      data[f] = data[f].filter(function (v) { return (v || '').trim(); });
+    });
+    ['mainIdeas', 'opinions'].forEach(function (f) {
       var arr = [];
       $('sec-' + f).querySelectorAll('input[data-field="' + f + '"]').forEach(function (inp) {
         arr[parseInt(inp.getAttribute('data-i'), 10)] = inp.value;
@@ -300,18 +460,87 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
   function switchLesson(lesson) {
     lesson = (lesson || '').trim();
     if (!lesson) return;
-    if (lesson === current) return; // 同一课号不重复加载/重渲染，避免破坏正在输入的字段
-    if (current) persist(); // 先存当前
+    if (lesson === current) return;
+    if (current) persist();
     $('lesson').value = lesson;
     loadLesson(lesson);
   }
 
-  // 事件委托：输入 -> 收集 -> 防抖保存
+  // ===== 事件委托 =====
+
+  // 1. 输入 -> 收集 -> 防抖保存
   document.body.addEventListener('input', function (e) {
     var el = e.target;
+    // textarea 自动调整高度
+    if (el.tagName === 'TEXTAREA' && el.closest('.tbl')) {
+      autoResize(el);
+    }
     if (el.matches && el.matches('[data-field]')) scheduleSave();
   });
-  // 删除行
+
+  // 2. 回车键：普通行输入框 -> 新增一行并聚焦
+  document.body.addEventListener('keydown', function (e) {
+    var el = e.target;
+
+    // 2a. 标签添加输入框：回车添加新标签
+    if (el.classList.contains('tag-add-input')) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        var field = el.getAttribute('data-tag-add');
+        var val = el.value.trim();
+        if (val) {
+          data[field].push(val);
+          el.value = '';
+          renderTags(field);
+          scheduleSave();
+          // 重新聚焦到添加输入框
+          var newAddInp = $('sec-' + field).querySelector('.tag-add-input');
+          if (newAddInp) newAddInp.focus();
+        }
+      }
+      return;
+    }
+
+    // 2b. 普通行输入框（mainIdeas, opinions）：回车新增一行
+    if (el.tagName === 'INPUT' && el.getAttribute('data-field') && TAG_FIELDS.indexOf(el.getAttribute('data-field')) < 0) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        var field = el.getAttribute('data-field');
+        var idx = parseInt(el.getAttribute('data-i'), 10);
+        data[field][idx] = el.value;
+        // 在当前行后插入新空行
+        data[field].splice(idx + 1, 0, '');
+        renderList(field);
+        scheduleSave();
+        // 聚焦到新行
+        var newInp = $('sec-' + field).querySelector('input[data-i="' + (idx + 1) + '"]');
+        if (newInp) newInp.focus();
+      }
+    }
+
+    // 2c. 句子表格 textarea：回车新增一行（Ctrl+Enter 或在非空行末尾按 Enter）
+    if (el.tagName === 'TEXTAREA' && el.getAttribute('data-field') === 'sentences') {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        // Shift+Enter 换行，Enter 新增一行
+        var idx = parseInt(el.getAttribute('data-i'), 10);
+        var key = el.getAttribute('data-key');
+        // 如果是原句列，回车新增一行
+        if (key === 'orig') {
+          e.preventDefault();
+          data.sentences[idx][key] = el.value;
+          data.sentences.splice(idx + 1, 0, blankSentence());
+          renderSentences();
+          scheduleSave();
+          // 聚焦新行的原句列
+          var newTa = $('sec-sentences').querySelector('tr:nth-child(' + (idx + 2) + ') textarea[data-key="orig"]');
+          if (newTa) newTa.focus();
+        }
+        // 其他列（语法/翻译）的 Enter 允许换行（默认行为）
+      }
+    }
+  });
+
+  // 3. 删除行
   document.body.addEventListener('click', function (e) {
     var del = e.target;
     if (del.matches && del.matches('.del')) {
@@ -320,6 +549,16 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
       if (field === 'sentences') data.sentences.splice(i, 1);
       else { data[field].splice(i, 1); if (data[field].length === 0) data[field] = ['']; }
       if (field === 'sentences') renderSentences(); else renderList(field);
+      scheduleSave();
+      return;
+    }
+    // 标签删除
+    var tagDel = e.target;
+    if (tagDel.matches && tagDel.matches('.tag-del')) {
+      var field = tagDel.getAttribute('data-tag-del');
+      var i = parseInt(tagDel.getAttribute('data-i'), 10);
+      data[field].splice(i, 1);
+      renderTags(field);
       scheduleSave();
       return;
     }
