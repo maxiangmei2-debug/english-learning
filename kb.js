@@ -126,9 +126,12 @@
   function isTestable(e) {
     if (e.noTest) return false;
     var m = (e.meaning || '').trim();
+    var c = (e.content || '').trim();
     if (!m || m === '（释义）') return false;               // 无释义或占位符，无法出“意思是？”题
     if (e.type === 'grammar') return false;                // 语法规则/搭配模板不适合当前选择题形式
-    if (/[→＋+\：]/.test(e.content || '')) return false;    // 变形/组合规则也跳过
+    if (/[→＋+\：]/.test(c)) return false;                  // 变形/组合规则也跳过
+    if (/[\u4e00-\u9fff]/.test(c)) return false;            // 内容含中文：不适合出“英文→中文”选择题
+    if (/[\u4e00-\u9fff]/.test(m) && /[a-zA-Z]/.test(m) && m.length < 6) return false; // 释义是中英混杂的占位/规则
     return true;
   }
   function applyToTestMaster() {
@@ -136,13 +139,20 @@
     var lv = (function () { try { return localStorage.getItem('english_level') === 'B2' ? 'B2' : 'B1'; } catch (e) { return 'B1'; } })();
     var entries = getEntriesByLevel(lv).filter(isTestable);
     if (!entries.length) return;
-    var allMeanings = entries.map(function (e) { return e.meaning || '（释义）'; });
     entries.forEach(function (e) {
       var cat = CAT_MAP[e.type];
       if (!cat || !Q[cat]) return;
       var correct = e.meaning || '（释义）';
-      var distract = unique(shuffle(allMeanings.filter(function (m) { return m !== correct; }))).slice(0, 3);
-      while (distract.length < 3) distract.push('（其他知识点）');
+      // 干扰项只从同类型条目里选，避免“月份”混进“搭配”题
+      var sameType = entries.filter(function (x) { return x.type === e.type && x.meaning !== correct; });
+      var distract = unique(shuffle(sameType.map(function (x) { return x.meaning; }))).slice(0, 3);
+      // 兜底：从同分类已有题目里借用释义（避免 placeholder 选项）
+      if (distract.length < 3) {
+        var pool = (Q[cat] || []).filter(function (q) { return q.ans !== undefined && q.opts && q.opts.length >= 4; });
+        var extra = unique(shuffle(pool.map(function (q) { return q.opts[q.ans]; }).filter(function (m) { return m && m !== correct; }))).slice(0, 3 - distract.length);
+        distract = distract.concat(extra);
+      }
+      while (distract.length < 3) distract.push('（其他' + (TYPE_NAME[e.type] || '知识点') + '）');
       var opts = unique(shuffle([correct].concat(distract)));
       var ans = opts.indexOf(correct);
       var qObj = {
@@ -160,6 +170,8 @@
       for (var k = 0; k < Q[cat].length; k++) { if (Q[cat][k].id === qObj.id) { ex = k; break; } }
       if (ex >= 0) Q[cat][ex] = qObj; else Q[cat].push(qObj);
     });
+    // KB 注入完成后，再用测试达人的坏题过滤器清一遍（处理中文 content / 干扰项错乱）
+    try { if (typeof window.filterBadQuestions === 'function') window.filterBadQuestions(); } catch (e) {}
   }
   function buildExplain(e) {
     var s = '【我的知识库】<br>';

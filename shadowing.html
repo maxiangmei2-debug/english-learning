@@ -5,7 +5,7 @@
 
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta name="build-version" content="20260730-1503">
+<meta name="build-version" content="20260731-0913">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>影子跟读 · 英语学习</title>
 <style>
@@ -48,15 +48,31 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 .speaker.alt{background:#6366F1}
 .bubble{background:#f5f3ff;border:1px solid #ede9fe;border-radius:14px;padding:10px 14px;line-height:1.95;font-size:16px}
 .divider{text-align:center;color:#9ca3af;font-size:12px;font-weight:700;letter-spacing:1px;margin:10px 0;padding:6px;background:#f9fafb;border-radius:10px}
+/* 翻译 */
+.translation{display:none;font-size:14px;color:#4b5563;background:#f0fdfa;border-left:3px solid #14b8a6;padding:9px 12px;border-radius:8px;margin-top:6px;line-height:1.75}
+.translation.show{display:block}
+.translation.empty{color:#9ca3af;background:#f9fafb;border-left-color:#d1d5db}
 /* 单词 / 标注 */
-.w{cursor:pointer;border-radius:4px;padding:0 1px;transition:background .12s}
+.w{cursor:pointer;border-radius:4px;padding:0 1px;transition:background .12s;position:relative;display:inline-block}
 .w:hover{background:#fde68a}
-.lnk{color:#f59e0b;font-weight:700;font-size:13px;margin:0 -1px;cursor:help}
-.elide{color:#db2777;border-bottom:2px dotted #f9a8d4}
-.weak{color:#94a3b8;font-style:italic}
-.mk{font-size:9px;font-weight:700;color:#fff;border-radius:6px;padding:0 4px;margin-left:1px;vertical-align:super;font-style:normal}
-.mk.r{background:#db2777}
-.mk.w{background:#94a3b8}
+/* 连读：两个词之间的弧线 */
+.link-pair{position:relative;display:inline-block;white-space:nowrap}
+.link-pair::after{content:'';position:absolute;left:0;right:0;top:-8px;height:10px;border-top:2px solid #10B981;border-radius:50% 50% 0 0;pointer-events:none;opacity:.85}
+.link-pair .w{padding:0 2px}
+/* 略读：删除线 */
+.strike{text-decoration:line-through;text-decoration-color:#db2777;text-decoration-thickness:2px;color:#9ca3af}
+/* 语调箭头 */
+.tone{position:relative;display:inline-block;padding-right:14px}
+.tone::after{position:absolute;right:-2px;top:-10px;font-size:14px;font-weight:800}
+.tone.fall::after{content:'↘';color:#3b82f6}
+.tone.rise::after{content:'↗';color:#f59e0b}
+.tone.list::after{content:'↗';color:#a855f7}
+/* 标注图例 */
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:#6b7280;margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend .arc{display:inline-block;width:22px;height:8px;border-top:2px solid #10B981;border-radius:50% 50% 0 0}
+.legend .strk{text-decoration:line-through;text-decoration-color:#db2777;text-decoration-thickness:2px;color:#9ca3af}
+.legend .arrow{font-size:14px;font-weight:800}
 .hint{font-size:12px;color:#6b7280;background:#f9fafb;border-left:3px solid #ddd6fe;padding:11px 13px;border-radius:8px;margin-top:12px;line-height:1.8}
 .hint b{color:#6d28d9}
 .empty{color:#9ca3af;font-size:14px;text-align:center;padding:30px}
@@ -67,7 +83,7 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 </head>
 <body>
 
-<a href="index.html?v=20260730-1503" class="back">← 返回英语学习中心</a>
+<a href="index.html?v=20260731-0913" class="back">← 返回英语学习中心</a>
 
 <div class="topbar">
   <h1>🎙️ 影子跟读</h1>
@@ -82,7 +98,8 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 <div class="toolbar">
   <button class="btn btn-purple" id="btnReadAll">🔊 朗读全文</button>
   <button class="btn btn-line" id="btnStop">⏹ 停止</button>
-  <label class="toggle"><input type="checkbox" id="annChk"> 🏷️ 连读/略读标注</label>
+  <button class="btn btn-line" id="btnTrans">🌐 显示翻译</button>
+  <label class="toggle"><input type="checkbox" id="annChk"> 🏷️ 连读/略读/语调</label>
   <div class="ratewrap">
     <span>语速</span>
     <input type="range" id="rate" min="0.5" max="1" step="0.05" value="0.8">
@@ -104,9 +121,9 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 
 <div id="toast"></div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260730-1503</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260731-0913</div>
 
-<script src="shadowing_data.js?v=20260730-1503"></script>
+<script src="shadowing_data.js?v=20260731-0913"></script>
 <script>
 (function () {
   'use strict';
@@ -168,64 +185,133 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
   }
 
   // ---------- 标注 ----------
-  // 弱读功能词（句中非句首时标记「弱」）
-  var WEAK = {};
-  ('the a an and but or for of to from that which as at by in on with he she we you they them his her us '
-   + 'be been am are is was were has have had do does did can could shall should would must your my our their '
-   + 'me him this these those there some any no not so than then into over under out up off').split(' ').forEach(function(w){ if(w) WEAK[w]=1; });
-  // 强弱化词（标记「略」）
-  var REDUCTIONS = {};
-  ('gonna wanna gotta kinda sorta lotta outta lemme gimme dunno cause cos cos tryna').split(' ').forEach(function(w){ if(w) REDUCTIONS[w]=1; });
+  function esc(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-  function isReduction(w){
-    var s = w.replace(/[\u2019]/g, "'");
-    if (REDUCTIONS[s]) return true;
-    return /[a-z]+'(s|re|ve|ll|d|t|m)$/i.test(s);
-  }
-  // 连读启发式：a 词尾辅音 + b 词首元音（含 r 连读 / 元音+元音 滑音）
+  var VOWELS = 'aeiouy';
+  var CONS   = 'bcdfghjklmnpqrstvwxz';
+  var AUX    = 'am is are was were be been being do does did have has had can could will would shall should may might must'.split(' ');
+  var WH     = 'what which who whom whose where when why how'.split(' ');
+
+  function isVowel(c){ return VOWELS.indexOf(c) >= 0; }
+  function isCons(c){ return CONS.indexOf(c) >= 0; }
+  function alphaTail(w){ var m = w.match(/[a-zA-Z]+$/); return m ? m[0].toLowerCase() : ''; }
+  function alphaHead(w){ var m = w.match(/^[a-zA-Z]+/); return m ? m[0].toLowerCase() : ''; }
+
+  // 连读：前词尾 + 后词首
   function isLink(a, b){
-    a = a.toLowerCase().replace(/[^a-z]/g,''); b = b.toLowerCase().replace(/[^a-z]/g,'');
-    if (!a || !b) return false;
-    var aLast = a.slice(-1), bFirst = b[0];
-    var aVowelEnd = 'aeiouy'.indexOf(aLast) >= 0;
-    var bVowelStart = 'aeiou'.indexOf(bFirst) >= 0;
-    var aConsEnd = 'bcdfghjklmnpqrstvwxz'.indexOf(aLast) >= 0
-                || (/[^aeiou]e$/.test(a) && a.length > 2); // 词尾静音 e，前面辅音成尾音
-    if (aConsEnd && bVowelStart) return true;
-    if (aVowelEnd && bVowelStart) return true; // 元音+元音 滑音连读
+    var A = alphaTail(a), B = alphaHead(b);
+    if (!A || !B) return false;
+    var aLast = A.slice(-1), bFirst = B[0];
+    if (isCons(aLast) && isVowel(bFirst)) return true;      // C+V
+    if (isVowel(aLast) && isVowel(bFirst)) return true;      // V+V 滑音
+    if (aLast === 'r' && isVowel(bFirst)) return true;       // R 连读
     return false;
   }
 
-  function esc(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  // 略读：词尾塞音 /t,d,k,g,p,b/ 后接辅音（最常见 n+t 在 n't 中）
+  function unstressedParts(tk){
+    var s = tk.replace(/[\u2019]/g, "'");
+    var parts = [];
+    // n't 中的 t
+    var m = s.match(/^(.*n)('t)$/i);
+    if (m) { parts.push({pre:m[1], strike:m[2]}); return parts; }
+    // 词尾塞音 + 后接辅音（在 render 时由上下文决定，这里只返回候选）
+    if (/[tkdgpbd]$/i.test(s)) parts.push({pre:null, strike:s.slice(-1)});
+    return parts;
+  }
+
+  function sentenceTone(sentence){
+    sentence = sentence.trim();
+    var last = sentence.slice(-1);
+    if (last !== '?') return 'fall';
+    var first = sentence.split(/\s+/)[0].toLowerCase().replace(/[^a-z]/g,'');
+    if (AUX.indexOf(first) >= 0) return 'rise';
+    if (WH.indexOf(first) >= 0) return 'fall';
+    // 默认一般疑问句升调
+    return 'rise';
+  }
 
   function renderUnit(text){
     var toks = text.match(/[\w’']+|[^\w\s]+|\s+/g) || [text];
-    var out = ''; var prev = null;
+    // 第一遍：识别每个 token 属性
+    var info = [];
+    var prevWord = null;
     for (var i=0;i<toks.length;i++){
       var tk = toks[i];
-      if (/^\s+$/.test(tk)) { out += tk; continue; }
+      var inf = {tk:tk, isWord:false, clean:'', linkPrev:false, linkNext:false};
       if (/^[\w’']+$/.test(tk)) {
-        var clean = tk.toLowerCase().replace(/[^a-z’]/g,'');
-        var cleanKey = clean.replace(/’/g,"'");
-        var linkMark = '';
-        if (annotate && prev && isLink(prev, cleanKey)) linkMark = '<span class="lnk" title="连读">⌒</span>';
-        var cls = 'w'; var badge = '';
-        var red = isReduction(cleanKey);
-        var weak = !red && annotate && WEAK[cleanKey] && prev !== null;
-        if (red) { cls += ' elide'; badge = '<sup class="mk r">略</sup>'; }
-        else if (weak) { cls += ' weak'; badge = '<sup class="mk w">弱</sup>'; }
-        out += linkMark + '<span class="' + cls + '" data-w="' + esc(clean) + '">' + esc(tk) + badge + '</span>';
-        prev = cleanKey;
+        inf.isWord = true;
+        inf.clean = tk.toLowerCase().replace(/[^a-z’]/g,'').replace(/’/g,"'");
+        if (annotate && prevWord && isLink(prevWord.tk, tk)) {
+          inf.linkPrev = true;
+          prevWord.linkNext = true;
+        }
+        prevWord = inf;
+      } else if (/[.!?]/.test(tk)) {
+        prevWord = null;
+      }
+      info.push(inf);
+    }
+    // 第二遍：渲染
+    var out = '';
+    var pairOpen = false;
+    for (var i=0;i<info.length;i++){
+      var inf = info[i];
+      var tk = inf.tk;
+      if (/^\s+$/.test(tk)) { out += tk; continue; }
+      if (!inf.isWord) {
+        // 标点的语调
+        if (annotate && /[.!?]/.test(tk)) {
+          var tone = sentenceTone(text);
+          out += '<span class="tone ' + tone + '">' + esc(tk) + '</span>';
+        } else {
+          out += esc(tk);
+        }
+        if (/[.!?]/.test(tk)) { if (pairOpen) { out += '</span>'; pairOpen = false; } }
+        continue;
+      }
+      // 单词渲染
+      var wordHtml = renderWord(tk, inf.clean);
+      if (annotate && inf.linkNext && !pairOpen) {
+        out += '<span class="link-pair">' + wordHtml;
+        pairOpen = true;
+      } else if (annotate && inf.linkPrev && pairOpen) {
+        out += wordHtml + '</span>';
+        pairOpen = false;
       } else {
-        out += esc(tk);
-        if (/[.!?]/.test(tk)) prev = null; // 句末重置连读/弱读判断
+        if (pairOpen) { out += '</span>'; pairOpen = false; }
+        out += wordHtml;
       }
     }
+    if (pairOpen) out += '</span>';
     return out;
+  }
+
+  function renderWord(tk, clean){
+    var html = esc(tk);
+    if (!annotate) return '<span class="w" data-w="' + esc(clean) + '">' + html + '</span>';
+    // 略读：n't
+    var s = tk.replace(/[\u2019]/g, "'");
+    if (/n't$/i.test(s)) {
+      html = esc(s.slice(0, -1)) + '<span class="strike">' + esc(s.slice(-1)) + '</span>';
+    }
+    return '<span class="w" data-w="' + esc(clean) + '">' + html + '</span>';
   }
 
   // ---------- 渲染课文 ----------
   var $ = function(id){ return document.getElementById(id); };
+  var showTranslation = false;
+  function getTranslation(x, idx){
+    var arr = x.translations || [];
+    return (arr[idx] || '').trim();
+  }
+  function makeTranslation(text){
+    var div = document.createElement('div');
+    div.className = 'translation' + (text ? '' : ' empty');
+    if (showTranslation) div.classList.add('show');
+    div.textContent = text || '（暂无翻译）';
+    return div;
+  }
   function renderLesson(x){
     cur = x;
     $('lessonTitle').textContent = '📄 ' + x.mc + ' · ' + x.title;
@@ -257,11 +343,12 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
         bubble.className = 'bubble';
         bubble.innerHTML = renderUnit(t.text);
         wrap.appendChild(name); wrap.appendChild(bubble);
+        wrap.appendChild(makeTranslation(getTranslation(x, idx)));
         row.appendChild(spk); row.appendChild(wrap);
         box.appendChild(row);
       });
     } else {
-      x.content.paragraphs.forEach(function(p){
+      x.content.paragraphs.forEach(function(p, idx){
         var row = document.createElement('div');
         row.className = 'unit';
         var spk = document.createElement('button');
@@ -270,9 +357,17 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
         var body = document.createElement('div');
         body.className = 'body';
         body.innerHTML = renderUnit(p);
+        body.appendChild(makeTranslation(getTranslation(x, idx)));
         row.appendChild(spk); row.appendChild(body);
         box.appendChild(row);
       });
+    }
+    // 图例
+    if (annotate) {
+      var legend = document.createElement('div');
+      legend.className = 'legend';
+      legend.innerHTML = '<span><i class="arc"></i> 连读 Linking</span><span><i class="strk">t</i> 略读 Unreleased</span><span><i class="arrow" style="color:#3b82f6">↘</i> 降调 <i class="arrow" style="color:#f59e0b">↗</i> 升调</span>';
+      box.appendChild(legend);
     }
   }
 
@@ -310,6 +405,14 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
   $('btnReadAll').addEventListener('click', function(){ speakAll(); });
   $('btnStop').addEventListener('click', function(){ if (synth) synth.cancel(); speaking = false; });
   $('annChk').addEventListener('change', function(){ annotate = this.checked; if (cur) renderLesson(cur); });
+  $('btnTrans').addEventListener('click', function(){
+    showTranslation = !showTranslation;
+    this.textContent = showTranslation ? '🌐 隐藏翻译' : '🌐 显示翻译';
+    this.className = showTranslation ? 'btn btn-purple' : 'btn btn-line';
+    document.querySelectorAll('.translation').forEach(function(el){
+      el.classList.toggle('show', showTranslation);
+    });
+  });
   $('rate').addEventListener('input', function(){ curRate = parseFloat(this.value); $('rateVal').textContent = curRate.toFixed(2).replace(/0$/,'') + '×'; });
 
   // 喇叭 / 单词点击（事件委托）
