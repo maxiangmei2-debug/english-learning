@@ -38,6 +38,11 @@
   function getTestMasterGist() {
     try { return localStorage.getItem(TESTMASTER_GIST_KEY) || ''; } catch (e) { return ''; }
   }
+  // 发布内容按「查看者当前级别」打标，确保不被级别过滤器剔除（默认 B1 也能看到 B2 课后内容）
+  function curLevel() {
+    try { return (window.EnglishLevel && window.EnglishLevel.get) ? window.EnglishLevel.get() : 'B2'; }
+    catch (e) { return 'B2'; }
+  }
   function setToken(t) { try { if (t) localStorage.setItem(SYNC_TOKEN_KEY, t); else localStorage.removeItem(SYNC_TOKEN_KEY); } catch (e) {} }
   function setGist(g) { try { if (g) localStorage.setItem(SYNC_GIST_KEY, g); else localStorage.removeItem(SYNC_GIST_KEY); } catch (e) {} }
 
@@ -134,7 +139,7 @@
           cn: (v && v.cn) || '',
           ph: (v && v.ph) || '',
           topic: topic,
-          level: entry.level || 'B2',
+          level: curLevel(),
           opts: [],
           explain: '来自课后练习 ' + entry.lesson + '。'
         });
@@ -161,7 +166,7 @@
         var id = 'ppv_' + entry.lesson + '_' + en.toLowerCase().replace(/[^a-z0-9]/g, '');
         if (vocabIds[id]) return; vocabIds[id] = 1;
         Q.vocab.push({
-          id: id, cat: 'vocab', type: 'type', badge: badge, level: entry.level || 'B2',
+          id: id, cat: 'vocab', type: 'type', badge: badge, level: curLevel(),
           q: '拼写出单词：' + en,
           ans: [en],
           explain: '来自课后练习 ' + entry.lesson + ' 的词汇清单。' + (cn ? ('<br>释义：' + cn) : ''),
@@ -173,7 +178,7 @@
         var id = 'ppp_' + entry.lesson + '_' + pt.toLowerCase().replace(/[^a-z0-9]/g, '');
         if (phraseIds[id]) return; phraseIds[id] = 1;
         Q.phrase.push({
-          id: id, cat: 'phrase', type: 'type', badge: badge, level: entry.level || 'B2',
+          id: id, cat: 'phrase', type: 'type', badge: badge, level: curLevel(),
           q: '写出句型：' + pt,
           ans: [pt],
           explain: '来自课后练习 ' + entry.lesson + ' 的句型清单。',
@@ -206,7 +211,7 @@
         phase: '📘 课后练习',
         theme: entry.lesson + ' 课后练习',
         icon: '📝',
-        level: entry.level || 'B2',
+        level: curLevel(),
         modules: mods,
         _publish: true
       };
@@ -245,7 +250,7 @@
       var card = document.createElement('div');
       card.className = 'card';
       card.setAttribute('data-publish', entry.lesson);
-      card.setAttribute('data-level', entry.level || 'B2');
+      card.setAttribute('data-level', curLevel());
       card.setAttribute('data-keywords', '课后练习 ' + entry.lesson + (kind === 'vocab' ? ' 词汇' : ' 句型'));
 
       var title = document.createElement('div');

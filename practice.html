@@ -5,7 +5,7 @@
 
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta name="build-version" content="20260803-1407">
+<meta name="build-version" content="20260803-1449">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>课后练习 · 英语学习</title>
 <style>
@@ -94,11 +94,11 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
   .tag-add-input{min-width:80px;flex:1 1 100px}
 }
 </style>
-<script src="practice_publish.js?v=20260803-1407"></script>
+<script src="practice_publish.js?v=20260803-1449"></script>
 </head>
 <body>
 
-<a href="index.html?v=20260803-1407" class="back">← 返回英语学习中心</a>
+<a href="index.html?v=20260803-1449" class="back">← 返回英语学习中心</a>
 
 <div class="topbar">
   <h1>📝 课后练习</h1>
@@ -215,6 +215,8 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
   var current = '';
   var data = emptyData();
   var saveTimer = null;
+  var uploadTimer = null;
+  var lastEditTime = 0;
 
   function emptyData() {
     return { vocab: [], patterns: [], mainIdeas: [], opinions: [], sentences: [], updatedAt: 0 };
@@ -513,14 +515,45 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
     if (hasContent(data)) store[current] = JSON.parse(JSON.stringify(data));
     else delete store[current];
     saveAll(store);
+    lastEditTime = Date.now();
     var t = new Date();
     $('saveStatus').textContent = '✓ 已保存 ' + ('0'+t.getHours()).slice(-2) + ':' + ('0'+t.getMinutes()).slice(-2);
     renderChips();
+    scheduleUpload(); // 已配置云同步则自动上传，无需手动点
   }
 
   function scheduleSave() {
     if (saveTimer) clearTimeout(saveTimer);
     saveTimer = setTimeout(persist, 400);
+  }
+
+  // 自动上传到云端（防抖 2.5s，仅在已配置同步时触发）
+  function scheduleUpload() {
+    if (uploadTimer) clearTimeout(uploadTimer);
+    uploadTimer = setTimeout(autoUpload, 2500);
+  }
+  function autoUpload() {
+    try {
+      var pp = window.PracPublish;
+      if (!pp || !pp.getToken() || !pp.getGist()) return; // 未配置云同步则不传
+      pp.cloudWrite({ v: 1, store: store, published: pp.loadPublished() }, function (ok) {
+        if (ok) { var s = $('saveStatus'); if (s) s.textContent = '☁️ 已同步云端'; }
+      });
+    } catch (e) {}
+  }
+  // 从云端静默拉取（若远端更新则合并；正在编辑当前课时且 4s 内有改动则不强行刷新，避免覆盖输入）
+  function autoPullStep(showToast) {
+    try {
+      var pp = window.PracPublish;
+      if (!pp || !pp.getToken() || !pp.getGist()) return;
+      pp.syncPracticeFromCloud(store, function (changed) {
+        if (!changed) return;
+        saveAll(store);
+        if (current && (Date.now() - lastEditTime > 4000)) loadLesson(current);
+        else renderChips();
+        if (showToast) toast('已从云端更新');
+      });
+    } catch (e) {}
   }
 
   function switchLesson(lesson) {
@@ -804,13 +837,12 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
       if (changed) toast('已从云端拉取');
     });
   };
-  // 打开页面时若已配置同步，自动从云端静默拉取一次
+  // 打开页面时若已配置同步，自动从云端静默拉取；并每 60s 后台轮询，手机录完电脑自动出现
   (function autoPull() {
     try {
       if (window.PracPublish && window.PracPublish.getToken() && window.PracPublish.getGist()) {
-        window.PracPublish.syncPracticeFromCloud(store, function (changed) {
-          if (changed) { saveAll(store); if (current) loadLesson(current); else renderChips(); }
-        });
+        autoPullStep(false);
+        setInterval(function () { autoPullStep(false); }, 60000);
       }
     } catch (e) {}
   })();
@@ -828,6 +860,7 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
     if (window.PracPublish.getToken()) {
       try { window.PracPublish.cloudWrite(syncPayload(), function () {}); } catch (e) {}
     }
+    scheduleUpload(); // 立即安排一次云端上传，确保各模块跨设备同步
     renderChips();
   };
 
