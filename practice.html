@@ -5,7 +5,7 @@
 
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta name="build-version" content="20260803-1718">
+<meta name="build-version" content="20260803-1956">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>课后练习 · 英语学习</title>
 <style>
@@ -88,17 +88,35 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 .empty{color:#9ca3af;font-size:13px;text-align:center;padding:14px}
 #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 18px;border-radius:12px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:99999}
 #toast.show{opacity:.95}
+/* === 预览模式 === */
+.preview-box{display:none}
+body.preview-on .preview-box{display:block}
+body.preview-on .edit-only{display:none}
+.preview-box .pv-card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 4px 16px rgba(0,0,0,.05)}
+.preview-box .pv-title{font-size:15px;font-weight:800;color:#4338ca;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.preview-box .pv-subtitle{font-size:12px;font-weight:700;color:#6b7280;margin-bottom:6px;text-transform:uppercase;letter-spacing:.3px}
+.preview-box .pv-empty{color:#9ca3af;font-size:13px;padding:8px 0}
+.preview-box .pv-table{width:100%;border-collapse:collapse;font-size:13px}
+.preview-box .pv-table th{text-align:left;color:#6b7280;font-size:12px;padding:6px 8px;border-bottom:1px solid #e5e7eb;font-weight:600}
+.preview-box .pv-table td{padding:6px 8px;border-bottom:1px solid #f3f4f6;vertical-align:top;line-height:1.5}
+.preview-box .pv-table tr:last-child td{border-bottom:none}
+.preview-box .pv-chip{display:inline-flex;align-items:center;background:#ede9fe;color:#6d28d9;border:1px solid #ddd6fe;border-radius:999px;padding:4px 10px;font-size:13px;font-weight:600;margin:0 4px 4px 0}
+.preview-box .pv-muted{color:#9ca3af;font-size:12px}
+.preview-box .pv-orig{color:#111827}
+.preview-box .pv-trans{color:#374151}
+.btn.active{background:#e0e7ff;color:#4f46e5;border-color:#c7d2fe}
+
 @media(max-width:560px){
   .topbar h1{font-size:18px}
   .tag .tag-text{max-width:120px}
   .tag-add-input{min-width:80px;flex:1 1 100px}
 }
 </style>
-<script src="practice_publish.js?v=20260803-1718"></script>
+<script src="practice_publish.js?v=20260803-1956"></script>
 </head>
 <body>
 
-<a href="index.html?v=20260803-1718" class="back">← 返回英语学习中心</a>
+<a href="index.html?v=20260803-1956" class="back">← 返回英语学习中心</a>
 
 <div class="topbar">
   <h1>📝 课后练习</h1>
@@ -114,12 +132,11 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 
 <div class="toolbar">
   <button class="btn btn-ghost" id="btnCopy">📋 复制为文本</button>
-  <button class="btn btn-line" id="btnExport">⬇️ 导出备份</button>
-  <button class="btn btn-line" id="btnImport">⬆️ 导入备份</button>
-  <button class="btn btn-line" id="btnSync">☁️ 云同步</button>
-  <button class="btn btn-primary" id="btnPublish">🚀 发布到各模块</button>
-  <input type="file" id="fileImport" accept="application/json" style="display:none">
+  <button class="btn btn-line" id="btnPreview">👁️ 预览</button>
 </div>
+
+<!-- 预览模式：只读、格式更清晰、更省空间 -->
+<div id="previewBox" class="preview-box"></div>
 
 <!-- 云同步弹窗 -->
 <div class="modal-mask" id="syncMask" style="display:none">
@@ -141,7 +158,7 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 </div>
 
 <!-- 板块一：口语总结辅助材料 -->
-<div class="card">
+<div class="card edit-only">
   <h2>🗣️ 口语总结辅助材料</h2>
   <div class="sub">来自《BP口语总结辅助材料》：记录实用词汇/句型，文章大意与个人观点填关键词即可。</div>
 
@@ -170,7 +187,7 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 </div>
 
 <!-- 板块二：句子提取与解析 -->
-<div class="card">
+<div class="card edit-only">
   <h2>🔍 句子提取与解析</h2>
   <div class="sub">来自《练习》：手写/精读句子提取后，逐句做语法解析与翻译。可无限追加。回车自动新增一行。</div>
   <table class="tbl">
@@ -183,18 +200,17 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 </div>
 
 <!-- 已存档课程 -->
-<div class="card">
+<div class="card edit-only">
   <h2>📚 已存档课程</h2>
   <div class="sub">点击课号可切换查看 / 继续编辑。数据保存在本机浏览器，建议定期导出备份。</div>
   <div class="chips" id="chips"><span class="empty">还没有存档，先在上面选个课号开始写吧</span></div>
 </div>
 
-<div class="hint">
+<div class="hint edit-only">
   💡 全部内容会<b>自动保存</b>（无需点保存按钮）。切换课号时当前内容也会先存好。<br>
   💡 <b>手机添加词汇</b>：在输入框打字后点右侧「＋添加」按钮即可（手机没有回车也能用）。<br>
-  💡 <b>跨设备互通</b>：点「☁️ 云同步」用 GitHub Token 配置一次，手机/电脑内容自动同步。<br>
-  💡 <b>一键发布</b>：填好词汇/句型后点「🚀 发布到各模块」，下次打开拼写/测试/手册/学习模块即可看到。<br>
-  💡 也可点「导出备份」下载 JSON，新设备「导入备份」恢复；复制为文本可贴到 Word。
+  💡 填写的词汇/句型会<b>自动发布</b>到拼写/测试/手册/学习模块，无需额外点击。<br>
+  💡 点「👁️ 预览」可切换为只读视图，格式更清晰、更省空间。
 </div>
 
 <div id="toast"></div>
@@ -231,6 +247,7 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
     ensurePlaceholder();
     renderAll();
     renderChips();
+    if (previewMode) renderPreview();
   }
 
   function ensurePlaceholder() {
@@ -519,10 +536,10 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
     var t = new Date();
     $('saveStatus').textContent = '✓ 已保存 ' + ('0'+t.getHours()).slice(-2) + ':' + ('0'+t.getMinutes()).slice(-2);
     renderChips();
+    if (previewMode) renderPreview();
     scheduleUpload(); // 已配置云同步则自动上传，无需手动点
-    // 自动发布到各模块：在课后练习里添加/修改的词汇、句型，立即同步给
-    // 词汇拼写训练营/测试达人/学习手册/学习模块，无需再点「🚀发布到各模块」。
-    // （🚀按钮仍保留，用于显式确认与立即推云端。）
+    // 自动发布到各模块：在课后练习里添加/修改的词汇、句型，保存时自动同步给
+    // 词汇拼写训练营/测试达人/学习手册/学习模块，无需手动发布。
     try {
       if (window.PracPublish) {
         if (hasContent(data)) {
@@ -752,36 +769,6 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
     document.body.removeChild(ta);
   }
 
-  // 导出
-  $('btnExport').onclick = function () {
-    var blob = new Blob([JSON.stringify(store, null, 2)], { type: 'application/json' });
-    var a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = '课后练习备份_' + new Date().toISOString().slice(0,10) + '.json';
-    a.click();
-    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
-    toast('已导出备份 JSON');
-  };
-  // 导入
-  $('btnImport').onclick = function () { $('fileImport').click(); };
-  $('fileImport').onchange = function () {
-    var f = this.files[0]; if (!f) return;
-    var rd = new FileReader();
-    rd.onload = function () {
-      try {
-        var imp = JSON.parse(rd.result);
-        if (typeof imp !== 'object' || Array.isArray(imp)) throw new Error('格式不对');
-        var n = 0;
-        Object.keys(imp).forEach(function (k) { store[k] = imp[k]; n++; });
-        saveAll(store);
-        if (current) loadLesson(current); else renderChips();
-        toast('已导入 ' + n + ' 个课程');
-      } catch (e) { toast('导入失败：' + e.message); }
-    };
-    rd.readAsText(f);
-    this.value = '';
-  };
-
   function toast(msg) {
     var t = $('toast'); t.textContent = msg; t.classList.add('show');
     setTimeout(function () { t.classList.remove('show'); }, 1800);
@@ -808,7 +795,7 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
     $('syncMask').style.display = 'flex';
   }
   function closeSync() { $('syncMask').style.display = 'none'; }
-  $('btnSync').onclick = openSync;
+  // 云同步弹窗保留，可通过代码调用 openSync() 打开；原工具栏按钮已移除，改为自动同步。
   $('syncClose').onclick = closeSync;
   $('syncMask').addEventListener('click', function (e) { if (e.target === $('syncMask')) closeSync(); });
   $('syncSave').onclick = function () {
@@ -859,21 +846,91 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
     } catch (e) {}
   })();
 
-  // ===== 🚀 发布到各模块 =====
-  $('btnPublish').onclick = function () {
-    if (!current) { toast('请先选择课号'); return; }
-    collect();
-    if (!data.vocab.length && !data.patterns.length) { toast('词汇/句型为空，无可发布内容'); return; }
-    if (!window.PracPublish) { toast('发布模块未加载'); return; }
-    var ok = window.PracPublish.publishLesson(current, data.vocab, data.patterns, 'B2');
-    if (!ok) { toast('发布失败'); return; }
-    toast('已发布「' + current + '」→ 拼写/测试/手册/学习模块');
-    // 若已配置云同步，自动推送到云端（跨设备可见）
-    if (window.PracPublish.getToken()) {
-      try { window.PracPublish.cloudWrite(syncPayload(), function () {}); } catch (e) {}
+  // ===== 预览模式 =====
+  var previewMode = false;
+  function parseVocabPreview(s) {
+    var parts = (s || '').split('/').map(function (p) { return p.trim(); }).filter(Boolean);
+    var en = '', cn = '', ph = '';
+    if (parts.length === 1) { en = parts[0]; }
+    else {
+      en = parts[0];
+      var last = parts[parts.length - 1];
+      if (parts.length >= 3 && /^\/.*\/$/.test(last)) { ph = last; cn = parts.slice(1, -1).join(' / '); }
+      else { cn = parts.slice(1).join(' / '); }
     }
-    scheduleUpload(); // 立即安排一次云端上传，确保各模块跨设备同步
-    renderChips();
+    return { en: en, cn: cn, ph: ph };
+  }
+  function renderPreview() {
+    var box = $('previewBox'); if (!box) return;
+    if (!current) { box.innerHTML = ''; return; }
+    var html = '';
+    var hasAny = false;
+
+    // 词汇 / 句型 / 大意 / 观点
+    var vocabItems = (data.vocab || []).filter(function (v) { return (v || '').trim(); });
+    var patterns = (data.patterns || []).filter(function (v) { return (v || '').trim(); });
+    var mainIdeas = (data.mainIdeas || []).filter(function (v) { return (v || '').trim(); });
+    var opinions = (data.opinions || []).filter(function (v) { return (v || '').trim(); });
+    var sents = (data.sentences || []).filter(function (s) { return (s.orig || s.fixed || s.grammar || s.trans || '').trim(); });
+
+    if (vocabItems.length || patterns.length || mainIdeas.length || opinions.length) {
+      hasAny = true;
+      html += '<div class="pv-card"><div class="pv-title">🗣️ ' + esc(current) + ' · 口语总结辅助材料</div>';
+      if (vocabItems.length) {
+        html += '<div style="margin-bottom:12px"><div class="pv-subtitle">🏷️ 词汇 / 短语</div>' +
+          '<table class="pv-table"><thead><tr><th>英文</th><th>中文</th><th>音标</th></tr></thead><tbody>';
+        vocabItems.forEach(function (v) {
+          var p = parseVocabPreview(v);
+          html += '<tr><td>' + esc(p.en) + '</td><td>' + (p.cn ? esc(p.cn) : '<span class="pv-muted">—</span>') +
+            '</td><td>' + (p.ph ? esc(p.ph) : '<span class="pv-muted">—</span>') + '</td></tr>';
+        });
+        html += '</tbody></table></div>';
+      }
+      if (patterns.length) {
+        html += '<div style="margin-bottom:12px"><div class="pv-subtitle">🧩 实用句型</div>';
+        patterns.forEach(function (p) { html += '<div class="pv-chip">' + esc(p) + '</div>'; });
+        html += '</div>';
+      }
+      if (mainIdeas.length) {
+        html += '<div style="margin-bottom:10px"><div class="pv-subtitle">📝 文章大意</div>';
+        mainIdeas.forEach(function (v) { html += '<div class="pv-chip">' + esc(v) + '</div>'; });
+        html += '</div>';
+      }
+      if (opinions.length) {
+        html += '<div><div class="pv-subtitle">💬 个人观点</div>';
+        opinions.forEach(function (v) { html += '<div class="pv-chip">' + esc(v) + '</div>'; });
+        html += '</div>';
+      }
+      html += '</div>';
+    }
+
+    if (sents.length) {
+      hasAny = true;
+      html += '<div class="pv-card"><div class="pv-title">🔍 句子提取与解析</div>' +
+        '<table class="pv-table"><thead><tr><th style="width:32%">原句 / 修正后</th>' +
+        '<th style="width:35%">语法解析</th><th style="width:33%">中文翻译</th></tr></thead><tbody>';
+      sents.forEach(function (s) {
+        var orig = (s.orig || s.fixed || '').trim();
+        html += '<tr><td>' + (orig ? '<div class="pv-orig">' + esc(orig) + '</div>' : '<span class="pv-muted">—</span>') +
+          '</td><td>' + (s.grammar ? esc(s.grammar) : '<span class="pv-muted">—</span>') +
+          '</td><td>' + (s.trans ? '<div class="pv-trans">' + esc(s.trans) + '</div>' : '<span class="pv-muted">—</span>') + '</td></tr>';
+      });
+      html += '</tbody></table></div>';
+    }
+
+    if (!hasAny) {
+      html = '<div class="pv-card"><div class="pv-title">📘 ' + esc(current) + ' 课后练习</div>' +
+        '<div class="pv-empty">当前课程暂无内容，点击「✏️ 编辑」开始添加。</div></div>';
+    }
+    box.innerHTML = html;
+  }
+
+  $('btnPreview').onclick = function () {
+    previewMode = !previewMode;
+    document.body.classList.toggle('preview-on', previewMode);
+    this.textContent = previewMode ? '✏️ 编辑' : '👁️ 预览';
+    this.classList.toggle('active', previewMode);
+    if (previewMode) renderPreview();
   };
 
   // 离开前保存

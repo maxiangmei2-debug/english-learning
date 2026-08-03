@@ -235,18 +235,26 @@
   function injectSection(sectionId, kind, arr) {
     var sec = document.getElementById(sectionId);
     if (!sec) return;
-    var grid = sec.querySelector('.grid-2') || sec;
-    // 清除旧注入
-    var old = grid.querySelectorAll('[data-publish]');
-    for (var i = 0; i < old.length; i++) { if (old[i].parentNode) old[i].parentNode.removeChild(old[i]); }
+    // 清除旧注入：独立的发布卡片 + 插入到已有卡片里的行
+    var oldCards = sec.querySelectorAll('[data-publish]');
+    for (var i = 0; i < oldCards.length; i++) { if (oldCards[i].parentNode) oldCards[i].parentNode.removeChild(oldCards[i]); }
+    var oldRows = sec.querySelectorAll('[data-pr]');
+    for (var j = 0; j < oldRows.length; j++) { if (oldRows[j].parentNode) oldRows[j].parentNode.removeChild(oldRows[j]); }
     if (!arr.length) { applyCardsSafe(); return; }
 
     var frag = document.createDocumentFragment();
     arr.forEach(function (entry) {
-      if (!entry.vocab.length && !entry.patterns.length) return;
       if (kind === 'vocab' && !entry.vocab.length) return;
       if (kind === 'phrase' && !entry.patterns.length) return;
 
+      // 优先把课后练习内容合并进对应课本卡片（B2 教材精读卡片在 section 内但不在 grid-2 里）
+      var existing = findExistingCard(sec, entry.lesson);
+      if (existing) {
+        if (kind === 'vocab' && injectVocabIntoCard(existing, entry)) return;
+        if (kind === 'phrase' && injectPhraseIntoCard(existing, entry)) return;
+      }
+
+      // 未找到对应课本卡片时，追加独立的发布卡片
       var card = document.createElement('div');
       card.className = 'card';
       card.setAttribute('data-publish', entry.lesson);
@@ -267,31 +275,97 @@
 
       if (kind === 'vocab') {
         tbody.appendChild(makeRow(['英文', '音标', '时态/复数', '中文'], true));
-        entry.vocab.forEach(function (v) {
-          tbody.appendChild(makeRow([
-            '<td class="en">' + escHtml(v.en) + '<span class="spk">🔊</span></td>',
-            escHtml(v.ph || ''),
-            '',
-            escHtml(v.cn || '—')
-          ], false));
-        });
+        entry.vocab.forEach(function (v) { appendVocabRow(tbody, v, entry.lesson, 4); });
       } else {
         tbody.appendChild(makeRow(['搭配', '音标', '含义'], true));
-        entry.patterns.forEach(function (p) {
-          tbody.appendChild(makeRow([
-            '<td class="en">' + escHtml(p) + '<span class="spk">🔊</span></td>',
-            '',
-            '来自课后练习'
-          ], false));
-        });
+        entry.patterns.forEach(function (p) { appendPhraseRow(tbody, p, entry.lesson, 3); });
       }
       table.appendChild(tbody);
       wrap.appendChild(table);
       card.appendChild(wrap);
       frag.appendChild(card);
     });
-    grid.appendChild(frag);
+    sec.appendChild(frag);
     applyCardsSafe();
+  }
+
+  function findExistingCard(root, lesson) {
+    var escaped = lesson.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    var re = new RegExp('(?:^|\\s|·|\\b)' + escaped + '(?:\\s|$|·|\\b)');
+    var lv = curLevel();
+    var cards = root.querySelectorAll('.card:not([data-publish])');
+    // 只考虑当前级别可见的卡片：有 data-level 则必须匹配；无 data-level 视为 B1
+    function visibleForLevel(c) {
+      var clv = c.getAttribute('data-level');
+      if (clv) return clv === lv;
+      return lv === 'B1';
+    }
+    // 第一优先：data-keywords 里含对应课号（B2 教材精读卡片有准确 keywords）
+    for (var i = 0; i < cards.length; i++) {
+      var c = cards[i];
+      if (!visibleForLevel(c)) continue;
+      var kw = c.getAttribute('data-keywords') || '';
+      if (re.test(kw)) return c;
+    }
+    // 第二优先：标题里含对应课号
+    for (var j = 0; j < cards.length; j++) {
+      var c2 = cards[j];
+      if (!visibleForLevel(c2)) continue;
+      var title = c2.querySelector('.card-title');
+      if (title && re.test(title.textContent || '')) return c2;
+    }
+    return null;
+  }
+
+  function tableColCount(tbody) {
+    var first = tbody.querySelector('tr');
+    return first ? first.children.length : 4;
+  }
+
+  function appendVocabRow(tbody, v, lesson, colCount) {
+    var en = ((typeof v === 'string' ? v : (v && v.en)) || '').trim();
+    if (!en) return;
+    var cn = (v && v.cn) || '';
+    var ph = (v && v.ph) || '';
+    var cells;
+    if (colCount <= 2) {
+      cells = ['<td class="en">' + escHtml(en) + '<span class="spk">🔊</span></td>', escHtml(cn || ph || '—')];
+    } else if (colCount === 3) {
+      cells = ['<td class="en">' + escHtml(en) + '<span class="spk">🔊</span></td>', escHtml(ph), escHtml(cn || '—')];
+    } else {
+      cells = ['<td class="en">' + escHtml(en) + '<span class="spk">🔊</span></td>', escHtml(ph), '', escHtml(cn || '—')];
+    }
+    var tr = makeRow(cells, false);
+    tr.setAttribute('data-pr', lesson);
+    tbody.appendChild(tr);
+  }
+
+  function appendPhraseRow(tbody, p, lesson, colCount) {
+    var cells;
+    if (colCount <= 2) {
+      cells = ['<td class="en">' + escHtml(p) + '<span class="spk">🔊</span></td>', '来自课后练习'];
+    } else {
+      cells = ['<td class="en">' + escHtml(p) + '<span class="spk">🔊</span></td>', '', '来自课后练习'];
+    }
+    var tr = makeRow(cells, false);
+    tr.setAttribute('data-pr', lesson);
+    tbody.appendChild(tr);
+  }
+
+  function injectVocabIntoCard(card, entry) {
+    var tbody = card.querySelector('table.study-table tbody');
+    if (!tbody) return false;
+    var colCount = tableColCount(tbody);
+    entry.vocab.forEach(function (v) { appendVocabRow(tbody, v, entry.lesson, colCount); });
+    return true;
+  }
+
+  function injectPhraseIntoCard(card, entry) {
+    var tbody = card.querySelector('table.study-table tbody');
+    if (!tbody) return false;
+    var colCount = tableColCount(tbody);
+    entry.patterns.forEach(function (p) { appendPhraseRow(tbody, p, entry.lesson, colCount); });
+    return true;
   }
 
   function makeRow(cells, isHeader) {

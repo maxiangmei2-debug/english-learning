@@ -62,7 +62,7 @@
       '<button class="lb-btn" data-lv="B1">B1</button>' +
       '<button class="lb-btn" data-lv="B2">B2</button>' +
       '<span class="lb-sep"></span>' +
-      '<a class="lb-home" href="index.html?v=20260803-1718">⌂ 学习中心</a>';
+      '<a class="lb-home" href="index.html?v=20260803-1956">⌂ 学习中心</a>';
     document.body.insertBefore(bar, document.body.firstChild);
     document.body.classList.add('has-level-bar');
     var btns = bar.querySelectorAll('.lb-btn');
