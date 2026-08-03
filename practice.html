@@ -5,7 +5,7 @@
 
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta name="build-version" content="20260803-1351">
+<meta name="build-version" content="20260803-1407">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>课后练习 · 英语学习</title>
 <style>
@@ -94,19 +94,20 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
   .tag-add-input{min-width:80px;flex:1 1 100px}
 }
 </style>
-<script src="practice_publish.js?v=20260803-1351"></script>
+<script src="practice_publish.js?v=20260803-1407"></script>
 </head>
 <body>
 
-<a href="index.html?v=20260803-1351" class="back">← 返回英语学习中心</a>
+<a href="index.html?v=20260803-1407" class="back">← 返回英语学习中心</a>
 
 <div class="topbar">
   <h1>📝 课后练习</h1>
   <p>每节课后按模板记录 · 按 MC 课号自动存档 · 手机电脑都能用</p>
   <div class="lessonrow">
     <label for="lesson">课程：</label>
-    <input id="lesson" list="mcList" placeholder="选择或输入课号，如 MC07" autocomplete="off">
-    <datalist id="mcList"></datalist>
+    <select id="lesson">
+      <option value="" disabled selected>选择课程…</option>
+    </select>
     <span id="saveStatus"></span>
   </div>
 </div>
@@ -527,7 +528,12 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
     if (!lesson) return;
     if (lesson === current) return;
     if (current) persist();
-    $('lesson').value = lesson;
+    // 确保选项存在（兼容非 MCxx 的自定义课号）
+    var sel = $('lesson');
+    var exists = false;
+    for (var i = 0; i < sel.options.length; i++) { if (sel.options[i].value === lesson) { exists = true; break; } }
+    if (!exists) { var o = document.createElement('option'); o.value = lesson; o.textContent = lesson; sel.appendChild(o); }
+    sel.value = lesson;
     loadLesson(lesson);
   }
 
@@ -738,8 +744,8 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 
   // 初始化：填充课号下拉（MC01–MC40）
   (function initMC() {
-    var dl = $('mcList');
-    for (var i = 1; i <= 40; i++) { var o = document.createElement('option'); o.value = 'MC' + ('0'+i).slice(-2); dl.appendChild(o); }
+    var sel = $('lesson');
+    for (var i = 1; i <= 40; i++) { var o = document.createElement('option'); o.value = 'MC' + ('0'+i).slice(-2); o.textContent = 'MC' + ('0'+i).slice(-2); sel.appendChild(o); }
   })();
 
   // ===== 云同步（GitHub Gist，Token 可与「测试达人」共用） =====
