@@ -5,7 +5,7 @@
 
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta name="build-version" content="20260803-1659">
+<meta name="build-version" content="20260803-1718">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>课后练习 · 英语学习</title>
 <style>
@@ -94,11 +94,11 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
   .tag-add-input{min-width:80px;flex:1 1 100px}
 }
 </style>
-<script src="practice_publish.js?v=20260803-1659"></script>
+<script src="practice_publish.js?v=20260803-1718"></script>
 </head>
 <body>
 
-<a href="index.html?v=20260803-1659" class="back">← 返回英语学习中心</a>
+<a href="index.html?v=20260803-1718" class="back">← 返回英语学习中心</a>
 
 <div class="topbar">
   <h1>📝 课后练习</h1>
@@ -520,6 +520,18 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
     $('saveStatus').textContent = '✓ 已保存 ' + ('0'+t.getHours()).slice(-2) + ':' + ('0'+t.getMinutes()).slice(-2);
     renderChips();
     scheduleUpload(); // 已配置云同步则自动上传，无需手动点
+    // 自动发布到各模块：在课后练习里添加/修改的词汇、句型，立即同步给
+    // 词汇拼写训练营/测试达人/学习手册/学习模块，无需再点「🚀发布到各模块」。
+    // （🚀按钮仍保留，用于显式确认与立即推云端。）
+    try {
+      if (window.PracPublish) {
+        if (hasContent(data)) {
+          window.PracPublish.publishLesson(current, data.vocab.slice(), data.patterns.slice(), 'B2');
+        } else {
+          window.PracPublish.unpublishLesson(current);
+        }
+      }
+    } catch (e) {}
   }
 
   function scheduleSave() {
