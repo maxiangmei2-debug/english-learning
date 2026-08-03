@@ -311,8 +311,8 @@
   }
 
   /* ---------- 云端读写（GitHub Gist） ---------- */
-  function cloudRead(cb) {
-    var token = getToken(), gist = getGist();
+  function cloudReadGist(gist, cb) {
+    var token = getToken();
     if (!token || !gist) { if (cb) cb(null); return; }
     var ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
     var to = setTimeout(function () { if (ctrl) try { ctrl.abort(); } catch (e) {} }, 7000);
@@ -327,16 +327,38 @@
       })
       .catch(function () { clearTimeout(to); if (cb) cb(null); });
   }
+  // 依次尝试「课后练习专用 Gist」与「测试达人 Gist」，返回首个含 published 的
+  function cloudReadBest(cb) {
+    var pg = localStorage.getItem(SYNC_GIST_KEY);
+    var tg = localStorage.getItem(TESTMASTER_GIST_KEY);
+    var order = [];
+    if (pg) order.push(pg);
+    if (tg && tg !== pg) order.push(tg);
+    if (!order.length) { if (cb) cb(null); return; }
+    var idx = 0;
+    (function tryNext() {
+      if (idx >= order.length) { if (cb) cb(null); return; }
+      var g = order[idx++];
+      cloudReadGist(g, function (obj) {
+        if (obj && Array.isArray(obj.published) && obj.published.length) { if (cb) cb(obj); }
+        else tryNext();
+      });
+    })();
+  }
+  function cloudRead(cb) {
+    var gist = getGist();
+    if (!gist) { if (cb) cb(null); return; }
+    cloudReadGist(gist, cb);
+  }
 
-  function cloudWrite(obj, cb) {
-    var token = getToken(), gist = getGist();
+  // 写进指定 Gist（forceGist 优先；缺省用 getGist）；新 Gist 时自动记录 id
+  function cloudWriteToGist(obj, forceGist, cb) {
+    var token = getToken();
+    var gist = forceGist || getGist();
     if (!token) { if (cb) cb(false, 'no-token'); return; }
     var content = JSON.stringify(obj);
-    var body = gist
-      ? JSON.stringify({ files: {} }) // placeholder, replaced below
-      : JSON.stringify({ description: 'English Practice Sync (auto)', public: false, files: {} });
     var filesObj = {}; filesObj[SYNC_FILE] = { content: content };
-    body = gist
+    var body = gist
       ? JSON.stringify({ files: filesObj })
       : JSON.stringify({ description: 'English Practice Sync (auto)', public: false, files: filesObj });
     var url = gist ? ('https://api.github.com/gists/' + gist) : 'https://api.github.com/gists';
@@ -347,10 +369,31 @@
       .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(function (g) {
         clearTimeout(to);
-        if (!gist && g && g.id) setGist(g.id);
+        if ((!gist) && g && g.id) setGist(g.id);
         if (cb) cb(true, g && g.id ? g.id : gist);
       })
       .catch(function (e) { clearTimeout(to); if (cb) cb(false, e.message); });
+  }
+  // 写进「课后练习专用 Gist」+「测试达人 Gist」两者（若有）：
+  // 这样无论各设备读取哪个 Gist，都能拿到已发布内容（跨设备互通的关键）。
+  // 已存在的 Gist 用 PATCH 仅更新 SYNC_FILE，不影响里面的其他文件（如 english_test_progress.json）。
+  function cloudWrite(obj, cb) {
+    var token = getToken();
+    if (!token) { if (cb) cb(false, 'no-token'); return; }
+    var pg = localStorage.getItem(SYNC_GIST_KEY);
+    var tg = localStorage.getItem(TESTMASTER_GIST_KEY);
+    var gists = [];
+    if (pg) gists.push(pg);
+    if (tg && tg !== pg) gists.push(tg);
+    if (!gists.length) { cloudWriteToGist(obj, null, function (ok, id) { if (cb) cb(ok, id); }); return; }
+    var done = 0, anyOk = false, lastId = null;
+    gists.forEach(function (g) {
+      cloudWriteToGist(obj, g, function (ok, id) {
+        if (ok) { anyOk = true; if (id) lastId = id; }
+        done++;
+        if (done >= gists.length) { if (cb) cb(anyOk, lastId); }
+      });
+    });
   }
 
   // 4 个工具调用：若云端 published 较新，则更新本地并返回 true
@@ -365,10 +408,22 @@
       } else if (cb) cb(false);
     });
   }
+  // 尝试两个 Gist 读取 published
+  function refreshFromCloudBest(cb) {
+    cloudReadBest(function (obj) {
+      if (!obj || !Array.isArray(obj.published)) { if (cb) cb(false); return; }
+      var localMax = loadPublished().reduce(function (m, e) { return Math.max(m, e.savedAt || 0); }, 0);
+      var remoteMax = obj.published.reduce(function (m, e) { return Math.max(m, e.savedAt || 0); }, 0);
+      if (remoteMax > localMax) {
+        var changed = mergePublishedIntoLocal(obj.published);
+        if (cb) cb(changed);
+      } else if (cb) cb(false);
+    });
+  }
 
-  // 课后练习调用：把云端 store+published 合并进本地
+  // 课后练习调用：把云端 store+published 合并进本地（尝试两个 Gist）
   function syncPracticeFromCloud(localStore, cb) {
-    cloudRead(function (obj) {
+    cloudReadBest(function (obj) {
       if (!obj) { if (cb) cb(false); return; }
       var changed = false;
       if (obj.store && typeof obj.store === 'object') {
@@ -387,9 +442,16 @@
   function maybeRefreshAndReload() {
     try {
       if (window.__practiceEditor) return;        // 课后练习自己处理同步
-      if (sessionStorage.getItem('pp_refreshed')) return;
-      refreshFromCloud(function (updated) {
-        if (updated) { sessionStorage.setItem('pp_refreshed', '1'); location.reload(); }
+      var doCheck = function () {
+        if (sessionStorage.getItem('pp_refreshed')) return;
+        refreshFromCloudBest(function (updated) {
+          if (updated) { sessionStorage.setItem('pp_refreshed', '1'); location.reload(); }
+        });
+      };
+      doCheck();
+      // 已开着的标签页：切回前台时再检查一次（跨设备发布后不用手动刷新）
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') doCheck();
       });
     } catch (e) {}
   }
@@ -415,8 +477,10 @@
     mergeLearningModule: mergeLearningModule,
     mergeHandbook: mergeHandbook,
     cloudRead: cloudRead,
+    cloudReadBest: cloudReadBest,
     cloudWrite: cloudWrite,
     refreshFromCloud: refreshFromCloud,
+    refreshFromCloudBest: refreshFromCloudBest,
     syncPracticeFromCloud: syncPracticeFromCloud,
     maybeRefreshAndReload: maybeRefreshAndReload
   };
