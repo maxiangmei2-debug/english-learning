@@ -453,6 +453,16 @@
       document.addEventListener('visibilitychange', function () {
         if (document.visibilityState === 'visible') doCheck();
       });
+      // 跨标签页（同设备/同浏览器）：课后练习点「发布」后会改写 english_practice_published，
+      // 其它已打开的工具页收到 storage 事件即自动刷新，立刻看到新词（无需手动重开页面）。
+      window.addEventListener('storage', function (ev) {
+        try {
+          if (ev.key === STORE_KEY || ev.key === SYNC_GIST_KEY || ev.key === SYNC_TOKEN_KEY ||
+              ev.key === TESTMASTER_GIST_KEY || ev.key === TESTMASTER_TOKEN_KEY) {
+            setTimeout(function () { location.reload(); }, 300);
+          }
+        } catch (e) {}
+      });
     } catch (e) {}
   }
 
