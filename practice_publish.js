@@ -11,8 +11,9 @@
  *  1) 课后练习是唯一编辑入口；发布内容存 localStorage['english_practice_published']。
  *  2) 4 个工具在加载时读取该 localStorage 并注入；不支持发布的设备只要打开过
  *     课后练习（它会自动从云拉取）即可看到。
- *  3) 云同步复用 GitHub Gist：token 与「测试达人」共享（testmaster_sync_token），
- *     gist 用独立文件 english_practice_sync.json，与测试达人互不干扰。
+ *  3) 云同步复用 GitHub Gist：token 与 gist ID 均与「测试达人」共享
+ *     （testmaster_sync_token / testmaster_sync_gist），文件用 english_practice_sync.json
+ *     与测试达人（english_test_progress.json）互不干扰，可存在于同一 Gist。
  *  4) 4 个工具额外做 best-effort 的云端刷新：若云端 published 更新，则更新本地
  *     并自动刷新一次页面，保证跨设备一致。
  * ============================================================ */
@@ -21,9 +22,10 @@
 
   var STORE_KEY = 'english_practice_published';   // 已发布条目数组
   var SYNC_TOKEN_KEY = 'practice_sync_token';      // 专用令牌 key（默认回退测试达人）
-  var SYNC_GIST_KEY = 'practice_sync_gist';        // 专用 Gist id key
+  var SYNC_GIST_KEY = 'practice_sync_gist';        // 专用 Gist id key（默认回退测试达人）
   var SYNC_FILE = 'english_practice_sync.json';     // Gist 内文件名
   var TESTMASTER_TOKEN_KEY = 'testmaster_sync_token';
+  var TESTMASTER_GIST_KEY = 'testmaster_sync_gist';
 
   function getToken() {
     try {
@@ -31,7 +33,10 @@
     } catch (e) { return ''; }
   }
   function getGist() {
-    try { return localStorage.getItem(SYNC_GIST_KEY) || ''; } catch (e) { return ''; }
+    try { return localStorage.getItem(SYNC_GIST_KEY) || localStorage.getItem(TESTMASTER_GIST_KEY) || ''; } catch (e) { return ''; }
+  }
+  function getTestMasterGist() {
+    try { return localStorage.getItem(TESTMASTER_GIST_KEY) || ''; } catch (e) { return ''; }
   }
   function setToken(t) { try { if (t) localStorage.setItem(SYNC_TOKEN_KEY, t); else localStorage.removeItem(SYNC_TOKEN_KEY); } catch (e) {} }
   function setGist(g) { try { if (g) localStorage.setItem(SYNC_GIST_KEY, g); else localStorage.removeItem(SYNC_GIST_KEY); } catch (e) {} }
@@ -392,6 +397,7 @@
     SYNC_FILE: SYNC_FILE,
     getToken: getToken,
     getGist: getGist,
+    getTestMasterGist: getTestMasterGist,
     setToken: setToken,
     setGist: setGist,
     loadPublished: loadPublished,

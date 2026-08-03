@@ -5,7 +5,7 @@
 
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta name="build-version" content="20260803-1237">
+<meta name="build-version" content="20260803-1351">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>课后练习 · 英语学习</title>
 <style>
@@ -94,11 +94,11 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
   .tag-add-input{min-width:80px;flex:1 1 100px}
 }
 </style>
-<script src="practice_publish.js?v=20260803-1237"></script>
+<script src="practice_publish.js?v=20260803-1351"></script>
 </head>
 <body>
 
-<a href="index.html?v=20260803-1237" class="back">← 返回英语学习中心</a>
+<a href="index.html?v=20260803-1351" class="back">← 返回英语学习中心</a>
 
 <div class="topbar">
   <h1>📝 课后练习</h1>
@@ -744,8 +744,15 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 
   // ===== 云同步（GitHub Gist，Token 可与「测试达人」共用） =====
   function openSync() {
-    $('syncToken').value = (window.PracPublish && window.PracPublish.getToken()) || '';
-    $('syncGist').value = (window.PracPublish && window.PracPublish.getGist()) || '';
+    var pp = window.PracPublish;
+    if (pp) {
+      $('syncToken').value = pp.getToken() || '';
+      // 若本工具尚未单独配置 Gist，但「测试达人」已配置，则自动复用其 Gist ID 并持久化
+      if (!localStorage.getItem('practice_sync_gist') && pp.getTestMasterGist && pp.getTestMasterGist()) {
+        pp.setGist(pp.getTestMasterGist());
+      }
+      $('syncGist').value = pp.getGist() || '';
+    }
     var st = $('syncStatus'); st.textContent = ''; st.className = 'modal-status';
     $('syncMask').style.display = 'flex';
   }
