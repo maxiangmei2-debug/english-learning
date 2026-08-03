@@ -7,10 +7,11 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260803-0938">
+<meta name="build-version" content="20260803-1237">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>词汇拼写训练营</title>
-<script src="level-config.js?v=20260803-0938"></script>
+<script src="level-config.js?v=20260803-1237"></script>
+<script src="practice_publish.js?v=20260803-1237"></script>
 <style>
   :root {
     --primary:#6366F1; --primary-light:#EEF2FF; --primary-dark:#4F46E5;
@@ -266,7 +267,7 @@
 </style>
 </head>
 <body>
-<a href="index.html?v=20260803-0938" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+<a href="index.html?v=20260803-1237" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
 
 <!-- ===== 首页 ===== -->
 <div class="home-page" id="homePage">
@@ -50670,6 +50671,10 @@ const WORDS = [
 (function () {
   try {
     if (window.EnglishLevel && typeof window.EnglishLevel.filter === 'function') {
+      // 课后练习发布内容注入（在级别过滤之前，保证一起按级别过滤）
+      if (window.PracPublish && window.PracPublish.mergeSpelling) {
+        try { window.PracPublish.mergeSpelling(WORDS); } catch (e) { console.warn('[mergeSpelling]', e); }
+      }
       // WORDS 是 const，不能整体重赋值，改为原地 splice 过滤
       var filtered = window.EnglishLevel.filter(WORDS);
       WORDS.length = 0;
@@ -50694,6 +50699,10 @@ const WORDS = [
           window.EnglishLevel.showEmptyNote(box, '当前级别（B2）暂未添加单词。<br>可在右上角切换回 B1，或在学习中心管理范围。');
         }
       });
+    }
+    // 跨设备：若云端 published 较新则拉取并刷新一次
+    if (window.PracPublish && window.PracPublish.maybeRefreshAndReload) {
+      try { window.PracPublish.maybeRefreshAndReload(); } catch (e) {}
     }
   } catch (e) { /* 容错 */ }
 })();
@@ -51442,7 +51451,7 @@ document.addEventListener('keydown', function(e) {
   // 结果页不再用回车自动返回首页（避免误触退回），需手动点"返回首页"
 });
 </script>
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260803-0938</div>
-  <script src="kb.js?v=20260803-0938"></script>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260803-1237</div>
+  <script src="kb.js?v=20260803-1237"></script>
 </body>
 </html>

@@ -7,10 +7,11 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260803-0938">
+<meta name="build-version" content="20260803-1237">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
-<script src="level-config.js?v=20260803-0938"></script>
+<script src="level-config.js?v=20260803-1237"></script>
+<script src="practice_publish.js?v=20260803-1237"></script>
 <style>
   :root {
     --primary: #6366F1;
@@ -451,7 +452,7 @@
 </style>
 </head>
 <body>
-<a href="index.html?v=20260803-0938" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+<a href="index.html?v=20260803-1237" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
 
 <!-- ====== 首页 ====== -->
 <div class="home-page" id="homePage">
@@ -61581,6 +61582,10 @@ const Q = {
 (function () {
   try {
     if (window.EnglishLevel && typeof window.EnglishLevel.filter === 'function') {
+      // 课后练习发布内容注入（在级别过滤之前，保证一起按级别过滤）
+      if (window.PracPublish && window.PracPublish.mergeTestMaster) {
+        try { window.PracPublish.mergeTestMaster(Q); } catch (e) { console.warn('[mergeTestMaster]', e); }
+      }
       var cats = ['vocab', 'phrase', 'grammar', 'scene', 'error', 'sentence'];
       cats.forEach(function (c) { if (Q[c]) Q[c] = window.EnglishLevel.filter(Q[c]); });
       // 空级别提示（B2 暂无内容时）
@@ -61592,6 +61597,10 @@ const Q = {
           window.EnglishLevel.showEmptyNote(box, '当前级别（B2）暂未添加测试题。<br>可在右上角切换回 B1，或在学习中心管理范围。');
         }
       });
+    }
+    // 跨设备：若云端 published 较新则拉取并刷新一次
+    if (window.PracPublish && window.PracPublish.maybeRefreshAndReload) {
+      try { window.PracPublish.maybeRefreshAndReload(); } catch (e) {}
     }
   } catch (e) { /* 容错：过滤失败不影响原功能 */ }
 })();
@@ -63550,7 +63559,7 @@ init();
       // Add a focus banner on the test page header area
       var banner = document.createElement('div');
       banner.id = 'focusBanner';
-      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260803-0938" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
+      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260803-1237" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
       var testPage = document.getElementById('testPage');
       if (testPage) {
         var topBar = testPage.querySelector('.test-top-bar');
@@ -63854,7 +63863,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260803-0938</div>
-  <script src="kb.js?v=20260803-0938"></script>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260803-1237</div>
+  <script src="kb.js?v=20260803-1237"></script>
 </body>
 </html>
