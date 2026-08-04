@@ -7,11 +7,11 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260804-1156">
+<meta name="build-version" content="20260804-1419">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
-<script src="level-config.js?v=20260804-1156"></script>
-<script src="practice_publish.js?v=20260804-1156"></script>
+<script src="level-config.js?v=20260804-1419"></script>
+<script src="practice_publish.js?v=20260804-1419"></script>
 <style>
   :root {
     --primary: #6366F1;
@@ -452,7 +452,7 @@
 </style>
 </head>
 <body>
-<a href="index.html?v=20260804-1156" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+<a href="index.html?v=20260804-1419" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
 
 <!-- ====== 首页 ====== -->
 <div class="home-page" id="homePage">
@@ -61574,6 +61574,58 @@ const Q = {
       "explain": "📌 听写句子：接受心理学训练、研究心理学的科研人员。<br>✅ A scientist who studies and is trained in psychology.<br>💡 关键词：A scientist who studies and is trained in psychology.",
       "level": "B2",
       "noTest": true
+    },
+    {
+      "id": "cls1-d",
+      "cat": "sentence",
+      "type": "sent-dict",
+      "topic": "经典句子",
+      "badge": "句子听写",
+      "q": "近半数从业者从事着自己并不满意的工作。",
+      "ans": [
+        "Nearly 50% of all workers have jobs they aren't happy with."
+      ],
+      "explain": "📌 听写句子：近半数从业者从事着自己并不满意的工作。<br>✅ Nearly 50% of all workers have jobs they aren't happy with.<br>💡 关键词：Nearly 50% of all workers have jobs they aren't happy with.",
+      "level": "B2"
+    },
+    {
+      "id": "cls2-d",
+      "cat": "sentence",
+      "type": "sent-dict",
+      "topic": "经典句子",
+      "badge": "句子听写",
+      "q": "对应每一种人格类型，都有一些适合的工作，也有一些大概率不合适的工作。",
+      "ans": [
+        "For each type, there are certain jobs that might be right and others that are probably wrong."
+      ],
+      "explain": "📌 听写句子：对应每一种人格类型，都有一些适合的工作，也有一些大概率不合适的工作。<br>✅ For each type, there are certain jobs that might be right and others that are probably wrong.<br>💡 关键词：For each type, there are certain jobs that might be right and others that are probably wrong.",
+      "level": "B2"
+    },
+    {
+      "id": "cls3-d",
+      "cat": "sentence",
+      "type": "sent-dict",
+      "topic": "经典句子",
+      "badge": "句子听写",
+      "q": "我真的很想找一个我可以完全信任的朋友。",
+      "ans": [
+        "I'd really like to find a friend I can trust completely."
+      ],
+      "explain": "📌 听写句子：我真的很想找一个我可以完全信任的朋友。<br>✅ I'd really like to find a friend I can trust completely.<br>💡 关键词：I'd really like to find a friend I can trust completely.",
+      "level": "B2"
+    },
+    {
+      "id": "cls4-d",
+      "cat": "sentence",
+      "type": "sent-dict",
+      "topic": "经典句子",
+      "badge": "句子听写",
+      "q": "在这个节日里，日本向在上一年 4 月 2 日至当年 4 月 1 日期间年满 20 岁的人送上祝贺。",
+      "ans": [
+        "On this holiday, Japan congratulates people who have turned 20 years old between 2nd April of the past year and 1st April of the current year."
+      ],
+      "explain": "📌 听写句子：在这个节日里，日本向在上一年 4 月 2 日至当年 4 月 1 日期间年满 20 岁的人送上祝贺。<br>✅ On this holiday, Japan congratulates people who have turned 20 years old between 2nd April of the past year and 1st April of the current year.<br>💡 关键词：On this holiday, Japan congratulates people who have turned 20 years old between 2nd April of the past year and 1st April of the current year.",
+      "level": "B2"
     }
   ]
 };;;;
@@ -62241,7 +62293,15 @@ function loadTestTopics() {
   var lv = (typeof EnglishLevel !== 'undefined') ? EnglishLevel.get() : 'B1';
   try {
     var saved = localStorage.getItem('testmaster_topics_' + lv);
-    if (saved) { selectedTopics = JSON.parse(saved); return; }
+    if (saved) {
+      selectedTopics = JSON.parse(saved);
+      // 新增加的主题（如“经典句子”）默认自动纳入已选，避免用户需手动重新勾选
+      var shown = getTestTopicList();
+      var hadAll = selectedTopics.length === shown.length;
+      shown.forEach(function (t) { if (selectedTopics.indexOf(t) < 0) selectedTopics.push(t); });
+      if (hadAll) selectedTopics = shown.slice(); // 原本全选则保持全选
+      return;
+    }
   } catch(e) {}
   // 首次加载（无 localStorage）→默认全选
   selectedTopics = [...getTestTopicList()];
@@ -63596,7 +63656,7 @@ init();
       // Add a focus banner on the test page header area
       var banner = document.createElement('div');
       banner.id = 'focusBanner';
-      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260804-1156" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
+      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260804-1419" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
       var testPage = document.getElementById('testPage');
       if (testPage) {
         var topBar = testPage.querySelector('.test-top-bar');
@@ -63900,7 +63960,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260804-1156</div>
-  <script src="kb.js?v=20260804-1156"></script>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260804-1419</div>
+  <script src="kb.js?v=20260804-1419"></script>
 </body>
 </html>
