@@ -5,7 +5,7 @@
 
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta name="build-version" content="20260804-1043">
+<meta name="build-version" content="20260804-1156">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>影子跟读 · 英语学习</title>
 <style>
@@ -81,7 +81,7 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 </head>
 <body>
 
-<a href="index.html?v=20260804-1043" class="back">← 返回英语学习中心</a>
+<a href="index.html?v=20260804-1156" class="back">← 返回英语学习中心</a>
 
 <div class="topbar">
   <h1>🎙️ 影子跟读</h1>
@@ -119,9 +119,9 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 
 <div id="toast"></div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260804-1043</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260804-1156</div>
 
-<script src="shadowing_data.js?v=20260804-1043"></script>
+<script src="shadowing_data.js?v=20260804-1156"></script>
 <script>
 (function () {
   'use strict';
@@ -161,12 +161,12 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
       u.lang = v ? v.lang : 'en-US';
       u.rate = curRate; u.pitch = 1;
       var done = false;
-      function advance(){ if (done) return; done = true; clearTimeout(wd); i++; next(); }
+      function advance(){ if (done) return; done = true; clearTimeout(wd); i++; setTimeout(next, 220); } // 句/段间留停顿，更连贯自然
       u.onend = advance;
       u.onerror = advance;
       synth.speak(u);
-      // Chrome 长句可能不触发 onend，加看门狗兜底
-      var wd = setTimeout(function(){ if (done) return; done = true; try { synth.cancel(); } catch(e){} i++; next(); }, 11000);
+      // 长句(尤其 MC 长段落)按文本长度线性延长看门狗，避免读到一半被截断重来
+      var wd = setTimeout(function(){ if (done) return; done = true; try { synth.cancel(); } catch(e){} i++; next(); }, Math.max(12000, parts[i].length * 95));
     }
     next();
   }
@@ -179,7 +179,7 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
     var parts = [];
     if (x.content.type === 'dialogue') x.content.turns.forEach(function(t){ if (t.text) parts.push(t.text); });
     else x.content.paragraphs.forEach(function(p){ if (p) parts.push(p); });
-    speakSeq(splitSentences(parts.join(' ')));
+    speakSeq(parts); // 整段/整回合为一个朗读单元，段落间由 TTS 自然停顿，避免跨段混排与停顿丢失
   }
 
   // ---------- 标注 ----------
@@ -195,37 +195,66 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
   function alphaTail(w){ var m = w.match(/[a-zA-Z]+$/); return m ? m[0].toLowerCase() : ''; }
   function alphaHead(w){ var m = w.match(/^[a-zA-Z]+/); return m ? m[0].toLowerCase() : ''; }
 
-  // 连读/略读：以文档标注为准，不再自动推断
-  function isLink(a, b){ return false; }  // 保留函数签名但禁用
-  function isUnreleased(tk, nextTk){ return false; }  // 保留函数签名但禁用
-  function sentenceTone(sentence){ return ''; }  // 禁用语调
-
-  // 当前课的标注数据（从 shadowing_data.js 的 annotations 字段读取）
+  // ---------- 连读 / 略读：以「正确发音规则」为主，原文档真实标注仅作校验 ----------
+  // 说明：shadowing_data.js 旧版 annotations 由程序臆造、错误较多（如辅音+辅音标连读、
+  // 跨句标连读、略读 char 为任意子串），故改为基于发音规则的推断；原文档真实标注若存在且
+  // 符合规则则保留，否则一律以规则为准（修复错标）。原文档未标注处由规则补全。
   var curAnnotations = null;
 
-  // 检查两个词是否在标注的连读对中
-  function isLinkByAnnotation(leftWord, rightWord) {
+  // 词尾是否落在「辅音音素」（基于拼写近似）
+  function endsInConsonantSound(w){
+    if (!w) return false;
+    w = w.toLowerCase().replace(/[^a-z']/g,'').replace(/’/g,"'");
+    if (!w) return false;
+    if (w.length < 2) return !/[aeiouy]/.test(w);
+    // 以不发音 e 结尾（home/see/life）→ 元音结尾；但 le/me/ne/re/se/te/ve/ze 实为辅音（capsule/come/gone）
+    if (/[bcdfghjklmnpqrstvwxz]e$/.test(w)) {
+      if (/(?:le|me|ne|re|se|te|ve|ze)$/.test(w)) return true;
+      return false;
+    }
+    var last = w.slice(-1);
+    return !/[aeiouy]/.test(last);
+  }
+  // 词首是否落在「元音音素」
+  function startsWithVowelSound(w){
+    if (!w) return false;
+    w = w.toLowerCase().replace(/[^a-z']/g,'').replace(/’/g,"'");
+    if (!w) return false;
+    return /[aeiouy]/.test(w.charAt(0));
+  }
+
+  // 原文档标注：仅在「符合发音规则」时才采用（修复错标），否则以规则为准
+  function annotationAllowsLink(leftClean, rightClean){
     if (!curAnnotations || !curAnnotations.linking) return false;
-    var lw = leftWord.toLowerCase().replace(/[^a-z']/g, '');
-    var rw = rightWord.toLowerCase().replace(/[^a-z']/g, '');
-    for (var i = 0; i < curAnnotations.linking.length; i++) {
+    var lw = leftClean.toLowerCase().replace(/[^a-z']/g,'').replace(/’/g,"'");
+    var rw = rightClean.toLowerCase().replace(/[^a-z']/g,'').replace(/’/g,"'");
+    for (var i=0;i<curAnnotations.linking.length;i++){
       var lk = curAnnotations.linking[i];
-      var al = lk.left.toLowerCase().replace(/[^a-z']/g, '');
-      var ar = lk.right.toLowerCase().replace(/[^a-z']/g, '');
-      if (al === lw && ar === rw) return true;
+      var al = lk.left.toLowerCase().replace(/[^a-z']/g,'').replace(/’/g,"'");
+      var ar = lk.right.toLowerCase().replace(/[^a-z']/g,'').replace(/’/g,"'");
+      if (al===lw && ar===rw) return true;
     }
     return false;
   }
 
-  // 检查词是否在标注的略读列表中
-  function isElisionByAnnotation(word) {
-    if (!curAnnotations || !curAnnotations.elision) return null;
-    var w = word.toLowerCase().replace(/[^a-z']/g, '');
-    for (var i = 0; i < curAnnotations.elision.length; i++) {
-      var el = curAnnotations.elision[i];
-      var aw = el.word.toLowerCase().replace(/[^a-z']/g, '');
-      if (aw === w) return el.char;
-    }
+  // 连读判断：辅音结尾 + 元音开头 → 连读；也接受原文档合法标注
+  function shouldLink(prevClean, curClean){
+    if (!prevClean || !curClean) return false;
+    if (endsInConsonantSound(prevClean) && startsWithVowelSound(curClean)) return true;
+    return annotationAllowsLink(prevClean, curClean);
+  }
+
+  // 略读判断：返回需划掉的尾缀字符串，否则 null
+  function elisionTail(clean){
+    if (!clean) return null;
+    var w = clean.toLowerCase().replace(/[^a-z']/g,'').replace(/’/g,"'");
+    if (!w) return null;
+    // 1) 否定缩写词 n't → 尾 t 省略（don't→don'，can't→can'）
+    if (/n't$/.test(w)) return "'t";
+    // 2) 词尾辅音丛简化（连读/略读中常见的「不完全爆破」）：略去最后一个辅音
+    if (/(st|nd|ld|sk|ft|pt|kt|mp|nt|nk|lf|lk|lm|lp|lt|sp|ct|xt)$/.test(w)) return w.slice(-1);
+    // 3) and → n（口语弱化 an'）
+    if (w==='and') return 'd';
     return null;
   }
 
@@ -235,43 +264,34 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
     var prevWordIdx = -1;
     for (var i=0;i<toks.length;i++){
       var tk = toks[i];
-      var inf = {tk:tk, isWord:false, clean:'', linkWithPrev:false, elisionChar:null, nextWordTk:''};
+      var inf = {tk:tk, isWord:false, clean:'', linkWithPrev:false, elisionChar:null};
       if (/^[\w’']+$/.test(tk)) {
         inf.isWord = true;
-        inf.clean = tk.toLowerCase().replace(/[^a-z’']/g,'').replace(/’/g, "'");
-        // 使用标注数据判断连读
-        if (annotate && prevWordIdx >= 0 && isLinkByAnnotation(toks[prevWordIdx], tk)) {
-          inf.linkWithPrev = true;
+        inf.clean = tk.toLowerCase().replace(/[^a-z’']/g,'').replace(/’/g,"'");
+        if (annotate && prevWordIdx >= 0) {
+          var prevClean = toks[prevWordIdx].toLowerCase().replace(/[^a-z’']/g,'').replace(/’/g,"'");
+          if (shouldLink(prevClean, inf.clean)) inf.linkWithPrev = true;
         }
-        for (var j=i+1;j<toks.length;j++){
-          if (/^[\w’']+$/.test(toks[j])) { inf.nextWordTk = toks[j]; break; }
-        }
-        // 使用标注数据判断略读
         if (annotate) {
-          var elChar = isElisionByAnnotation(tk);
-          if (elChar) inf.elisionChar = elChar;
+          var el = elisionTail(inf.clean);
+          if (el) inf.elisionChar = el;
         }
         prevWordIdx = i;
         info.push(inf);
       } else {
-        if (/[.!?]/.test(tk)) prevWordIdx = -1;
+        if (/[.!?]/.test(tk)) prevWordIdx = -1;  // 跨句不连读
         info.push(inf);
       }
     }
     var out = '';
-    for (var i=0;i<info.length;i++){
-      var inf = info[i];
-      var tk = inf.tk;
-      if (/^\s+$/.test(tk)) { out += tk; continue; }
-      if (!inf.isWord) {
-        out += esc(tk);
-        continue;
-      }
-      // 连读弧线：在连读词之间插入 ⌒
-      if (annotate && inf.linkWithPrev) {
-        out += '<span class="lnk" title="连读 Linking">⌒</span>';
-      }
-      out += renderWord(tk, inf.clean, inf.elisionChar);
+    for (var k=0;k<info.length;k++){
+      var inf = info[k];
+      var tk2 = inf.tk;
+      if (/^\s+$/.test(tk2)) { out += tk2; continue; }
+      if (!inf.isWord) { out += esc(tk2); continue; }
+      // 连读弧线：连读词之间插入 ⌒
+      if (annotate && inf.linkWithPrev) out += '<span class="lnk" title="连读 Linking">⌒</span>';
+      out += renderWord(tk2, inf.clean, inf.elisionChar);
     }
     return out;
   }
@@ -280,7 +300,6 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
     var html = esc(tk);
     if (!annotate || !elisionChar) return '<span class="w" data-w="' + esc(clean) + '">' + html + '</span>';
     var s = tk.replace(/[’]/g, "'");
-    // 根据标注数据标记略读字符
     var elLower = elisionChar.toLowerCase();
     var sLower = s.toLowerCase();
     var idx = sLower.lastIndexOf(elLower);
@@ -288,7 +307,7 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
       html = esc(s.slice(0, idx)) + '<span class="strike">' + esc(s.slice(idx, idx + elisionChar.length)) + '</span>' + esc(s.slice(idx + elisionChar.length));
       return '<span class="w" data-w="' + esc(clean) + '">' + html + '<sup class="elide-mark">略</sup></span>';
     }
-    // fallback: 标记最后一个字符
+    // fallback：划掉末字母
     var last = s.slice(-1);
     var rest = s.slice(0, -1);
     html = esc(rest) + '<span class="strike">' + esc(last) + '</span>';
@@ -361,7 +380,7 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
       });
     }
     // 图例
-    if (annotate && curAnnotations && curAnnotations.linking && curAnnotations.elision && (curAnnotations.linking.length || curAnnotations.elision.length)) {
+    if (annotate) {
       var legend = document.createElement('div');
       legend.className = 'legend';
       legend.innerHTML = '<span><i class="lnk">⌒</i> 连读 Linking</span><span><i class="strk">t</i><sup class="elide-mark">略</sup> 略读 Unreleased</span>';
