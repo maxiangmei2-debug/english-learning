@@ -7,11 +7,11 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260803-1956">
+<meta name="build-version" content="20260804-1018">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
-<script src="level-config.js?v=20260803-1956"></script>
-<script src="practice_publish.js?v=20260803-1956"></script>
+<script src="level-config.js?v=20260804-1018"></script>
+<script src="practice_publish.js?v=20260804-1018"></script>
 <style>
   :root {
     --primary: #6366F1;
@@ -452,7 +452,7 @@
 </style>
 </head>
 <body>
-<a href="index.html?v=20260803-1956" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+<a href="index.html?v=20260804-1018" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
 
 <!-- ====== 首页 ====== -->
 <div class="home-page" id="homePage">
@@ -61803,10 +61803,21 @@ const SRS_KEY = 'testmaster_srs';
 // 每个 box 升阶所需的「连续答对」次数，索引 = 当前 box（0..6）。box0=3, box1=2, box2~box6=1
 const SRS_STREAK_BY_BOX = [3, 2, 1, 1, 1, 1, 1];
 function reqStreakForBox(box) { var b = box < 0 ? 0 : box; return SRS_STREAK_BY_BOX[Math.min(b, SRS_STREAK_BY_BOX.length - 1)]; }
+function hashCode(str) {
+  var h = 0;
+  for (var i = 0; i < str.length; i++) { h = (h << 5) - h + str.charCodeAt(i); h |= 0; }
+  return Math.abs(h);
+}
+function spreadDue(id) {
+  var offset = (hashCode(String(id)) % SRS_INITIAL_SPREAD_DAYS) * DAY_MS;
+  return Date.now() + offset;
+}
 // 升到 box(b+1) 时推后的天数：索引 = 当前 box（0..5）。box1=2, box2=4, box3=7, box4=15, box5=30, box6=60
 const SRS_INTERVAL_DAY = [2, 4, 7, 15, 30, 60];
 const SRS_MAX_BOX = SRS_INTERVAL_DAY.length; // 6（box6 = 60天，最高复习档，再连对即「已掌握」）
 const DAY_MS = 86400000;
+const SRS_INITIAL_SPREAD_DAYS = 3; // 新题首次出现分散到 0-2 天内，避免同批题同时出现
+const SRS_DAILY_LIMIT_BY_BOX = [15, 12, 10, 8, 6, 4, 3]; // 每个 box 每天最多出现多少题
 let srsState = {};
 (function loadSrs() {
   try { var raw = localStorage.getItem(SRS_KEY); if (raw) srsState = JSON.parse(raw); } catch(e) {}
@@ -61815,8 +61826,8 @@ function saveSrs() {
   try { localStorage.setItem(SRS_KEY, JSON.stringify(srsState)); } catch(e) {}
   scheduleSync();
 }
-function getSrs(id) { if (!srsState[id]) srsState[id] = { box:0, due:0 }; return srsState[id]; }
-function readSrs(id) { return srsState[id] || { box:0, due:0 }; }
+function getSrs(id) { if (!srsState[id]) srsState[id] = { box:0, due:spreadDue(id) }; return srsState[id]; }
+function readSrs(id) { return srsState[id] || { box:0, due:spreadDue(id) }; }
 function srsDueTs(id) { var s = readSrs(id); return s.due || 0; }
 function isSrsDue(id, now) { return srsDueTs(id) <= (now || Date.now()); }
 function srsWrongOf(q) { var fs = freqState[q.id]; return (fs && fs.w) ? fs.w : 0; }
@@ -61840,9 +61851,8 @@ function updateSrs(id, correct) {
       }
       if (fs) fs.streak = 0; // 升阶后重置计数，进入下一轮
     } else {
-      // 还没连对达标：保持当前阶位，按当前box间隔天数再练
-      s.box = Math.max(1, s.box);
-      var curInterval = SRS_INTERVAL_DAY[Math.min(s.box - 1, SRS_INTERVAL_DAY.length - 1)];
+      // 还没连对达标：保持当前 box，按当前 box 的间隔天数再练（box0=2天后）
+      var curInterval = SRS_INTERVAL_DAY[Math.min(s.box, SRS_INTERVAL_DAY.length - 1)];
       s.due = Date.now() + curInterval * DAY_MS;
     }
   } else {
@@ -61864,6 +61874,21 @@ function stageLabel(box) {
   var names = ['新题（立即可练）', '2天档', '4天档', '7天档', '15天档', '30天档', '60天档'];
   return names[Math.min(box, names.length - 1)] || ('box' + box);
 }
+
+// 对「到期」列表按 box 做每日上限裁剪，避免一天把 2/4/7 天档全刷完
+function applyDailyLimit(list, limits) {
+  if (!list || list.length === 0) return { kept: [], skipped: [], counts: {} };
+  limits = limits || SRS_DAILY_LIMIT_BY_BOX;
+  var counts = {}, kept = [], skipped = [];
+  list.forEach(function(q) {
+    var box = getSrs(q.id).box;
+    counts[box] = (counts[box] || 0) + 1;
+    if (counts[box] <= (limits[box] || limits[limits.length - 1])) kept.push(q);
+    else skipped.push(q);
+  });
+  return { kept: kept, skipped: skipped, counts: counts };
+}
+
 function skipStage(id) {
   var s = getSrs(id);
   if (s.box >= SRS_MAX_BOX) {
@@ -62014,12 +62039,13 @@ function buildMixedQuestions(total, catKeys) {
   // 不超过该分类实际题量
   availCats.forEach(c => { if (quotas[c] > counts[c]) quotas[c] = counts[c]; });
 
-  // 2) 每类挑选：到期题优先（常错更优先），不足从最早到期的未到期题补
+  // 2) 每类挑选：到期题优先（高 box 更优先，同 box 常错优先），并按每日上限裁剪
   const byCat = {};
   availCats.forEach(c => {
-    const due = dueByCat[c].slice().sort((a,b)=> srsWrongOf(b) - srsWrongOf(a) + (Math.random()-0.5));
+    const due = dueByCat[c].slice().sort((a,b)=> getSrs(b.id).box - getSrs(a.id).box || srsWrongOf(b) - srsWrongOf(a) + (Math.random()-0.5));
+    const limited = applyDailyLimit(due, SRS_DAILY_LIMIT_BY_BOX);
     const notDue = notDueByCat[c].slice().sort((a,b)=> srsDueTs(a.id) - srsDueTs(b.id));
-    byCat[c] = due.concat(notDue.filter(function(q){ return getSrs(q.id).box < 1; })).slice(0, quotas[c]);
+    byCat[c] = limited.kept.concat(notDue.filter(function(q){ return getSrs(q.id).box < 1; })).slice(0, quotas[c]);
   });
 
   // 3) 跨分类轮转交叉，避免同一维度连排
@@ -62048,16 +62074,19 @@ function pickDueQuestions(total, typeFilter) {
   const due = all.filter(q => isSrsDue(q.id, now));
   const notDue = all.filter(q => !isSrsDue(q.id, now))
                      .sort((a,b) => srsDueTs(a.id) - srsDueTs(b.id));
+  // 高 box（更接近遗忘）优先，同 box 常错优先
   const scored = due.map(q => {
     const fs = freqState[q.id];
     const wrong = fs && fs.w ? fs.w : 0;
-    return { q: q, s: wrong * 3 + Math.random() };
+    return { q: q, s: getSrs(q.id).box * 10 + wrong * 3 + Math.random() };
   }).sort((a,b) => b.s - a.s);
+  // 按 box 每日上限裁剪，防止一天刷完 2/4/7 天档
+  const limited = applyDailyLimit(scored.map(x => x.q), SRS_DAILY_LIMIT_BY_BOX);
   const chosen = [];
   const used = new Set();
-  for (const x of scored) {
+  for (const q of limited.kept) {
     if (chosen.length >= total) break;
-    if (!used.has(x.q.id)) { chosen.push(x.q); used.add(x.q.id); }
+    if (!used.has(q.id)) { chosen.push(q); used.add(q.id); }
   }
   for (const q of notDue) {
     if (chosen.length >= total) break;
@@ -63559,7 +63588,7 @@ init();
       // Add a focus banner on the test page header area
       var banner = document.createElement('div');
       banner.id = 'focusBanner';
-      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260803-1956" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
+      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260804-1018" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
       var testPage = document.getElementById('testPage');
       if (testPage) {
         var topBar = testPage.querySelector('.test-top-bar');
@@ -63773,7 +63802,7 @@ function removeMastered(id) {
   if (masteredSet.has(id)) {
     masteredSet.delete(id);
     saveMastered();
-    var s = getSrs(id); s.box = 0; s.due = Date.now(); saveSrs();
+    var s = getSrs(id); s.box = 0; s.due = spreadDue(id); saveSrs();
   }
   renderMasteredList();
   updateHomeStats();
@@ -63863,7 +63892,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260803-1956</div>
-  <script src="kb.js?v=20260803-1956"></script>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260804-1018</div>
+  <script src="kb.js?v=20260804-1018"></script>
 </body>
 </html>
