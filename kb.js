@@ -130,7 +130,10 @@
     if (!m || m === '（释义）') return false;               // 无释义或占位符，无法出“意思是？”题
     if (e.type === 'grammar') return false;                // 语法规则/搭配模板不适合当前选择题形式
     if (/[→＋+\：]/.test(c)) return false;                  // 变形/组合规则也跳过
-    if (/[\u4e00-\u9fff]/.test(c)) return false;            // 内容含中文：不适合出“英文→中文”选择题
+    if (/^[\u4e00-\u9fff]/.test(c)) return false;           // 内容以中文开头：不适合出“英文→中文”选择题
+    if (!/[a-zA-Z\u4e00-\u9fff]/.test(c)) return false;    // 内容没有字母/中文（如 ## / 纯符号）无法出题
+    if (/^#+/.test(c)) return false;                        // Markdown 标题标记不适合当内容
+    if (/^[一二三四五六七八九十]+、/.test(m)) return false; // 释义是章节标题而非真正释义
     if (/[\u4e00-\u9fff]/.test(m) && /[a-zA-Z]/.test(m) && m.length < 6) return false; // 释义是中英混杂的占位/规则
     return true;
   }
@@ -277,6 +280,9 @@
   // 从一行文本解析出一条知识库条目（自动提取「内容 / 释义」）
   function parseEntry(raw) {
     raw = (raw || '').trim();
+    if (!raw) return null;
+    // 去掉常见的 Markdown 标题 / 列表标记，避免把 "## 一、星期" 拆成 content="##"
+    raw = raw.replace(/^[\s]*#{1,6}\s+/, '').replace(/^[\s]*[-*•]\s+/, '').replace(/^[\s]*\d+(?:[.．、]|\))\s+/, '');
     if (!raw) return null;
     var content = raw, meaning = '';
     // 显式分隔符 = : ：
@@ -435,6 +441,12 @@
       var c = (e.content || '').trim();
       // 语法规则、释义为空/占位符、含规则符号的条目，都不适合出“是什么意思”选择题
       if (e.type === 'grammar' || !m || m === '（释义）' || /[→＋+\：]/.test(c)) {
+        e.noTest = true;
+        e.updatedAt = Date.now();
+        changed = true;
+      }
+      // 新增：把内容无字母/中文、纯符号、Markdown 标题、释义为章节标题的旧数据也标记为 noTest
+      if (!/[a-zA-Z\u4e00-\u9fff]/.test(c) || /^#+/.test(c) || /^[一二三四五六七八九十]+、/.test(m)) {
         e.noTest = true;
         e.updatedAt = Date.now();
         changed = true;
