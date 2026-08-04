@@ -7,11 +7,11 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260804-1419">
+<meta name="build-version" content="20260804-1551">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
-<script src="level-config.js?v=20260804-1419"></script>
-<script src="practice_publish.js?v=20260804-1419"></script>
+<script src="level-config.js?v=20260804-1551"></script>
+<script src="practice_publish.js?v=20260804-1551"></script>
 <style>
   :root {
     --primary: #6366F1;
@@ -93,6 +93,41 @@
   .cat-btn:hover { background:rgba(255,255,255,0.25); }
   .cat-btn.active { background:white; color:var(--primary); border-color:white; }
   .topic-section { padding:12px 16px 24px; max-width:500px; margin:0 auto; border-top:1px solid rgba(255,255,255,0.15); }
+  .topic-bar-compact { gap:5px; }
+  .topic-bar-compact .cat-btn {
+    padding:4px 8px; border-radius:12px; font-size:11px; min-width:56px; text-align:center;
+    display:inline-flex; align-items:center; justify-content:center; gap:3px;
+  }
+  .course-status-modal {
+    position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:10000;
+    display:none; align-items:center; justify-content:center; padding:16px;
+  }
+  .course-status-modal.active { display:flex; }
+  .course-status-box {
+    background:linear-gradient(180deg, #7c3aed 0%, #6d28d9 100%);
+    color:white; width:100%; max-width:420px; max-height:80vh; border-radius:18px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.35); display:flex; flex-direction:column;
+    border:1px solid rgba(255,255,255,0.18); overflow:hidden;
+  }
+  .course-status-head {
+    padding:14px 16px; border-bottom:1px solid rgba(255,255,255,0.15);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .course-status-head h3 { margin:0; font-size:16px; }
+  .course-status-actions { padding:10px 16px; border-bottom:1px solid rgba(255,255,255,0.12); display:flex; gap:8px; flex-wrap:wrap; }
+  .course-status-actions button {
+    font-size:11px; padding:5px 10px; border-radius:12px; border:1px solid rgba(255,255,255,0.35);
+    background:rgba(255,255,255,0.12); color:white; cursor:pointer; font-weight:600;
+  }
+  .course-status-list { overflow-y:auto; padding:8px 12px; }
+  .course-status-row {
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+    padding:8px 6px; border-bottom:1px solid rgba(255,255,255,0.08); font-size:13px;
+  }
+  .course-status-row label { display:flex; align-items:center; gap:6px; cursor:pointer; }
+  .course-status-close {
+    background:none; border:none; color:white; font-size:20px; cursor:pointer;
+  }
 
   /* ====== Test Page ====== */
   .test-page { display:none; min-height:100vh; }
@@ -452,7 +487,7 @@
 </style>
 </head>
 <body>
-<a href="index.html?v=20260804-1419" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+<a href="index.html?v=20260804-1551" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
 
 <!-- ====== 首页 ====== -->
 <div class="home-page" id="homePage">
@@ -528,11 +563,15 @@
   <div class="topic-section" id="topicSection">
     <div class="topic-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
       <div class="cat-label">主题多选：</div>
-      <div style="display:flex;gap:6px;">
-        <button onclick="toggleAllTestTopics()" style="font-size:12px;padding:4px 10px;border:1.5px solid rgba(255,255,255,0.35);border-radius:14px;background:rgba(255,255,255,0.12);color:white;cursor:pointer;font-weight:600;" id="topicToggleAll">全选/全不选</button>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;">
+        <button onclick="toggleAllTestTopics()" style="font-size:11px;padding:4px 10px;border:1.5px solid rgba(255,255,255,0.35);border-radius:14px;background:rgba(255,255,255,0.12);color:white;cursor:pointer;font-weight:600;" id="topicToggleAll">全选/全不选</button>
+        <button onclick="selectTestTopicsByStatus('previewed')" style="font-size:11px;padding:4px 10px;border:1.5px solid rgba(255,255,255,0.35);border-radius:14px;background:rgba(255,255,255,0.12);color:white;cursor:pointer;font-weight:600;" title="选中所有标记为已预习的课程">已预习</button>
+        <button onclick="selectTestTopicsByStatus('reviewed')" style="font-size:11px;padding:4px 10px;border:1.5px solid rgba(255,255,255,0.35);border-radius:14px;background:rgba(255,255,255,0.12);color:white;cursor:pointer;font-weight:600;" title="选中所有标记为已复习的课程">已复习</button>
+        <button onclick="selectTestTopicsByStatus('both')" style="font-size:11px;padding:4px 10px;border:1.5px solid rgba(255,255,255,0.35);border-radius:14px;background:rgba(255,255,255,0.12);color:white;cursor:pointer;font-weight:600;" title="选中已预习或已复习的课程">已预习+复习</button>
+        <button onclick="openTestCourseStatusModal()" style="font-size:11px;padding:4px 10px;border:1.5px solid rgba(255,255,255,0.35);border-radius:14px;background:rgba(255,255,255,0.12);color:white;cursor:pointer;font-weight:600;" title="管理已预习/已复习课程">管理</button>
       </div>
     </div>
-    <div class="cat-bar" id="topicBar"></div>
+    <div class="cat-bar topic-bar-compact" id="topicBar"></div>
     <div id="topicCount" style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:6px;text-align:center;"></div>
   </div>
 </div>
@@ -62241,6 +62280,49 @@ function getTestTopicList() {
   return Array.from(topics).sort();
 }
 
+function shortTopicLabel(t) {
+  if (!t) return '';
+  var m = String(t).match(/^(B[12]-)?MC\d+/i);
+  if (m) return m[0].toUpperCase();
+  var parts = String(t).split(/\s+/);
+  return parts[0] || t;
+}
+
+function getTestCourseStatusKey(kind) {
+  var lv = (typeof EnglishLevel !== 'undefined') ? EnglishLevel.get() : 'B1';
+  return 'english_' + kind + '_' + lv;
+}
+function loadTestCourseStatus(kind) {
+  try {
+    var v = localStorage.getItem(getTestCourseStatusKey(kind));
+    if (v) return JSON.parse(v);
+  } catch(e) {}
+  return [];
+}
+function saveTestCourseStatus(kind, arr) {
+  try { localStorage.setItem(getTestCourseStatusKey(kind), JSON.stringify(arr || [])); } catch(e) {}
+}
+function inTestCourseStatus(kind, topic) {
+  return loadTestCourseStatus(kind).indexOf(topic) >= 0;
+}
+function toggleTestCourseStatus(kind, topic) {
+  var arr = loadTestCourseStatus(kind);
+  var idx = arr.indexOf(topic);
+  if (idx >= 0) arr.splice(idx, 1); else arr.push(topic);
+  saveTestCourseStatus(kind, arr);
+  renderTestCourseStatusModal();
+}
+function setAllTestCourseStatus(kind, topics, val) {
+  var arr = loadTestCourseStatus(kind);
+  topics.forEach(function(t) {
+    var idx = arr.indexOf(t);
+    if (val && idx < 0) arr.push(t);
+    if (!val && idx >= 0) arr.splice(idx, 1);
+  });
+  saveTestCourseStatus(kind, arr);
+  renderTestCourseStatusModal();
+}
+
 function renderTestTopicBar() {
   var bar = document.getElementById('topicBar');
   if (!bar) return;
@@ -62252,7 +62334,7 @@ function renderTestTopicBar() {
   bar.innerHTML = shownTopics.map(t => {
     var checked = selectedTopics.indexOf(t) >= 0;
     return `<button class="cat-btn ${checked?'active':''}" onclick="toggleTestTopic('${t.replace(/'/g,"\\'")}')">` +
-      `<span style="font-size:13px;">${checked?'☑':'☐'}</span> ${t}</button>`;
+      `<span style="font-size:12px;">${checked?'☑':'☐'}</span> ${shortTopicLabel(t)}</button>`;
   }).join('');
   // 更新计数
   var countEl = document.getElementById('topicCount');
@@ -62263,6 +62345,51 @@ function renderTestTopicBar() {
     }, 0);
     countEl.textContent = '已选 ' + selectedTopics.length + '/' + shownTopics.length + ' 个主题 · 将练 ' + selCount + '/' + total + ' 题';
   }
+  // 更新全选按钮文字
+  var toggleBtn = document.getElementById('topicToggleAll');
+  if (toggleBtn) toggleBtn.textContent = allSelected ? '全不选' : '全选';
+}
+
+function selectTestTopicsByStatus(mode) {
+  var shownTopics = getTestTopicList();
+  var previewed = new Set(loadTestCourseStatus('previewed'));
+  var reviewed = new Set(loadTestCourseStatus('reviewed'));
+  var target = new Set();
+  if (mode === 'previewed' || mode === 'both') previewed.forEach(function(t){ if (shownTopics.indexOf(t) >= 0) target.add(t); });
+  if (mode === 'reviewed' || mode === 'both') reviewed.forEach(function(t){ if (shownTopics.indexOf(t) >= 0) target.add(t); });
+  selectedTopics = Array.from(target);
+  saveTestTopics();
+  renderTestTopicBar();
+}
+
+function openTestCourseStatusModal() {
+  var modal = document.getElementById('testCourseStatusModal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'testCourseStatusModal';
+    modal.className = 'course-status-modal';
+    modal.innerHTML = '<div class="course-status-box"><div class="course-status-head"><h3>管理已预习 / 已复习课程</h3><button class="course-status-close" onclick="closeTestCourseStatusModal()">×</button></div><div class="course-status-actions"><button onclick="setAllTestCourseStatus(\'previewed\', getTestTopicList(), true)">全标预习</button><button onclick="setAllTestCourseStatus(\'previewed\', getTestTopicList(), false)">清空预习</button><button onclick="setAllTestCourseStatus(\'reviewed\', getTestTopicList(), true)">全标复习</button><button onclick="setAllTestCourseStatus(\'reviewed\', getTestTopicList(), false)">清空复习</button></div><div class="course-status-list" id="testCourseStatusList"></div></div>';
+    document.body.appendChild(modal);
+  }
+  modal.classList.add('active');
+  renderTestCourseStatusModal();
+}
+function closeTestCourseStatusModal() {
+  var modal = document.getElementById('testCourseStatusModal');
+  if (modal) modal.classList.remove('active');
+}
+function renderTestCourseStatusModal() {
+  var list = document.getElementById('testCourseStatusList');
+  if (!list) return;
+  var topics = getTestTopicList();
+  list.innerHTML = topics.map(function(t) {
+    var pv = inTestCourseStatus('previewed', t) ? 'checked' : '';
+    var rv = inTestCourseStatus('reviewed', t) ? 'checked' : '';
+    return '<div class="course-status-row"><span>' + shortTopicLabel(t) + '</span><div style="display:flex;gap:12px;">' +
+      '<label><input type="checkbox" ' + pv + ' onchange="toggleTestCourseStatus(\'previewed\', \'' + t.replace(/'/g, "\\'") + '\')"> 预习</label>' +
+      '<label><input type="checkbox" ' + rv + ' onchange="toggleTestCourseStatus(\'reviewed\', \'' + t.replace(/'/g, "\\'") + '\')"> 复习</label>' +
+      '</div></div>';
+  }).join('');
 }
 
 function toggleTestTopic(t) {
@@ -63656,7 +63783,7 @@ init();
       // Add a focus banner on the test page header area
       var banner = document.createElement('div');
       banner.id = 'focusBanner';
-      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260804-1419" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
+      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260804-1551" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
       var testPage = document.getElementById('testPage');
       if (testPage) {
         var topBar = testPage.querySelector('.test-top-bar');
@@ -63960,7 +64087,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260804-1419</div>
-  <script src="kb.js?v=20260804-1419"></script>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260804-1551</div>
+  <script src="kb.js?v=20260804-1551"></script>
 </body>
 </html>
