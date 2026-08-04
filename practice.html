@@ -5,7 +5,7 @@
 
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta name="build-version" content="20260804-1659">
+<meta name="build-version" content="20260804-1852">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>课后练习 · 英语学习</title>
 <style>
@@ -37,6 +37,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .tag{display:inline-flex;align-items:center;gap:4px;background:#ede9fe;color:#6d28d9;border:1px solid #ddd6fe;border-radius:999px;padding:5px 10px 5px 12px;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s,border-color .15s;max-width:100%}
 .tag:hover{background:#ddd6fe;border-color:#c4b5fd}
 .tag .tag-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px}
+.tag .tag-cn{font-size:11px;font-weight:500;opacity:.7;margin-left:3px;white-space:nowrap}
 .tag .tag-del{background:none;border:none;color:#a78bfa;font-size:15px;cursor:pointer;padding:0 2px;line-height:1;font-weight:700;flex:0 0 auto}
 .tag .tag-del:hover{color:#dc2626}
 .tag-editing{background:#fff !important;border-color:#6366F1 !important;padding:3px 8px;border-radius:12px}
@@ -112,11 +113,12 @@ body.preview-on .edit-only{display:none}
   .tag-add-input{min-width:80px;flex:1 1 100px}
 }
 </style>
-<script src="practice_publish.js?v=20260804-1659"></script>
+<script src="vocab_dict.js?v=20260804-1852"></script>
+<script src="practice_publish.js?v=20260804-1852"></script>
 </head>
 <body>
 
-<a href="index.html?v=20260804-1659" class="back">← 返回英语学习中心</a>
+<a href="index.html?v=20260804-1852" class="back">← 返回英语学习中心</a>
 
 <div class="topbar">
   <h1>📝 课后练习</h1>
@@ -239,6 +241,119 @@ body.preview-on .edit-only{display:none}
   }
   function blankSentence() { return { orig: '', fixed: '', grammar: '', trans: '' }; }
 
+  // ===== vocab 标签支持 英文=中文 / 英文:中文 / 英文中文 =====
+  function parseTagInput(raw) {
+    raw = (raw || '').trim();
+    if (!raw) return null;
+    var en = raw, cn = '';
+    // 显式分隔符 = : ：
+    var m = raw.match(/^(.+?)\s*(?:=|:|：)\s*(.+)$/);
+    if (m && m[2].trim()) {
+      en = m[1].trim();
+      cn = m[2].trim();
+    } else {
+      // 无分隔符：首个中文字符前为英文，后为中文
+      var ci = raw.search(/[\u4e00-\u9fff]/);
+      if (ci > 0) {
+        en = raw.slice(0, ci).trim();
+        cn = raw.slice(ci).trim();
+      }
+    }
+    if (!en) return null;
+    return { en: en, cn: cn };
+  }
+  function normalizeTag(v) {
+    if (!v) return { en: '', cn: '' };
+    if (typeof v === 'object') return { en: (v.en || '').trim(), cn: (v.cn || '').trim() };
+    return parseTagInput(String(v)) || { en: '', cn: '' };
+  }
+  function tagDisplay(v) { return normalizeTag(v).en; }
+  function tagFullText(v) {
+    var t = normalizeTag(v);
+    return t.cn ? (t.en + ' = ' + t.cn) : t.en;
+  }
+
+  // ===== 自动补全中文/音标：本地词典优先，命中即填 =====
+  function lookupCn(en) {
+    if (!en) return '';
+    var k = en.trim().toLowerCase();
+    try { if (window.VOCAB_DICT && window.VOCAB_DICT[k]) return window.VOCAB_DICT[k]; } catch (e) {}
+    return '';
+  }
+  function lookupPh(en) {
+    if (!en) return '';
+    var k = en.trim().toLowerCase();
+    try { if (window.VOCAB_PH && window.VOCAB_PH[k]) return window.VOCAB_PH[k]; } catch (e) {}
+    return '';
+  }
+  // 把解析结果补全为带 cn/ph 的对象（词典命中即填，不覆盖手填中文）
+  function autoFill(parsed) {
+    if (!parsed || !parsed.en) return parsed;
+    var cn = (parsed.cn || '').trim();
+    if (!cn) cn = lookupCn(parsed.en);
+    var ph = lookupPh(parsed.en);
+    return { en: parsed.en.trim(), cn: cn, ph: ph };
+  }
+  // 词典未命中时尝试在线翻译（MyMemory，免费无需 key，best-effort，不阻塞）
+  var CN_CACHE_KEY = 'english_auto_cn';
+  function loadCnCache() { try { return JSON.parse(localStorage.getItem(CN_CACHE_KEY) || '{}'); } catch (e) { return {}; } }
+  function saveCnCache(c) { try { localStorage.setItem(CN_CACHE_KEY, JSON.stringify(c)); } catch (e) {} }
+  function autoFillAsync(en, onDone) {
+    en = (en || '').trim();
+    var fallback = function (cn) { if (onDone) onDone({ en: en, cn: cn || '', ph: lookupPh(en) }); };
+    var cn = lookupCn(en);
+    if (cn) { fallback(cn); return; }
+    var cache = loadCnCache();
+    var lk = en.toLowerCase();
+    if (cache[lk]) { fallback(cache[lk]); return; } // 已翻译过，直接用缓存，不再联网
+    try {
+      var ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+      var to = setTimeout(function () { if (ctrl) try { ctrl.abort(); } catch (e) {} }, 6000);
+      fetch('https://api.mymemory.translated.net/get?q=' + encodeURIComponent(en) + '&langpair=en|zh-CN')
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          clearTimeout(to);
+          var t = j && j.responseData && j.responseData.translatedText;
+          if (t && /[一-鿿]/.test(t) && t.toLowerCase() !== en.toLowerCase()) {
+            cache[lk] = t.trim(); saveCnCache(cache);
+            fallback(t.trim());
+          } else fallback('');
+        })
+        .catch(function () { clearTimeout(to); fallback(''); });
+    } catch (e) { fallback(''); }
+  }
+  // 打开已存在的课时：对「缺中文」的旧词条自动补译（先词典后在线，带缓存）
+  function backfillAllMissing() {
+    if (!data.vocab || !data.vocab.length) return;
+    data.vocab.forEach(function (v, i) {
+      var t = normalizeTag(v);
+      if (t.en && !t.cn) {
+        autoFillAsync(t.en, function (res) {
+          if (res && res.cn && data.vocab && data.vocab[i]) {
+            var cur = normalizeTag(data.vocab[i]);
+            if (!cur.cn) {
+              data.vocab[i] = { en: cur.en, cn: res.cn, ph: res.ph || cur.ph };
+              scheduleSave();
+              if (!previewMode) renderTags('vocab');
+            }
+          }
+        });
+      }
+    });
+  }
+  function backfillTag(field, i, en) {
+    autoFillAsync(en, function (res) {
+      if (res && res.cn && data[field] && data[field][i]) {
+        var cur = normalizeTag(data[field][i]);
+        if (!cur.cn) {
+          data[field][i] = { en: cur.en, cn: res.cn, ph: res.ph || cur.ph };
+          renderTags(field);
+          scheduleSave();
+        }
+      }
+    });
+  }
+
   function nowLesson() { return ($('lesson').value || '').trim(); }
 
   function loadLesson(lesson) {
@@ -248,6 +363,7 @@ body.preview-on .edit-only{display:none}
     renderAll();
     renderChips();
     if (previewMode) renderPreview();
+    backfillAllMissing(); // 对已有但缺中文的词自动补译（词典/在线，带缓存）
   }
 
   function ensurePlaceholder() {
@@ -271,15 +387,25 @@ body.preview-on .edit-only{display:none}
     box.innerHTML = '';
     var arr = data[field] || [];
     arr.forEach(function (val, i) {
-      if (!val && !val.trim()) return; // 跳过空占位
+      var tagObj = normalizeTag(val);
+      if (!tagObj.en) return; // 跳过空占位
       var tag = document.createElement('span');
       tag.className = 'tag';
       tag.setAttribute('data-field', field);
       tag.setAttribute('data-i', i);
       var txt = document.createElement('span');
       txt.className = 'tag-text';
-      txt.textContent = val;
-      txt.title = val; // 长内容悬停可看全
+      var t = normalizeTag(val);
+      var showCn = t.cn || lookupCn(t.en);
+      txt.textContent = t.en;
+      if (showCn) {
+        var cnSpan = document.createElement('span');
+        cnSpan.className = 'tag-cn';
+        cnSpan.textContent = showCn;
+        txt.appendChild(document.createTextNode(' '));
+        txt.appendChild(cnSpan);
+      }
+      txt.title = (t.cn || showCn) ? (t.en + ' = ' + (t.cn || showCn)) : t.en; // 悬停显示中文释义
       var del = document.createElement('button');
       del.className = 'tag-del';
       del.type = 'button';
@@ -318,7 +444,7 @@ body.preview-on .edit-only{display:none}
     tag.innerHTML = '';
     var inp = document.createElement('input');
     inp.type = 'text';
-    inp.value = val;
+    inp.value = tagFullText(val);
     inp.setAttribute('data-field', field);
     inp.setAttribute('data-i', i);
     tag.appendChild(inp);
@@ -328,16 +454,16 @@ body.preview-on .edit-only{display:none}
     inp.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') {
         e.preventDefault();
-        data[field][i] = inp.value;
-        if (inp.value.trim()) {
-          // 在当前标签后插入新输入框的值并新建标签
+        var parsed = parseTagInput(inp.value);
+        if (parsed && parsed.en) {
+          data[field][i] = autoFill(parsed);
           renderTags(field);
           scheduleSave();
           // 聚焦到添加输入框
           var addInp = $('sec-' + field).querySelector('.tag-add-input');
           if (addInp) addInp.focus();
         } else {
-          // 空值则删除
+          // 空值或解析不出英文则删除
           data[field].splice(i, 1);
           renderTags(field);
           scheduleSave();
@@ -345,8 +471,9 @@ body.preview-on .edit-only{display:none}
       } else if (e.key === 'Escape') {
         renderTags(field);
       } else if (e.key === 'Tab') {
-        data[field][i] = inp.value;
-        if (!inp.value.trim()) { data[field].splice(i, 1); }
+        var parsedTab = parseTagInput(inp.value);
+        if (parsedTab && parsedTab.en) data[field][i] = autoFill(parsedTab);
+        else { data[field].splice(i, 1); }
         renderTags(field);
         scheduleSave();
         // Tab 跳到添加输入框
@@ -373,8 +500,9 @@ body.preview-on .edit-only{display:none}
       // 延迟处理，避免与回车冲突
       setTimeout(function () {
         if (tag.classList.contains('tag-editing')) {
-          data[field][i] = inp.value;
-          if (!inp.value.trim()) { data[field].splice(i, 1); }
+          var parsedBlur = parseTagInput(inp.value);
+          if (parsedBlur && parsedBlur.en) data[field][i] = autoFill(parsedBlur);
+          else { data[field].splice(i, 1); }
           renderTags(field);
           scheduleSave();
         }
@@ -405,7 +533,7 @@ body.preview-on .edit-only{display:none}
 
   function placeholderFor(field) {
     return ({
-      vocab: '如：sustainable / make a difference，回车添加',
+      vocab: '英文=中文，如：sustainable=可持续的，回车添加',
       patterns: '如：It is + adj. + to do，回车新增，Shift+回车换行',
       mainIdeas: '关键词即可，如：环保 / 个人责任，回车新增',
       opinions: '关键词即可，如：我同意因为…，回车新增'
@@ -620,12 +748,14 @@ body.preview-on .edit-only{display:none}
       if (e.key === 'Enter') {
         e.preventDefault();
         var field = el.getAttribute('data-tag-add');
-        var val = el.value.trim();
-        if (val) {
-          data[field].push(val);
+        var parsedAdd = parseTagInput(el.value);
+        if (parsedAdd && parsedAdd.en) {
+          var filledAdd = autoFill(parsedAdd);
+          data[field].push(filledAdd);
           el.value = '';
           renderTags(field);
           scheduleSave();
+          if (!filledAdd.cn) backfillTag(field, data[field].length - 1, filledAdd.en);
           // 重新聚焦到添加输入框
           var newAddInp = $('sec-' + field).querySelector('.tag-add-input');
           if (newAddInp) newAddInp.focus();
@@ -713,12 +843,14 @@ body.preview-on .edit-only{display:none}
       var tf = tagAdd.getAttribute('data-tag-add-btn');
       var inp = $('sec-' + tf).querySelector('.tag-add-input');
       if (inp) {
-        var tv = inp.value.trim();
-        if (tv) {
-          data[tf].push(tv);
+        var parsedBtn = parseTagInput(inp.value);
+        if (parsedBtn && parsedBtn.en) {
+          var filledBtn = autoFill(parsedBtn);
+          data[tf].push(filledBtn);
           inp.value = '';
           renderTags(tf);
           scheduleSave();
+          if (!filledBtn.cn) backfillTag(tf, data[tf].length - 1, filledBtn.en);
           inp.focus();
         } else { toast('先输入内容再点添加'); }
       }

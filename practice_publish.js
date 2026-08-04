@@ -70,7 +70,13 @@
       raw.split('/').forEach(function (part) {
         part.split(',').forEach(function (p) {
           p = (p || '').trim();
-          if (p) vocab.push({ en: p, cn: cn });
+          if (!p) return;
+          var cnFilled = cn;
+          if (!cnFilled && typeof window !== 'undefined' && window.VOCAB_DICT) {
+            var k = p.toLowerCase();
+            if (window.VOCAB_DICT[k]) cnFilled = window.VOCAB_DICT[k];
+          }
+          vocab.push({ en: p, cn: cnFilled });
         });
       });
     });
@@ -167,7 +173,7 @@
         if (vocabIds[id]) return; vocabIds[id] = 1;
         Q.vocab.push({
           id: id, cat: 'vocab', type: 'type', badge: badge, level: curLevel(),
-          q: '拼写出单词：' + en,
+          q: cn ? ('拼写出单词：' + cn) : ('拼写出单词：' + en),
           ans: [en],
           explain: '来自课后练习 ' + entry.lesson + ' 的词汇清单。' + (cn ? ('<br>释义：' + cn) : ''),
           tip: ''
