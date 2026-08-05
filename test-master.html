@@ -7,12 +7,12 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260805-0946">
+<meta name="build-version" content="20260805-1017">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
-<script src="level-config.js?v=20260805-0946"></script>
-<script src="vocab_dict.js?v=20260805-0946"></script>
-<script src="practice_publish.js?v=20260805-0946"></script>
+<script src="level-config.js?v=20260805-1017"></script>
+<script src="vocab_dict.js?v=20260805-1017"></script>
+<script src="practice_publish.js?v=20260805-1017"></script>
 <style>
   :root {
     --primary: #6366F1;
@@ -488,7 +488,7 @@
 </style>
 </head>
 <body>
-<a href="index.html?v=20260805-0946" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+<a href="index.html?v=20260805-1017" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
 
 <!-- ====== 首页 ====== -->
 <div class="home-page" id="homePage">
@@ -63258,6 +63258,7 @@ function renderTestTopicBar() {
   var bar = document.getElementById('topicBar');
   if (!bar) return;
   var shownTopics = getTestTopicList();
+  shownTopicsForFilter = shownTopics;
   // 过滤掉已不存在的主题
   selectedTopics = selectedTopics.filter(function(t) { return shownTopics.indexOf(t) >= 0; });
   // 注意：不再强制恢复空数组为全选，允许用户主动全不选
@@ -63347,6 +63348,8 @@ function saveTestTopics() {
   try { localStorage.setItem('testmaster_topics_' + lv, JSON.stringify(selectedTopics)); } catch(e) {}
 }
 
+var shownTopicsForFilter = [];
+
 function loadTestTopics() {
   var lv = (typeof EnglishLevel !== 'undefined') ? EnglishLevel.get() : 'B1';
   try {
@@ -63355,6 +63358,7 @@ function loadTestTopics() {
       selectedTopics = JSON.parse(saved);
       // 新增加的主题（如“经典句子”）默认自动纳入已选，避免用户需手动重新勾选
       var shown = getTestTopicList();
+      shownTopicsForFilter = shown;
       var hadAll = selectedTopics.length === shown.length;
       shown.forEach(function (t) { if (selectedTopics.indexOf(t) < 0) selectedTopics.push(t); });
       if (hadAll) selectedTopics = shown.slice(); // 原本全选则保持全选
@@ -63362,12 +63366,17 @@ function loadTestTopics() {
     }
   } catch(e) {}
   // 首次加载（无 localStorage）→默认全选
-  selectedTopics = [...getTestTopicList()];
+  shownTopicsForFilter = getTestTopicList();
+  selectedTopics = [...shownTopicsForFilter];
 }
 
 // 主题过滤：返回 true 表示该题在选中的主题范围内
 function isTopicSelected(q) {
-  if (!q.topic) return true; // 无 topic 的题默认包含
+  if (selectedTopics.length === 0) return false; // 明确全不选
+  // 全选时保留无 topic 的题（兼容课后练习 / KB 注入等泛题）
+  if (shownTopicsForFilter.length && selectedTopics.length === shownTopicsForFilter.length) return true;
+  // 部分主题筛选：无 topic 的题不应混入具体主题
+  if (!q.topic) return false;
   return selectedTopics.indexOf(q.topic) >= 0;
 }
 
@@ -64714,7 +64723,7 @@ init();
       // Add a focus banner on the test page header area
       var banner = document.createElement('div');
       banner.id = 'focusBanner';
-      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260805-0946" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
+      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260805-1017" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
       var testPage = document.getElementById('testPage');
       if (testPage) {
         var topBar = testPage.querySelector('.test-top-bar');
@@ -65018,7 +65027,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260805-0946</div>
-  <script src="kb.js?v=20260805-0946"></script>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260805-1017</div>
+  <script src="kb.js?v=20260805-1017"></script>
 </body>
 </html>
