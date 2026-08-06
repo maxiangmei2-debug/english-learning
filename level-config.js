@@ -2,7 +2,7 @@
  * - 读写 localStorage.english_level（默认 B1）
  * - 在页面顶部插入常驻 B1/B2 切换条
  * - 提供 window.EnglishLevel 工具：get/set/filter/applyCards
- * - 数据约定：条目无 level 字段 => 视为 B1；level:'B2' => B2
+ * - 数据约定：条目无 level 字段 => 视为 B1；level:'B2' => B2；level:'both' => B1/B2 都可见；level:'both' => B1/B2 都可见
  *   切换级别时严格分离：B2 模式只显示 B2 内容，B1 完全隐藏
  */
 (function () {
@@ -17,14 +17,17 @@
   function set(lv) {
     try { localStorage.setItem(KEY, lv); } catch (e) {}
   }
-  // 过滤数组：条目有 level 则匹配，无 level 视为 B1
+  // 过滤数组：条目有 level 则匹配，无 level 视为 B1，level:'both' 表示跨级别通用
   function filter(arr, key) {
     key = key || 'level';
     var lv = get();
     if (!Array.isArray(arr)) return arr;
     return arr.filter(function (it) {
-      if (it && it[key]) return it[key] === lv;
-      return lv === 'B1';
+      if (!it) return false;
+      var v = it[key];
+      if (!v) return lv === 'B1';
+      if (v === 'both') return true;
+      return v === lv;
     });
   }
   // 过滤手册类静态卡片（含 data-level 属性的条目；无属性视为 B1）
@@ -34,7 +37,8 @@
     var leveled = root.querySelectorAll('[data-level]');
     for (var i = 0; i < leveled.length; i++) {
       var c = leveled[i];
-      c.style.display = (c.getAttribute('data-level') === lv) ? '' : 'none';
+      var dl = c.getAttribute('data-level');
+      c.style.display = (dl === lv || dl === 'both') ? '' : 'none';
     }
     // 仅在使用分级约定的页面（存在已分级卡片，如手册）才隐藏未分级 .card，
     // 避免误伤入口页/模块页等以 .card 作为导航或结构容器的页面。
@@ -62,7 +66,7 @@
       '<button class="lb-btn" data-lv="B1">B1</button>' +
       '<button class="lb-btn" data-lv="B2">B2</button>' +
       '<span class="lb-sep"></span>' +
-      '<a class="lb-home" href="index.html?v=20260806-0856">⌂ 学习中心</a>';
+      '<a class="lb-home" href="index.html?v=20260806-1500">⌂ 学习中心</a>';
     document.body.insertBefore(bar, document.body.firstChild);
     document.body.classList.add('has-level-bar');
     var btns = bar.querySelectorAll('.lb-btn');
