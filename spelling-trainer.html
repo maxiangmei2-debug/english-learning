@@ -7,7 +7,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260806-1500">
+<meta name="build-version" content="20260807-0927">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>词汇拼写训练营</title>
 <script src="level-config.js?v=20260806-0856"></script>
@@ -383,6 +383,7 @@
 // 每个词包含：英文、中文、音标、主题、选择题选项（含所有选项的英文含义）
 /* B2-INTEGRATED */
 /* B2-APPEND-WORDS */
+/* INJECT-OTHER2-SPELL */
 const WORDS = [
 {
   "en": "furnished",
@@ -51491,7 +51492,735 @@ const WORDS = [
   "explain": "【知识点】unconscious consumption /ʌnˈkɒnʃəs kənˈsʌmpʃən/ = 无意识消遣（文中指无目的刷手机这类被动消耗时间的行为）<br>【主题】其他<br>【记忆】unconscious consumption → 无意识消遣（文中指无目的刷手机这类被动消耗时间的行为）",
   "level": "both"
 }
-];
+,
+{
+  "en": "appointment",
+  "cn": "预约，预定",
+  "ph": "/əˈpɔɪntmənt/",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "预约，预定",
+      "en": "appointment"
+    },
+    {
+      "en": "identical",
+      "cn": "相同"
+    },
+    {
+      "en": "size",
+      "cn": "尺码；尺寸"
+    },
+    {
+      "en": "sign a contract",
+      "cn": "签署合同"
+    }
+  ],
+  "explain": "【知识点】appointment /əˈpɔɪntmənt/ = 预约，预定<br>【主题】其他<br>【记忆】appointment → 预约，预定"
+},
+{
+  "en": "nonsense",
+  "cn": "胡说，废话",
+  "ph": "/ˈnɒnsns/",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "胡说，废话",
+      "en": "nonsense"
+    },
+    {
+      "en": "value for money",
+      "cn": "物有所值"
+    },
+    {
+      "en": "mashed",
+      "cn": "捣碎的（如土豆泥）"
+    },
+    {
+      "en": "think for a moment",
+      "cn": "想了一会儿"
+    }
+  ],
+  "explain": "【知识点】nonsense /ˈnɒnsns/ = 胡说，废话<br>【主题】其他<br>【记忆】nonsense → 胡说，废话"
+},
+{
+  "en": "interrupt",
+  "cn": "打断，打扰",
+  "ph": "/ˌɪntəˈrʌpt/",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "打断，打扰",
+      "en": "interrupt"
+    },
+    {
+      "en": "deposit",
+      "cn": "押金"
+    },
+    {
+      "en": "hobbies",
+      "cn": "爱好"
+    },
+    {
+      "en": "free",
+      "cn": "免费"
+    }
+  ],
+  "explain": "【知识点】interrupt /ˌɪntəˈrʌpt/ = 打断，打扰<br>【主题】其他<br>【记忆】interrupt → 打断，打扰"
+},
+{
+  "en": "negotiations",
+  "cn": "谈判，协商",
+  "ph": "/nɪˌɡəʊʃiˈeɪʃnz/",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "谈判，协商",
+      "en": "negotiations"
+    },
+    {
+      "en": "sweater",
+      "cn": "毛衣"
+    },
+    {
+      "en": "make up one's mind",
+      "cn": "下定决心"
+    },
+    {
+      "en": "have a meal in honor of",
+      "cn": "为纪念……而用餐"
+    }
+  ],
+  "explain": "【知识点】negotiations /nɪˌɡəʊʃiˈeɪʃnz/ = 谈判，协商<br>【主题】其他<br>【记忆】negotiations → 谈判，协商"
+},
+{
+  "en": "upcoming",
+  "cn": "即将到来的",
+  "ph": "/ˈʌpkʌmɪŋ/",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "即将到来的",
+      "en": "upcoming"
+    },
+    {
+      "en": "the best choice",
+      "cn": "最佳选择"
+    },
+    {
+      "en": "attractive",
+      "cn": "有吸引力的，迷人的"
+    },
+    {
+      "en": "who",
+      "cn": "引导定语从句(人)"
+    }
+  ],
+  "explain": "【知识点】upcoming /ˈʌpkʌmɪŋ/ = 即将到来的<br>【主题】其他<br>【记忆】upcoming → 即将到来的"
+},
+{
+  "en": "emotional",
+  "cn": "多愁善感的；情绪化的",
+  "ph": "/ɪˈməʊʃənl/",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "多愁善感的；情绪化的",
+      "en": "emotional"
+    },
+    {
+      "en": "bland",
+      "cn": "寡淡"
+    },
+    {
+      "en": "gorgeous",
+      "cn": "极其美丽的，华丽的"
+    },
+    {
+      "en": "businessman",
+      "cn": "商人"
+    }
+  ],
+  "explain": "【知识点】emotional /ɪˈməʊʃənl/ = 多愁善感的；情绪化的<br>【主题】其他<br>【记忆】emotional → 多愁善感的；情绪化的"
+},
+{
+  "en": "monitor heart rate",
+  "cn": "监测心率",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "监测心率",
+      "en": "monitor heart rate"
+    },
+    {
+      "en": "consider",
+      "cn": "思考，斟酌"
+    },
+    {
+      "en": "Does this come in white?",
+      "cn": "这个有白色的吗？"
+    },
+    {
+      "en": "apologize",
+      "cn": "道歉"
+    }
+  ],
+  "explain": "【搭配】monitor heart rate = 监测心率<br>【主题】其他<br>【用法】monitor v. 监测；heart rate 固定名词短语，心率。"
+},
+{
+  "en": "catch up on sleep",
+  "cn": "补觉",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "补觉",
+      "en": "catch up on sleep"
+    },
+    {
+      "en": "pick up",
+      "cn": "捡起，拾起"
+    },
+    {
+      "en": "beloved",
+      "cn": "深受喜爱的；备受钟爱的"
+    },
+    {
+      "en": "jump out",
+      "cn": "跳出去"
+    }
+  ],
+  "explain": "【搭配】catch up on sleep = 补觉<br>【主题】其他<br>【用法】catch up on 固定搭配，补上（错过、欠缺的事物）；catch up on sleep 指把缺失的睡眠补回来。"
+},
+{
+  "en": "brush up on",
+  "cn": "复习；温习",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "复习；温习",
+      "en": "brush up on"
+    },
+    {
+      "en": "think twice",
+      "cn": "三思再三考虑"
+    },
+    {
+      "en": "It comes with...",
+      "cn": "它配有……"
+    },
+    {
+      "en": "relieved",
+      "cn": "如释重负的"
+    }
+  ],
+  "explain": "【搭配】brush up on = 复习；温习<br>【主题】其他<br>【用法】侧重温习已经学过但有些生疏的知识技能，区别于普通 review，多用于口语。例：I need to brush up on my English. 我要温习一下英语。"
+},
+{
+  "en": "get emotional",
+  "cn": "情绪激动",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "情绪激动",
+      "en": "get emotional"
+    },
+    {
+      "en": "fantastic",
+      "cn": "极好的，很棒的"
+    },
+    {
+      "en": "have a backache",
+      "cn": "背痛"
+    },
+    {
+      "en": "guns blazing",
+      "cn": "气势十足地；全力以赴地"
+    }
+  ],
+  "explain": "【搭配】get emotional = 情绪激动<br>【主题】其他<br>【用法】get + 形容词，表示 “变得……”；emotional adj. 情绪化的，指人情绪起伏变大、激动落泪。"
+},
+{
+  "en": "put sb. in charge of sth.",
+  "cn": "让某人负责某事",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "让某人负责某事",
+      "en": "put sb. in charge of sth."
+    },
+    {
+      "en": "meet new people",
+      "cn": "结识新朋友"
+    },
+    {
+      "en": "noisy",
+      "cn": "吵闹"
+    },
+    {
+      "en": "stadium",
+      "cn": "体育场"
+    }
+  ],
+  "explain": "【搭配】put sb. in charge of sth. = 让某人负责某事<br>【主题】其他<br>【用法】固定句型，in charge of 掌管、负责。例：He put me in charge of this project. 他让我负责这个项目。"
+},
+{
+  "en": "but just in case",
+  "cn": "但以防万一",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "但以防万一",
+      "en": "but just in case"
+    },
+    {
+      "en": "serve",
+      "cn": "提供（食物/饮料）"
+    },
+    {
+      "en": "fabulous",
+      "cn": "极好的"
+    },
+    {
+      "en": "in front of the crowd",
+      "cn": "在人群面前"
+    }
+  ],
+  "explain": "【搭配】but just in case = 但以防万一<br>【主题】其他<br>【用法】just in case 连词短语，用于预防万一，后面可接从句。例：Take an umbrella just in case it rains. 带上伞，以防下雨。"
+},
+{
+  "en": "Now that you mention it",
+  "cn": "既然你提到了这一点",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "既然你提到了这一点",
+      "en": "Now that you mention it"
+    },
+    {
+      "en": "comic",
+      "cn": "漫画"
+    },
+    {
+      "en": "public buses",
+      "cn": "公共汽车"
+    },
+    {
+      "en": "runny nose",
+      "cn": "流鼻涕"
+    }
+  ],
+  "explain": "【搭配】Now that you mention it = 既然你提到了这一点<br>【主题】其他<br>【用法】now that 连词，意为 “既然”，顺着对方的话开启新话题。"
+},
+{
+  "en": "tell off sb. (tell sb off)",
+  "cn": "斥责，数落某人",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "斥责，数落某人",
+      "en": "tell off sb. (tell sb off)"
+    },
+    {
+      "en": "expand their friendship circles",
+      "cn": "扩大朋友圈"
+    },
+    {
+      "en": "knock on the door",
+      "cn": "敲门"
+    },
+    {
+      "en": "travel abroad",
+      "cn": "出国旅行"
+    }
+  ],
+  "explain": "【搭配】tell off sb. (tell sb off) = 斥责，数落某人<br>【主题】其他<br>【用法】动词短语，代词要放中间。例：tell him off 训斥他。"
+},
+{
+  "en": "piss off sb. (piss sb off)",
+  "cn": "惹怒某人；使某人生气",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "惹怒某人；使某人生气",
+      "en": "piss off sb. (piss sb off)"
+    },
+    {
+      "en": "stay in touch",
+      "cn": "保持联系"
+    },
+    {
+      "en": "work on",
+      "cn": "从事；努力做"
+    },
+    {
+      "en": "fitting room",
+      "cn": "试衣间"
+    }
+  ],
+  "explain": "【搭配】piss off sb. (piss sb off) = 惹怒某人；使某人生气<br>【主题】其他<br>【用法】口语表达，偏粗俗；代词放中间。例：You pissed me off. 你把我惹火了。"
+},
+{
+  "en": "tell sb. to piss off",
+  "cn": "叫某人滚开",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "叫某人滚开",
+      "en": "tell sb. to piss off"
+    },
+    {
+      "en": "shopping",
+      "cn": "购物"
+    },
+    {
+      "en": "robber",
+      "cn": "强盗"
+    },
+    {
+      "en": "public transport",
+      "cn": "公共交通"
+    }
+  ],
+  "explain": "【搭配】tell sb. to piss off = 叫某人滚开<br>【主题】其他<br>【用法】语气非常不客气的口语，日常慎用。"
+},
+{
+  "en": "I can't stand it.",
+  "cn": "我受不了了。",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "我受不了了。",
+      "en": "I can't stand it."
+    },
+    {
+      "en": "funny",
+      "cn": "滑稽的"
+    },
+    {
+      "en": "hide",
+      "cn": "隐藏"
+    },
+    {
+      "en": "cuisine",
+      "cn": "烹饪风格；菜系"
+    }
+  ],
+  "explain": "【搭配】I can't stand it. = 我受不了了。<br>【主题】其他<br>【用法】stand v. 忍受，多用于否定句。"
+},
+{
+  "en": "I can't take it anymore.",
+  "cn": "我再也受不了了。",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "我再也受不了了。",
+      "en": "I can't take it anymore."
+    },
+    {
+      "en": "diamond",
+      "cn": "钻石"
+    },
+    {
+      "en": "married",
+      "cn": "已婚的"
+    },
+    {
+      "en": "investment",
+      "cn": "投资"
+    }
+  ],
+  "explain": "【搭配】I can't take it anymore. = 我再也受不了了。<br>【主题】其他<br>【用法】与 I can't stand it 同义，高频口语；can’t stand / can’t take 均表示无法忍受。"
+},
+{
+  "en": "I hate to…",
+  "cn": "我实在不想（说）= 很抱歉我不得不告诉你。",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "我实在不想（说）= 很抱歉我不得不告诉你。",
+      "en": "I hate to…"
+    },
+    {
+      "en": "My feet are killing me",
+      "cn": "我的脚快累死了"
+    },
+    {
+      "en": "give out fifteen candles",
+      "cn": "分发十五支蜡烛"
+    },
+    {
+      "en": "apologize",
+      "cn": "道歉"
+    }
+  ],
+  "explain": "【搭配】I hate to… = 我实在不想（说）= 很抱歉我不得不告诉你。<br>【主题】其他<br>【用法】I hate to… 用来委婉铺垫，引出坏消息。例：I hate to tell you this. 我很不情愿跟你说这件事。"
+},
+{
+  "en": "I am sorry that I need to tell you.",
+  "cn": "很抱歉我不得不告诉你。",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "很抱歉我不得不告诉你。",
+      "en": "I am sorry that I need to tell you."
+    },
+    {
+      "en": "salesman",
+      "cn": "推销员"
+    },
+    {
+      "en": "good value for money",
+      "cn": "物超所值"
+    },
+    {
+      "en": "caber",
+      "cn": "（苏格兰抛杆赛中投掷的）长木杆"
+    }
+  ],
+  "explain": "【搭配】I am sorry that I need to tell you. = 很抱歉我不得不告诉你。<br>【主题】其他<br>【用法】与 I hate to… 同义，用于引出坏消息。"
+},
+{
+  "en": "bring the bad news",
+  "cn": "告知坏消息",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "告知坏消息",
+      "en": "bring the bad news"
+    },
+    {
+      "en": "sort garbage",
+      "cn": "垃圾分类"
+    },
+    {
+      "en": "carpenter",
+      "cn": "n. 木匠"
+    },
+    {
+      "en": "big family",
+      "cn": "大家庭"
+    }
+  ],
+  "explain": "【搭配】bring the bad news = 告知坏消息<br>【主题】其他<br>【用法】bring sb the bad news = tell sb the bad news，把坏消息告知某人。"
+},
+{
+  "en": "tell you the bad news",
+  "cn": "把坏消息告知你",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "把坏消息告知你",
+      "en": "tell you the bad news"
+    },
+    {
+      "en": "in charge of",
+      "cn": "负责"
+    },
+    {
+      "en": "street performers",
+      "cn": "街头表演者"
+    },
+    {
+      "en": "pet shop",
+      "cn": "宠物店"
+    }
+  ],
+  "explain": "【搭配】tell you the bad news = 把坏消息告知你<br>【主题】其他<br>【用法】= bring you the bad news，告知坏消息。"
+},
+{
+  "en": "Don't mention it.",
+  "cn": "别客气；不值一提",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "别客气；不值一提",
+      "en": "Don't mention it."
+    },
+    {
+      "en": "directions",
+      "cn": "方向；指路说明"
+    },
+    {
+      "en": "vegetarian",
+      "cn": "素食者"
+    },
+    {
+      "en": "good-looking",
+      "cn": "好看的；帅的"
+    }
+  ],
+  "explain": "【搭配】Don't mention it. = 别客气；不值一提<br>【主题】其他<br>【用法】别人道谢之后的回复，等同于 You’re welcome。"
+},
+{
+  "en": "I'm sick of it",
+  "cn": "我受够了。",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "我受够了。",
+      "en": "I'm sick of it"
+    },
+    {
+      "en": "take ... with you",
+      "cn": "带上…"
+    },
+    {
+      "en": "ground",
+      "cn": "地面"
+    },
+    {
+      "en": "cleaner",
+      "cn": "清洁器"
+    }
+  ],
+  "explain": "【搭配】I'm sick of it = 我受够了。<br>【主题】其他<br>【用法】be sick of sth 对…… 厌烦厌倦；have had enough of sth 受够某事，强调忍耐已经到极限。手写笔误 I'm side of it，正确写法 I'm sick of it。"
+},
+{
+  "en": "I have had enough of it",
+  "cn": "我受够了（忍耐到极限）",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "我受够了（忍耐到极限）",
+      "en": "I have had enough of it"
+    },
+    {
+      "en": "raw fish",
+      "cn": "生鱼片"
+    },
+    {
+      "en": "suburb",
+      "cn": "郊区"
+    },
+    {
+      "en": "singer",
+      "cn": "n. 歌手"
+    }
+  ],
+  "explain": "【搭配】I have had enough of it = 我受够了（忍耐到极限）<br>【主题】其他<br>【用法】= I'm sick of it，强调忍耐已经到极限。"
+},
+{
+  "en": "stay put",
+  "cn": "待在原地不动；停下来，别走开",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "待在原地不动；停下来，别走开",
+      "en": "stay put"
+    },
+    {
+      "en": "of average height",
+      "cn": "中等身高"
+    },
+    {
+      "en": "tropical",
+      "cn": "热带的"
+    },
+    {
+      "en": "unless",
+      "cn": "除非"
+    }
+  ],
+  "explain": "【搭配】stay put = 待在原地不动；停下来，别走开<br>【主题】其他<br>【用法】固定口语短语。例：Stay put right here. 就待在这儿别动。"
+},
+{
+  "en": "Let's talk about it first.",
+  "cn": "我们先聊聊这件事。",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "我们先聊聊这件事。",
+      "en": "Let's talk about it first."
+    },
+    {
+      "en": "make sb do sth",
+      "cn": "使某人做某事"
+    },
+    {
+      "en": "smoker",
+      "cn": "吸烟者"
+    },
+    {
+      "en": "are",
+      "cn": "是（you/we/they）"
+    }
+  ],
+  "explain": "【搭配】Let's talk about it first. = 我们先聊聊这件事。<br>【主题】其他<br>【用法】let’s do 句型，意为让我们做……，用来开启对话。"
+},
+{
+  "en": "It's an excuse",
+  "cn": "这是个借口。",
+  "ph": "",
+  "level": "both",
+  "topic": "其他",
+  "opts": [
+    {
+      "cn": "这是个借口。",
+      "en": "It's an excuse"
+    },
+    {
+      "en": "oversee",
+      "cn": "监督；监管"
+    },
+    {
+      "en": "vacation",
+      "cn": "假期"
+    },
+    {
+      "en": "fixed",
+      "cn": "adj. 固定的"
+    }
+  ],
+  "explain": "【搭配】It's an excuse = 这是个借口。<br>【主题】其他<br>【用法】excuse n. 借口、托词。"
+}];
 
 /* ===== 级别过滤 (B1/B2) ===== */
 (function () {
@@ -52413,7 +53142,7 @@ document.addEventListener('keydown', function(e) {
   // 结果页不再用回车自动返回首页（避免误触退回），需手动点"返回首页"
 });
 </script>
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260806-1500</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260807-0927</div>
   <script src="kb.js?v=20260806-0856"></script>
 </body>
 </html>

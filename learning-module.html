@@ -7,7 +7,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260806-1500">
+<meta name="build-version" content="20260807-0927">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>学习模块</title>
 <script src="level-config.js?v=20260806-1500"></script>
@@ -2447,7 +2447,28 @@ var MODULES = { // B2-APPEND-MODULES
     ]
   }
 
-};
+,
+/* INJECT-OTHER2-MOD */
+other1: {
+  "phase": "📚 补充主题",
+  "theme": "其他",
+  "icon": "📘",
+  "time": "20分钟",
+  "sessionLabel": "通用补充",
+  "level": "both",
+  "modules": [
+    {
+      "type": "vocab",
+      "title": "📘 其他 词汇",
+      "content": "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>音标</th><th>中文</th></tr><tr><td class=\"en\">appointment</td><td>/əˈpɔɪntmənt/</td><td>预约，预定</td></tr><tr><td class=\"en\">nonsense</td><td>/ˈnɒnsns/</td><td>胡说，废话</td></tr><tr><td class=\"en\">interrupt</td><td>/ˌɪntəˈrʌpt/</td><td>打断，打扰</td></tr><tr><td class=\"en\">negotiations</td><td>/nɪˌɡəʊʃiˈeɪʃnz/</td><td>谈判，协商</td></tr><tr><td class=\"en\">upcoming</td><td>/ˈʌpkʌmɪŋ/</td><td>即将到来的</td></tr><tr><td class=\"en\">emotional</td><td>/ɪˈməʊʃənl/</td><td>多愁善感的；情绪化的</td></tr></tbody></table></div>"
+    },
+    {
+      "type": "phrase",
+      "title": "📘 其他 短语/口语",
+      "content": "<div class=\"table-scroll\"><table class=\"study-table\"><tbody><tr><th>英文</th><th>中文</th></tr><tr><td class=\"en\">monitor heart rate</td><td>监测心率</td></tr><tr><td class=\"en\">catch up on sleep</td><td>补觉</td></tr><tr><td class=\"en\">brush up on</td><td>复习；温习</td></tr><tr><td class=\"en\">get emotional</td><td>情绪激动</td></tr><tr><td class=\"en\">put sb. in charge of sth.</td><td>让某人负责某事</td></tr><tr><td class=\"en\">but just in case</td><td>但以防万一</td></tr><tr><td class=\"en\">Now that you mention it</td><td>既然你提到了这一点</td></tr><tr><td class=\"en\">tell off sb. (tell sb off)</td><td>斥责，数落某人</td></tr><tr><td class=\"en\">piss off sb. (piss sb off)</td><td>惹怒某人；使某人生气</td></tr><tr><td class=\"en\">tell sb. to piss off</td><td>叫某人滚开</td></tr><tr><td class=\"en\">I can't stand it.</td><td>我受不了了。</td></tr><tr><td class=\"en\">I can't take it anymore.</td><td>我再也受不了了。</td></tr><tr><td class=\"en\">I hate to…</td><td>我实在不想（说）= 很抱歉我不得不告诉你。</td></tr><tr><td class=\"en\">I am sorry that I need to tell you.</td><td>很抱歉我不得不告诉你。</td></tr><tr><td class=\"en\">bring the bad news</td><td>告知坏消息</td></tr><tr><td class=\"en\">tell you the bad news</td><td>把坏消息告知你</td></tr><tr><td class=\"en\">Don't mention it.</td><td>别客气；不值一提</td></tr><tr><td class=\"en\">I'm sick of it</td><td>我受够了。</td></tr><tr><td class=\"en\">I have had enough of it</td><td>我受够了（忍耐到极限）</td></tr><tr><td class=\"en\">stay put</td><td>待在原地不动；停下来，别走开</td></tr><tr><td class=\"en\">Let's talk about it first.</td><td>我们先聊聊这件事。</td></tr><tr><td class=\"en\">It's an excuse</td><td>这是个借口。</td></tr></tbody></table></div>"
+    }
+  ]
+}};
 
 /* ===== 级别过滤 (B1/B2) ===== */
 (function () {
@@ -2535,7 +2556,7 @@ if (!unitId || !MODULES[unitId]) {
 renderModule();
 </script>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260806-1500</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260807-0927</div>
   <script src="kb.js?v=20260806-1500"></script>
 <script>
 (function(){
