@@ -44,6 +44,19 @@ code{background:#f0f0f0;padding:1px 5px;border-radius:3px;font-size:.9em;}
 #qsResults a{display:block;padding:7px 14px;color:#222;text-decoration:none;border-bottom:1px solid #f3f3f3;font-size:.88em;line-height:1.35;}
 #qsResults a:hover,#qsResults a.active{background:#fce4ec;}
 #qsResults .qsnone{padding:10px 12px;color:#999;font-size:.85em;}
+.pron-legend{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0 16px;padding:10px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;font-size:.85em;}
+.pron-legend span{display:inline-flex;align-items:center;gap:6px;}
+.plk{border-top:2px solid #3b82f6;border-radius:12px 12px 0 0;padding-top:4px;}
+.pun{text-decoration:line-through;text-decoration-color:#e53935;text-decoration-thickness:1.5px;}
+.pup{color:#43a047;font-weight:700;}
+.pdown{color:#fb8c00;font-weight:700;}
+.lk{position:relative;display:inline-block;padding-top:7px;}
+.lk::before{content:"";position:absolute;top:0;left:0;right:0;border-top:2px solid #3b82f6;border-radius:12px 12px 0 0;height:8px;pointer-events:none;}
+.un{position:relative;}
+.un::after{content:"";position:absolute;left:-1px;right:-1px;top:52%;border-top:1.5px solid #e53935;pointer-events:none;}
+.up,.down{position:relative;display:inline-block;}
+.up::before{content:"↗";position:absolute;top:-1.1em;left:50%;transform:translateX(-50%);color:#43a047;font-size:.72em;font-weight:700;pointer-events:none;}
+.down::before{content:"↘";position:absolute;top:-1.1em;left:50%;transform:translateX(-50%);color:#fb8c00;font-size:.72em;font-weight:700;pointer-events:none;}
 </style></head><body>
 <div id="qsbar">
   <span class="qslabel">快速切换 ▸</span>
@@ -118,7 +131,9 @@ code{background:#f0f0f0;padding:1px 5px;border-radius:3px;font-size:.9em;}
   <a class="qstop" href="#top">↑ 顶部</a>
 </div>
 <h1 id="top">B2 精读全集 · 40 课（MC01–MC40）</h1>
-<p>本文件基于 <code>教材_data_B2</code> 的 40 篇 B2 课件整理，按主题分为 9 个批次。每篇含：原文、重点词汇（带音标）、固定搭配与介词、语法重点、常用句型与表达迁移、一句话总结。点击上方目录可跳转到任意批次或单课。说明：原课件为纯文本，不含连读/略读/语调等发音标注，故本全集不做自加朗读标注，仅保留词汇、搭配、语法与句型的精读分析。</p>
+<p>本文件基于 <code>教材_data_B2</code> 的 40 篇 B2 课件整理，按主题分为 9 个批次。每篇含：原文、重点词汇（带音标）、固定搭配与介词、语法重点、常用句型与表达迁移、一句话总结。点击上方目录可跳转到任意批次或单课。</p>
+<p>说明：MC02/04/06/10/12/14/16/18/19/20/24/26/28/29/32/36/38/39/40 的原文已根据同名「连略读版本」PDF 添加连读（蓝弧）、略读（红杠）、升降调（箭头）标记；其余 21 课因无标记 PDF，保持原文文本。</p>
+<div class="pron-legend"><span class="plk">Linking 连读</span><span class="pun">Unreleased 略读</span><span class="pup">↗ 升调</span><span class="pdown">↘ 降调</span></div>
 <div class="toc"><p class="toctitle">目录（按批次 / 单课均可直接跳转）</p><ul><li class="batch"><a href="#g1">G1 · 庆祝与社交</a></li><ul><li class="mc"><a href="#MC01">MC01 Celebrate!</a></li><li class="mc"><a href="#MC18">MC18 Carnival Time</a></li><li class="mc"><a href="#MC23">MC23 Festival Fair</a></li><li class="mc"><a href="#MC29">MC29 An Invitation to a Party</a></li></ul><li class="batch"><a href="#g2">G2 · 旅行与冒险</a></li><ul><li class="mc"><a href="#MC02">MC02 Capsule Hotels</a></li><li class="mc"><a href="#MC03">MC03 Life in Numbers</a></li><li class="mc"><a href="#MC04">MC04 Travel Mishaps</a></li><li class="mc"><a href="#MC10">MC10 Tourist Tips</a></li><li class="mc"><a href="#MC21">MC21 Stranded on a Deserted Island</a></li><li class="mc"><a href="#MC33">MC33 Travel Survival Guide</a></li><li class="mc"><a href="#MC34">MC34 Adventure Travel</a></li><li class="mc"><a href="#MC35">MC35 Stuck in an Airport</a></li></ul><li class="batch"><a href="#g3">G3 · 工作与职业</a></li><ul><li class="mc"><a href="#MC05">MC05 Money Matters</a></li><li class="mc"><a href="#MC06">MC06 About Jobs</a></li><li class="mc"><a href="#MC07">MC07 Find the Job That&#x27;s Right for You</a></li><li class="mc"><a href="#MC19">MC19 Who&#x27;s Who in the Office</a></li><li class="mc"><a href="#MC22">MC22 Flipping Your Job Interview</a></li><li class="mc"><a href="#MC24">MC24 Smart Solutions</a></li><li class="mc"><a href="#MC26">MC26 Job Hunting</a></li><li class="mc"><a href="#MC28">MC28 Customer Service Matters</a></li><li class="mc"><a href="#MC31">MC31 Uniqlo: a Global Success Story</a></li><li class="mc"><a href="#MC37">MC37 Skills for the 21st-Century Workplace</a></li><li class="mc"><a href="#MC39">MC39 The Interviews</a></li><li class="mc"><a href="#MC40">MC40 When Work Ends</a></li></ul><li class="batch"><a href="#g4">G4 · 文化与日常</a></li><ul><li class="mc"><a href="#MC09">MC09 Lessons in Cultural Difference</a></li><li class="mc"><a href="#MC14">MC14 Family Life</a></li><li class="mc"><a href="#MC36">MC36 Finding Balance</a></li></ul><li class="batch"><a href="#g5">G5 · 人际关系与沟通</a></li><ul><li class="mc"><a href="#MC13">MC13 I Think We Would Really Click</a></li><li class="mc"><a href="#MC15">MC15 The Perfect Apology</a></li><li class="mc"><a href="#MC32">MC32 Changing a Meeting Time</a></li><li class="mc"><a href="#MC38">MC38 Making Excuses</a></li></ul><li class="batch"><a href="#g6">G6 · 故事影视娱乐</a></li><ul><li class="mc"><a href="#MC08">MC08 Who&#x27;s the Killer</a></li><li class="mc"><a href="#MC12">MC12 The Bucket List</a></li><li class="mc"><a href="#MC16">MC16 Fireproof</a></li><li class="mc"><a href="#MC17">MC17 Watch This!</a></li><li class="mc"><a href="#MC20">MC20 Kung Fu Panda</a></li></ul><li class="batch"><a href="#g7">G7 · 购物科技网络</a></li><ul><li class="mc"><a href="#MC25">MC25 What is Your Best or Worst Online Shopping Story?</a></li><li class="mc"><a href="#MC27">MC27 Someone&#x27;s Always Watching You Online</a></li></ul><li class="batch"><a href="#g8">G8 · 性格与自我</a></li><ul><li class="mc"><a href="#MC30">MC30 Personality Trait</a></li></ul><li class="batch"><a href="#g9">G9 · 运动与休闲</a></li><ul><li class="mc"><a href="#MC11">MC11 Five Unusual Sports</a></li></ul></ul></div>
 <h2 class="batch" id="g1">G1 · 庆祝与社交</h2>
 <h2 id="MC01" style="color:#ad1457"><span class="mcbadge">MC01</span> Celebrate!（Celebrations Around the World）★</h2>
@@ -1761,18 +1776,18 @@ code{background:#f0f0f0;padding:1px 5px;border-radius:3px;font-size:.9em;}
 <h2 id="MC19"><span class="mcbadge">MC19</span> Who&#x27;s Who in the Office <span class="theme">（办公室同事介绍）</span></h2>
 <h3>一、原文</h3>
 <blockquote>
-<p class="turn"><span class="spk">Jani:</span> Welcome to the department, Yuki. Let me show you around and tell you about your new colleagues. I'll introduce you to them all later.</p>
-<p class="turn"><span class="spk">Yuki:</span> Great. Thanks. So, who are those people over there?</p>
-<p class="turn"><span class="spk">Jani:</span> That's the order management team. Luciana deals with the new orders. She's the one with short, dark hair.</p>
-<p class="turn"><span class="spk">Yuki:</span> In the purple dress?</p>
-<p class="turn"><span class="spk">Jani:</span> Yeah, that's right. You'll probably work closely with her while you are learning about our ordering process.</p>
-<p class="turn"><span class="spk">Yuki:</span> Got it, thanks. And who's that over there - the guy who's on the phone?</p>
-<p class="turn"><span class="spk">Jani:</span> Oh, you mean the one by the window? In the green shirt? Ah, that's Ian. He's the marketing director. And that's Maria beside him. She's responsible for the internal IT systems.</p>
-<p class="turn"><span class="spk">Yuki:</span> OK, I'll try to remember all of this. I should probably be taking notes!</p>
-<p class="turn"><span class="spk">Jani:</span> Don't worry about it. For now it's just good to put some faces to names.</p>
-<p class="turn"><span class="spk">Yuki:</span> OK, great – and who do I talk to about setting up my mobile phone with email access? Is that also Maria?</p>
-<p class="turn"><span class="spk">Jani:</span> No, you need to talk to Sebastian who works in communications. He can help you. That's him over there, next to the printer.</p>
-<p class="turn"><span class="spk">Yuki:</span> Thanks. I'll introduce myself to him later.</p>
+<p class="turn"><span class="spk">Jani:</span> Welcome to the departmen<span class="un">t</span>, Yuki. Let me show you <span class="lk">around and</span> tell you about your new colleagues. I'll introduce you to <span class="lk">them all</span> later.</p>
+<p class="turn"><span class="spk">Yuki:</span> Grea<span class="un">t</span>. Thanks. So, <span class="up">who</span> are <span class="lk">those people</span> <span class="lk">over there</span>?</p>
+<p class="turn"><span class="spk">Jani:</span> Tha<span class="un">t</span>'s the order management team. Luciana deals with the new orders. She's the one with short, dar<span class="un">k</span> hair.</p>
+<p class="turn"><span class="spk">Yuki:</span> <span class="lk">In the</span> purple <span class="up">dress</span>?</p>
+<p class="turn"><span class="spk">Jani:</span> Yeah, tha<span class="un">t</span>'s righ<span class="un">t</span>. You'll probably work <span class="lk">closely with</span> her while you are <span class="lk">learning about</span> our ordering process.</p>
+<p class="turn"><span class="spk">Yuki:</span> Go<span class="un">t</span> i<span class="un">t</span>, thanks. An<span class="un">d</span> <span class="up">who's</span> that <span class="lk">over there</span> - the guy <span class="lk">who's on</span> the <span class="up">phone</span>?</p>
+<p class="turn"><span class="spk">Jani:</span> Oh, you mean the one <span class="lk">by the</span> <span class="up">window</span>? <span class="lk">In the</span> green <span class="up">shirt</span>? Ah, tha<span class="un">t</span>'s Ian. He's the marketing director. An<span class="un">d</span> that's Maria <span class="lk">beside him</span>. She's responsible for the interna<span class="un">l</span> IT systems.</p>
+<p class="turn"><span class="spk">Yuki:</span> OK, I'll try to remember <span class="lk">all of</span> this. I shoul<span class="un">d</span> probably be takin<span class="un">g</span> <span class="down">notes</span>!</p>
+<p class="turn"><span class="spk">Jani:</span> Don'<span class="un">t</span> <span class="lk">worry about</span> <span class="lk">it</span>. For now it's jus<span class="un">t</span> goo<span class="un">d</span> to put some <span class="lk">faces to</span> <span class="lk">names</span>.</p>
+<p class="turn"><span class="spk">Yuki:</span> OK, grea<span class="un">t</span> – an<span class="un">d</span> <span class="up">who</span> do I <span class="lk">talk to</span> about <span class="lk">setting up</span> my mobile <span class="lk">phone with</span> email access? Is that also <span class="up">Maria</span>?</p>
+<p class="turn"><span class="spk">Jani:</span> No, you nee<span class="un">d</span> to <span class="lk">talk to</span> Sebastian who <span class="lk">works in</span> communications. He can help you. Tha<span class="un">t</span>'s <span class="lk">him over there</span>, <span class="lk">next to</span> the printe<span class="un">r</span>.</p>
+<p class="turn"><span class="spk">Yuki:</span> Thank<span class="un">s</span>. I'll <span class="lk">introduce myself</span> <span class="lk">to him</span> late<span class="un">r</span>.</p>
 </blockquote><h3>二、重点词汇（带音标）</h3>
 <table class="vocab"><tr><th>单词</th><th>音标</th><th>释义</th><th>原文例句</th></tr>
 <tr><td><b>process</b></td><td class='ph'>/ˈprɑːses/</td><td>过程；流程</td><td class='ex'>Unlike &quot;should do,&quot; which refers to a single action or future general tasks, &quot;should be doing&quot; emphasizes a continuous process or a necessary current action that is being neglected.</td></tr>
@@ -3042,7 +3057,7 @@ code{background:#f0f0f0;padding:1px 5px;border-radius:3px;font-size:.9em;}
   function jump(it){ if(!it) return; location.hash = it.id; box.value = it.label; res.classList.remove('show'); active = -1; }
   function close(){ res.classList.remove('show'); active = -1; }
   box.addEventListener('input', function(){ render(box.value); });
-  box.addEventListener('focus', function(){ render(box.value); });
+  box.addEventListener('focus', function(){ if(box.value.indexOf(' · ') > -1) box.value=''; box.select(); render(box.value); });
   box.addEventListener('keydown', function(e){
     if(e.key === 'ArrowDown'){
       if(!res.classList.contains('show')){ render(box.value); }
