@@ -7,7 +7,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260812-1436">
+<meta name="build-version" content="20260812-1743">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
 <script src="level-config.js?v=20260806-1500"></script>
@@ -88360,13 +88360,29 @@ function fmtRemain(ms) {
 
 // ============ RECENCY TRACKING (间隔重复 / 跨会话去重) ============
 const SEEN_KEY = 'testmaster_seen';
+const SEEN_ALL_KEY = 'testmaster_seen_all'; // 累计所有「真正展示过」的题 id（已涉及）
 const RECENT_WINDOW = 60; // 最近展示过的题数，期间降权、不优先抽取
 let seenList = [];
+let seenAll = new Set();
 (function loadSeen() {
-  try { var raw = localStorage.getItem(SEEN_KEY); if (raw) seenList = JSON.parse(raw); } catch(e) {}
+  try {
+    var raw = localStorage.getItem(SEEN_KEY); if (raw) seenList = JSON.parse(raw);
+    var rawAll = localStorage.getItem(SEEN_ALL_KEY);
+    if (rawAll) {
+      JSON.parse(rawAll).forEach(function(id){ seenAll.add(id); });
+    } else {
+      // 一次性迁移：旧数据没有累计 seenAll 时，用 srsState 钥匙做一次兜底
+      Object.keys(srsState).forEach(function(id){ seenAll.add(id); });
+      saveSeenAll();
+    }
+  } catch(e) {}
 })();
 function saveSeen() {
   try { localStorage.setItem(SEEN_KEY, JSON.stringify(seenList)); } catch(e) {}
+  scheduleSync();
+}
+function saveSeenAll() {
+  try { localStorage.setItem(SEEN_ALL_KEY, JSON.stringify(Array.from(seenAll))); } catch(e) {}
   scheduleSync();
 }
 function getRecentSeenSet() {
@@ -88374,9 +88390,10 @@ function getRecentSeenSet() {
   return new Set(seenList.slice(start));
 }
 function recordSeen(ids) {
-  ids.forEach(function(id){ seenList.push(id); });
+  ids.forEach(function(id){ seenList.push(id); seenAll.add(id); });
   if (seenList.length > 300) seenList = seenList.slice(seenList.length - 300);
   saveSeen();
+  saveSeenAll();
 }
 function dedupeById(arr) {
   var m = {}, out = [];
@@ -88683,13 +88700,22 @@ function renderTestTopicBar() {
     return `<button class="cat-btn ${checked?'active':''}" onclick="toggleTestTopic('${t.replace(/'/g,"\\'")}')">` +
       `<span style="font-size:12px;">${checked?'☑':'☐'}</span> ${shortTopicLabel(t)}</button>`;
   }).join('');
-  // 更新计数
+  // 更新计数（按唯一题 id 统计，避免同一题跨分类重复计数）
   var countEl = document.getElementById('topicCount');
   if (countEl) {
     var total = ALL_IDS.length;
-    var selCount = allSelected ? total : Object.keys(Q).reduce(function(n, cat) {
-      return n + (Q[cat] || []).filter(function(q) { return q.topic && selectedTopics.indexOf(q.topic) >= 0; }).length;
-    }, 0);
+    var selCount;
+    if (allSelected) {
+      selCount = total;
+    } else {
+      var selIds = new Set();
+      Object.keys(Q).forEach(function(cat){
+        (Q[cat] || []).forEach(function(q){
+          if (q.id && q.topic && selectedTopics.indexOf(q.topic) >= 0) selIds.add(q.id);
+        });
+      });
+      selCount = selIds.size;
+    }
     countEl.textContent = '已选 ' + selectedTopics.length + '/' + shownTopics.length + ' 个主题 · 将练 ' + selCount + '/' + total + ' 题';
   }
   // 更新全选按钮文字
@@ -88836,8 +88862,8 @@ function updateHomeStats() {
   // 统计时只计「当前级别题目 id」，避免 B1 历史污染 B2 的覆盖面板。
   var levelIds = (typeof ALL_IDS !== 'undefined' && ALL_IDS) ? new Set(ALL_IDS) : null;
   function inLevel(id){ return !levelIds || levelIds.has(id); }
-  // 已涉及：所有出现过（被作答过）的题，哪怕每次都错 —— 即 srsState 里有记录的题
-  var touchedSet = new Set(Object.keys(srsState).filter(inLevel));
+  // 已涉及：真正展示过的题（用 seenAll 累计，避免调度器 getSrs 预创建状态造成虚高）
+  var touchedSet = new Set(Array.from(seenAll).filter(inLevel));
   // 已学习：已掌握 或 做过且过了第一阶段（box >= 1）的题
   var learnedSet = new Set();
   touchedSet.forEach(function(id){
@@ -88864,7 +88890,7 @@ function updateHomeStats() {
       + '<div class="cov-meta"><b>' + r.d.count + '</b> 题 · <b>' + r.d.cats + '</b> 知识点</div>'
       + '</div>';
   });
-  html += '<div class="cov-note">已涉及 = 出现过（含每次都错）；已学习 = 已掌握或过了第一阶段；已掌握 = 连对达标并标记。知识点 = 6 大分类（语法/词汇/搭配/场景/易错/句子）。</div>';
+  html += '<div class="cov-note">已涉及 = 真正出现过（不是调度器预加载）；已学习 = 已掌握或过了第一阶段；已掌握 = 连对达标并标记。知识点 = 6 大分类（语法/词汇/搭配/场景/易错/句子）。</div>';
   var covEl = document.getElementById('coveragePanel');
   if (covEl) covEl.innerHTML = html;
   updateTopicCoverage();
@@ -88890,8 +88916,8 @@ function updateTopicCoverage() {
       + '<div class="cov-note">当前未选择任何主题（或所选主题暂无题目）。在上方勾选主题后，这里会实时统计该范围内的学习覆盖情况。</div>';
     return;
   }
-  // 已涉及：在 srsState 里有记录的题
-  var touchedSet = new Set(Object.keys(srsState).filter(function(id){ return topicIds.has(id); }));
+  // 已涉及：真正展示过的题（用 seenAll 累计，避免调度时 getSrs 预创建状态造成虚高）
+  var touchedSet = new Set(Array.from(seenAll).filter(function(id){ return topicIds.has(id); }));
   // 已学习：已掌握 或 过了第一阶段（box >= 1）
   var learnedSet = new Set();
   touchedSet.forEach(function(id){
@@ -88920,7 +88946,7 @@ function updateTopicCoverage() {
       + '<div class="cov-meta"><b>' + r.d.count + '</b> 题 · <b>' + r.d.cats + '</b> 知识点</div>'
       + '</div>';
   });
-  html += '<div class="cov-note">统计范围 = 当前所选主题内的题目，随主题勾选实时更新。已涉及 = 出现过；已学习 = 已掌握或过了第一阶段；已掌握 = 连对达标。</div>';
+  html += '<div class="cov-note">统计范围 = 当前所选主题内的题目，随主题勾选实时更新。已涉及 = 真正出现过（不是调度器预加载）；已学习 = 已掌握或过了第一阶段；已掌握 = 连对达标。</div>';
   el.innerHTML = html;
 }
 
@@ -90550,7 +90576,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260812-1436</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260812-1743</div>
   <script src="kb.js?v=20260806-1500"></script>
 </body>
 </html>
