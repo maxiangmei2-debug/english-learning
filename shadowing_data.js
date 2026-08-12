@@ -44,6 +44,7 @@ window.SHADOWING_DATA = [
  },
  {
   "mc": "MC02",
+  "contentImage": "images/shadowing/MC02_transcript.png",
   "title": "Capsule Hotels",
   "type": "dialogue",
   "content": {
@@ -334,6 +335,7 @@ window.SHADOWING_DATA = [
  },
  {
   "mc": "MC04",
+  "contentImage": "images/shadowing/MC04_transcript.png",
   "title": "Travel Mishaps",
   "type": "dialogue",
   "content": {
@@ -610,6 +612,7 @@ window.SHADOWING_DATA = [
  },
  {
   "mc": "MC06",
+  "contentImage": "images/shadowing/MC06_transcript.png",
   "title": "About Jobs",
   "type": "dialogue",
   "content": {
@@ -983,6 +986,7 @@ window.SHADOWING_DATA = [
  },
  {
   "mc": "MC10",
+  "contentImage": "images/shadowing/MC10_transcript.png",
   "title": "Tourist Tips",
   "type": "dialogue",
   "content": {
@@ -1325,6 +1329,7 @@ window.SHADOWING_DATA = [
  },
  {
   "mc": "MC12",
+  "contentImage": "images/shadowing/MC12_transcript.png",
   "title": "The Bucket List",
   "type": "dialogue",
   "content": {
@@ -1615,6 +1620,7 @@ window.SHADOWING_DATA = [
  },
  {
   "mc": "MC14",
+  "contentImage": "images/shadowing/MC14_transcript.png",
   "title": "Family life",
   "type": "dialogue",
   "content": {
@@ -1897,6 +1903,7 @@ window.SHADOWING_DATA = [
  },
  {
   "mc": "MC16",
+  "contentImage": "images/shadowing/MC16_transcript.png",
   "title": "Fireproof",
   "type": "dialogue",
   "content": {
@@ -2040,6 +2047,7 @@ window.SHADOWING_DATA = [
  },
  {
   "mc": "MC18",
+  "contentImage": "images/shadowing/MC18_transcript.png",
   "title": "Carnival Time",
   "type": "dialogue",
   "content": {
@@ -2208,6 +2216,7 @@ window.SHADOWING_DATA = [
  },
  {
   "mc": "MC19",
+  "contentImage": "images/shadowing/MC19_transcript.png",
   "title": "Who’s Who in the Office",
   "type": "dialogue",
   "content": {
@@ -2390,6 +2399,7 @@ window.SHADOWING_DATA = [
  },
  {
   "mc": "MC20",
+  "contentImage": "images/shadowing/MC20_transcript.png",
   "title": "KungFu Panda",
   "type": "dialogue",
   "content": {
@@ -2792,6 +2802,7 @@ window.SHADOWING_DATA = [
  },
  {
   "mc": "MC24",
+  "contentImage": "images/shadowing/MC24_transcript.png",
   "title": "Smart Solutions",
   "type": "dialogue",
   "content": {
@@ -2969,6 +2980,7 @@ window.SHADOWING_DATA = [
  },
  {
   "mc": "MC26",
+  "contentImage": "images/shadowing/MC26_transcript.png",
   "title": "Job Hunting",
   "type": "dialogue",
   "content": {
@@ -3415,6 +3427,7 @@ window.SHADOWING_DATA = [
  },
  {
   "mc": "MC28",
+  "contentImage": "images/shadowing/MC28_transcript.png",
   "title": "Customer Service Matters",
   "type": "dialogue",
   "content": {
@@ -3599,6 +3612,7 @@ window.SHADOWING_DATA = [
  },
  {
   "mc": "MC29",
+  "contentImage": "images/shadowing/MC29_transcript.png",
   "title": "An Invitation to a Party",
   "type": "dialogue",
   "content": {
@@ -3963,6 +3977,7 @@ window.SHADOWING_DATA = [
  },
  {
   "mc": "MC32",
+  "contentImage": "images/shadowing/MC32_transcript.png",
   "title": "Changing a Meeting Time",
   "type": "dialogue",
   "content": {
@@ -4387,6 +4402,7 @@ window.SHADOWING_DATA = [
  },
  {
   "mc": "MC36",
+  "contentImage": "images/shadowing/MC36_transcript.png",
   "title": "Finding Balance",
   "type": "dialogue",
   "content": {
@@ -4628,6 +4644,7 @@ window.SHADOWING_DATA = [
  },
  {
   "mc": "MC38",
+  "contentImage": "images/shadowing/MC38_transcript.png",
   "title": "Making Excuses",
   "type": "dialogue",
   "content": {
@@ -4935,6 +4952,7 @@ window.SHADOWING_DATA = [
  },
  {
   "mc": "MC39",
+  "contentImage": "images/shadowing/MC39_transcript.png",
   "title": "The Interviews",
   "type": "dialogue",
   "content": {
@@ -5105,6 +5123,7 @@ window.SHADOWING_DATA = [
  },
  {
   "mc": "MC40",
+  "contentImage": "images/shadowing/MC40_transcript.png",
   "title": "When Work Ends",
   "type": "dialogue",
   "content": {

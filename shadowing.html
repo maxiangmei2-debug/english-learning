@@ -5,7 +5,7 @@
 
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta name="build-version" content="20260811-1751">
+<meta name="build-version" content="20260812-1149">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>影子跟读 · 英语学习</title>
 <style>
@@ -52,6 +52,8 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 .translation{display:none;font-size:14px;color:#4b5563;background:#f0fdfa;border-left:3px solid #14b8a6;padding:9px 12px;border-radius:8px;margin-top:6px;line-height:1.75}
 .translation.show{display:block}
 .translation.empty{color:#9ca3af;background:#f9fafb;border-left-color:#d1d5db}
+/* PDF 原文图片（连略读版本） */
+.shadowing-pdf-img{max-width:100%;display:block;margin:0 auto 12px;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
 /* 单词 / 标注 */
 .w{cursor:pointer;border-radius:4px;padding:0 1px;transition:background .12s;position:relative;display:inline}
 .w:hover{background:#fde68a}
@@ -81,7 +83,7 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 </head>
 <body>
 
-<a href="index.html?v=20260811-1751" class="back">← 返回英语学习中心</a>
+<a href="index.html?v=20260812-1149" class="back">← 返回英语学习中心</a>
 
 <div class="topbar">
   <h1>🎙️ 影子跟读</h1>
@@ -119,9 +121,9 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
 
 <div id="toast"></div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260811-1751</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260812-1149</div>
 
-<script src="shadowing_data.js?v=20260811-1751"></script>
+<script src="shadowing_data.js?v=20260812-1149"></script>
 <script>
 (function () {
   'use strict';
@@ -337,6 +339,24 @@ a.back{display:inline-block;text-decoration:none;color:#4f46e5;font-size:13px;fo
     $('lessonMeta').textContent = (isDialogue ? '对话 · ' : '短文 · ') + n + ' 段' + (isDialogue ? '（说话人）' : '（段落）');
     var box = $('content');
     box.innerHTML = '';
+    // 连略读版本：直接显示 PDF 原图，保持和教材 PDF 样式完全一致
+    if (x.contentImage) {
+      $('lessonMeta').textContent = (isDialogue ? '对话 · ' : '短文 · ') + 'PDF 原文（连读/略读/语调标注）';
+      var img = document.createElement('img');
+      img.src = x.contentImage;
+      img.alt = x.mc + ' 原文';
+      img.className = 'shadowing-pdf-img';
+      box.appendChild(img);
+      var transWrap = document.createElement('div');
+      transWrap.className = 'translation-wrap';
+      for (var ti = 0; ti < n; ti++) {
+        var tdiv = makeTranslation(getTranslation(x, ti));
+        tdiv.classList.add('show');
+        transWrap.appendChild(tdiv);
+      }
+      box.appendChild(transWrap);
+      return;
+    }
     if (isDialogue) {
       x.content.turns.forEach(function(t, idx){
         if (t.speaker == null) {
