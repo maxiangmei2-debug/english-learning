@@ -7,7 +7,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260812-1149">
+<meta name="build-version" content="20260812-1247">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
 <script src="level-config.js?v=20260806-1500"></script>
@@ -369,6 +369,17 @@
   .note-input:focus { outline:none; border-color:var(--primary); box-shadow:0 0 0 3px var(--accent-light); }
   .note-has { color:#6366F1; font-weight:600; }
 
+  /* 解析与笔记左右排布（宽屏并排，窄屏自动堆叠） */
+  .explain-note-wrap { display:flex; gap:14px; align-items:stretch; margin-top:4px; }
+  .explain-col { flex:1 1 auto; min-width:0; }
+  .note-col { flex:0 0 300px; max-width:320px; display:flex; }
+  .note-col .note-area { margin-top:0; width:100%; display:flex; flex-direction:column; }
+  .note-col .note-input { flex:1 1 auto; }
+  @media (max-width:680px) {
+    .explain-note-wrap { flex-direction:column; }
+    .note-col { flex:1 1 auto; max-width:none; }
+  }
+
   .next-btn-wrap { text-align:center; margin-top:16px; }
   .next-btn {
     padding:12px 40px; border-radius:25px; border:none;
@@ -589,6 +600,7 @@
     </div>
     <div class="cat-bar topic-bar-compact" id="topicBar"></div>
     <div id="topicCount" style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:6px;text-align:center;"></div>
+    <div class="coverage-panel" id="coveragePanelTopic" style="margin:12px 0 0;"></div>
   </div>
 </div>
 
@@ -88683,6 +88695,7 @@ function renderTestTopicBar() {
   // 更新全选按钮文字
   var toggleBtn = document.getElementById('topicToggleAll');
   if (toggleBtn) toggleBtn.textContent = allSelected ? '全不选' : '全选';
+  updateTopicCoverage();
 }
 
 function selectTestTopicsByStatus(mode) {
@@ -88842,7 +88855,7 @@ function updateHomeStats() {
     { name:'已学习', icon:'📈', cls:'cov-learned', d: tLearned },
     { name:'已涉及', icon:'👀', cls:'cov-touched', d: tTouched }
   ];
-  var html = '<div class="cov-title">📊 学习覆盖统计</div>';
+  var html = '<div class="cov-title">📊 学习覆盖统计（全部主题）</div>';
   rows.forEach(function(r){
     var pct = TOTAL_COUNT ? Math.round(r.d.count / TOTAL_COUNT * 100) : 0;
     html += '<div class="cov-row ' + r.cls + '">'
@@ -88854,6 +88867,61 @@ function updateHomeStats() {
   html += '<div class="cov-note">已涉及 = 出现过（含每次都错）；已学习 = 已掌握或过了第一阶段；已掌握 = 连对达标并标记。知识点 = 6 大分类（语法/词汇/搭配/场景/易错/句子）。</div>';
   var covEl = document.getElementById('coveragePanel');
   if (covEl) covEl.innerHTML = html;
+  updateTopicCoverage();
+}
+
+// ============ 主题联动覆盖统计（仅统计已选主题内的题目） ============
+function updateTopicCoverage() {
+  var el = document.getElementById('coveragePanelTopic');
+  if (!el) return;
+  var levelIds = (typeof ALL_IDS !== 'undefined' && ALL_IDS) ? new Set(ALL_IDS) : null;
+  // 已选主题范围内的题目 id 集合（按当前级别隔离）
+  var topicIds = new Set();
+  Object.keys(Q).forEach(function(cat){
+    (Q[cat] || []).forEach(function(qd){
+      if (qd.id && qd.topic && selectedTopics.indexOf(qd.topic) >= 0) {
+        if (!levelIds || levelIds.has(qd.id)) topicIds.add(qd.id);
+      }
+    });
+  });
+  var total = topicIds.size;
+  if (total === 0) {
+    el.innerHTML = '<div class="cov-title">📊 覆盖统计（已选主题）</div>'
+      + '<div class="cov-note">当前未选择任何主题（或所选主题暂无题目）。在上方勾选主题后，这里会实时统计该范围内的学习覆盖情况。</div>';
+    return;
+  }
+  // 已涉及：在 srsState 里有记录的题
+  var touchedSet = new Set(Object.keys(srsState).filter(function(id){ return topicIds.has(id); }));
+  // 已学习：已掌握 或 过了第一阶段（box >= 1）
+  var learnedSet = new Set();
+  touchedSet.forEach(function(id){
+    var s = srsState[id];
+    if (masteredSet.has(id) || (s && s.box >= 1)) learnedSet.add(id);
+  });
+  // 已掌握
+  var mSet = new Set(Array.from(masteredSet).filter(function(id){ return topicIds.has(id); }));
+  function cntOf(idSet){
+    var cats = new Set();
+    idSet.forEach(function(id){ if (ID2CAT[id]) cats.add(ID2CAT[id]); });
+    return { count:idSet.size, cats:cats.size };
+  }
+  var rows = [
+    { name:'已选题目', icon:'📚', cls:'cov-total',   d: cntOf(topicIds) },
+    { name:'已掌握',   icon:'✅', cls:'cov-master',  d: cntOf(mSet) },
+    { name:'已学习',   icon:'📈', cls:'cov-learned', d: cntOf(learnedSet) },
+    { name:'已涉及',   icon:'👀', cls:'cov-touched', d: cntOf(touchedSet) }
+  ];
+  var html = '<div class="cov-title">📊 覆盖统计（已选 ' + selectedTopics.length + ' 个主题）</div>';
+  rows.forEach(function(r){
+    var pct = total ? Math.round(r.d.count / total * 100) : 0;
+    html += '<div class="cov-row ' + r.cls + '">'
+      + '<div class="cov-name">' + r.icon + ' ' + r.name + '</div>'
+      + '<div class="cov-bar"><span class="cov-fill" style="width:' + pct + '%"></span></div>'
+      + '<div class="cov-meta"><b>' + r.d.count + '</b> 题 · <b>' + r.d.cats + '</b> 知识点</div>'
+      + '</div>';
+  });
+  html += '<div class="cov-note">统计范围 = 当前所选主题内的题目，随主题勾选实时更新。已涉及 = 出现过；已学习 = 已掌握或过了第一阶段；已掌握 = 连对达标。</div>';
+  el.innerHTML = html;
 }
 
 // ============ START MODE ============
@@ -89322,7 +89390,9 @@ function showExplain(q, isCorrect, userAns) {
         '</div>';
     }
   }
-  let html = `<div class="explain-box">`;
+  let html = `<div class="explain-note-wrap">`;
+  html += `<div class="explain-col">`;
+  html += `<div class="explain-box">`;
   html += correctAnswerHtml;
   html += `<div class="explain-title">${isCorrect ? '✅ 答对了！' : '❌ 答错了'} 解析：</div>`;
   html += `<div class="explain-body">${q.explain}</div>`;
@@ -89379,16 +89449,20 @@ function showExplain(q, isCorrect, userAns) {
   }
 
   if(q.tip) html += `<div class="explain-tip">${q.tip}</div>`;
-  html += `</div>`;
+  html += `</div>`;  // 关闭 explain-box
+  html += `</div>`;  // 关闭 explain-col
 
-  // 每题笔记区：用 q.id 作 key 存 localStorage，下次遇到该题仍可见
+  // 每题笔记区：用 q.id 作 key 存 localStorage，下次遇到该题仍可见（与解析左右排布）
   if (q && q.id) {
     var _hasNote = getNote(q.id) ? ' <span class="note-has">(已写)</span>' : '';
+    html += `<div class="note-col">`;
     html += `<div class="note-area">`;
     html += `<div class="note-title">📒 我的笔记${_hasNote}<span class="note-saved" id="noteSavedTip"></span></div>`;
     html += `<textarea id="noteInput" class="note-input" placeholder="在这里写笔记，下次遇到这道题还能看到…（自动保存）"></textarea>`;
-    html += `</div>`;
+    html += `</div>`;  // 关闭 note-area
+    html += `</div>`;  // 关闭 note-col
   }
+  html += `</div>`;  // 关闭 explain-note-wrap
 
   // For sent-dict/sent-fill wrong: add retry practice area
   var retryType = (!isCorrect && (q.type === 'sent-dict' || q.type === 'sent-fill')) ? q.type : null;
@@ -90476,7 +90550,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260812-1149</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260812-1247</div>
   <script src="kb.js?v=20260806-1500"></script>
 </body>
 </html>
