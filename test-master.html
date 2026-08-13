@@ -7,7 +7,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260812-1743">
+<meta name="build-version" content="20260813-0903">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
 <script src="level-config.js?v=20260806-1500"></script>
@@ -88361,6 +88361,7 @@ function fmtRemain(ms) {
 // ============ RECENCY TRACKING (间隔重复 / 跨会话去重) ============
 const SEEN_KEY = 'testmaster_seen';
 const SEEN_ALL_KEY = 'testmaster_seen_all'; // 累计所有「真正展示过」的题 id（已涉及）
+const SEEN_ALL_CLEAN_KEY = 'testmaster_seen_all_clean_v2'; // 标记 seenAll 已清洗过 v1 的污染数据
 const RECENT_WINDOW = 60; // 最近展示过的题数，期间降权、不优先抽取
 let seenList = [];
 let seenAll = new Set();
@@ -88368,11 +88369,19 @@ let seenAll = new Set();
   try {
     var raw = localStorage.getItem(SEEN_KEY); if (raw) seenList = JSON.parse(raw);
     var rawAll = localStorage.getItem(SEEN_ALL_KEY);
+    var cleaned = localStorage.getItem(SEEN_ALL_CLEAN_KEY);
     if (rawAll) {
       JSON.parse(rawAll).forEach(function(id){ seenAll.add(id); });
-    } else {
-      // 一次性迁移：旧数据没有累计 seenAll 时，用 srsState 钥匙做一次兜底
-      Object.keys(srsState).forEach(function(id){ seenAll.add(id); });
+    }
+    // v1 迁移用 srsState 兜底，但 srsState 会被调度器 getSrs 预创建，导致「已涉及」虚高为 100%。
+    // 这里一次性清洗：只保留真正有交互的题（答过 / 已掌握 / 最近出现过）。
+    if (!cleaned) {
+      var reliable = new Set();
+      Object.keys(freqState).forEach(function(id){ reliable.add(id); });
+      masteredSet.forEach(function(id){ reliable.add(id); });
+      seenList.forEach(function(id){ reliable.add(id); });
+      seenAll = reliable;
+      localStorage.setItem(SEEN_ALL_CLEAN_KEY, '1');
       saveSeenAll();
     }
   } catch(e) {}
@@ -90576,7 +90585,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260812-1743</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260813-0903</div>
   <script src="kb.js?v=20260806-1500"></script>
 </body>
 </html>
