@@ -1,3 +1,4 @@
+/* MC03WB-20260813 */
 /* ============================================================
  * kb.js — 我的知识库 共享模块
  * 职责：
@@ -360,7 +361,7 @@
   // 用户首次打开任意模块即自动注入到 5 个学习模块；已手动添加过的不会重复。
   var SEED_KEY = 'english_kb_seed_v';
   var KB_SEED = {
-    version: '20260729-kbfix',
+    version: '20260813-mc03',
     items: [
       // —— 星期 ——
       { id: 'seed_monday',    content: 'Monday',    meaning: '星期一', type: 'word', ph: '/ˈmʌndeɪ/',     level: 'B1' },
@@ -837,7 +838,41 @@
       { id: 'seed_b2_perfume', content: 'perfume', meaning: '香水', type: 'word', ph: '/ˈpɜːfjuːm/', level: 'B2' },
       { id: 'seed_b2_diamond', content: 'diamond', meaning: '钻石', type: 'word', ph: '/ˈdaɪəmənd/', level: 'B2' },
       { id: 'seed_b2_traveler', content: 'traveler', meaning: '旅客', type: 'word', ph: '/ˈtrævələ(r)/', level: 'B2' },
-      { id: 'seed_b2_amazing', content: 'amazing', meaning: '令人惊叹的', type: 'word', ph: '/əˈmeɪzɪŋ/', level: 'B2' }]
+      { id: 'seed_b2_amazing', content: 'amazing', meaning: '令人惊叹的', type: 'word', ph: '/əˈmeɪzɪŋ/', level: 'B2' },
+      { id: 'seed_mc03_tet', content: 'Tet', meaning: '越南农历新年（春节）', type: 'word', ph: '/tet/', level: 'B2' },
+      { id: 'seed_mc03_envelope', content: 'envelope', meaning: '信封', type: 'word', ph: '/ˈenvələʊp/', level: 'B2' },
+      { id: 'seed_mc03_beverage', content: 'beverage', meaning: '饮料（较正式的说法）', type: 'word', ph: '/ˈbevərɪdʒ/', level: 'B2' },
+      { id: 'seed_mc03_symbol', content: 'symbol', meaning: '象征；标志', type: 'word', ph: '/ˈsɪmbl/', level: 'B2' },
+      { id: 'seed_mc03_apply', content: 'apply', meaning: '申请（通常指正式书面请求，如申请工作、学校）', type: 'word', ph: '/əˈplaɪ/', level: 'B2' },
+      { id: 'seed_mc03_monarch', content: 'monarch', meaning: '君主（国王或女王）', type: 'word', ph: '/ˈmɒnək/', level: 'B2' },
+      { id: 'seed_mc03_vietnam', content: 'Vietnam', meaning: '越南', type: 'word', ph: '/ˌvjetˈnæm/', level: 'B2' },
+      { id: 'seed_mc03_vietnamese', content: 'Vietnamese', meaning: '越南的；越南人（语）', type: 'word', ph: '/ˌvjetnəˈmiːz/', level: 'B2' },
+      { id: 'seed_mc03_alcohol', content: 'alcohol', meaning: '酒精；含酒精的饮料', type: 'word', ph: '/ˈælkəhɒl/', level: 'B2' },
+      { id: 'seed_mc03_karaoke', content: 'karaoke', meaning: '卡拉 OK', type: 'word', ph: '/ˌkæriˈəʊki/', level: 'B2' },
+      { id: 'seed_mc03_citizen', content: 'citizen', meaning: '公民', type: 'word', ph: '/ˈsɪtɪzn/', level: 'B2' },
+      { id: 'seed_mc03_expectancy', content: 'expectancy', meaning: '预期；期望', type: 'word', ph: '/ɪkˈspektənsi/', level: 'B2' },
+      { id: 'seed_mc03_life_expectancy', content: 'life expectancy', meaning: '预期寿命', type: 'word', ph: '', level: 'B2' },
+      { id: 'seed_mc03_controversial', content: 'controversial', meaning: '有争议的', type: 'word', ph: '/ˌkɒntrəˈvɜːʃl/', level: 'B2' },
+      { id: 'seed_mc03_policy', content: 'policy', meaning: '政策', type: 'word', ph: '/ˈpɒləsi/', level: 'B2' },
+      { id: 'seed_mc03_protest', content: 'protest', meaning: '/v. 抗议；反对', type: 'word', ph: '/ˈprəʊtest/', level: 'B2' },
+      { id: 'seed_mc03_cold_beverages', content: 'cold beverages', meaning: '冷饮', type: 'phrase', level: 'B2' },
+      { id: 'seed_mc03_for_the_whole_night', content: 'for the whole night', meaning: '整整一夜', type: 'phrase', level: 'B2' },
+      { id: 'seed_mc03_live_up_to', content: 'live up to + 数字', meaning: '达到（某个数字 / 标准）', type: 'phrase', level: 'B2' },
+      { id: 'seed_mc03_be_recognised_as', content: 'be recognised as', meaning: '被认可为；被认为是', type: 'phrase', level: 'B2' },
+      { id: 'seed_mc03_a_symbol_of', content: 'a symbol of', meaning: '……的象征', type: 'phrase', level: 'B2' },
+      { id: 'seed_mc03_fill_out_the_application_form', content: 'fill out the application form', meaning: '填写申请表', type: 'phrase', level: 'B2' },
+      { id: 'seed_mc03_before_the_deadline', content: 'before the deadline', meaning: '在截止日期之前', type: 'phrase', level: 'B2' },
+      { id: 'seed_mc03_take_to_the_streets', content: 'take to the streets', meaning: '走上街头（游行 / 庆祝）', type: 'phrase', level: 'B2' },
+      { id: 'seed_mc03_in_protest', content: 'in protest', meaning: '以示抗议', type: 'phrase', level: 'B2' },
+      { id: 'seed_mc03_should_be_doing_sth', content: 'should be doing sth', meaning: '（现在）应该正在做（含“本该 / 责备”意味）', type: 'phrase', level: 'B2' },
+      { id: 'seed_mc03_what_i_like_about_her_is_her_sense_of_humor', content: 'What I like about her is her sense of humor.', meaning: '我最喜欢她的一点是她的幽默感。', type: 'sentence', level: 'B2' },
+      { id: 'seed_mc03_what_i_really_hate_about_this_is_the_fact_that_it_wastes_my_time', content: 'What I really hate about this is the fact that it wastes my time.', meaning: '我真正讨厌这一点的是它浪费了我的时间。', type: 'sentence', level: 'B2' },
+      { id: 'seed_mc03_this_is_what_i_mean_when_i_say_we_need_a_clear_plan', content: 'This is what I mean when I say we need a clear plan.', meaning: '这就是我说“我们需要一个清晰的计划”时的意思。', type: 'sentence', level: 'B2' },
+      { id: 'seed_mc03_what_i_don_t_understand_is_why_we_re_here', content: 'What I don\'t understand is why we\'re here.', meaning: '我不理解的是我们为什么会在这里。', type: 'sentence', level: 'B2' },
+      { id: 'seed_mc03_that_s_exactly_what_happens_every_year_in_vietnam', content: 'That\'s exactly what happens every year in Vietnam.', meaning: '那正是越南每年发生的事。', type: 'sentence', level: 'B2' },
+      { id: 'seed_mc03_grammar1', content: 'what 引导自由关系从句', noTest: true, type: 'grammar', level: 'B2', meaning: 'what = the thing(s) that，在句中作名词短语，可作主语或宾语。中文“……的是”常用 What 前置；that 不能引导自由关系从句；which / how 不能替代 what。' },
+      { id: 'seed_mc03_grammar2', content: 'should be doing', noTest: true, type: 'grammar', level: 'B2', meaning: '进行式情态，表示“当下本该正在做”，常含责备 / 遗憾。对比 should do 仅表“应该做”。' },
+]
   };
   function runSeed() {
     try {
