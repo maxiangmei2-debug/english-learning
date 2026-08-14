@@ -362,7 +362,7 @@
   // 用户首次打开任意模块即自动注入到 5 个学习模块；已手动添加过的不会重复。
   var SEED_KEY = 'english_kb_seed_v';
   var KB_SEED = {
-    version: '20260813-mcamuse',
+    version: '20260814-mc15apology',
     items: [
       // —— 星期 ——
       { id: 'seed_monday',    content: 'Monday',    meaning: '星期一', type: 'word', ph: '/ˈmʌndeɪ/',     level: 'B1' },
@@ -1041,6 +1041,75 @@
     { id: 'seed_mcamuse_sent5', content: 'This roller-coaster is too thrilling. I dare not ride it.', meaning: '这个过山车太刺激了，我不敢坐。', type: 'sentence', level: 'B2' },
     { id: 'seed_mcamuse_grammar1', content: 'Imperative 祈使句', meaning: '祈使句以动词原形开头，表指令或建议。肯定 Keep left.；否定 Don\'t run.。常作开场引导与园区规则。', type: 'grammar', level: 'B2', noTest: true },
     { id: 'seed_mcamuse_grammar2', content: 'Modals of persuasion', meaning: 'should 表建议，must 表强制/必要；since = because 引导原因，如 Since it\'s crowded, we should wait. 口语可用 gonna 代替 going to，despite 是介词，后接名词/动名词（完整句用 although/though）。', type: 'grammar', level: 'B2', noTest: true }
+    // —— MC15 The Perfect Apology ——
+    ,{ id: 'seed_mc15_voucher', content: 'voucher', meaning: 'n. 代金券；票券', type: 'word', ph: '/ˈvaʊtʃər/', level: 'B2' }
+    ,{ id: 'seed_mc15_compensate', content: 'compensate', meaning: 'v. 补偿；赔偿', type: 'word', ph: '/ˈkɒmpenseɪt/', level: 'B2' }
+    ,{ id: 'seed_mc15_malfunction', content: 'technical malfunction', meaning: 'n. 技术故障', type: 'word', ph: '/ˈteknɪkl mælˈfʌŋkʃn/', level: 'B2' }
+    ,{ id: 'seed_mc15_furious', content: 'furious', meaning: 'adj. 狂怒的；暴怒的', type: 'word', ph: '/ˈfjʊəriəs/', level: 'B2' }
+    ,{ id: 'seed_mc15_frustration', content: 'frustration', meaning: 'n. 挫败感；沮丧', type: 'word', ph: '/frʌsˈtreɪʃn/', level: 'B2' }
+    ,{ id: 'seed_mc15_deserve', content: 'deserve', meaning: 'v. 应得；值得', type: 'word', ph: '/dɪˈzɜːv/', level: 'B2' }
+    ,{ id: 'seed_mc15_heartfelt', content: 'heartfelt', meaning: 'adj. 由衷的；真诚的', type: 'word', ph: '/ˈhɑːrtfelt/', level: 'B2' }
+    ,{ id: 'seed_mc15_thorn', content: 'thorn', meaning: 'n. 荆棘；刺', type: 'word', ph: '/θɔːn/', level: 'B2' }
+    ,{ id: 'seed_mc15_dedication', content: 'dedication', meaning: 'n. 奉献；敬业精神', type: 'word', ph: '/ˌdedɪˈkeɪʃn/', level: 'B2' }
+    ,{ id: 'seed_mc15_promotion', content: 'promotion', meaning: 'n. 晋升；促销', type: 'word', ph: '/prəˈməʊʃn/', level: 'B2' }
+    ,{ id: 'seed_mc15_memorial', content: 'memorial', meaning: 'n. 纪念碑；纪念仪式 adj. 纪念的', type: 'word', ph: '/məˈmɔːriəl/', level: 'B2' }
+    ,{ id: 'seed_mc15_departed', content: 'departed', meaning: 'adj. 已故的；过去的', type: 'word', ph: '/dɪˈpɑːtɪd/', level: 'B2' }
+    ,{ id: 'seed_mc15_complicated', content: 'complicated', meaning: 'adj. 复杂的', type: 'word', ph: '/ˈkɒmplɪkeɪtɪd/', level: 'B2' }
+    ,{ id: 'seed_mc15_struggle', content: 'struggle', meaning: 'v. 挣扎；努力 n. 奋斗', type: 'word', ph: '/ˈstrʌɡl/', level: 'B2' }
+    ,{ id: 'seed_mc15_nominate', content: 'nominate', meaning: 'v. 提名；任命', type: 'word', ph: '/ˈnɒmɪneɪt/', level: 'B2' }
+    // MC15 白板短语
+    ,{ id: 'seed_mc15_rebook', content: 'rebook / reschedule another flight', meaning: '重新预订/改签另一班航班', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc15_terminal', content: 'stay in the terminal / lounge / board area', meaning: '待在航站楼/休息室/登机区', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc15_overnight', content: 'stay overnight at a hotel', meaning: '在酒店过夜', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc15_update', content: 'provide an update', meaning: '提供最新消息/进展更新', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc15_makeup', content: 'make it up to you', meaning: '弥补你/补偿你（做某事来补偿）', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc15_treat', content: 'treat sb. to dinner', meaning: '请某人吃晚餐', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc15_snowstorm', content: 'be hit by huge snowstorm', meaning: '遭到暴风雪袭击', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc15_grounded', content: 'cause flights to be delayed / grounded', meaning: '导致航班延误/停飞', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc15_letdown', content: 'let sb. down', meaning: '让某人失望', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc15_outline', content: 'out of line', meaning: '出格；越界；不当', type: 'phrase', level: 'B2' }
+    // MC15 make-up 系列短语
+    ,{ id: 'seed_mc15_makeupto', content: 'make up to sb', meaning: '巴结讨好某人（to后接人，带有目的性去讨好）', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc15_makeupfor', content: 'make up for sth', meaning: '弥补补偿某事（for后接事物/行为）', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc15_makeupwith', content: 'make up with sb', meaning: '和解和好某人（with后接人，重归于好）', type: 'phrase', level: 'B2' }
+    // MC15 其他搭配
+    ,{ id: 'seed_mc15_speech', content: 'deliver a speech', meaning: '发表演讲', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc15_memservice', content: 'memorial service', meaning: '纪念仪式', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc15_gratitude', content: 'deep gratitude', meaning: '深深的感激', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc15_heartfelt2', content: 'heartfelt thanks / sympathy', meaning: '由衷的感谢/同情', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc15_sensefrust', content: 'a sense of frustration', meaning: '挫败感', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc15_strugglewith', content: 'struggle with sth', meaning: '在某事上挣扎/苦苦应对', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc15_nominated', content: 'be nominated for', meaning: '被提名为…', type: 'phrase', level: 'B2' }
+    // MC15 原句
+    ,{ id: 'seed_mc15_sent0', content: 'The flight was delayed because we were hit by a huge snowstorm.', meaning: '航班延误了，因为我们遭到了暴风雪袭击。', type: 'sentence', level: 'B2' }
+    ,{ id: 'seed_mc15_sent1', content: 'We had to stay overnight at a hotel near the airport.', meaning: '我们不得不在机场附近的酒店过夜。', type: 'sentence', level: 'B2' }
+    ,{ id: 'seed_mc15_sent2', content: 'I know this is frustrating, but we will make it up to you.', meaning: '我知道这很令人沮丧，但我们会补偿你的。', type: 'sentence', level: 'B2' }
+    ,{ id: 'seed_mc15_sent3', content: 'The airline will provide an update as soon as possible.', meaning: '航空公司会尽快提供最新消息。', type: 'sentence', level: 'B2' }
+    ,{ id: 'seed_mc15_sent4', content: "I don't want to let you down, so I will treat you to dinner.", meaning: '我不想让你失望，所以我请你吃晚餐。', type: 'sentence', level: 'B2' }
+    // MC15 make-up 讲义例句
+    ,{ id: 'seed_mc15_sent5', content: 'He always tries to make up to his boss.', meaning: '他总是试图巴结讨好老板。', type: 'sentence', level: 'B2' }
+    ,{ id: 'seed_mc15_sent6', content: 'I want to make up for my mistake.', meaning: '我想弥补我的错误。', type: 'sentence', level: 'B2' }
+    ,{ id: 'seed_mc15_sent7', content: 'They finally made up with each other.', meaning: '他们终于和解和好了。', type: 'sentence', level: 'B2' }
+    ,{ id: 'seed_mc15_sent8', content: 'This gift is to make up for the inconvenience.', meaning: '这份礼物是为了弥补不便。', type: 'sentence', level: 'B2' }
+    // MC15 选词填空句
+    ,{ id: 'seed_mc15_sent9', content: 'The passengers were furious about the technical malfunction.', meaning: '乘客们对技术故障感到狂怒。', type: 'sentence', level: 'B2' }
+    ,{ id: 'seed_mc15_sent10', content: 'She deserved a heartfelt apology from the airline.', meaning: '她应得航空公司由衷的道歉。', type: 'sentence', level: 'B2' }
+    ,{ id: 'seed_mc15_sent11', content: 'The airline offered a voucher to compensate for the delay.', meaning: '航空公司提供了一张代金券来补偿延误。', type: 'sentence', level: 'B2' }
+    // MC15 汉译英
+    ,{ id: 'seed_mc15_sent12', content: 'We waited at the airport for 11 hours because the snowstorm caused all flights to be grounded.', meaning: '我们在机场等了11个小时，因为暴风雪导致所有航班停飞。', type: 'sentence', level: 'B2' }
+    // MC15 语法要点
+    ,{ id: 'seed_mc15_grammar1', content: 'Past Perfect 过去完成时', meaning: 'had + 过去分词，表示过去某时间点之前已完成的动作。例：The flight had already left when we arrived.', type: 'grammar', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc15_grammar2', content: 'Relative clause with who', meaning: 'who 引导修饰人的定语从句。例：The passenger who was furious demanded a refund.', type: 'grammar', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc15_grammar3', content: 'had to + verb', meaning: 'had to + 动词原形，表示过去被迫/必须做某事。例：We had to stay overnight at a hotel.', type: 'grammar', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc15_grammar4', content: 'Reported speech tense backshift', meaning: '间接引语时态倒退：直接引语变间接引语时，时态往过去倒退一级。例："I am sorry" → He said he was sorry.', type: 'grammar', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc15_grammar5', content: 'Present participle as adverbial', meaning: '现在分词(v-ing)作伴随状语，表示同时发生的伴随动作。例：She stood at the gate, waiting for an update.', type: 'grammar', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc15_grammar6', content: 'Fixed preposition collocations', meaning: '固定搭配介词：compensate for（补偿某事）、frustrated with（对…沮丧）。例：They compensated us for the delay.', type: 'grammar', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc15_grammar7', content: 'Noun meaning distinction', meaning: '名词词义区分：frustration（挫败感）vs disappointment（失望）。例：Her frustration turned into anger.', type: 'grammar', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc15_grammar8', content: 'Third person singular', meaning: '三单变形：一般现在时主语第三人称单数，动词加 -s/-es。例：The airline provides regular updates.', type: 'grammar', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc15_grammar9', content: 'make up for + noun', meaning: 'make up for + 名词/动名词，固定搭配"弥补某事物"。例：We will make up for the inconvenience.', type: 'grammar', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc15_grammar10', content: 'Writing format for apology letters', meaning: '正式道歉信格式：Dear + 称呼，正文，Yours sincerely + 署名。注意标点、大小写、分段规范。', type: 'grammar', level: 'B2', noTest: true }
+    // MC15 记忆口诀
+    ,{ id: 'seed_mc15_mnemonic', content: 'make up 记忆口诀', meaning: 'to后接人去讨好，for后接事做补偿，with接人是和好。make up to sb（巴结讨好），make up for sth（弥补补偿），make up with sb（和解和好）。', type: 'grammar', level: 'B2', noTest: true }
 ]
   };
   function runSeed() {
