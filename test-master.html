@@ -7,7 +7,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260826-1057">
+<meta name="build-version" content="20260826-1540">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
 <script src="level-config.js?v=20260806-1500"></script>
@@ -91259,12 +91259,34 @@ function buildMixedQuestions(total, catKeys) {
 
   // 2) 每类挑选：到期题优先（高 box 更优先，同 box 常错优先），并按每日上限裁剪
   const byCat = {};
+  const pool = {};
   availCats.forEach(c => {
     const due = dueByCat[c].slice().sort((a,b)=> getSrs(b.id).box - getSrs(a.id).box || srsWrongOf(b) - srsWrongOf(a) + (Math.random()-0.5));
     const limited = applyDailyLimit(due, SRS_DAILY_LIMIT_BY_BOX);
     const notDue = notDueByCat[c].slice().sort((a,b)=> srsDueTs(a.id) - srsDueTs(b.id));
-    byCat[c] = limited.kept.concat(notDue.filter(function(q){ return getSrs(q.id).box < 1 && !seenAll.has(q.id); })).slice(0, quotas[c]);
+    pool[c] = limited.kept.concat(notDue.filter(function(q){ return getSrs(q.id).box < 1 && !seenAll.has(q.id); }));
+    byCat[c] = pool[c].slice(0, quotas[c]);
   });
+
+  // 2.5) 缺口再分配：某维度凑不满配额时，从其它维度尚有富余的题里补，尽量出满 total
+  //      （已掌握的题仍排除、到期题仍按 SRS 优先级；只是把空配额借给还有题的维度）
+  let _picked = availCats.reduce((s,c)=> s + byCat[c].length, 0);
+  let _deficit = total - _picked;
+  if (_deficit > 0) {
+    const _used = new Set();
+    availCats.forEach(c => byCat[c].forEach(q => _used.add(q.id)));
+    const _surplus = [];
+    availCats.forEach(c => {
+      pool[c].slice(quotas[c]).forEach(q => { if (!_used.has(q.id)) { _surplus.push(q); _used.add(q.id); } });
+    });
+    // 富余题按「到期优先」排序：高 box 优先（更接近遗忘），同档按排期靠前优先
+    _surplus.sort((a,b)=> getSrs(b.id).box - getSrs(a.id).box || srsDueTs(a.id) - srsDueTs(b.id));
+    let _k = 0;
+    while (_deficit > 0 && _k < _surplus.length) {
+      byCat[availCats[_k % availCats.length]].push(_surplus[_k]);
+      _k++; _deficit--;
+    }
+  }
 
   // 3) 跨分类轮转交叉，避免同一维度连排
   const result = [];
@@ -93333,7 +93355,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260826-1057</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260826-1540</div>
   <script src="kb.js?v=20260806-1500"></script>
 </body>
 </html>
