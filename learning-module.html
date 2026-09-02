@@ -7,7 +7,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260902-1547">
+<meta name="build-version" content="20260902-1727">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>学习模块</title>
 <script src="level-config.js?v=20260806-1500"></script>
@@ -227,6 +227,7 @@ var sessionIdx = parseInt(getParam('session') || '0');
 /* YJ-20260810 */
 /* MC39A-20260811 */
 /* MC03WB-20260813 */
+// INJECT-MC29MC30-WB-LM
 var MODULES = { // B2-APPEND-MODULES
   u1: {
     phase: '基础语法', theme: '时态基础', icon: '⏰',
@@ -2217,7 +2218,9 @@ b2u5: {
         title: "💬 派对邀请与出行指路 句型",
         content: "<div class=\"example-box\">I'm organizing a little party for my birthday.  <span style=\"color:var(--gray-600);\">— 我正在为我的生日筹备一个小派对。</span></div><div class=\"example-box\">We're going to have it at my cousin's house.  <span style=\"color:var(--gray-600);\">— 我们将在我表姐家举办。</span></div><div class=\"example-box\">She lives in the countryside in a nice big house with a swimming pool.  <span style=\"color:var(--gray-600);\">— 她住在乡村一栋带游泳池的大房子里。</span></div><div class=\"example-box\">If you take the car, drive straight on Forest Road until you get to the motorway.  <span style=\"color:var(--gray-600);\">— 如果你开车，就沿森林路一直直走到高速公路。</span></div><div class=\"example-box\">I can't wait.  <span style=\"color:var(--gray-600);\">— 我等不及了。</span></div>"
       }
-    ]
+    ,
+      { type: "sentence", title: "💬 派对邀请与出行指路 白板补充（指路对话 + 口语）", content: "<div class=\"example-box\">How's it going?  <span style=\"color:var(--gray-600);\">— 最近怎么样？（口语问候）</span></div><div class=\"example-box\">Don't work too hard.  <span style=\"color:var(--gray-600);\">— 别太拼了（Don't do… 祈使句否定）</span></div><div class=\"example-box\">I'd love to see you there.  <span style=\"color:var(--gray-600);\">— 我很期待在那儿见到你（I'd love to do 很想做某事）</span></div><div class=\"example-box\">I'll send you the instructions.  <span style=\"color:var(--gray-600);\">— 我会把说明发给你（will do 表将来）</span></div><div class=\"example-box\">Drive past Brownsville and take Exit 13A, then turn left.  <span style=\"color:var(--gray-600);\">— 开车经过布朗斯维尔，从13A出口下，然后左转</span></div><div class=\"example-box\">Take Bus 80 to Brownsville and call — somebody will pick you up.  <span style=\"color:var(--gray-600);\">— 坐80路到布朗斯维尔打电话，会有人开车来接你</span></div>" },
+      { type: "grammar", title: "📖 派对邀请与出行指路 白板补充（anyway 三种用法）", content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">anyway 的三种用法（本课 Language Study 核心）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 Anyway, have fun at work. / He didn't get the invitation, but he came anyway.</div><div style=\"font-size:13px;color:var(--gray-600);\">①结束对话 / 转换话题 / 被打断后回到原话题：Poor John always enjoyed a drink. Anyway, he died last year.（话说回来）②确认或支持刚才提到的观点：It was my fault, and anyway, it doesn't matter.（再说了）③表示\"不管怎样/仍然\"发生：He didn't get the invitation, but he came anyway.（照样，还是）</div></div>" }]
   },
   b2u30: {
     phase: "📗 B2 教材",
@@ -2242,7 +2245,9 @@ b2u5: {
         title: "💬 人物性格特质 句型",
         content: "<div class=\"example-box\">My manager is pretty disorganized.  <span style=\"color:var(--gray-600);\">— 我的经理相当没条理。</span></div><div class=\"example-box\">My cousin is punctual.  <span style=\"color:var(--gray-600);\">— 我的表妹很守时。</span></div><div class=\"example-box\">The boss needs to lighten up.  <span style=\"color:var(--gray-600);\">— 老板需要放松点／别太严肃。</span></div><div class=\"example-box\">Mary's so generous - she's always giving her friends presents.  <span style=\"color:var(--gray-600);\">— 玛丽很慷慨——总是给朋友送礼物。</span></div><div class=\"example-box\">He gets angry so easily.  <span style=\"color:var(--gray-600);\">— 他很容易生气。</span></div>"
       }
-    ]
+    ,
+      { type: "grammar", title: "📖 人物性格特质 白板补充（wish 虚拟语气详解 + 易错）", content: "<div style=\"margin-bottom:12px;\"><div style=\"font-weight:700;color:#6D28D9;\">wish 虚拟语气（本课核心：希望但没有实现的、不真实的情况）</div><div class=\"en\" style=\"font-size:14px;margin:4px 0;\">📌 I wish I could see you next week. / I wish I weren't sick. / I wish I had listened to my mom.</div><div style=\"font-size:13px;color:var(--gray-600);\">①对现在/将来的愿望 → 用过去时（did / were / could do）：I wish I weren't sick（事实：我生病了）；I wish my boss would lighten up（希望老板放松点）②对过去的愿望（后悔）→ 用过去完成时（had done）：I wish I had listened to my mom（事实：我以前没听）③易错：wish 后不能用一般现在时 ❌ I wish I am rich. → ✅ I wish I were rich.；正式英语中 be 一律用 were。</div></div>" },
+      { type: "sentence", title: "💬 人物性格特质 白板补充（听力文字稿 4 段对话）", content: "<div class=\"example-box\"><b>Conversation 1（老板）</b> — She never enjoys a joke. She never laughs. → 性格 <b>serious</b>（严肃，不开玩笑）。关键句：I wish she'd learn to lighten up.（我希望她放松点）</div><div class=\"example-box\"><b>Conversation 2（同事 Mary）</b> — she's always giving her friends and co-workers presents. → 性格 <b>generous</b>（慷慨）。关键句：I wish there were more people like her.（wish + there be 用 were）</div><div class=\"example-box\"><b>Conversation 3（法语老师）</b> — in a good mood one minute and in a terrible mood the next. → 性格 <b>moody / strange</b>（情绪多变 / 奇怪）</div><div class=\"example-box\"><b>Conversation 4（弟弟）</b> — He gets upset so easily. / I'm fed up with my brother! → 性格 <b>bad-tempered</b>（脾气暴躁）。搭配：be fed up with 受够了；get upset 生气</div>" }]
   },
   b2u31: {
     phase: "📗 B2 教材",
@@ -3349,7 +3354,7 @@ if (!unitId || !MODULES[unitId]) {
 renderModule();
 </script>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260902-1547</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260902-1727</div>
   <script src="kb.js?v=20260806-1500"></script>
 <script>
 (function(){

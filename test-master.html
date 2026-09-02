@@ -7,7 +7,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260902-1547">
+<meta name="build-version" content="20260902-1727">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
 <script src="level-config.js?v=20260806-1500"></script>
@@ -642,6 +642,7 @@
 /* INJECT-MC39-WB-TM */
 /* INJECT-MC31-WB-TM */
 /* INJECT-MC12-WB-TM */
+// INJECT-MC29MC30-WB-TM
 const Q = {
   "grammar": [
     {
@@ -6073,6 +6074,48 @@ const Q = {
       "ans": 0,
       "explain": "【语法点】否定疑问句（反问句）用于表达强烈反问或怂恿<br>✅ 正确：Don't you want to…? = 你难道不想……吗？",
       "level": "B2"
+    },
+    {
+      "id": "mc29n11",
+      "cat": "grammar",
+      "type": "choice",
+      "badge": "语法",
+      "topic": "B2-MC29 派对邀请与出行指路",
+      "q": "关于 anyway 的用法，下列哪句里 anyway 表示\"尽管如此 / 仍然发生\"？",
+      "opts": [
+        "He didn't get the invitation, but he came anyway.",
+        "Anyway, have fun at work.",
+        "Poor John died last year. Anyway, he enjoyed a drink.",
+        "It was my fault, and anyway, it doesn't matter."
+      ],
+      "ans": 0,
+      "explain": "【语法点】anyway 表示\"尽管如此/仍然发生\"时，常用于 but … anyway 结构（如 He didn't get the invitation, but he came anyway）。①结束/转换话题；②打断后回到原话题；③确认或支持观点；④尽管如此。"
+    },
+    {
+      "id": "mc30n15",
+      "cat": "grammar",
+      "type": "fill",
+      "badge": "语法",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "填空：I wish I ___ rich. （❌ I wish I am rich. → ✅ were；虚拟语气 be 用 were）",
+      "ans": [
+        "were"
+      ],
+      "explain": "【语法点】wish 后不能用一般现在时：❌ I wish I am rich. → ✅ I wish I were rich. 正式英语中 be 一律用 were（即使 I/he/she）。",
+      "noTest": true
+    },
+    {
+      "id": "mc30n16",
+      "cat": "grammar",
+      "type": "fill",
+      "badge": "语法",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "填空：I wish I ___ listened to my mom. （对过去的愿望用过去完成时 had done）",
+      "ans": [
+        "had"
+      ],
+      "explain": "【语法点】对过去的愿望（后悔）用过去完成时 had done：I wish I had listened to my mom.（事实：我以前没听妈妈的话）",
+      "noTest": true
     }
   ],
   "vocab": [
@@ -48117,6 +48160,166 @@ const Q = {
       "ans": 0,
       "explain": "【知识点】<span class=\"en\">tree house</span> = 树屋<br>【主题】MC34（介绍五种冒险度假类型）<br>【记忆】tree house → 树屋",
       "level": "B2"
+    },
+    {
+      "id": "mc29n1",
+      "cat": "vocab",
+      "type": "choice",
+      "badge": "词汇",
+      "topic": "B2-MC29 派对邀请与出行指路",
+      "q": "\"straight\" 是什么意思？",
+      "opts": [
+        "笔直地，径直地",
+        "乡村，农村地区",
+        "指示，说明",
+        "出口，高速出口"
+      ],
+      "ans": 0,
+      "explain": "【知识点】<span class=\"en\">straight</span> /streɪt/ = 笔直地，径直地<br>【主题】MC29（派对邀请与出行指路）<br>【用法】drive straight on Forest Road 沿森林路一直直行"
+    },
+    {
+      "id": "mc30n1",
+      "cat": "vocab",
+      "type": "choice",
+      "badge": "词汇",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "\"personality\" 是什么意思？",
+      "opts": [
+        "性格，个性",
+        "特征，特质",
+        "老板",
+        "亲戚"
+      ],
+      "ans": 0,
+      "explain": "【知识点】<span class=\"en\">personality</span> /ˌpɜːsəˈnæləti/ = 性格，个性<br>【主题】MC30（人物性格特质）<br>【搭配】have a personality trait 具有某种性格特质"
+    },
+    {
+      "id": "mc30n2",
+      "cat": "vocab",
+      "type": "choice",
+      "badge": "词汇",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "\"trait\" 是什么意思？",
+      "opts": [
+        "特征，特质",
+        "性格，个性",
+        "心情，情绪",
+        "可靠的"
+      ],
+      "ans": 0,
+      "explain": "【知识点】<span class=\"en\">trait</span> /treɪt/ = 特征，特质<br>【主题】MC30（人物性格特质）<br>【搭配】personality trait 性格特质"
+    },
+    {
+      "id": "mc30n3",
+      "cat": "vocab",
+      "type": "choice",
+      "badge": "词汇",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "\"boss\" 是什么意思？",
+      "opts": [
+        "老板",
+        "同事",
+        "亲戚",
+        "法语老师"
+      ],
+      "ans": 0,
+      "explain": "【知识点】<span class=\"en\">boss</span> /bɒs/ = 老板<br>【主题】MC30（人物性格特质）"
+    },
+    {
+      "id": "mc30n4",
+      "cat": "vocab",
+      "type": "choice",
+      "badge": "词汇",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "\"relative\" 是什么意思？",
+      "opts": [
+        "亲戚",
+        "老板",
+        "同事",
+        "性格"
+      ],
+      "ans": 0,
+      "explain": "【知识点】<span class=\"en\">relative</span> /ˈrelətɪv/ = 亲戚<br>【主题】MC30（人物性格特质）"
+    },
+    {
+      "id": "mc30n5",
+      "cat": "vocab",
+      "type": "choice",
+      "badge": "词汇",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "\"disorganized\" 是什么意思？",
+      "opts": [
+        "杂乱无章的",
+        "可靠的",
+        "守时的",
+        "勤奋的"
+      ],
+      "ans": 0,
+      "explain": "【知识点】<span class=\"en\">disorganized</span> /dɪsˈɔːɡənaɪzd/ = 杂乱无章的<br>【主题】MC30（人物性格特质，消极）"
+    },
+    {
+      "id": "mc30n6",
+      "cat": "vocab",
+      "type": "choice",
+      "badge": "词汇",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "\"moody\" 是什么意思？",
+      "opts": [
+        "情绪多变的，喜怒无常的",
+        "奇怪的",
+        "严肃的",
+        "不友好的"
+      ],
+      "ans": 0,
+      "explain": "【知识点】<span class=\"en\">moody</span> /ˈmuːdi/ = 情绪多变的，喜怒无常的<br>【主题】MC30（人物性格特质，消极）"
+    },
+    {
+      "id": "mc30n7",
+      "cat": "vocab",
+      "type": "choice",
+      "badge": "词汇",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "\"serious\" 是什么意思？",
+      "opts": [
+        "严肃的",
+        "情绪多变的",
+        "奇怪的",
+        "不友好的"
+      ],
+      "ans": 0,
+      "explain": "【知识点】<span class=\"en\">serious</span> /ˈsɪəriəs/ = 严肃的（中性）<br>【主题】MC30（人物性格特质）"
+    },
+    {
+      "id": "mc30n8",
+      "cat": "vocab",
+      "type": "choice",
+      "badge": "词汇",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "\"unfriendly\" 是什么意思？",
+      "opts": [
+        "不友好的",
+        "奇怪的",
+        "严肃的",
+        "情绪多变的"
+      ],
+      "ans": 0,
+      "explain": "【知识点】<span class=\"en\">unfriendly</span> /ʌnˈfrendli/ = 不友好的（消极）<br>【主题】MC30（人物性格特质）"
+    },
+    {
+      "id": "mc30n9",
+      "cat": "vocab",
+      "type": "choice",
+      "badge": "词汇",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "\"strange\" 是什么意思？",
+      "opts": [
+        "奇怪的",
+        "不友好的",
+        "严肃的",
+        "情绪多变的"
+      ],
+      "ans": 0,
+      "explain": "【知识点】<span class=\"en\">strange</span> /streɪndʒ/ = 奇怪的（消极）<br>【主题】MC30（人物性格特质）"
     }
   ],
   "phrase": [
@@ -74984,6 +75187,310 @@ const Q = {
       "ans": 0,
       "explain": "【固定搭配】<span class=\"en\">have a little fun</span> = 找点乐子<br>【主题】MC12",
       "level": "B2"
+    },
+    {
+      "id": "mc29n2",
+      "cat": "phrase",
+      "type": "choice",
+      "badge": "搭配",
+      "topic": "B2-MC29 派对邀请与出行指路",
+      "q": "\"How's it going?\" 是什么意思？",
+      "opts": [
+        "最近怎么样？（口语问候）",
+        "别太拼了",
+        "我很期待在那儿见到你",
+        "我会把说明发给你"
+      ],
+      "ans": 0,
+      "explain": "【固定搭配】<span class=\"en\">How's it going?</span> = 最近怎么样？（口语问候）<br>【主题】MC29（派对邀请与出行指路）"
+    },
+    {
+      "id": "mc29n3",
+      "cat": "phrase",
+      "type": "choice",
+      "badge": "搭配",
+      "topic": "B2-MC29 派对邀请与出行指路",
+      "q": "\"Don't work too hard.\" 是什么意思？",
+      "opts": [
+        "别太拼了（祈使句否定）",
+        "最近怎么样？",
+        "沿……直行",
+        "从13A出口下"
+      ],
+      "ans": 0,
+      "explain": "【固定搭配】<span class=\"en\">Don't work too hard.</span> = 别太拼了（Don't do… 祈使句否定）<br>【主题】MC29"
+    },
+    {
+      "id": "mc29n4",
+      "cat": "phrase",
+      "type": "choice",
+      "badge": "搭配",
+      "topic": "B2-MC29 派对邀请与出行指路",
+      "q": "\"I'd love to see you there.\" 是什么意思？",
+      "opts": [
+        "我很期待在那儿见到你",
+        "我会把说明发给你",
+        "最近怎么样？",
+        "别太拼了"
+      ],
+      "ans": 0,
+      "explain": "【固定搭配】<span class=\"en\">I'd love to see you there.</span> = 我很期待在那儿见到你（I'd love to do 很想做某事）<br>【主题】MC29"
+    },
+    {
+      "id": "mc29n5",
+      "cat": "phrase",
+      "type": "choice",
+      "badge": "搭配",
+      "topic": "B2-MC29 派对邀请与出行指路",
+      "q": "\"take Exit 13A\" 是什么意思？",
+      "opts": [
+        "从13A出口下高速",
+        "沿……直行",
+        "左转/右转",
+        "右侧第一栋大房子"
+      ],
+      "ans": 0,
+      "explain": "【固定搭配】<span class=\"en\">take Exit 13A</span> = 从13A出口下高速<br>【主题】MC29（出行指路）"
+    },
+    {
+      "id": "mc29n6",
+      "cat": "phrase",
+      "type": "choice",
+      "badge": "搭配",
+      "topic": "B2-MC29 派对邀请与出行指路",
+      "q": "\"turn left / right\" 是什么意思？",
+      "opts": [
+        "左转/右转",
+        "从13A出口下",
+        "乘公交/开你的车",
+        "右侧第一栋大房子"
+      ],
+      "ans": 0,
+      "explain": "【固定搭配】<span class=\"en\">turn left / right</span> = 左转/右转<br>【主题】MC29（出行指路）"
+    },
+    {
+      "id": "mc29n7",
+      "cat": "phrase",
+      "type": "choice",
+      "badge": "搭配",
+      "topic": "B2-MC29 派对邀请与出行指路",
+      "q": "\"the first big house on the right\" 是什么意思？",
+      "opts": [
+        "右侧第一栋大房子",
+        "沿……直行",
+        "从13A出口下高速",
+        "坐80路公交"
+      ],
+      "ans": 0,
+      "explain": "【固定搭配】<span class=\"en\">the first big house on the right</span> = 右侧第一栋大房子<br>【主题】MC29（出行指路）"
+    },
+    {
+      "id": "mc29n8",
+      "cat": "phrase",
+      "type": "choice",
+      "badge": "搭配",
+      "topic": "B2-MC29 派对邀请与出行指路",
+      "q": "\"Take Bus 80 to Brownsville\" 是什么意思？",
+      "opts": [
+        "坐80路公交到布朗斯维尔",
+        "右侧第一栋大房子",
+        "有人会来接你",
+        "沿森林路直行"
+      ],
+      "ans": 0,
+      "explain": "【固定搭配】<span class=\"en\">Take Bus 80 to Brownsville</span> = 坐80路公交到布朗斯维尔；到了打电话会有人开车来接你（pick you up）<br>【主题】MC29（公交路线）"
+    },
+    {
+      "id": "mc30n10",
+      "cat": "phrase",
+      "type": "choice",
+      "badge": "搭配",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "\"be in a good/bad mood\" 是什么意思？",
+      "opts": [
+        "心情好/差",
+        "发脾气",
+        "受够了某事",
+        "放松点"
+      ],
+      "ans": 0,
+      "explain": "【固定搭配】<span class=\"en\">be in a good/bad mood</span> = 心情好/差<br>【主题】MC30（人物性格特质）"
+    },
+    {
+      "id": "mc30n11",
+      "cat": "phrase",
+      "type": "choice",
+      "badge": "搭配",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "\"lose your temper\" 是什么意思？",
+      "opts": [
+        "发脾气（= get angry）",
+        "心情好/差",
+        "受够了某事",
+        "总是做某事"
+      ],
+      "ans": 0,
+      "explain": "【固定搭配】<span class=\"en\">lose your temper</span> = 发脾气（= get angry）<br>【主题】MC30（人物性格特质）"
+    },
+    {
+      "id": "mc30n12",
+      "cat": "phrase",
+      "type": "choice",
+      "badge": "搭配",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "\"be always doing sth\" 是什么意思？",
+      "opts": [
+        "总是做某事（含不满/赞许语气）",
+        "受够了某事",
+        "你觉得……怎么样？",
+        "怎么了？"
+      ],
+      "ans": 0,
+      "explain": "【固定搭配】<span class=\"en\">be always doing sth</span> = 总是做某事（含不满或赞许语气，如 She's always giving presents.）<br>【主题】MC30"
+    },
+    {
+      "id": "mc30n13",
+      "cat": "phrase",
+      "type": "choice",
+      "badge": "搭配",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "\"What do you think of...?\" 是什么意思？",
+      "opts": [
+        "你觉得……怎么样？",
+        "怎么了？",
+        "我受够了",
+        "放松点"
+      ],
+      "ans": 0,
+      "explain": "【固定搭配】<span class=\"en\">What do you think of...?</span> = 你觉得……怎么样？<br>【主题】MC30（谈论性格/人物）"
+    },
+    {
+      "id": "mc30n14",
+      "cat": "phrase",
+      "type": "choice",
+      "badge": "搭配",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "\"What's wrong?\" 是什么意思？",
+      "opts": [
+        "怎么了？（关心用语）",
+        "你觉得……怎么样？",
+        "我受够了",
+        "放松点"
+      ],
+      "ans": 0,
+      "explain": "【固定搭配】<span class=\"en\">What's wrong?</span> = 怎么了？（关心用语）<br>【主题】MC30"
+    },
+    {
+      "id": "mc30n17",
+      "cat": "phrase",
+      "type": "choice",
+      "badge": "搭配",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "【听力·老板】说话人说 \"She never enjoys a joke. She never laughs.\" 说明新老板性格怎样？",
+      "opts": [
+        "严肃，不开玩笑（serious）",
+        "慷慨大方（generous）",
+        "情绪多变（moody）",
+        "脾气暴躁（bad-tempered）"
+      ],
+      "ans": 0,
+      "explain": "【听力】Conversation 1（老板）：She never enjoys a joke. She never laughs. → 严肃，不开玩笑（serious）。关键句：I wish she'd learn to lighten up.（我希望她能放松点）"
+    },
+    {
+      "id": "mc30n18",
+      "cat": "phrase",
+      "type": "choice",
+      "badge": "搭配",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "【听力·老板】\"I wish she'd learn to ___ up a little.\" 空格应填？",
+      "opts": [
+        "lighten",
+        "worry",
+        "hurry",
+        "calm"
+      ],
+      "ans": 0,
+      "explain": "【听力】Conversation 1：I wish she'd learn to lighten up a little. wish + would + 动词原形；lighten up = 放松点，别太当真。"
+    },
+    {
+      "id": "mc30n19",
+      "cat": "phrase",
+      "type": "choice",
+      "badge": "搭配",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "【听力·同事 Mary】为什么大家说 Mary 慷慨（generous）？",
+      "opts": [
+        "她总是给朋友和同事送礼物",
+        "她从不笑",
+        "她很容易生气",
+        "她受够了弟弟"
+      ],
+      "ans": 0,
+      "explain": "【听力】Conversation 2（同事 Mary）：she's always giving her friends and co-workers presents. → 慷慨（generous）。"
+    },
+    {
+      "id": "mc30n20",
+      "cat": "phrase",
+      "type": "choice",
+      "badge": "搭配",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "【听力·同事 Mary】\"I wish there ___ more people like her.\" 空格应填？（wish + there be 用 were）",
+      "opts": [
+        "were",
+        "are",
+        "is",
+        "was"
+      ],
+      "ans": 0,
+      "explain": "【听力】Conversation 2：I wish there were more people like her. wish 表达对现在的虚拟，there be 用 were。"
+    },
+    {
+      "id": "mc30n21",
+      "cat": "phrase",
+      "type": "choice",
+      "badge": "搭配",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "【听力·法语老师】\"She's in a good mood one minute and in a terrible mood the next.\" 说明老师性格？",
+      "opts": [
+        "情绪多变 / 奇怪（moody / strange）",
+        "严肃（serious）",
+        "脾气暴躁（bad-tempered）",
+        "可靠（reliable）"
+      ],
+      "ans": 0,
+      "explain": "【听力】Conversation 3（法语老师）：一会儿心情好一会儿心情糟 → 情绪多变 / 奇怪（moody / strange）。搭配：kind of 有点；one minute… the next 一会儿……一会儿……"
+    },
+    {
+      "id": "mc30n22",
+      "cat": "phrase",
+      "type": "choice",
+      "badge": "搭配",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "【听力·弟弟】\"He gets upset so easily.\" 说明弟弟性格？",
+      "opts": [
+        "脾气暴躁（bad-tempered）",
+        "情绪多变（moody）",
+        "严肃（serious）",
+        "不友好（unfriendly）"
+      ],
+      "ans": 0,
+      "explain": "【听力】Conversation 4（弟弟）：He gets upset so easily. / I'm fed up with my brother! → 脾气暴躁（bad-tempered）。"
+    },
+    {
+      "id": "mc30n23",
+      "cat": "phrase",
+      "type": "choice",
+      "badge": "搭配",
+      "topic": "B2-MC30 人物性格特质",
+      "q": "【听力·弟弟】\"I'm ___ up with my brother!\" 空格应填？",
+      "opts": [
+        "fed",
+        "get",
+        "tired",
+        "mad"
+      ],
+      "ans": 0,
+      "explain": "【听力】Conversation 4：I'm fed up with my brother! be fed up with = 受够了，厌烦。搭配：get upset 生气；what's the matter with sb 某人怎么了。"
     }
   ],
   "scene": [
@@ -86863,6 +87370,30 @@ const Q = {
       ],
       "explain": "📌 语法：as 引导时间状语从句<br>✅ 完整：As you watch the penguins, you'll understand why they are loved.",
       "level": "B2"
+    },
+    {
+      "id": "mc29n9",
+      "cat": "scene",
+      "type": "fill",
+      "badge": "场景",
+      "topic": "B2-MC29 派对邀请与出行指路",
+      "q": "补全句子：Drive past Brownsville and ___ Exit 13A. （开车经过布朗斯维尔，从13A出口下高速。）",
+      "ans": [
+        "take"
+      ],
+      "explain": "📌 句型：出行指路——Drive past Brownsville and take Exit 13A.<br>✅ 完整：Drive past Brownsville and take Exit 13A."
+    },
+    {
+      "id": "mc29n10",
+      "cat": "scene",
+      "type": "fill",
+      "badge": "场景",
+      "topic": "B2-MC29 派对邀请与出行指路",
+      "q": "补全句子：Go down and then ___ left. （开下去后左转。）",
+      "ans": [
+        "turn"
+      ],
+      "explain": "📌 句型：出行指路——Go down and then turn left.<br>✅ 完整：Go down and then turn left."
     }
   ],
   "error": [
@@ -100757,7 +101288,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260902-1547</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260902-1727</div>
   <script src="kb.js?v=20260806-1500"></script>
 </body>
 </html>
