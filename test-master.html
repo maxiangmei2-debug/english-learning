@@ -7,7 +7,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260902-1729">
+<meta name="build-version" content="20260903-1029">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
 <script src="level-config.js?v=20260806-1500"></script>
@@ -99149,6 +99149,39 @@ function shuffleArr(arr) {
   return arr;
 }
 
+// ====== 新题/旧题按比例共现（保证新题曝光，不挤占旧题复习） ======
+// 用户痛点：不每天练习时，到期旧题堆积把新题挤出前 N 道，导致很多题一直练不到。
+// 解决：每轮为「从未真正展示过的新题（box0 且 !seenAll）」预留固定名额，与到期旧题交错出现。
+const SRS_NEW_RATIO = 0.35;          // 每轮新题目标占比（约 1/3）
+const SRS_NEW_MIN_PER_ROUND = 4;     // 每轮至少保证的新题名额（有余量时）
+// 计算本轮应保留的新题数量：取（最少名额 / 按占比）与目标新题量的较小值
+function computeNewQuota(total, availableNew) {
+  if (availableNew <= 0) return 0;
+  var target = Math.max(SRS_NEW_MIN_PER_ROUND, Math.round(total * SRS_NEW_RATIO));
+  return Math.min(availableNew, target);
+}
+// 把新题与复习题交错：调用方已按配额切好 newQs，这里把全部新题均匀散布到 total 个槽位，
+// 其余槽位填复习题；复习题不够时由新题补满。保证「新题曝光 + 旧题复习」两不误。
+function interleaveNewReview(newQs, reviewQs, total) {
+  var n = (newQs || []).slice();
+  var r = (reviewQs || []).slice();
+  if (n.length === 0) return r.slice(0, total);
+  if (r.length === 0) return n.slice(0, total);
+  var newCount = Math.min(n.length, total);   // 调用方已按配额切好，全部排入
+  var slots = new Set();
+  for (var i = 0; i < newCount; i++) {
+    var pos = Math.floor((i + 0.5) * total / newCount); // 均匀散布，避免扎堆
+    slots.add(pos);
+  }
+  var out = [], ni = 0, ri = 0;
+  for (var s = 0; s < total; s++) {
+    if (slots.has(s) && ni < newCount) out.push(n[ni++]);
+    else if (ri < r.length) out.push(r[ri++]);
+    else if (ni < newCount) out.push(n[ni++]);   // 复习用尽则新题补满
+  }
+  return out;
+}
+
 // ============ MIXED MODE: balanced multi-dimension coverage ============
 // 综合大挑战：每次都覆盖全部维度（分类），每类下限保底 + 按规模加权补足，同类不连排
 // 调度改用艾宾浩斯：到期题优先，不足再从最早到期的未到期题补
@@ -99190,15 +99223,39 @@ function buildMixedQuestions(total, catKeys) {
   // 不超过该分类实际题量
   availCats.forEach(c => { if (quotas[c] > counts[c]) quotas[c] = counts[c]; });
 
-  // 2) 每类挑选：到期题优先（高 box 更优先，同 box 常错优先），并按每日上限裁剪
+  // 2) 每类先准备「新题池 / 复习池」，再整轮统一分配新题名额（避免每类都吃满下限导致新题爆炸）
   const byCat = {};
   const pool = {};
+  const newPoolMap = {}, reviewPoolMap = {};
   availCats.forEach(c => {
     const due = dueByCat[c].slice().sort((a,b)=> getSrs(b.id).box - getSrs(a.id).box || srsWrongOf(b) - srsWrongOf(a) + (Math.random()-0.5));
     const limited = applyDailyLimit(due, SRS_DAILY_LIMIT_BY_BOX);
     const notDue = notDueByCat[c].slice().sort((a,b)=> srsDueTs(a.id) - srsDueTs(b.id));
-    pool[c] = limited.kept.concat(notDue.filter(function(q){ return getSrs(q.id).box < 1 && !seenAll.has(q.id); }));
-    byCat[c] = pool[c].slice(0, quotas[c]);
+    // 新题池：box0 且从未真正展示过（未见过）——无论是否「当前到期」，都须保证曝光
+    const newPool = dueByCat[c].concat(notDueByCat[c]).filter(function(q){ return getSrs(q.id).box < 1 && !seenAll.has(q.id); });
+    // 复习池：到期旧题（按 SRS 优先级+每日上限裁剪）+ 未到期旧题（已展示过或已升阶）
+    const reviewPool = limited.kept.concat(notDue.filter(function(q){ return getSrs(q.id).box >= 1 || seenAll.has(q.id); }));
+    shuffleArr(newPool);
+    newPoolMap[c] = newPool;
+    reviewPoolMap[c] = reviewPool;
+    pool[c] = limited.kept.concat(notDue); // 保留完整池供缺口再分配
+  });
+  // 整轮新题配额：保证整轮新题占比，再按各分类配额比例分配到各分类（最大余数法），每类不超过自身新题量
+  let totalNewAvail = 0;
+  availCats.forEach(c => { totalNewAvail += newPoolMap[c].length; });
+  const globalNewQuota = computeNewQuota(total, totalNewAvail);
+  const catNewQuota = {};
+  let assigned = 0;
+  availCats.forEach(c => {
+    catNewQuota[c] = Math.min(newPoolMap[c].length, Math.floor(globalNewQuota * quotas[c] / total));
+    assigned += catNewQuota[c];
+  });
+  let newLeft = globalNewQuota - assigned;
+  availCats.slice().sort((a,b)=> (newPoolMap[b].length - catNewQuota[b]) - (newPoolMap[a].length - catNewQuota[a])).forEach(c => {
+    while (newLeft > 0 && catNewQuota[c] < newPoolMap[c].length) { catNewQuota[c]++; newLeft--; }
+  });
+  availCats.forEach(c => {
+    byCat[c] = interleaveNewReview(newPoolMap[c].slice(0, catNewQuota[c]), reviewPoolMap[c], quotas[c]);
   });
 
   // 2.5) 缺口再分配：某维度凑不满配额时，从其它维度尚有富余的题里补，尽量出满 total
@@ -99255,19 +99312,19 @@ function pickDueQuestions(total, typeFilter) {
   }).sort((a,b) => b.s - a.s);
   // 按 box 每日上限裁剪，防止一天刷完 2/4/7 天档
   const limited = applyDailyLimit(scored.map(x => x.q), SRS_DAILY_LIMIT_BY_BOX);
-  const chosen = [];
-  const used = new Set();
-  for (const q of limited.kept) {
-    if (chosen.length >= total) break;
-    if (!used.has(q.id)) { chosen.push(q); used.add(q.id); }
-  }
-  for (const q of notDue) {
-    if (chosen.length >= total) break;
-    if (getSrs(q.id).box >= 1) continue;   // 已升阶/跳过阶段：未到期不补（SRS 语义，避免已学/已跳过的题反复出现）
-    if (seenAll.has(q.id)) continue;       // 已见过的题遵循 SRS 排期，不强行补位
-    if (!used.has(q.id)) { chosen.push(q); used.add(q.id); }
-  }
-  return chosen.slice(0, total);
+  // 新题池：box0 且从未真正展示过（未见过）——无论是否当前到期，都须保证曝光
+  const newPool = due.concat(notDue).filter(function(q){
+    return getSrs(q.id).box < 1 && !seenAll.has(q.id);
+  });
+  shuffleArr(newPool);
+  // 复习池：到期旧题（已按 SRS 优先级裁剪），剔除其中的新题
+  const reviewPool = limited.kept.filter(function(q){
+    return !(getSrs(q.id).box < 1 && !seenAll.has(q.id));
+  });
+  const newQuota = computeNewQuota(total, newPool.length);
+  // 新题与旧题按比例交错：保证新题曝光，同时旧题复习不被挤掉
+  const chosen = interleaveNewReview(newPool.slice(0, newQuota), reviewPool, total);
+  return chosen;
 }
 
 // ============ CATEGORIES ============
@@ -101288,7 +101345,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260902-1729</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260903-1029</div>
   <script src="kb.js?v=20260806-1500"></script>
 </body>
 </html>
