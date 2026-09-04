@@ -362,7 +362,7 @@
   // 用户首次打开任意模块即自动注入到 5 个学习模块；已手动添加过的不会重复。
   var SEED_KEY = 'english_kb_seed_v';
   var KB_SEED = {
-    version: '20260902-mc34wb2',
+    version: '20260904-mc34wb3',
     items: [
       // —— 星期 ——
       { id: 'seed_monday',    content: 'Monday',    meaning: '星期一', type: 'word', ph: '/ˈmʌndeɪ/',     level: 'B1' },
@@ -1142,7 +1142,27 @@
     ,{ id: 'seed_mc34w2_g1', content: 'First Conditional 第一条件句', meaning: 'if + 一般现在时，主句用 can/will/may/might + 动词原形；谈论我们认为真实或可能的未来情况。例：If you study, you will pass.', type: 'grammar', level: 'B2', noTest: true }
     ,{ id: 'seed_mc34w2_g2', content: 'First Conditional 易错点', meaning: '① if 从句用一般现在时，不能用 will（❌ If you will study…）；② 主语三单动词加 -s（it rains）；③ 主句四个情态动词 can/will/may/might，不混用 should。', type: 'grammar', level: 'B2', noTest: true }
 
-  /* INJECT-MC34-WB2-KB */
+  
+    // —— MC34 白板补充3（核心词汇 / 特色旅行 / 动物自然 / 装备 / 环境文明 / 愿望清单 / 第一条件句）——
+    ,{ id: 'seed_mc34w3_trekking', content: 'trekking', meaning: 'n. 徒步旅行，长途跋涉（多日、野外）', type: 'word', ph: '/ˈtrekɪŋ/', level: 'B2' }
+    ,{ id: 'seed_mc34w3_safari', content: 'safari', meaning: 'n. 游猎之旅（在非洲观赏/拍摄野生动物的旅行）', type: 'word', ph: '/səˈfɑːri/', level: 'B2' }
+    ,{ id: 'seed_mc34w3_sandboarding', content: 'sandboarding', meaning: 'n. 滑沙运动', type: 'word', ph: '/ˈsændbɔːdɪŋ/', level: 'B2' }
+    ,{ id: 'seed_mc34w3_waterrafting', content: 'water rafting', meaning: 'n. 激流漂流', type: 'word', level: 'B2' }
+    ,{ id: 'seed_mc34w3_antarctica', content: 'Antarctica', meaning: 'n. 南极洲', type: 'word', ph: '/ænˈtɑːktɪkə/', level: 'B2' }
+    ,{ id: 'seed_mc34w3_penguins', content: 'penguins', meaning: 'n. 企鹅（复数）', type: 'word', ph: '/ˈpeŋɡwɪnz/', level: 'B2' }
+    ,{ id: 'seed_mc34w3_igloo', content: 'igloo', meaning: 'n. 冰屋（因纽特人用硬雪建造的圆形房屋）', type: 'word', ph: '/ˈɪɡluː/', level: 'B2' }
+    ,{ id: 'seed_mc34w3_civilization', content: 'civilization', meaning: 'n. 文明（有自己政府和许多组织的发达社会）', type: 'word', ph: '/ˌsɪvəlaɪˈzeɪʃn/', level: 'B2' }
+    ,{ id: 'seed_mc34w3_exotic', content: 'exotic', meaning: 'adj. 异国情调的（来自异国、不同寻常且令人兴奋的事物）', type: 'word', ph: '/ɪɡˈzɒtɪk/', level: 'B2' }
+    ,{ id: 'seed_mc34w3_sporty', content: 'sporty', meaning: 'adj. 爱好运动的，健壮的（体格健壮、非常健康）', type: 'word', ph: '/ˈspɔːti/', level: 'B2' }
+    ,{ id: 'seed_mc34w3_accommodation', content: 'accommodation', meaning: 'n. 住宿（可以居住或停留的不同场所）', type: 'word', ph: '/əˌkɒməˈdeɪʃn/', level: 'B2' }
+    ,{ id: 'seed_mc34w3_marriage', content: 'marriage', meaning: 'n. 婚姻，结婚', type: 'word', ph: '/ˈmærɪdʒ/', level: 'B2' }
+    ,{ id: 'seed_mc34w3_studyuni', content: 'study university', meaning: '上大学（求学）', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc34w3_architecture', content: 'architecture', meaning: 'n. 建筑，建筑风格', type: 'word', ph: '/ˈɑːkɪtektʃə(r)/', level: 'B2' }
+    ,{ id: 'seed_mc34w3_sent1', content: 'If you prefer snow, you can try skiing or snowboarding in the Alps.', meaning: '如果你更喜欢冰雪，你可以去阿尔卑斯山尝试滑雪或单板滑雪。', type: 'sentence', level: 'B2' }
+    ,{ id: 'seed_mc34w3_sent2', content: 'Voluntourism is a tour where travellers do voluntary work to help local people.', meaning: '义工旅行是旅行者做志愿工作帮助当地人的旅行。', type: 'sentence', level: 'B2' }
+    ,{ id: 'seed_mc34w3_sent3', content: 'If the weather is good, we will go hiking.', meaning: '如果天气好，我们会去徒步。', type: 'sentence', level: 'B2' }
+    ,{ id: 'seed_mc34w3_g1', content: 'First Conditional 易错点', meaning: '① if 从句用一般现在时，不用 will（❌ If it will rain…）；② 主语三单动词加 -s（it rains / she studies）；③ 主句四个情态动词 will / can / may / might。', type: 'grammar', level: 'B2', noTest: true }
+  /* INJECT-MC34-WB3-KB */
     ]
   };
   function runSeed() {
