@@ -362,7 +362,7 @@
   // 用户首次打开任意模块即自动注入到 5 个学习模块；已手动添加过的不会重复。
   var SEED_KEY = 'english_kb_seed_v';
   var KB_SEED = {
-    version: '20260814-mc15apology',
+    version: '20260902-mc34wb2',
     items: [
       // —— 星期 ——
       { id: 'seed_monday',    content: 'Monday',    meaning: '星期一', type: 'word', ph: '/ˈmʌndeɪ/',     level: 'B1' },
@@ -1110,7 +1110,40 @@
     ,{ id: 'seed_mc15_grammar10', content: 'Writing format for apology letters', meaning: '正式道歉信格式：Dear + 称呼，正文，Yours sincerely + 署名。注意标点、大小写、分段规范。', type: 'grammar', level: 'B2', noTest: true }
     // MC15 记忆口诀
     ,{ id: 'seed_mc15_mnemonic', content: 'make up 记忆口诀', meaning: 'to后接人去讨好，for后接事做补偿，with接人是和好。make up to sb（巴结讨好），make up for sth（弥补补偿），make up with sb（和解和好）。', type: 'grammar', level: 'B2', noTest: true }
-]
+,
+    // —— MC34 白板补充2（旅行期待 / 核心词汇 / 愿望清单 / 第一条件句）——
+    ,{ id: 'seed_mc34w2_mountain', content: 'mountain', meaning: 'n. 山', type: 'word', ph: '/ˈmaʊntən/', level: 'B2' }
+    ,{ id: 'seed_mc34w2_everest', content: 'Mount Everest', meaning: 'n. 珠穆朗玛峰（世界最高峰）', type: 'word', ph: '/ˌmaʊnt ˈevərɪst/', level: 'B2' }
+    ,{ id: 'seed_mc34w2_himalayas', content: 'the Himalayas', meaning: 'n. 喜马拉雅山脉', type: 'word', ph: '/ðə ˌhɪməˈleɪəz/', level: 'B2' }
+    ,{ id: 'seed_mc34w2_hiking', content: 'hiking', meaning: 'n. 徒步（休闲/短途步行旅行）', type: 'word', ph: '/ˈhaɪkɪŋ/', level: 'B2' }
+    ,{ id: 'seed_mc34w2_wellness', content: 'wellness travel', meaning: 'n. 康养旅行（以健康、水疗、放松为目的的旅行）', type: 'word', level: 'B2' }
+    ,{ id: 'seed_mc34w2_roadtrip', content: 'roadtrip', meaning: 'n. 公路旅行（自驾沿途露营/住宿）', type: 'word', ph: '/ˈrəʊdtrɪp/', level: 'B2' }
+    ,{ id: 'seed_mc34w2_ostrich', content: 'ostrich', meaning: 'n. 鸵鸟', type: 'word', ph: '/ˈɒstrɪtʃ/', level: 'B2' }
+    ,{ id: 'seed_mc34w2_oxygen', content: 'oxygen tank', meaning: 'n. 氧气瓶（高海拔/水下呼吸用）', type: 'word', level: 'B2' }
+    ,{ id: 'seed_mc34w2_env', content: 'environmentalists', meaning: 'n. 环保主义者（致力于保护环境的人）', type: 'word', ph: '/ɪnˌvaɪrənˈmentəlɪsts/', level: 'B2' }
+    ,{ id: 'seed_mc34w2_palace', content: 'palace', meaning: 'n. 宫殿（国王/女王等居住的宏伟建筑）', type: 'word', ph: '/ˈpæləs/', level: 'B2' }
+    ,{ id: 'seed_mc34w2_impulsive', content: 'impulsive', meaning: 'adj. 冲动的（凭一时冲动行事的）', type: 'word', ph: '/ɪmˈpʌlsɪv/', level: 'B2' }
+    ,{ id: 'seed_mc34w2_minor', content: 'minor problem', meaning: '小问题（minor = 较小的、次要的）', type: 'phrase', ph: '/ˈmaɪnə(r)/', level: 'B2' }
+    // 旅行期待表达
+    ,{ id: 'seed_mc34w2_localcuisine', content: 'to eat the local cuisine', meaning: '品尝当地美食', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc34w2_tradact', content: 'to experience traditional activities', meaning: '体验传统活动', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc34w2_arch', content: 'to see different architecture', meaning: '看不同的建筑（风格）', type: 'phrase', level: 'B2' }
+    // 人生愿望清单
+    ,{ id: 'seed_mc34w2_once', content: 'once-in-a-lifetime', meaning: 'adj. 一生一次的（极其难得）', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc34w2_lottery', content: 'win a lottery', meaning: '中彩票', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc34w2_birth', content: 'give birth', meaning: '生孩子', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc34w2_perfect', content: 'Mr / Mrs Perfect', meaning: '完美先生 / 完美女士（理想伴侣）', type: 'phrase', level: 'B2' }
+    // 句子
+    ,{ id: 'seed_mc34w2_sent1', content: 'If you study, you will pass the exam.', meaning: '如果你学习，你就会通过考试。', type: 'sentence', level: 'B2' }
+    ,{ id: 'seed_mc34w2_sent2', content: 'If it rains tomorrow, we may cancel the picnic.', meaning: '如果明天下雨，我们可能取消野餐。', type: 'sentence', level: 'B2' }
+    ,{ id: 'seed_mc34w2_sent3', content: 'If you prefer snow, you can try skiing.', meaning: '如果你喜欢雪，你可以尝试滑雪。', type: 'sentence', level: 'B2' }
+    ,{ id: 'seed_mc34w2_sent4', content: 'Voluntourism is a once-in-a-lifetime experience.', meaning: '志愿者旅游是一生一次的经历。', type: 'sentence', level: 'B2' }
+    // 语法（不进选择题）
+    ,{ id: 'seed_mc34w2_g1', content: 'First Conditional 第一条件句', meaning: 'if + 一般现在时，主句用 can/will/may/might + 动词原形；谈论我们认为真实或可能的未来情况。例：If you study, you will pass.', type: 'grammar', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc34w2_g2', content: 'First Conditional 易错点', meaning: '① if 从句用一般现在时，不能用 will（❌ If you will study…）；② 主语三单动词加 -s（it rains）；③ 主句四个情态动词 can/will/may/might，不混用 should。', type: 'grammar', level: 'B2', noTest: true }
+
+  /* INJECT-MC34-WB2-KB */
+    ]
   };
   function runSeed() {
     try {
