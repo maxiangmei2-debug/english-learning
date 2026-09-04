@@ -7,7 +7,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260904-1012">
+<meta name="build-version" content="20260904-1341">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
 <script src="level-config.js?v=20260806-1500"></script>
@@ -318,6 +318,26 @@
     touch-action:manipulation;
   }
   .submit-btn:hover { transform:scale(1.03); }
+
+  /* 渐进提示（💡 按钮） */
+  .hint-btn {
+    display:inline-block; padding:9px 22px; border-radius:20px; border:1.5px solid #FCD34D;
+    background:#FFFBEB; color:#B45309; font-size:14px; font-weight:600;
+    cursor:pointer; margin-top:12px; transition:transform 0.15s; touch-action:manipulation;
+  }
+  .hint-btn:hover { transform:scale(1.03); background:#FEF3C7; }
+  .hint-box {
+    max-width:540px; margin:12px auto 0; padding:12px 16px; text-align:left;
+    background:#FFFBEB; border:1.5px solid #FDE68A; border-radius:12px;
+    font-size:14px; line-height:1.9; color:#78350F;
+  }
+  .hint-line { display:flex; gap:8px; align-items:flex-start; }
+  .hint-lv {
+    flex:0 0 auto; width:18px; height:18px; margin-top:4px; border-radius:50%;
+    background:#F59E0B; color:#fff; font-size:11px; font-weight:700;
+    display:inline-flex; align-items:center; justify-content:center;
+  }
+  .hint-ans { color:#B91C1C; font-weight:700; letter-spacing:1px; }
 
   .retry-btn {
     display:inline-block; padding:8px 20px; border-radius:20px; border:none;
@@ -4246,7 +4266,7 @@ const Q = {
       "type": "fill",
       "badge": "语法",
       "topic": "B2-MC34 介绍五种冒险度假类型（活动假期、极地探险、文化之旅、徒步旅行、野生动物假期）的宣传册",
-      "q": "填空完成句子：If you prefer snow, you can try ___ or snowboarding in the Alps. （语法点：First Conditional（第一条件句））",
+      "q": "填空完成句子：If you prefer snow, you can try ___ (滑雪) or snowboarding in the Alps. （语法点：First Conditional（第一条件句））",
       "ans": [
         "skiing"
       ],
@@ -101076,9 +101096,168 @@ function renderHistoryHtml(q) {
   return `📊 历史：<span class="ok">✅ 答对 ${c}</span> &nbsp; <span class="no">❌ 答错 ${w}</span><span class="acc">正确率 ${acc}%</span>${srsLine}`;
 }
 
+/* ================= 渐进提示（💡 按钮） =================
+ * 不直接给答案，逐级给线索：首字母+长度 → 中文释义 → 完整答案
+ * 中文释义运行时从 kb.js 知识库词条查询，无需为每道题预置
+ * ======================================================= */
+var _hintLevel = 0;
+var _kbDictCache = null;
+
+function hintEscape(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+function hintCnLen(s) { var m = String(s || '').match(/[\u4e00-\u9fff]/g); return m ? m.length : 0; }
+function hintNormEn(s) {
+  return String(s == null ? '' : s).replace(/\\_/g, '_').replace(/\s+/g, ' ')
+    .trim().toLowerCase().replace(/[.!?]+$/, '');
+}
+
+/* 构建词典：① kb.js 知识库词条 ② 题库自身的「英文句↔中文」配对
+   word: 单词 -> 中文释义 ； sent: 英文整句 -> 中文翻译 */
+function hintMaps() {
+  if (_kbDictCache) return _kbDictCache;
+  var word = {}, sent = {};
+  function putSent(en, cn) {
+    en = hintNormEn(en);
+    cn = String(cn == null ? '' : cn).replace(/\s+/g, ' ').trim();
+    if (!en || !cn || en.length < 10 || !/^[a-z]/.test(en) || hintCnLen(cn) < 4) return;
+    if (!sent[en]) sent[en] = cn;
+  }
+  function putWord(w, cn) {
+    w = String(w == null ? '' : w).trim().toLowerCase();
+    cn = String(cn == null ? '' : cn).trim();
+    if (!w || !cn || /\s/.test(w)) return;
+    if (!word[w]) word[w] = cn;
+  }
+  /* ① kb.js 知识库 */
+  try {
+    if (window.KB && typeof window.KB.getEntries === 'function') {
+      (window.KB.getEntries() || []).forEach(function (e) {
+        if (!e || !e.content || !e.meaning) return;
+        if (e.type === 'sentence') putSent(e.content, e.meaning);
+        else putWord(e.content, e.meaning);
+      });
+    }
+  } catch (err) { /* 知识库不可用则降级 */ }
+  /* ② 题库自身配对 */
+  try {
+    if (typeof Q === 'object' && Q) {
+      Object.keys(Q).forEach(function (cat) {
+        var arr = Q[cat];
+        if (!Array.isArray(arr)) return;
+        arr.forEach(function (q) {
+          if (!q || !Array.isArray(q.ans) || !q.ans.length) return;
+          var en = String(q.ans[0] || ''), cn = String(q.q || '');
+          if (q.type === 'sent-dict') { putSent(en, cn); return; }
+          if (q.type === 'fill') {   /* 填空题括号内的中文即该句翻译 */
+            var m, re = /[（(]([^）)]*[\u4e00-\u9fff][^）)]*)[）)]/g;
+            while ((m = re.exec(cn)) !== null) {
+              if (hintCnLen(m[1]) < 5) continue;
+              if (/^(语法点|提示|注意|关键词|考点|易错|搭配|用法|辨析|拓展|短语|词性|同义|反义)/.test(m[1])) continue;
+              putSent(cn.replace(/\\?_{3,}/g, en), m[1]);
+            }
+          }
+        });
+      });
+    }
+  } catch (err2) { /* 题库遍历失败不影响主流程 */ }
+  _kbDictCache = { word: word, sent: sent };
+  return _kbDictCache;
+}
+
+/* 查中文：优先整句翻译（最有信息量），其次单词释义 */
+function hintLookup(ans, qText) {
+  var maps = hintMaps();
+  var a = String(ans || '').trim().toLowerCase();
+  var parts = String(qText || '')
+    .replace(/\\_/g, '_')
+    .replace(/^[^\n]{0,20}?[：:]/, '')      /* 去掉「填空完成句子：」类前缀 */
+    .replace(/\s*\/\s*/g, ' ||| ')          /* 保护 "/" 分隔的对比例句 */
+    .replace(/[（(][^）)]*[）)]/g, '')       /* 去掉所有中文括号 */
+    .split('|||').map(function (s) { return s.trim(); }).filter(Boolean);
+  var withBlank = parts.filter(function (s) { return /_{3,}/.test(s); });
+  var key = hintNormEn((withBlank[0] || parts[0] || '').replace(/\\?_{3,}/g, ans));
+  if (key && maps.sent[key]) return maps.sent[key];
+  if (a && maps.word[a]) return maps.word[a];
+  if (key && key.length >= 12) {            /* 容错：长度接近则视为同一句 */
+    for (var k in maps.sent) {
+      if ((k.indexOf(key) >= 0 || key.indexOf(k) >= 0) && Math.abs(k.length - key.length) <= 3) return maps.sent[k];
+    }
+  }
+  return '';
+}
+
+/* 生成逐级提示（返回 HTML 数组） */
+function hintSteps(q) {
+  var ans = (Array.isArray(q.ans) && q.ans.length) ? String(q.ans[0]) : '';
+  if (!ans) return ['本题暂无提示'];
+  var steps = [];
+  var words = ans.split(/\s+/).filter(Boolean);
+  function outline(w) { return hintEscape(w.charAt(0)) + Array(w.length).join(' _'); }
+  /* ① 长度 + 首字母 */
+  if (words.length === 1) {
+    steps.push('共 <b>' + words[0].length + '</b> 个字母，首字母是 <b>' + hintEscape(words[0].charAt(0)) +
+      '</b>：<span class="hint-ans">' + outline(words[0]) + '</span>');
+  } else {
+    steps.push('共 <b>' + words.length + '</b> 个单词：<span class="hint-ans">' +
+      words.map(outline).join('&nbsp;&nbsp;/&nbsp;&nbsp;') + '</span>');
+  }
+  /* ② 中文提示：优先整句翻译（信息量最大），其次单词释义 */
+  var mean = hintLookup(ans, q.q);
+  if (mean) {
+    if (hintCnLen(mean) >= 8) {
+      steps.push('整句翻译：<b>' + hintEscape(mean) + '</b>');
+    } else {
+      steps.push('中文意思：<b>' + hintEscape(mean) + '</b>');
+    }
+  } else if (words.length === 1 && words[0].length > 3) {
+    steps.push('最后一个字母是 <b>' + hintEscape(words[0].slice(-1)) + '</b>，再想想');
+  } else {
+    steps.push('提示：注意句子里的并列词或固定搭配');
+  }
+  /* ③ 完整答案 */
+  steps.push('答案：<span class="hint-ans">' + hintEscape(ans) + '</span>');
+  return steps;
+}
+
+/* 点击「💡 提示」：每点一次多露一级 */
+function showProgressiveHint() {
+  var q = questions[qIndex];
+  if (!q) return;
+  var steps = hintSteps(q);
+  _hintLevel = Math.min(_hintLevel + 1, steps.length);
+  var box = document.getElementById('hintBox');
+  var btn = document.getElementById('hintBtn');
+  if (!box) return;
+  var html = '';
+  for (var i = 0; i < _hintLevel; i++) {
+    html += '<div class="hint-line"><span class="hint-lv">' + (i + 1) +
+      '</span><span>' + steps[i] + '</span></div>';
+  }
+  box.innerHTML = html;
+  box.style.display = 'block';
+  if (btn) {
+    if (_hintLevel >= steps.length) {
+      btn.style.display = 'none';
+    } else {
+      btn.textContent = '💡 再来一点提示（还剩 ' + (steps.length - _hintLevel) + ' 级）';
+    }
+  }
+}
+
+/* 填空题/拼写题下方插入提示按钮 */
+function hintBlockHtml() {
+  return '<div style="text-align:center;">' +
+    '<button class="hint-btn" id="hintBtn" onclick="showProgressiveHint()">💡 卡住了？给点提示</button>' +
+    '</div><div class="hint-box" id="hintBox" style="display:none;"></div>';
+}
+
 function renderQuestion() {
   if(qIndex >= questions.length || lives <= 0) { endTest(); return; }
   answered = false;
+  _hintLevel = 0;
 
   const q = questions[qIndex];
   const area = document.getElementById('qArea');
@@ -101136,6 +101315,7 @@ function renderQuestion() {
     html += nameHintHtml;
     html += `<input class="fill-input" id="fillInput" placeholder="输入答案..." autocomplete="off">`;
     html += `<div id="explainWrap"></div>`;
+    html += hintBlockHtml();
     html += '<div style="text-align:center;margin-top:10px;"><button class="submit-btn" onclick="submitFill()">提交答案</button></div>';
     html += `</div>`;
   } else if(q.type === 'type') {
@@ -101146,6 +101326,7 @@ function renderQuestion() {
     html += nameHintHtml;
     html += `<input class="type-input" id="typeInput" placeholder="type here..." autocomplete="off">`;
     html += `<div id="explainWrap"></div>`;
+    html += hintBlockHtml();
     html += '<div style="text-align:center;margin-top:10px;"><button class="submit-btn" onclick="submitType()">提交答案</button></div>';
     html += `</div>`;
   } else if(q.type === 'judge') {
@@ -101174,6 +101355,7 @@ function renderQuestion() {
     html += nameHintHtml;
     html += `<input class="fill-input" id="fillInput" placeholder="输入缺失的单词..." autocomplete="off">`;
     html += `<div id="explainWrap"></div>`;
+    html += hintBlockHtml();
     html += '<div style="text-align:center;margin-top:10px;"><button class="submit-btn" onclick="submitSentFill()">提交答案</button></div>';
     html += `</div>`;
   }
@@ -102538,7 +102720,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260904-1012</div>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260904-1341</div>
   <script src="kb.js?v=20260806-1500"></script>
 </body>
 </html>
