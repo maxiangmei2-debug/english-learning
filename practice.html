@@ -5,7 +5,7 @@
 
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta name="build-version" content="20260904-0957">
+<meta name="build-version" content="20260904-1012">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>课后练习 · 英语学习</title>
 <style>
@@ -113,12 +113,12 @@ body.preview-on .edit-only{display:none}
   .tag-add-input{min-width:80px;flex:1 1 100px}
 }
 </style>
-<script src="vocab_dict.js?v=20260904-0957"></script>
-<script src="practice_publish.js?v=20260904-0957"></script>
+<script src="vocab_dict.js?v=20260904-1012"></script>
+<script src="practice_publish.js?v=20260904-1012"></script>
 </head>
 <body>
 
-<a href="index.html?v=20260904-0957" class="back">← 返回英语学习中心</a>
+<a href="index.html?v=20260904-1012" class="back">← 返回英语学习中心</a>
 
 <div class="topbar">
   <h1>📝 课后练习</h1>
@@ -241,6 +241,38 @@ body.preview-on .edit-only{display:none}
   }
   function blankSentence() { return { orig: '', fixed: '', grammar: '', trans: '' }; }
 
+  // ===== 默认练习题模板（首次选择某课时自动填充） =====
+  var DEFAULT_TEMPLATES = {
+    'MC05': {
+      vocab: [
+        { en: 'credit card repayment', cn: '信用卡还款' },
+        { en: 'minimum amount', cn: '最低额度' },
+        { en: 'cut down debt', cn: '减少债务' },
+        { en: 'weekly plan', cn: '每周计划' },
+        { en: 'rent', cn: '房租' },
+        { en: 'buying clothes', cn: '买衣服' }
+      ],
+      patterns: [
+        'Most of his money goes to credit card repayment.',
+        'He should pay more than the minimum amount each month to cut down debt.',
+        'Most of her money goes to rent and buying clothes.',
+        'To save money, you had better make a weekly plan and shouldn\'t buy things you don\'t need.'
+      ],
+      sentences: [
+        { orig: 'Most of his money goes to credit card repayment.', fixed: '', grammar: 'Most of + 名词 + goes to + 名词（说明金钱用途）', trans: '他大部分钱都用来偿还信用卡了。' },
+        { orig: 'He should pay more than the minimum amount each month to cut down debt.', fixed: '', grammar: 'should + 动词原形（提建议）；more than + 名词；to + 动词原形表目的', trans: '他每月还款要多于最低额度，以此减少债务。' },
+        { orig: 'Most of her money goes to rent and buying clothes.', fixed: '', grammar: 'Most of + 名词 + goes to + 名词/动名词（说明金钱用途）', trans: '她大部分的钱都花在了房租和买衣服上。' },
+        { orig: 'To save money, you had better make a weekly plan and shouldn\'t buy things you don\'t need.', fixed: '', grammar: 'had better + 动词原形（最好做某事）；shouldn\'t + 动词原形（不应该做某事）', trans: '为了节省开支，你最好制定一个每周计划，并且不应该买不需要的东西。' }
+      ]
+    }
+  };
+  function getTemplate(lesson) {
+    var t = DEFAULT_TEMPLATES[lesson];
+    if (!t) return null;
+    // 深拷贝，避免后续编辑污染模板
+    return JSON.parse(JSON.stringify(t));
+  }
+
   // ===== vocab 标签支持 英文=中文 / 英文:中文 / 英文中文 =====
   function parseTagInput(raw) {
     raw = (raw || '').trim();
@@ -358,7 +390,12 @@ body.preview-on .edit-only{display:none}
 
   function loadLesson(lesson) {
     current = lesson;
-    data = store[lesson] ? JSON.parse(JSON.stringify(store[lesson])) : emptyData();
+    if (store[lesson]) {
+      data = JSON.parse(JSON.stringify(store[lesson]));
+    } else {
+      // 首次选择某课：若有默认模板则自动填充，否则给空模板
+      data = getTemplate(lesson) || emptyData();
+    }
     ensurePlaceholder();
     renderAll();
     renderChips();
