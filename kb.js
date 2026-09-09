@@ -362,7 +362,7 @@
   // 用户首次打开任意模块即自动注入到 5 个学习模块；已手动添加过的不会重复。
   var SEED_KEY = 'english_kb_seed_v';
   var KB_SEED = {
-    version: '20260909-mc1318wb',
+    version: '20260909-mc18way',
     items: [
       // —— 星期 ——
       { id: 'seed_monday',    content: 'Monday',    meaning: '星期一', type: 'word', ph: '/ˈmʌndeɪ/',     level: 'B1' },
@@ -1201,6 +1201,9 @@
     // 语法（不进选择题）
     ,{ id: 'seed_mc18wb_g1', content: '时间定语从句（when）', meaning: '修饰表示时间的先行词（the day / the time / Carnival）时用 when 引导定语从句，when = 介词 + which，在从句中作时间状语。例：Carnival is a time (when) people celebrate together.', type: 'grammar', level: 'B2', noTest: true }
     ,{ id: 'seed_mc18wb_g2', content: 'MC18 易错复盘', meaning: '① recommend 后接 doing 或 sb. sth.，不接 that 从句虚拟（口语少用）；② in advance 固定搭配，advance 不加 s；③ 被动 be celebrated / be held / be decorated；④ last 作动词意为“持续”（The festival lasts a week.），不作形容词“最后的”误用；⑤ costume 服饰 ≠ custom 习俗。', type: 'grammar', level: 'B2', noTest: true }
+    // MC18 补充：way 作口语程度副词 + way in advance
+    ,{ id: 'seed_mc18wb_p7', content: 'way in advance', meaning: 'phr. 远远提前、提前很久（way 作口语程度副词，= far / much，强调提前的时间很长；对比 in advance 只是“提前”）', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc18wb_wayadv', content: 'way (adverb of degree)', meaning: '口语中 way 可作程度副词，意为 far / much（远远、大大、非常），用来加强语气：way in advance = 提前很久；way better = 好得多；way more expensive = 贵得多。此用法非正式口语，书面慎用。', type: 'grammar', level: 'B2', noTest: true }
   /* INJECT-MC13-18-WB-KB */
     ]
   };
