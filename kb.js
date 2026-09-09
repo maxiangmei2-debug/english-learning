@@ -362,7 +362,7 @@
   // 用户首次打开任意模块即自动注入到 5 个学习模块；已手动添加过的不会重复。
   var SEED_KEY = 'english_kb_seed_v';
   var KB_SEED = {
-    version: '20260904-mc34wb3',
+    version: '20260909-mc1318wb',
     items: [
       // —— 星期 ——
       { id: 'seed_monday',    content: 'Monday',    meaning: '星期一', type: 'word', ph: '/ˈmʌndeɪ/',     level: 'B1' },
@@ -1163,6 +1163,45 @@
     ,{ id: 'seed_mc34w3_sent3', content: 'If the weather is good, we will go hiking.', meaning: '如果天气好，我们会去徒步。', type: 'sentence', level: 'B2' }
     ,{ id: 'seed_mc34w3_g1', content: 'First Conditional 易错点', meaning: '① if 从句用一般现在时，不用 will（❌ If it will rain…）；② 主语三单动词加 -s（it rains / she studies）；③ 主句四个情态动词 will / can / may / might。', type: 'grammar', level: 'B2', noTest: true }
   /* INJECT-MC34-WB3-KB */
+    // —— MC13 白板补充（I Think We Would Really Click｜描述朋友结识新朋友）——
+    ,{ id: 'seed_mc13wb_click', content: 'click', meaning: 'v.（与某人）一拍即合、合得来（形容投缘）', type: 'word', ph: '/klɪk/', level: 'B2' }
+    ,{ id: 'seed_mc13wb_getalong', content: 'get along', meaning: 'phr. 相处融洽，合得来', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc13wb_hititoff', content: 'hit it off', meaning: 'phr.（初次见面就）投缘、合得来（固定搭配，hit 不接宾语拆分）', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc13wb_twopeas', content: 'two peas in a pod', meaning: 'phr. 一模一样、非常合得来的一对（形容极其相像/投缘）', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc13wb_compatible', content: 'compatible', meaning: 'adj. 合得来的；兼容的（别与 comparable 比较的 混淆）', type: 'word', ph: '/kəmˈpætəbl/', level: 'B2' }
+    ,{ id: 'seed_mc13wb_enthusiastic', content: 'enthusiastic', meaning: 'adj. 热情的、热心的', type: 'word', ph: '/ɪnˌθjuːziˈæstɪk/', level: 'B2' }
+    ,{ id: 'seed_mc13wb_incredibly', content: 'incredibly', meaning: 'adv. 极其、难以置信地（程度副词，修饰形容词：incredibly kind）', type: 'word', level: 'B2' }
+    // 句型（不进选择题）
+    ,{ id: 'seed_mc13wb_s1', content: 'I would like to introduce my classmate/friend to you, [name].', meaning: '我想向你介绍我的同学/朋友，[名字]。', type: 'sentence', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc13wb_s2', content: 'I think I would really click with him because we share the same hobbies.', meaning: '我觉得我和他真的很合得来，因为我们有相同的爱好。', type: 'sentence', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc13wb_s3', content: 'We wouldn\'t click at all because we have totally different personalities.', meaning: '我们一点都不合得来，因为性格完全不同。', type: 'sentence', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc13wb_s4', content: 'That\'s all, thank you for listening.', meaning: '我的介绍完了，谢谢大家聆听。', type: 'sentence', level: 'B2', noTest: true }
+    // 语法（不进选择题）
+    ,{ id: 'seed_mc13wb_g1', content: '描述他人：性格用 be + adj.，外貌/爱好用 have + n.，穿着用 wear / be in + 衣服', meaning: '例：He is reliable and easy-going.（性格）He has short black hair.（外貌）He is in a blue suit.（穿着）。注意 tall 形容人高，high 形容物高。', type: 'grammar', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc13wb_g2', content: 'MC13 易错复盘', meaning: '① hit it off 是固定短语，不可拆开（❌ hit off with him）；② compatible 合得来的 ≠ comparable 可比较的；③ 形容人高用 tall，形容物/山高用 high；④ 穿着用 wear / be in，不用 with；⑤ 形容词前加程度副词 incredibly/very/quite/somewhat/slightly。', type: 'grammar', level: 'B2', noTest: true }
+    // —— MC18 白板补充（Carnival Time｜狂欢节节日文化）——
+    ,{ id: 'seed_mc18wb_ethnic', content: 'ethnic', meaning: 'adj. 民族的、种族的（ethnic groups 民族群体）', type: 'word', ph: '/ˈeθnɪk/', level: 'B2' }
+    ,{ id: 'seed_mc18wb_rejoicing', content: 'rejoicing', meaning: 'n. 欢庆、喜悦（rejoice 的名词形式）', type: 'word', ph: '/rɪˈdʒɔɪsɪŋ/', level: 'B2' }
+    ,{ id: 'seed_mc18wb_flamboyant', content: 'flamboyant', meaning: 'adj. 华丽的、张扬的（形容服饰/表演夺目）', type: 'word', ph: '/flæmˈbɔɪənt/', level: 'B2' }
+    ,{ id: 'seed_mc18wb_passionate', content: 'passionate', meaning: 'adj. 热情的、充满激情的', type: 'word', ph: '/ˈpæʃənət/', level: 'B2' }
+    ,{ id: 'seed_mc18wb_streamer', content: 'streamer', meaning: 'n. 彩带、飘带（节日装饰用）', type: 'word', ph: '/ˈstriːmə(r)/', level: 'B2' }
+    ,{ id: 'seed_mc18wb_unbelievable', content: 'unbelievable', meaning: 'adj. 难以置信的、惊人的', type: 'word', ph: '/ˌʌnbɪˈliːvəbl/', level: 'B2' }
+    ,{ id: 'seed_mc18wb_recommend', content: 'recommend', meaning: 'v. 推荐（recommend sb. sth. / recommend sth. to sb.）', type: 'word', ph: '/ˌrekəˈmend/', level: 'B2' }
+    // 必背搭配（不进拼写，进手册）
+    ,{ id: 'seed_mc18wb_p1', content: 'book a hotel room', meaning: '预订酒店房间', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc18wb_p2', content: 'in advance', meaning: '提前、事先（房间/票很快订满，要提前订）', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc18wb_p3', content: 'fill up really quickly', meaning: '（房间/票）很快就订满', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc18wb_p4', content: 'all over Brazil', meaning: '全巴西各地', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc18wb_p5', content: 'dance the samba', meaning: '跳桑巴舞', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc18wb_p6', content: 'annual Carnival', meaning: '一年一度的狂欢节', type: 'phrase', level: 'B2' }
+    // 句型（不进选择题）
+    ,{ id: 'seed_mc18wb_s1', content: 'Carnival in Rio is really something.', meaning: '里约的狂欢节真的很了不起。', type: 'sentence', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc18wb_s2', content: 'The Carnival in Rio takes place every year before Lent.', meaning: '里约狂欢节每年大斋节前举行。', type: 'sentence', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc18wb_s3', content: 'People dance the samba in the streets during Carnival.', meaning: '狂欢节期间人们在街上跳桑巴舞。', type: 'sentence', level: 'B2', noTest: true }
+    // 语法（不进选择题）
+    ,{ id: 'seed_mc18wb_g1', content: '时间定语从句（when）', meaning: '修饰表示时间的先行词（the day / the time / Carnival）时用 when 引导定语从句，when = 介词 + which，在从句中作时间状语。例：Carnival is a time (when) people celebrate together.', type: 'grammar', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc18wb_g2', content: 'MC18 易错复盘', meaning: '① recommend 后接 doing 或 sb. sth.，不接 that 从句虚拟（口语少用）；② in advance 固定搭配，advance 不加 s；③ 被动 be celebrated / be held / be decorated；④ last 作动词意为“持续”（The festival lasts a week.），不作形容词“最后的”误用；⑤ costume 服饰 ≠ custom 习俗。', type: 'grammar', level: 'B2', noTest: true }
+  /* INJECT-MC13-18-WB-KB */
     ]
   };
   function runSeed() {
