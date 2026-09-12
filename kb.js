@@ -362,7 +362,7 @@
   // 用户首次打开任意模块即自动注入到 5 个学习模块；已手动添加过的不会重复。
   var SEED_KEY = 'english_kb_seed_v';
   var KB_SEED = {
-    version: '20260909-mc18way',
+    version: '20260909-mc40wb',
     items: [
       // —— 星期 ——
       { id: 'seed_monday',    content: 'Monday',    meaning: '星期一', type: 'word', ph: '/ˈmʌndeɪ/',     level: 'B1' },
@@ -1204,6 +1204,36 @@
     // MC18 补充：way 作口语程度副词 + way in advance
     ,{ id: 'seed_mc18wb_p7', content: 'way in advance', meaning: 'phr. 远远提前、提前很久（way 作口语程度副词，= far / much，强调提前的时间很长；对比 in advance 只是“提前”）', type: 'phrase', level: 'B2' }
     ,{ id: 'seed_mc18wb_wayadv', content: 'way (adverb of degree)', meaning: '口语中 way 可作程度副词，意为 far / much（远远、大大、非常），用来加强语气：way in advance = 提前很久；way better = 好得多；way more expensive = 贵得多。此用法非正式口语，书面慎用。', type: 'grammar', level: 'B2', noTest: true }
+    // —— MC40 白板补充（When Work Ends｜职场落幕 / 解雇场景）——
+    ,{ id: 'seed_mc40wb_fire', content: 'fire', meaning: 'v. 解雇（职场：He was fired.）', type: 'word', ph: '/ˈfaɪə(r)/', level: 'B2' }
+    ,{ id: 'seed_mc40wb_sack', content: 'sack', meaning: 'v.【英口语】解雇（They sacked him.）', type: 'word', ph: '/sæk/', level: 'B2' }
+    ,{ id: 'seed_mc40wb_dismiss', content: 'dismiss', meaning: 'v. 免职，遣散（较正式：He was dismissed for poor performance.）', type: 'word', ph: '/dɪsˈmɪs/', level: 'B2' }
+    ,{ id: 'seed_mc40wb_colleague', content: 'colleague', meaning: 'n. 同事', type: 'word', ph: '/ˈkɒliːɡ/', level: 'B2' }
+    ,{ id: 'seed_mc40wb_cooperate', content: 'cooperate', meaning: 'v. 合作，协作', type: 'word', ph: '/kəʊˈɒpəreɪt/', level: 'B2' }
+    ,{ id: 'seed_mc40wb_corporate', content: 'corporate', meaning: 'adj. 公司的；企业的', type: 'word', ph: '/ˈkɔːpərət/', level: 'B2' }
+    ,{ id: 'seed_mc40wb_compensation', content: 'compensation', meaning: 'n. 补偿金，赔偿（职场：severance compensation 解雇赔偿）', type: 'word', ph: '/ˌkɒmpenˈseɪʃn/', level: 'B2' }
+    ,{ id: 'seed_mc40wb_shadow', content: 'shadow', meaning: 'v. 跟班学习，跟随观摩（职场：shadow someone 跟着某人见习）', type: 'word', ph: '/ˈʃædəʊ/', level: 'B2' }
+    ,{ id: 'seed_mc40wb_petrol', content: 'petrol', meaning: 'n.【英】汽油（美式 gas / gasoline）', type: 'word', ph: '/ˈpetrəl/', level: 'B2' }
+    ,{ id: 'seed_mc40wb_overestimate', content: 'overestimate', meaning: 'v. 高估（前缀 over- 表过度）', type: 'word', ph: '/ˌəʊvərˈestɪmeɪt/', level: 'B2' }
+    ,{ id: 'seed_mc40wb_underrated', content: 'underrated', meaning: 'adj. 被低估的（前缀 under- 表不足）', type: 'word', ph: '/ˌʌndəˈreɪtɪd/', level: 'B2' }
+    ,{ id: 'seed_mc40wb_overrated', content: 'overrated', meaning: 'adj. 被高估的（前缀 over- 表过度）', type: 'word', ph: '/ˌəʊvərˈreɪtɪd/', level: 'B2' }
+    ,{ id: 'seed_mc40wb_upset', content: 'upset', meaning: 'adj. 难过的，不高兴的（I was upset or something.）', type: 'word', ph: '/ʌpˈset/', level: 'B2' }
+    ,{ id: 'seed_mc40wb_letgo', content: 'let go', meaning: 'phr.（被）辞退，放走（较委婉，常指裁员）', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc40wb_shadowsomeone', content: 'shadow someone', meaning: 'phr. 跟着某人跟班学习、观摩工作', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc40wb_intransition', content: 'in transition', meaning: 'phr. 处于过渡期', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc40wb_transitionperiod', content: 'transition period', meaning: 'phr. 过渡阶段', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc40wb_abuck', content: 'a buck', meaning: 'phr. 一美元（美/澳/新口语）', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc40wb_dole', content: 'be on the dole', meaning: 'phr.【英式口语】领失业救济金', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc40wb_treatmeal', content: 'treat sb to a meal', meaning: 'phr. 请客吃饭（treat sb to sth 款待某人）', type: 'phrase', level: 'B2' }
+    ,{ id: 'seed_mc40wb_g1', content: 'treat 一词多义', meaning: 'treat sb (with respect) 对待；treat sb to sth 请客；treat (n.) 乐事。语境决定含义，别把“对待”和“请客”混淆。', type: 'grammar', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc40wb_g2', content: 'under-/over- 前缀', meaning: 'under- 表不足：underestimate 低估 / underrated 被低估的；over- 表过度：overestimate 高估 / overrated 被高估的。成对记忆。', type: 'grammar', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc40wb_g3', content: 'get to be + adj.', meaning: '到头来变得……（强调经过一段时间后最终进入某种状态）：He got to be the boss. 他到头来成了经理。', type: 'grammar', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc40wb_g4', content: '口语缩写 gonna / cos', meaning: 'gonna = going to（将要）；cos = because（因为）。均为非正式口语写法，书面/正式场合用完整形式。', type: 'grammar', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc40wb_g5', content: '解雇同义辨析 fire / sack / let go / dismiss', meaning: 'fire 最通用；sack【英口语】解雇；dismiss 较正式（免职/遣散）；let go 更委婉（常指裁员）。四者都可表“解雇”。', type: 'grammar', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc40wb_g6', content: 'or something（句尾口语短语）', meaning: '三大场景：①不确定确切事物 ②缓和语气/让说法更随意 ③淡化刚才所说。永远加在句末，使表达不精确、更轻松非正式。', type: 'grammar', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc40wb_s1', content: 'Let me treat you to a meal to say thanks.', meaning: '我请你吃顿饭表示感谢。', type: 'sentence', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc40wb_s2', content: 'She was dismissed for being late too often.', meaning: '她因为经常迟到被解雇了。', type: 'sentence', level: 'B2', noTest: true }
+    ,{ id: 'seed_mc40wb_s3', content: 'After losing his job, he was on the dole for months.', meaning: '失业后他领了几个月救济金。', type: 'sentence', level: 'B2', noTest: true }
   /* INJECT-MC13-18-WB-KB */
     ]
   };
