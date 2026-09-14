@@ -7,12 +7,12 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260913-1416">
+<meta name="build-version" content="20260914-1512">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
-<script src="level-config.js?v=20260913-1416"></script>
-<script src="vocab_dict.js?v=20260913-1416"></script>
-<script src="practice_publish.js?v=20260913-1416"></script>
+<script src="level-config.js?v=20260914-1512"></script>
+<script src="vocab_dict.js?v=20260914-1512"></script>
+<script src="practice_publish.js?v=20260914-1512"></script>
 <style>
   :root {
     --primary: #6366F1;
@@ -534,7 +534,7 @@
 </style>
 </head>
 <body>
-<a href="index.html?v=20260913-1416" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+<a href="index.html?v=20260914-1512" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
 
 <!-- ====== 首页 ====== -->
 <div class="home-page" id="homePage">
@@ -102275,6 +102275,20 @@ window.updateFreq = function(qId, isCorrect) {
   saveFreqState();
   updateSrs(qId, isCorrect);
 };
+
+// ============ 记录写错的答案（供后续导出真实错误答案） ============
+// 每次答错把用户当次写的答案原文存入 localStorage.testmaster_wronglog，
+// 与 testmaster_freq 分开，便于日后导出「字面写错的内容」做针对性分析。
+window.logWrong = function(qId, userAns) {
+  try {
+    var key = 'testmaster_wronglog';
+    var log = JSON.parse(localStorage.getItem(key) || '[]');
+    if (!Array.isArray(log)) log = [];
+    log.push({ id: qId, wrong: String(userAns == null ? '' : userAns), at: Date.now() });
+    if (log.length > 5000) log = log.slice(log.length - 5000);
+    localStorage.setItem(key, JSON.stringify(log));
+  } catch (e) {}
+};
 function freqWeightedShuffle(arr) {
   if (!arr || arr.length === 0) return arr;
   var lowFreq = [];
@@ -103369,6 +103383,7 @@ function handleChoice(idx) {
     resetCombo();
     results.push({ id:q.id, correct:false, userAns:q.opts[idx] });
     window.updateFreq(q.id, false);
+    window.logWrong(q.id, q.opts[idx]);
     if(currentMode === 'survival') { lives--; renderLives(); }
   }
   showExplain(q, isCorrect, q.opts[idx]);
@@ -103397,6 +103412,7 @@ function handleJudge(val) {
     resetCombo();
     results.push({ id:q.id, correct:false, userAns:val ? '✅' : '❌' });
     window.updateFreq(q.id, false);
+    window.logWrong(q.id, val ? '✅' : '❌');
     if(currentMode === 'survival') { lives--; renderLives(); }
   }
   showExplain(q, isCorrect, val ? '✅' : '❌');
@@ -103435,6 +103451,7 @@ function submitFill() {
     resetCombo();
     results.push({ id:q.id, correct:false, userAns:val });
     window.updateFreq(q.id, false);
+    window.logWrong(q.id, val);
     if(currentMode === 'survival' || currentMode === 'speed') { lives--; renderLives(); }
   }
   showExplain(q, isCorrect, val);
@@ -103461,6 +103478,7 @@ function submitType() {
     resetCombo();
     results.push({ id:q.id, correct:false, userAns:val });
     window.updateFreq(q.id, false);
+    window.logWrong(q.id, val);
     if(currentMode === 'survival' || currentMode === 'speed') { lives--; renderLives(); }
   }
   showExplain(q, isCorrect, val);
@@ -103825,6 +103843,7 @@ function submitSentDict() {
   }
   input.disabled = true;
   results.push({ id:q.id, correct:isCorrect, userAns:userAns });
+  if(!isCorrect) window.logWrong(q.id, userAns);
   window.updateFreq(q.id, isCorrect);
 
   showExplain(q, isCorrect, userAns);
@@ -103858,6 +103877,7 @@ function submitSentFill() {
   }
   input.disabled = true;
   results.push({ id:q.id, correct:isCorrect, userAns:userAns });
+  if(!isCorrect) window.logWrong(q.id, userAns);
   window.updateFreq(q.id, isCorrect);
 
   // Hide submit button
@@ -104374,7 +104394,7 @@ init();
       // Add a focus banner on the test page header area
       var banner = document.createElement('div');
       banner.id = 'focusBanner';
-      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260913-1416" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
+      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260914-1512" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
       var testPage = document.getElementById('testPage');
       if (testPage) {
         var topBar = testPage.querySelector('.test-top-bar');
@@ -104678,7 +104698,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260913-1416</div>
-  <script src="kb.js?v=20260913-1416"></script>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260914-1512</div>
+  <script src="kb.js?v=20260914-1512"></script>
 </body>
 </html>
