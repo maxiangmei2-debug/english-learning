@@ -362,7 +362,7 @@
   // 用户首次打开任意模块即自动注入到 5 个学习模块；已手动添加过的不会重复。
   var SEED_KEY = 'english_kb_seed_v';
   var KB_SEED = {
-    version: '20260909-mc40wb',
+    version: '20260915-mc3132other',
     items: [
       // —— 星期 ——
       { id: 'seed_monday',    content: 'Monday',    meaning: '星期一', type: 'word', ph: '/ˈmʌndeɪ/',     level: 'B1' },
@@ -1234,7 +1234,147 @@
     ,{ id: 'seed_mc40wb_s1', content: 'Let me treat you to a meal to say thanks.', meaning: '我请你吃顿饭表示感谢。', type: 'sentence', level: 'B2', noTest: true }
     ,{ id: 'seed_mc40wb_s2', content: 'She was dismissed for being late too often.', meaning: '她因为经常迟到被解雇了。', type: 'sentence', level: 'B2', noTest: true }
     ,{ id: 'seed_mc40wb_s3', content: 'After losing his job, he was on the dole for months.', meaning: '失业后他领了几个月救济金。', type: 'sentence', level: 'B2', noTest: true }
-  /* INJECT-MC13-18-WB-KB */
+      ,{ id: "seed_mc31b_casual", content: "casual", meaning: "休闲的，随意的", type: "word", ph: "/ˈkæʒuəl/", level: "B2" }
+    ,{ id: "seed_mc31b_suburb", content: "suburb", meaning: "郊区", type: "word", ph: "/ˈsʌbɜːb/", level: "B2" }
+    ,{ id: "seed_mc31b_relaunch", content: "relaunch", meaning: "重新推出，以新方式重启", type: "word", ph: "/ˌriːˈlɔːntʃ/", level: "B2" }
+    ,{ id: "seed_mc31b_collection", content: "collection", meaning: "系列（一批相关商品）", type: "word", ph: "/kəˈlekʃn/", level: "B2" }
+    ,{ id: "seed_mc31b_consultant", content: "consultant", meaning: "顾问", type: "word", ph: "/kənˈsʌltənt/", level: "B2" }
+    ,{ id: "seed_mc31b_profit", content: "profit", meaning: "利润", type: "word", ph: "/ˈprɒfɪt/", level: "B2" }
+    ,{ id: "seed_mc31b_casual_clothes", content: "casual clothes", meaning: "休闲服饰", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc31b_near___outside_the_city", content: "near / outside the city", meaning: "在城市周边 / 城外", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc31b_go_on_sale", content: "go on sale", meaning: "上市开售", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc31b_for_sale", content: "for sale", meaning: "待售（可购买）", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc31b_aim_to_do", content: "aim to do", meaning: "力求；目标是", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc31b_g_aim_to___one", content: "aim to = one’s goal is to（同义句型转换）", meaning: "aim to do（动词短语）≈ one’s goal is to do（名词句型）。例：The brand aims to expand. = The brand’s goal is to expand.", type: "grammar", ph: "", level: "B2", noTest: true }
+    ,{ id: "seed_mc32b_postpone", content: "postpone", meaning: "推迟", type: "word", ph: "/pəˈspəʊn/", level: "B2" }
+    ,{ id: "seed_mc32b_agenda", content: "agenda", meaning: "会议议程", type: "word", ph: "/əˈdʒendə/", level: "B2" }
+    ,{ id: "seed_mc32b_updated", content: "updated", meaning: "更新的，最新的", type: "word", ph: "/ʌpˈdeɪtɪd/", level: "B2" }
+    ,{ id: "seed_mc32b_invite", content: "invite", meaning: "邀请；招致（麻烦、危险）｜n. invitation 邀请函", type: "word", ph: "/ɪnˈvaɪt/", level: "B2" }
+    ,{ id: "seed_mc32b_decide_to", content: "decide to", meaning: "决定去做", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_at_a_later_time", content: "at a later time", meaning: "在晚些时候", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_put_off", content: "put off", meaning: "推迟（=postpone）", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_postpone_sth___doing_sth", content: "postpone sth / doing sth", meaning: "推迟某事 / 推迟做某事", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_postpone_sth_until___to_", content: "postpone sth until / to…", meaning: "将某事推迟至……", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_bring___forward_to", content: "bring … forward to", meaning: "把（时间）提前至……", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_on_the_agenda", content: "on the agenda", meaning: "列入议程", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_top_of_the_agenda", content: "top of the agenda", meaning: "首要议程", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_look_forward_to_doing", content: "look forward to doing", meaning: "期待做某事（to 是介词，后接 doing / 名词）", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_invite_sb_to_sp", content: "invite sb to sp", meaning: "邀请某人去某地", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_invite_trouble___danger", content: "invite trouble / danger", meaning: "自找麻烦，招致风险", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_g_look_forward", content: "look forward to + doing（to 是介词）", meaning: "look forward to 中的 to 是介词，后接名词或动名词。例：I look forward to hearing from you. 不可接动词原形。", type: "grammar", ph: "", level: "B2", noTest: true }
+    ,{ id: "seed_mc32b_g_postpone___p", content: "postpone / put off + doing", meaning: "推迟做某事用 postpone / put off doing sth，不可接动词原形。", type: "grammar", ph: "", level: "B2", noTest: true }
+    ,{ id: "seed_oth4_decorate", content: "decorate", meaning: "装饰｜decoration n. 装饰", type: "word", ph: "/ˈdekəreɪt/", level: "B2" }
+    ,{ id: "seed_oth4_bare", content: "bare", meaning: "光秃秃的", type: "word", ph: "/beə(r)/", level: "B2" }
+    ,{ id: "seed_oth4_decor", content: "decor", meaning: "装饰风格，软装", type: "word", ph: "/ˈdeɪkɔː(r)/", level: "B2" }
+    ,{ id: "seed_oth4_catalogue", content: "catalogue", meaning: "目录，货品清单", type: "word", ph: "/ˈkætəlɒɡ/", level: "B2" }
+    ,{ id: "seed_oth4_pattern", content: "pattern", meaning: "图案 → patterned adj. 带花纹的", type: "word", ph: "/ˈpætn/", level: "B2" }
+    ,{ id: "seed_oth4_marble", content: "marble", meaning: "大理石", type: "word", ph: "/ˈmɑːbl/", level: "B2" }
+    ,{ id: "seed_oth4_impulsive", content: "impulsive", meaning: "冲动的", type: "word", ph: "/ɪmˈpʌlsɪv/", level: "B2" }
+    ,{ id: "seed_oth4_peer", content: "peer", meaning: "同龄人", type: "word", ph: "/pɪə(r)/", level: "B2" }
+    ,{ id: "seed_oth4_scrape", content: "scrape", meaning: "刮擦", type: "word", ph: "/skreɪp/", level: "B2" }
+    ,{ id: "seed_oth4_workshop", content: "workshop", meaning: "研讨会，工坊", type: "word", ph: "/ˈwɜːkʃɒp/", level: "B2" }
+    ,{ id: "seed_oth4_regulate", content: "regulate", meaning: "管控，调节", type: "word", ph: "/ˈreɡjuleɪt/", level: "B2" }
+    ,{ id: "seed_oth4_container", content: "container", meaning: "容器", type: "word", ph: "/kənˈteɪnə(r)/", level: "B2" }
+    ,{ id: "seed_oth4_whale", content: "whale", meaning: "鲸鱼", type: "word", ph: "/weɪl/", level: "B2" }
+    ,{ id: "seed_oth4_equivalent", content: "equivalent", meaning: "等价的；对等物", type: "word", ph: "/ɪˈkwɪvələnt/", level: "B2" }
+    ,{ id: "seed_oth4_wisdom", content: "wisdom", meaning: "智慧", type: "word", ph: "/ˈwɪzdəm/", level: "B2" }
+    ,{ id: "seed_oth4_leisure", content: "leisure", meaning: "闲暇", type: "word", ph: "/ˈleʒə(r)/", level: "B2" }
+    ,{ id: "seed_oth4_cemetery", content: "cemetery", meaning: "墓地", type: "word", ph: "/ˈsemətri/", level: "B2" }
+    ,{ id: "seed_oth4_fast", content: "fast", meaning: "快速的；v. 禁食", type: "word", ph: "/fɑːst/", level: "B2" }
+    ,{ id: "seed_oth4_enthusiasm", content: "enthusiasm", meaning: "热情", type: "word", ph: "/ɪnˈθjuːziæzəm/", level: "B2" }
+    ,{ id: "seed_oth4_streamer", content: "streamer", meaning: "主播", type: "word", ph: "/ˈstriːmə(r)/", level: "B2" }
+    ,{ id: "seed_oth4_emphasize", content: "emphasize", meaning: "强调", type: "word", ph: "/ˈemfəsaɪz/", level: "B2" }
+    ,{ id: "seed_oth4_dilemma", content: "dilemma", meaning: "两难困境", type: "word", ph: "/dɪˈlemə/", level: "B2" }
+    ,{ id: "seed_oth4_superstition", content: "superstition", meaning: "迷信", type: "word", ph: "/ˌsuːpəˈstɪʃn/", level: "B2" }
+    ,{ id: "seed_oth4_scam", content: "scam", meaning: "骗局", type: "word", ph: "/skæm/", level: "B2" }
+    ,{ id: "seed_oth4_underrated", content: "underrated", meaning: "被低估的", type: "word", ph: "/ˌʌndəˈreɪtɪd/", level: "B2" }
+    ,{ id: "seed_oth4_corporate", content: "corporate", meaning: "公司的，企业的", type: "word", ph: "/ˈkɔːpərət/", level: "B2" }
+    ,{ id: "seed_oth4_cooperate", content: "cooperate", meaning: "合作", type: "word", ph: "/kəʊˈɒpəreɪt/", level: "B2" }
+    ,{ id: "seed_oth4_meantime", content: "meantime", meaning: "其间", type: "word", ph: "/ˈmiːntaɪm/", level: "B2" }
+    ,{ id: "seed_oth4_peer_pressure", content: "peer pressure", meaning: "同辈压力", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_oth4_give_in", content: "give in", meaning: "屈服", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_oth4_give_in_to_peer_pressure", content: "give in to peer pressure", meaning: "屈服于同辈压力", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_oth4_personal_contacts", content: "personal contacts", meaning: "人脉", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_oth4_get_a_smile_out_of_sb", content: "get a smile out of sb", meaning: "逗某人笑", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_oth4_in_a_good_mood", content: "in a good mood", meaning: "心情好", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_oth4_leisure_time", content: "leisure time", meaning: "闲暇时光", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_oth4_in_honor_of_", content: "in honor of…", meaning: "为纪念……；向…… 致敬", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_oth4_clown_size", content: "clown size", meaning: "超大号", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_oth4_in_the_meantime", content: "in the meantime", meaning: "与此同时", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_oth4_g______even_", content: "让步连词 even though / even if", meaning: "even though 尽管（事实，≈ although / while）；even if 即使（假设，未必真实）。", type: "grammar", ph: "", level: "B2", noTest: true }
+    ,{ id: "seed_oth4_g________hav", content: "情态动词 + have done（对过去推测 / 虚拟）", meaning: "must have done 过去一定做过（肯定推测）；should have done 本应该做（实际没做）；could have done 本可以做（实际没做）。", type: "grammar", ph: "", level: "B2", noTest: true }
+    ,{ id: "seed_oth4_g___________", content: "口语讨论句型（装修主题）", meaning: "表达重要：I think ___ is the most important category. / ___ is really important to me. / For me, ___ matters more than ___. 表达不重要：I don’t think ___ is very important. / Compared with ___, ___ is less important. / ___ is not a big priority for me. 总结：We decided to create a ___ living room. / For the sofa, we chose the ___. / In total, we spent $___ out of our $1500 budget and collected ___ stars.", type: "grammar", ph: "", level: "B2", noTest: true }
+    ,{ id: "seed_mc31b_casual", content: "casual", meaning: "休闲的，随意的", type: "word", ph: "/ˈkæʒuəl/", level: "B2" }
+    ,{ id: "seed_mc31b_suburb", content: "suburb", meaning: "郊区", type: "word", ph: "/ˈsʌbɜːb/", level: "B2" }
+    ,{ id: "seed_mc31b_relaunch", content: "relaunch", meaning: "重新推出，以新方式重启", type: "word", ph: "/ˌriːˈlɔːntʃ/", level: "B2" }
+    ,{ id: "seed_mc31b_collection", content: "collection", meaning: "系列（一批相关商品）", type: "word", ph: "/kəˈlekʃn/", level: "B2" }
+    ,{ id: "seed_mc31b_consultant", content: "consultant", meaning: "顾问", type: "word", ph: "/kənˈsʌltənt/", level: "B2" }
+    ,{ id: "seed_mc31b_profit", content: "profit", meaning: "利润", type: "word", ph: "/ˈprɒfɪt/", level: "B2" }
+    ,{ id: "seed_mc31b_casual_clothes", content: "casual clothes", meaning: "休闲服饰", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc31b_near___outside_the_city", content: "near / outside the city", meaning: "在城市周边 / 城外", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc31b_go_on_sale", content: "go on sale", meaning: "上市开售", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc31b_for_sale", content: "for sale", meaning: "待售（可购买）", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc31b_aim_to_do", content: "aim to do", meaning: "力求；目标是", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc31b_g_aim_to___one", content: "aim to = one’s goal is to（同义句型转换）", meaning: "aim to do（动词短语）≈ one’s goal is to do（名词句型）。例：The brand aims to expand. = The brand’s goal is to expand.", type: "grammar", ph: "", level: "B2", noTest: true }
+    ,{ id: "seed_mc32b_postpone", content: "postpone", meaning: "推迟", type: "word", ph: "/pəˈspəʊn/", level: "B2" }
+    ,{ id: "seed_mc32b_agenda", content: "agenda", meaning: "会议议程", type: "word", ph: "/əˈdʒendə/", level: "B2" }
+    ,{ id: "seed_mc32b_updated", content: "updated", meaning: "更新的，最新的", type: "word", ph: "/ʌpˈdeɪtɪd/", level: "B2" }
+    ,{ id: "seed_mc32b_invite", content: "invite", meaning: "邀请；招致（麻烦、危险）｜n. invitation 邀请函", type: "word", ph: "/ɪnˈvaɪt/", level: "B2" }
+    ,{ id: "seed_mc32b_decide_to", content: "decide to", meaning: "决定去做", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_at_a_later_time", content: "at a later time", meaning: "在晚些时候", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_put_off", content: "put off", meaning: "推迟（=postpone）", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_postpone_sth___doing_sth", content: "postpone sth / doing sth", meaning: "推迟某事 / 推迟做某事", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_postpone_sth_until___to_", content: "postpone sth until / to…", meaning: "将某事推迟至……", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_bring___forward_to", content: "bring … forward to", meaning: "把（时间）提前至……", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_on_the_agenda", content: "on the agenda", meaning: "列入议程", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_top_of_the_agenda", content: "top of the agenda", meaning: "首要议程", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_look_forward_to_doing", content: "look forward to doing", meaning: "期待做某事（to 是介词，后接 doing / 名词）", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_invite_sb_to_sp", content: "invite sb to sp", meaning: "邀请某人去某地", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_invite_trouble___danger", content: "invite trouble / danger", meaning: "自找麻烦，招致风险", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_mc32b_g_look_forward", content: "look forward to + doing（to 是介词）", meaning: "look forward to 中的 to 是介词，后接名词或动名词。例：I look forward to hearing from you. 不可接动词原形。", type: "grammar", ph: "", level: "B2", noTest: true }
+    ,{ id: "seed_mc32b_g_postpone___p", content: "postpone / put off + doing", meaning: "推迟做某事用 postpone / put off doing sth，不可接动词原形。", type: "grammar", ph: "", level: "B2", noTest: true }
+    ,{ id: "seed_oth4_decorate", content: "decorate", meaning: "装饰｜decoration n. 装饰", type: "word", ph: "/ˈdekəreɪt/", level: "B2" }
+    ,{ id: "seed_oth4_bare", content: "bare", meaning: "光秃秃的", type: "word", ph: "/beə(r)/", level: "B2" }
+    ,{ id: "seed_oth4_decor", content: "decor", meaning: "装饰风格，软装", type: "word", ph: "/ˈdeɪkɔː(r)/", level: "B2" }
+    ,{ id: "seed_oth4_catalogue", content: "catalogue", meaning: "目录，货品清单", type: "word", ph: "/ˈkætəlɒɡ/", level: "B2" }
+    ,{ id: "seed_oth4_pattern", content: "pattern", meaning: "图案 → patterned adj. 带花纹的", type: "word", ph: "/ˈpætn/", level: "B2" }
+    ,{ id: "seed_oth4_marble", content: "marble", meaning: "大理石", type: "word", ph: "/ˈmɑːbl/", level: "B2" }
+    ,{ id: "seed_oth4_impulsive", content: "impulsive", meaning: "冲动的", type: "word", ph: "/ɪmˈpʌlsɪv/", level: "B2" }
+    ,{ id: "seed_oth4_peer", content: "peer", meaning: "同龄人", type: "word", ph: "/pɪə(r)/", level: "B2" }
+    ,{ id: "seed_oth4_scrape", content: "scrape", meaning: "刮擦", type: "word", ph: "/skreɪp/", level: "B2" }
+    ,{ id: "seed_oth4_workshop", content: "workshop", meaning: "研讨会，工坊", type: "word", ph: "/ˈwɜːkʃɒp/", level: "B2" }
+    ,{ id: "seed_oth4_regulate", content: "regulate", meaning: "管控，调节", type: "word", ph: "/ˈreɡjuleɪt/", level: "B2" }
+    ,{ id: "seed_oth4_container", content: "container", meaning: "容器", type: "word", ph: "/kənˈteɪnə(r)/", level: "B2" }
+    ,{ id: "seed_oth4_whale", content: "whale", meaning: "鲸鱼", type: "word", ph: "/weɪl/", level: "B2" }
+    ,{ id: "seed_oth4_equivalent", content: "equivalent", meaning: "等价的；对等物", type: "word", ph: "/ɪˈkwɪvələnt/", level: "B2" }
+    ,{ id: "seed_oth4_wisdom", content: "wisdom", meaning: "智慧", type: "word", ph: "/ˈwɪzdəm/", level: "B2" }
+    ,{ id: "seed_oth4_leisure", content: "leisure", meaning: "闲暇", type: "word", ph: "/ˈleʒə(r)/", level: "B2" }
+    ,{ id: "seed_oth4_cemetery", content: "cemetery", meaning: "墓地", type: "word", ph: "/ˈsemətri/", level: "B2" }
+    ,{ id: "seed_oth4_fast", content: "fast", meaning: "快速的；v. 禁食", type: "word", ph: "/fɑːst/", level: "B2" }
+    ,{ id: "seed_oth4_enthusiasm", content: "enthusiasm", meaning: "热情", type: "word", ph: "/ɪnˈθjuːziæzəm/", level: "B2" }
+    ,{ id: "seed_oth4_streamer", content: "streamer", meaning: "主播", type: "word", ph: "/ˈstriːmə(r)/", level: "B2" }
+    ,{ id: "seed_oth4_emphasize", content: "emphasize", meaning: "强调", type: "word", ph: "/ˈemfəsaɪz/", level: "B2" }
+    ,{ id: "seed_oth4_dilemma", content: "dilemma", meaning: "两难困境", type: "word", ph: "/dɪˈlemə/", level: "B2" }
+    ,{ id: "seed_oth4_superstition", content: "superstition", meaning: "迷信", type: "word", ph: "/ˌsuːpəˈstɪʃn/", level: "B2" }
+    ,{ id: "seed_oth4_scam", content: "scam", meaning: "骗局", type: "word", ph: "/skæm/", level: "B2" }
+    ,{ id: "seed_oth4_underrated", content: "underrated", meaning: "被低估的", type: "word", ph: "/ˌʌndəˈreɪtɪd/", level: "B2" }
+    ,{ id: "seed_oth4_corporate", content: "corporate", meaning: "公司的，企业的", type: "word", ph: "/ˈkɔːpərət/", level: "B2" }
+    ,{ id: "seed_oth4_cooperate", content: "cooperate", meaning: "合作", type: "word", ph: "/kəʊˈɒpəreɪt/", level: "B2" }
+    ,{ id: "seed_oth4_meantime", content: "meantime", meaning: "其间", type: "word", ph: "/ˈmiːntaɪm/", level: "B2" }
+    ,{ id: "seed_oth4_peer_pressure", content: "peer pressure", meaning: "同辈压力", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_oth4_give_in", content: "give in", meaning: "屈服", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_oth4_give_in_to_peer_pressure", content: "give in to peer pressure", meaning: "屈服于同辈压力", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_oth4_personal_contacts", content: "personal contacts", meaning: "人脉", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_oth4_get_a_smile_out_of_sb", content: "get a smile out of sb", meaning: "逗某人笑", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_oth4_in_a_good_mood", content: "in a good mood", meaning: "心情好", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_oth4_leisure_time", content: "leisure time", meaning: "闲暇时光", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_oth4_in_honor_of_", content: "in honor of…", meaning: "为纪念……；向…… 致敬", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_oth4_clown_size", content: "clown size", meaning: "超大号", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_oth4_in_the_meantime", content: "in the meantime", meaning: "与此同时", type: "phrase", ph: "", level: "B2" }
+    ,{ id: "seed_oth4_g______even_", content: "让步连词 even though / even if", meaning: "even though 尽管（事实，≈ although / while）；even if 即使（假设，未必真实）。", type: "grammar", ph: "", level: "B2", noTest: true }
+    ,{ id: "seed_oth4_g________hav", content: "情态动词 + have done（对过去推测 / 虚拟）", meaning: "must have done 过去一定做过（肯定推测）；should have done 本应该做（实际没做）；could have done 本可以做（实际没做）。", type: "grammar", ph: "", level: "B2", noTest: true }
+    ,{ id: "seed_oth4_g___________", content: "口语讨论句型（装修主题）", meaning: "表达重要：I think ___ is the most important category. / ___ is really important to me. / For me, ___ matters more than ___. 表达不重要：I don’t think ___ is very important. / Compared with ___, ___ is less important. / ___ is not a big priority for me. 总结：We decided to create a ___ living room. / For the sofa, we chose the ___. / In total, we spent $___ out of our $1500 budget and collected ___ stars.", type: "grammar", ph: "", level: "B2", noTest: true }
+/* INJECT-MC13-18-WB-KB */
     ]
   };
   function runSeed() {
