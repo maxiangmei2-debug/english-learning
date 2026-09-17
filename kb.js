@@ -361,8 +361,9 @@
   // 把高频基础词（星期 / 月份 / 序数词 / 日期句型）作为默认知识库，
   // 用户首次打开任意模块即自动注入到 5 个学习模块；已手动添加过的不会重复。
   var SEED_KEY = 'english_kb_seed_v';
-  var KB_SEED = {
-    version: '20260915-mc3132other',
+  var KB_SEED = /* SEED-MC21-WB */
+{
+    version: '20260914-mc21',
     items: [
       // —— 星期 ——
       { id: 'seed_monday',    content: 'Monday',    meaning: '星期一', type: 'word', ph: '/ˈmʌndeɪ/',     level: 'B1' },
@@ -1375,7 +1376,42 @@
     ,{ id: "seed_oth4_g________hav", content: "情态动词 + have done（对过去推测 / 虚拟）", meaning: "must have done 过去一定做过（肯定推测）；should have done 本应该做（实际没做）；could have done 本可以做（实际没做）。", type: "grammar", ph: "", level: "B2", noTest: true }
     ,{ id: "seed_oth4_g___________", content: "口语讨论句型（装修主题）", meaning: "表达重要：I think ___ is the most important category. / ___ is really important to me. / For me, ___ matters more than ___. 表达不重要：I don’t think ___ is very important. / Compared with ___, ___ is less important. / ___ is not a big priority for me. 总结：We decided to create a ___ living room. / For the sofa, we chose the ___. / In total, we spent $___ out of our $1500 budget and collected ___ stars.", type: "grammar", ph: "", level: "B2", noTest: true }
 /* INJECT-MC13-18-WB-KB */
-    ]
+    ,
+    {"id":"seed_mc21_v_relent","content":"relent","meaning":"v. 变缓和；减弱（relentless 的词根）（relent /rɪˈlent/）","type":"vocab","ph":"/rɪˈlent/","level":"B2","noTest":true},
+    {"id":"seed_mc21_v_rifle","content":"rifle","meaning":"n. 步枪（rifle /ˈraɪfl/）","type":"vocab","ph":"/ˈraɪfl/","level":"B2","noTest":true},
+    {"id":"seed_mc21_v_axe","content":"axe","meaning":"n. 斧头（axe /æks/）","type":"vocab","ph":"/æks/","level":"B2","noTest":true},
+    {"id":"seed_mc21_v_rope","content":"rope","meaning":"n. 绳子；绳索（rope /rəʊp/）","type":"vocab","ph":"/rəʊp/","level":"B2","noTest":true},
+    {"id":"seed_mc21_v_mirror","content":"mirror","meaning":"n. 镜子（可反光发信号）（mirror /ˈmɪrə(r)/）","type":"vocab","ph":"/ˈmɪrə(r)/","level":"B2","noTest":true},
+    {"id":"seed_mc21_v_choice","content":"choice","meaning":"n. 选择；选择权（choose 的名词）（choice /tʃɔɪs/）","type":"vocab","ph":"/tʃɔɪs/","level":"B2","noTest":true},
+    {"id":"seed_mc21_v_choose","content":"choose","meaning":"v. 选择（choose – chose – chosen）（choose /tʃuːz/）","type":"vocab","ph":"/tʃuːz/","level":"B2","noTest":true},
+    {"id":"seed_mc21_v_tide","content":"tide","meaning":"n. 潮水；潮汐（tide /taɪd/）","type":"vocab","ph":"/taɪd/","level":"B2","noTest":true},
+    {"id":"seed_mc21_v_leave","content":"leave","meaning":"v. 离开；留下（leave /liːv/）","type":"vocab","ph":"/liːv/","level":"B2","noTest":true},
+    {"id":"seed_mc21_v_luggage","content":"luggage","meaning":"n. 行李（不可数名词）（luggage /ˈlʌɡɪdʒ/）","type":"vocab","ph":"/ˈlʌɡɪdʒ/","level":"B2","noTest":true},
+    {"id":"seed_mc21_v_plan","content":"plan","meaning":"n./v. 计划（可数）（plan /plæn/）","type":"vocab","ph":"/plæn/","level":"B2","noTest":true},
+    {"id":"seed_mc21_v_advance","content":"advance","meaning":"n./v. 前进；提前（in advance 提前）（advance /ədˈvɑːns/）","type":"vocab","ph":"/ədˈvɑːns/","level":"B2","noTest":true},
+    {"id":"seed_mc21_p_protect_from_","content":"protect ... from ...","meaning":"保护……免受……","type":"phrase","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_p_treat_injuries","content":"treat injuries","meaning":"处理伤口","type":"phrase","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_p_prevent_from_getting_infecte","content":"prevent ... from getting infected","meaning":"防止……感染","type":"phrase","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_p_build_a_shelter","content":"build (a) shelter","meaning":"搭建庇护所","type":"phrase","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_p_climb_rocks","content":"climb rocks","meaning":"攀爬岩石","type":"phrase","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_p_halfway_up_the_mountains","content":"halfway up the mountains","meaning":"半山腰","type":"phrase","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_p_leave_the_beach_because_of_t","content":"leave the beach because of the high tide","meaning":"因为涨潮而离开海滩","type":"phrase","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_p_keep_making_fire_all_the_tim","content":"keep making fire all the time","meaning":"一直不断地生火","type":"phrase","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_p_send_strong_signals","content":"send strong signals","meaning":"发出强烈的信号","type":"phrase","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_p_fire_a_gun","content":"fire a gun","meaning":"开枪；发射","type":"phrase","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_p_because_of_","content":"because of + 名词","meaning":"因为……（后接名词，不接句子）","type":"phrase","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_p_all_the_time","content":"all the time","meaning":"一直；始终","type":"phrase","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_p_the_first_challenge_is_doing","content":"the first challenge is doing sth.","meaning":"第一个挑战是做某事","type":"phrase","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_s_the_first_challenge_is_findi","content":"The first challenge is finding clean water.","meaning":"第一个挑战是找到干净的水。","type":"sentence","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_s_we_d_better_build_a_shelter_","content":"We'd better build a shelter before dark.","meaning":"我们最好在天黑前搭建一个庇护所。","type":"sentence","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_s_it_s_a_good_idea_to_send_str","content":"It's a good idea to send strong signals.","meaning":"发出强烈的信号是个好主意。","type":"sentence","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_s_we_will_have_to_climb_rocks_","content":"We will have to climb rocks to get a better view.","meaning":"我们将不得不爬上岩石，以便看得更远。","type":"sentence","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_s_we_might_have_to_leave_the_b","content":"We might have to leave the beach because of the high tide.","meaning":"因为涨潮，我们可能不得不离开海滩。","type":"sentence","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_s_i_m_afraid_that_we_don_t_hav","content":"I'm afraid that we don't have enough water.","meaning":"恐怕我们没有足够的水。","type":"sentence","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_g_because_of_vs_because_","content":"because of + 名词 vs because + 句子","meaning":"because of 后接名词/名词短语（because of the high tide）；because 后接完整句子（because the tide is high）。","type":"grammar","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_g_luggage_plan_","content":"luggage 不可数 / plan 可数","meaning":"luggage 是不可数名词：much luggage、a piece of luggage（✗ many luggages）；plan 是可数名词，单数须加限定词：our plan / the plan / a plan。","type":"grammar","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_g_keep_doing_be_doing_","content":"keep + doing 与 be + doing 表语","meaning":"keep doing 持续/反复做某事（keep making fire）；主语为 challenge 时 be 后接 doing（The first challenge is having clean water）。","type":"grammar","ph":"","level":"B2","noTest":true},
+    {"id":"seed_mc21_g__that_if_whether_","content":"宾语从句（that / if-whether / 特殊疑问词）","meaning":"陈述句用 that（可省）：I am afraid (that) we are lost.；一般疑问句用 if / whether + 陈述语序：I do not know if we can survive.；特殊疑问句保留疑问词并改陈述语序：Tell me what we should do first.","type":"grammar","ph":"","level":"B2","noTest":true}]
   };
   function runSeed() {
     try {
