@@ -7,12 +7,12 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="20260924-1053">
+<meta name="build-version" content="20261008-1119">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>英语测试达人</title>
-<script src="level-config.js?v=20260924-1053"></script>
-<script src="vocab_dict.js?v=20260924-1053"></script>
-<script src="practice_publish.js?v=20260924-1053"></script>
+<script src="level-config.js?v=20261008-1119"></script>
+<script src="vocab_dict.js?v=20261008-1119"></script>
+<script src="practice_publish.js?v=20261008-1119"></script>
 <style>
   :root {
     --primary: #6366F1;
@@ -534,7 +534,7 @@
 </style>
 </head>
 <body>
-<a href="index.html?v=20260924-1053" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
+<a href="index.html?v=20261008-1119" style="display:inline-block;margin:8px 16px;padding:6px 14px;background:#10B981;color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">← 返回首页</a>
 
 <!-- ====== 首页 ====== -->
 <div class="home-page" id="homePage">
@@ -7207,7 +7207,13 @@ const Q = {
       "explain": "【口诀】快速区分（重点！考试高频）<br>① so that + 主语 + 动词（为了……，接句子）<br>② in order to + 动词原形（为了……，接动词，无主语）<br>③ because of + 名词（因为，后面不能是句子）<br>④ although + 句子（虽然，表转折）<br>✅ so that everyone could understand him——后面是主语 everyone + 动词 could understand，接完整句子用 so that。",
       "level": "B2"
     }
-  ],
+  ,
+  {"id":"mc32ag9","cat":"grammar","type":"choice","badge":"语法","topic":"B2-MC32 更改会议时间","q":"表示“在下午”时，下列哪个用法正确？","opts":["in afternoon","in the afternoon","on the afternoon","at afternoon"],"ans":1,"explain":"【语法】表示时间段 in / to the afternoon 中，afternoon 前必须加定冠词 the，不能说 in afternoon 或 at afternoon。固定搭配：in the afternoon（在下午）、to the afternoon（直到下午）。"},
+  {"id":"mc32ag10","cat":"grammar","type":"choice","badge":"语法","topic":"B2-MC32 更改会议时间","q":"想约时间，问对方“什么时间对你合适？”，下列哪句正确？","opts":["What is suit you?","What would suit you?","What suit you?","What would is suit you?"],"ans":1,"explain":"【语法】suit 是实义动词（意为“适合”），不能和 be 动词 is 连用。正确：What would suit you?（什么时间对你合适？）❌ What is suit you? 错误（is 不能 + 实义动词原形 suit）。"},
+  {"id":"mc32ag11","cat":"grammar","type":"choice","badge":"语法","topic":"B2-MC32 更改会议时间","q":"约定见面时间“我们定在三点吧”，下列哪句正确？","opts":["Let's make it at 3 p.m.","Let's make it 3 p.m.","Let's make it on 3 p.m.","Let's make it in 3 p.m."],"ans":1,"explain":"【语法】make it + 时间 是约定时间的固定用法，时间前不加介词 at / on / in。正确：Let's make it 3 p.m.（我们定在三点）。❌ make it at 3 p.m. 错误。"},
+  {"id":"mc32ag12","cat":"grammar","type":"choice","badge":"语法","topic":"B2-MC32 更改会议时间","q":"关于 another 的用法，下列哪句正确？","opts":["I need an another pen.","I need another pen.","I need a another pen.","another 前面可以加 an"],"ans":1,"explain":"【语法】another = an + other，本身已含 an，前面不能再加 a / an。正确：I need another pen.（我还需要一支笔。）❌ an another pen 错误。"},
+  {"id":"mc32ag13","cat":"grammar","type":"choice","badge":"语法","topic":"B2-MC32 更改会议时间","q":"“我之前发出去的议程”中 sent out 的时态，下列哪项正确？","opts":["send out（一般现在时）","sent out（send 的过去式）","sending out（动名词）","sents out（错误拼写）"],"ans":1,"explain":"【语法】sent 是 send 的过去式。I sent out the agenda = 我（之前）发出了议程，定语从句 I sent out 表示“我发出去的”。❌ sents 不是正确拼写。"},
+  {"id":"mc32ag14","cat":"grammar","type":"choice","badge":"语法","topic":"B2-MC32 更改会议时间","q":"“很好，我们周五开会”用英语表达，下列哪句正确？","opts":["It's good to we meet on Friday.","It's good (that) we meet on Friday.","It's good to that we meet.","It's good we to meet."],"ans":1,"explain":"【语法】it's good (that) + 从句，that 可省略，后面接完整句子，不能加 to。❌ It's good to we meet 错误（to 后只能接动词原形，不能接句子 we meet）。正确：It's good (that) we meet on Friday."}],
   "vocab": [
     {
       "id": "v1",
@@ -108983,7 +108989,7 @@ init();
       // Add a focus banner on the test page header area
       var banner = document.createElement('div');
       banner.id = 'focusBanner';
-      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20260924-1053" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
+      banner.innerHTML = '<div style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:white;padding:8px 12px;border-radius:8px;margin-bottom:8px;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">🎯 聚焦测试：' + catLabel + ' · ' + modeLabelText + '模式已自动启动 <a href="test-master.html?v=20261008-1119" style="color:#DDD;text-decoration:underline;font-size:12px;margin-left:8px;">返回全部测试</a></div>';
       var testPage = document.getElementById('testPage');
       if (testPage) {
         var topBar = testPage.querySelector('.test-top-bar');
@@ -109287,7 +109293,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20260924-1053</div>
-  <script src="kb.js?v=20260924-1053"></script>
+<div id="__ver_badge" style="position:fixed;right:6px;bottom:6px;z-index:99999;font-size:10px;color:#9ca3af;background:rgba(255,255,255,.7);padding:2px 6px;border-radius:6px;pointer-events:none;font-family:sans-serif;">v20261008-1119</div>
+  <script src="kb.js?v=20261008-1119"></script>
 </body>
 </html>
