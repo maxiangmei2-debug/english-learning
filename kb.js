@@ -1411,7 +1411,21 @@
     {"id":"seed_mc21_g_because_of_vs_because_","content":"because of + 名词 vs because + 句子","meaning":"because of 后接名词/名词短语（because of the high tide）；because 后接完整句子（because the tide is high）。","type":"grammar","ph":"","level":"B2","noTest":true},
     {"id":"seed_mc21_g_luggage_plan_","content":"luggage 不可数 / plan 可数","meaning":"luggage 是不可数名词：much luggage、a piece of luggage（✗ many luggages）；plan 是可数名词，单数须加限定词：our plan / the plan / a plan。","type":"grammar","ph":"","level":"B2","noTest":true},
     {"id":"seed_mc21_g_keep_doing_be_doing_","content":"keep + doing 与 be + doing 表语","meaning":"keep doing 持续/反复做某事（keep making fire）；主语为 challenge 时 be 后接 doing（The first challenge is having clean water）。","type":"grammar","ph":"","level":"B2","noTest":true},
-    {"id":"seed_mc21_g__that_if_whether_","content":"宾语从句（that / if-whether / 特殊疑问词）","meaning":"陈述句用 that（可省）：I am afraid (that) we are lost.；一般疑问句用 if / whether + 陈述语序：I do not know if we can survive.；特殊疑问句保留疑问词并改陈述语序：Tell me what we should do first.","type":"grammar","ph":"","level":"B2","noTest":true}]
+    {"id":"seed_mc21_g__that_if_whether_","content":"宾语从句（that / if-whether / 特殊疑问词）","meaning":"陈述句用 that（可省）：I am afraid (that) we are lost.；一般疑问句用 if / whether + 陈述语序：I do not know if we can survive.；特殊疑问句保留疑问词并改陈述语序：Tell me what we should do first.","type":"grammar","ph":"","level":"B2","noTest":true},
+      /* INJECT-MC3738-WB-KB */
+      {"id":"seed_mc37_electronic","content":"electronic","meaning":"adj. 电子的","type":"word","ph":"/ɪˈlektrɑːnɪk/","level":"B2"},
+      {"id":"seed_mc37_explicit","content":"explicit","meaning":"adj. 直接的，清楚的，详细的","type":"word","ph":"/ɪkˈsplɪsɪt/","level":"B2"},
+      {"id":"seed_mc37_implicit","content":"implicit","meaning":"adj. 含蓄的；不直接言明的（反义：explicit）","type":"word","ph":"/ɪmˈplɪsɪt/","level":"B2"},
+      {"id":"seed_mc37_approach","content":"approach","meaning":"n. 方法；v. 靠近/处理（问题）","type":"word","ph":"/əˈprəʊtʃ/","level":"B2"},
+      {"id":"seed_mc37_recognition","content":"recognition","meaning":"n. 认出，认可（同源 recognize）","type":"word","ph":"/ˌrekəɡˈnɪʃn/","level":"B2"},
+      {"id":"seed_mc37_comeupwith","content":"come up with","meaning":"想出（主意、解决方案）","type":"phrase","level":"B2"},
+      {"id":"seed_mc37_negotiatewith","content":"negotiate with sb","meaning":"和某人协商（接人加 with）","type":"phrase","level":"B2"},
+      {"id":"seed_mc38_available","content":"available","meaning":"adj. 有空的；可获得的","type":"word","ph":"/əˈveɪləbl/","level":"B2"},
+      {"id":"seed_mc38_present","content":"present","meaning":"adj. 在场的；出席的","type":"word","ph":"/ˈpreznt/","level":"B2"},
+      {"id":"seed_mc38_rundown","content":"run-down","meaning":"adj. 疲惫的；破旧的","type":"word","ph":"/ˌrʌn ˈdaʊn/","level":"B2"},
+      {"id":"seed_mc38_bearound","content":"be around","meaning":"有空，可以联系上（≈ available/present）","type":"phrase","level":"B2"},
+      {"id":"seed_mc38_seeyouaround","content":"see you around","meaning":"后会有期 / 回头见","type":"phrase","level":"B2"},
+      {"id":"seed_mc38_rundown_v","content":"run down","meaning":"（人）筋疲力尽；（事物）衰败，破旧（动词短语）","type":"phrase","level":"B2"}]
   };
   function runSeed() {
     try {
