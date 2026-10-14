@@ -1425,7 +1425,33 @@
       {"id":"seed_mc38_rundown","content":"run-down","meaning":"adj. 疲惫的；破旧的","type":"word","ph":"/ˌrʌn ˈdaʊn/","level":"B2"},
       {"id":"seed_mc38_bearound","content":"be around","meaning":"有空，可以联系上（≈ available/present）","type":"phrase","level":"B2"},
       {"id":"seed_mc38_seeyouaround","content":"see you around","meaning":"后会有期 / 回头见","type":"phrase","level":"B2"},
-      {"id":"seed_mc38_rundown_v","content":"run down","meaning":"（人）筋疲力尽；（事物）衰败，破旧（动词短语）","type":"phrase","level":"B2"}]
+      {"id":"seed_mc38_rundown_v","content":"run down","meaning":"（人）筋疲力尽；（事物）衰败，破旧（动词短语）","type":"phrase","level":"B2"},
+/* INJECT-MC36-WB-KB */
+{"id":"seed_mc36fb_w1","content":"understanding","meaning":"体谅的，善解人意的","type":"word","ph":"/ˌʌndərˈstændɪŋ/","level":"B2"},
+{"id":"seed_mc36fb_w2","content":"sleepover","meaning":"过夜聚会","type":"word","ph":"/ˈsliːpəʊvə(r)/","level":"B2"},
+{"id":"seed_mc36fb_w3","content":"instead","meaning":"取而代之（adv.）","type":"word","ph":"/ɪnˈsted/","level":"B2"},
+{"id":"seed_mc36fb_w4","content":"camp","meaning":"露营（v.）","type":"word","ph":"/kæmp/","level":"B2"},
+{"id":"seed_mc36fb_w5","content":"demanding","meaning":"要求高的，费力的","type":"word","ph":"/dɪˈmɑːndɪŋ/","level":"B2"},
+{"id":"seed_mc36fb_w6","content":"expectation","meaning":"期望（n.）","type":"word","ph":"/ˌekspekˈteɪʃn/","level":"B2"},
+{"id":"seed_mc36fb_w7","content":"spoil","meaning":"溺爱，娇惯（v.）","type":"word","ph":"/spɔɪl/","level":"B2"},
+{"id":"seed_mc36fb_w8","content":"greedy","meaning":"贪婪的（adj.）","type":"word","ph":"/ˈɡriːdi/","level":"B2"},
+{"id":"seed_mc36fb_w9","content":"compromise","meaning":"妥协（n./v.）","type":"word","ph":"/ˈkɒmprəmaɪz/","level":"B2"},
+{"id":"seed_mc36fb_w10","content":"lane","meaning":"车道；范围，领域（n.）","type":"word","ph":"/leɪn/","level":"B2"},
+{"id":"seed_mc36fb_w11","content":"millionaire","meaning":"百万富翁（n.）","type":"word","ph":"/ˌmɪljəˈneə(r)/","level":"B2"},
+{"id":"seed_mc36fb_w12","content":"idiot","meaning":"傻瓜，蠢货（n.）","type":"word","ph":"/ˈɪdiət/","level":"B2"},
+{"id":"seed_mc36fb_p1","content":"be cool about sth","meaning":"对某事随和、理解","type":"phrase","ph":"","level":"B2"},
+{"id":"seed_mc36fb_p2","content":"stay in one's lane","meaning":"不插手别人的事，守自己本分","type":"phrase","ph":"","level":"B2"},
+{"id":"seed_mc36fb_p3","content":"get involved in sth","meaning":"卷入/插手某事","type":"phrase","ph":"","level":"B2"},
+{"id":"seed_mc36fb_p4","content":"a big player","meaning":"重要人物","type":"phrase","ph":"","level":"B2"},
+{"id":"seed_mc36fb_p5","content":"a big shot","meaning":"大人物，厉害角色","type":"phrase","ph":"","level":"B2"},
+{"id":"seed_mc36fb_p6","content":"let sb be","meaning":"不去干涉某人，随某人去","type":"phrase","ph":"","level":"B2"},
+{"id":"seed_mc36fb_p7","content":"hand out money","meaning":"给钱","type":"phrase","ph":"","level":"B2"},
+{"id":"seed_mc36fb_p8","content":"don't give me that look","meaning":"别用这种眼神看我","type":"phrase","ph":"","level":"B2"},
+{"id":"seed_mc36fb_p9","content":"just think about it","meaning":"好好想一想","type":"phrase","ph":"","level":"B2"},
+{"id":"seed_mc36fb_p10","content":"give me some support","meaning":"给我一些支持","type":"phrase","ph":"","level":"B2"},
+{"id":"seed_mc36fb_g1","content":"be being + adj.","meaning":"强调当下临时表现出的状态（非一贯性格）","type":"grammar","ph":"","level":"B2"},
+{"id":"seed_mc36fb_g2","content":"the hell 反讽","meaning":"The hell + 主语 + 动词 = 否定反驳，意思与字面相反","type":"grammar","ph":"","level":"B2"},
+{"id":"seed_mc36fb_g3","content":"gonna / gotta","meaning":"口语简写：gonna=going to；gotta=(have) got to=必须（书面禁用）","type":"grammar","ph":"","level":"B2"}]
   };
   function runSeed() {
     try {
