@@ -361,7 +361,8 @@
   // 把高频基础词（星期 / 月份 / 序数词 / 日期句型）作为默认知识库，
   // 用户首次打开任意模块即自动注入到 5 个学习模块；已手动添加过的不会重复。
   var SEED_KEY = 'english_kb_seed_v';
-  var KB_SEED = /* SEED-MC21-WB */
+  /* INJECT-WB-20261019-KB */
+var KB_SEED = /* SEED-MC21-WB */
 {
     version: '20260914-mc21',
     items: [
@@ -1473,7 +1474,133 @@
 {"id":"seed_mc36fb_p10","content":"give me some support","meaning":"给我一些支持","type":"phrase","ph":"","level":"B2"},
 {"id":"seed_mc36fb_g1","content":"be being + adj.","meaning":"强调当下临时表现出的状态（非一贯性格）","type":"grammar","ph":"","level":"B2"},
 {"id":"seed_mc36fb_g2","content":"the hell 反讽","meaning":"The hell + 主语 + 动词 = 否定反驳，意思与字面相反","type":"grammar","ph":"","level":"B2"},
-{"id":"seed_mc36fb_g3","content":"gonna / gotta","meaning":"口语简写：gonna=going to；gotta=(have) got to=必须（书面禁用）","type":"grammar","ph":"","level":"B2"}]
+{"id":"seed_mc36fb_g3","content":"gonna / gotta","meaning":"口语简写：gonna=going to；gotta=(have) got to=必须（书面禁用）","type":"grammar","ph":"","level":"B2"}
+    ,{"id":"seed_wb_1_mc39","content":"internship","meaning":"实习；实习期","type":"word","level":"B2","ph":"/ˈɪntɜːnʃɪp/"}
+    ,{"id":"seed_wb_2_mc39","content":"profile","meaning":"个人资料；简历；侧面","type":"word","level":"B2","ph":"/ˈprəʊfaɪl/"}
+    ,{"id":"seed_wb_3_mc39","content":"qualified","meaning":"合格的；胜任的","type":"word","level":"B2","ph":"/ˈkwɒlɪfaɪd/"}
+    ,{"id":"seed_wb_4_mc39","content":"overqualified","meaning":"资历过高的","type":"word","level":"B2","ph":"/ˌəʊvəˈkwɒlɪfaɪd/"}
+    ,{"id":"seed_wb_5_mc39","content":"impressed","meaning":"印象深刻的","type":"word","level":"B2","ph":"/ɪmˈprest/"}
+    ,{"id":"seed_wb_6_mc39","content":"senior","meaning":"资深的；年长的","type":"word","level":"B2","ph":"/ˈsiːniə(r)/"}
+    ,{"id":"seed_wb_7_mc39","content":"junior","meaning":"初级的；资历浅的","type":"word","level":"B2","ph":"/ˈdʒuːniə(r)/"}
+    ,{"id":"seed_wb_8_mc39","content":"odd","meaning":"奇怪的；临时的","type":"word","level":"B2","ph":"/ɒd/"}
+    ,{"id":"seed_wb_9_mc39","content":"VP","meaning":"副总裁（vice president）","type":"word","level":"B2","ph":"/ˌviː ˈpiː/"}
+    ,{"id":"seed_wb_10_mc39","content":"fire away","meaning":"尽管问吧；请随便提问","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_11_mc39","content":"be qualified for","meaning":"胜任…；有资格做…","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_12_mc39","content":"way overqualified","meaning":"way 作副词“远远”，远远资历过高","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_13_mc39","content":"be impressed by/with sth","meaning":"对…印象深刻","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_14_mc39","content":"It’s your call.","meaning":"你决定吧；由你说了算","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_15_mc39","content":"nail it","meaning":"搞定；做得漂亮","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_16_mc39","content":"make it","meaning":"成功；做到；赶上","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_17_mc40","content":"ridiculous","meaning":"荒谬的；可笑的","type":"word","level":"B2","ph":"/rɪˈdɪkjələs/"}
+    ,{"id":"seed_wb_18_mc40","content":"silly","meaning":"傻的；愚蠢的","type":"word","level":"B2","ph":"/ˈsɪli/"}
+    ,{"id":"seed_wb_19_mc40","content":"underestimate","meaning":"低估","type":"word","level":"B2","ph":"/ˌʌndərˈestɪmeɪt/"}
+    ,{"id":"seed_wb_20_mc40","content":"grand","meaning":"一千美元；宏大的","type":"word","level":"B2","ph":"/ɡrænd/"}
+    ,{"id":"seed_wb_21_mc40","content":"buck","meaning":"美元（美/澳口语）","type":"word","level":"B2","ph":"/bʌk/"}
+    ,{"id":"seed_wb_22_mc40","content":"cozy","meaning":"温暖舒适的；安逸的","type":"word","level":"B2","ph":"/ˈkəʊzi/"}
+    ,{"id":"seed_wb_23_mc40","content":"mortgage","meaning":"按揭贷款；抵押贷款","type":"word","level":"B2","ph":"/ˈmɔːɡɪdʒ/"}
+    ,{"id":"seed_wb_24_mc40","content":"a grand","meaning":"一千美元","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_25_mc40","content":"pay my mortgage","meaning":"偿还房贷","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_26_mc06","content":"occasionally","meaning":"偶尔","type":"word","level":"B2","ph":"/əˈkeɪʒnəli/"}
+    ,{"id":"seed_wb_27_mc06","content":"Bachelor’s degree","meaning":"学士学位","type":"word","level":"B2","ph":"/ˈbætʃələz dɪˈɡriː/"}
+    ,{"id":"seed_wb_28_mc06","content":"Master’s degree","meaning":"硕士学位","type":"word","level":"B2","ph":"/ˈmɑːstəz dɪˈɡriː/"}
+    ,{"id":"seed_wb_29_mc06","content":"Doctor’s degree","meaning":"博士学位","type":"word","level":"B2","ph":"/ˈdɒktəz dɪˈɡriː/"}
+    ,{"id":"seed_wb_30_mc06","content":"PR","meaning":"公共关系（public relations）","type":"word","level":"B2","ph":"/ˌpiː ˈɑː(r)/"}
+    ,{"id":"seed_wb_31_mc06","content":"stressful","meaning":"压力大的","type":"word","level":"B2","ph":"/ˈstresfl/"}
+    ,{"id":"seed_wb_32_mc06","content":"fulfilling","meaning":"有成就感的","type":"word","level":"B2","ph":"/fʊlˈfɪlɪŋ/"}
+    ,{"id":"seed_wb_33_mc06","content":"challenging","meaning":"有挑战的","type":"word","level":"B2","ph":"/ˈtʃælɪndʒɪŋ/"}
+    ,{"id":"seed_wb_34_mc06","content":"rewarding","meaning":"有回报的","type":"word","level":"B2","ph":"/rɪˈwɔːdɪŋ/"}
+    ,{"id":"seed_wb_35_mc06","content":"boring","meaning":"无聊的","type":"word","level":"B2","ph":"/ˈbɔːrɪŋ/"}
+    ,{"id":"seed_wb_36_mc06","content":"repetitive","meaning":"重复的","type":"word","level":"B2","ph":"/rɪˈpetətɪv/"}
+    ,{"id":"seed_wb_37_mc06","content":"motivating","meaning":"激励人的","type":"word","level":"B2","ph":"/ˈməʊtɪveɪtɪŋ/"}
+    ,{"id":"seed_wb_38_mc06","content":"fixed schedule","meaning":"固定时间表","type":"word","level":"B2","ph":"/fɪkst ˈskedʒuːl/"}
+    ,{"id":"seed_wb_39_mc06","content":"flexible schedule","meaning":"弹性时间表","type":"word","level":"B2","ph":"/ˈfleksəbl ˈskedʒuːl/"}
+    ,{"id":"seed_wb_40_mc06","content":"commute","meaning":"通勤","type":"word","level":"B2","ph":"/kəˈmjuːt/"}
+    ,{"id":"seed_wb_41_mc06","content":"indecisive","meaning":"优柔寡断的","type":"word","level":"B2","ph":"/ˌɪndɪˈsaɪsɪv/"}
+    ,{"id":"seed_wb_42_mc06","content":"strategic","meaning":"战略性的","type":"word","level":"B2","ph":"/strəˈtiːdʒɪk/"}
+    ,{"id":"seed_wb_43_mc06","content":"nurse","meaning":"护士","type":"word","level":"B2","ph":"/nɜːs/"}
+    ,{"id":"seed_wb_44_mc06","content":"degree","meaning":"学位；程度","type":"word","level":"B2","ph":"/dɪˈɡriː/"}
+    ,{"id":"seed_wb_45_mc06","content":"qualification","meaning":"资格；资质","type":"word","level":"B2","ph":"/ˌkwɒlɪfɪˈkeɪʃn/"}
+    ,{"id":"seed_wb_46_mc06","content":"tiring","meaning":"令人疲倦的","type":"word","level":"B2","ph":"/ˈtaɪərɪŋ/"}
+    ,{"id":"seed_wb_47_mc06","content":"tired","meaning":"疲倦的","type":"word","level":"B2","ph":"/ˈtaɪəd/"}
+    ,{"id":"seed_wb_48_mc06","content":"health","meaning":"健康","type":"word","level":"B2","ph":"/helθ/"}
+    ,{"id":"seed_wb_49_mc06","content":"safety","meaning":"安全","type":"word","level":"B2","ph":"/ˈseɪfti/"}
+    ,{"id":"seed_wb_50_mc06","content":"mains power","meaning":"主电源","type":"word","level":"B2","ph":"/meɪnz ˈpaʊə(r)/"}
+    ,{"id":"seed_wb_51_mc06","content":"investment banking","meaning":"投资银行（业）","type":"word","level":"B2","ph":"/ɪnˈvestmənt ˈbæŋkɪŋ/"}
+    ,{"id":"seed_wb_52_mc06","content":"communicator","meaning":"沟通者；交流者","type":"word","level":"B2","ph":"/kəˈmjuːnɪkeɪtə(r)/"}
+    ,{"id":"seed_wb_53_mc06","content":"stress","meaning":"压力；强调","type":"word","level":"B2","ph":"/stres/"}
+    ,{"id":"seed_wb_54_mc06","content":"pound","meaning":"英镑","type":"word","level":"B2","ph":"/paʊnd/"}
+    ,{"id":"seed_wb_55_mc06","content":"useful","meaning":"有用的","type":"word","level":"B2","ph":"/ˈjuːsfl/"}
+    ,{"id":"seed_wb_56_mc06","content":"lose my appetite","meaning":"没胃口","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_57_mc06","content":"dress code","meaning":"着装规范","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_58_mc06","content":"on-the-job training","meaning":"在职培训","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_59_mc06","content":"pros and cons","meaning":"利与弊；优缺点","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_60_mc06","content":"work with people","meaning":"与人共事","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_61_mc06","content":"work long hours","meaning":"工作时间长","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_62_mc06","content":"deal with","meaning":"处理；应对","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_63_mc06","content":"do well at school","meaning":"学业优秀","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_64_mc06","content":"nursing degree","meaning":"护理学位","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_65_mc06","content":"get a job","meaning":"找到工作","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_66_mc06","content":"be good at doing sth","meaning":"擅长做…","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_67_mc06","content":"make decisions","meaning":"做决定","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_68_mc06","content":"work in a team","meaning":"在团队中工作","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_69_mc06","content":"on your own","meaning":"独自（= by yourself）","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_70_mc06","content":"work with a company","meaning":"与某公司合作","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_71_mc06","content":"switch off","meaning":"关掉（电源等）","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_72_mc06","content":"wear a suit","meaning":"穿西装","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_73_mc06","content":"be my own boss","meaning":"自己当老板","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_74_mc06","content":"look after","meaning":"照顾","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_75_mc06","content":"go wrong","meaning":"出错","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_76_mc06","content":"lose money","meaning":"亏钱","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_77_mc06","content":"work well with sb","meaning":"与某人配合默契","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_78_oth","content":"mistress","meaning":"情妇","type":"word","level":"B2","ph":"/ˈmɪstrəs/"}
+    ,{"id":"seed_wb_79_oth","content":"sacrifice","meaning":"牺牲","type":"word","level":"B2","ph":"/ˈsækrɪfaɪs/"}
+    ,{"id":"seed_wb_80_oth","content":"gold digger","meaning":"拜金者（为钱接近异性的人）","type":"word","level":"B2","ph":"/ɡəʊld ˈdɪɡə(r)/"}
+    ,{"id":"seed_wb_81_oth","content":"spouse","meaning":"配偶","type":"word","level":"B2","ph":"/spaʊs/"}
+    ,{"id":"seed_wb_82_oth","content":"hassle","meaning":"麻烦；困扰","type":"word","level":"B2","ph":"/ˈhæsl/"}
+    ,{"id":"seed_wb_83_oth","content":"hassle-free","meaning":"无烦恼的；省心的","type":"word","level":"B2","ph":"/ˈhæsl friː/"}
+    ,{"id":"seed_wb_84_oth","content":"as far as I’m concerned","meaning":"就我而言","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_85_oth","content":"if you ask me","meaning":"如果你问我；依我看","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_86_oth","content":"in my opinion","meaning":"在我看来","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_87_oth","content":"I believe (that)","meaning":"我相信","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_88_oth","content":"I think (that)","meaning":"我认为","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_89_oth","content":"What do you think?","meaning":"你怎么看？","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_90_oth","content":"How do you feel about…?","meaning":"你对…感觉如何？","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_91_oth","content":"Do you agree?","meaning":"你同意吗？","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_92_g_mc39","content":"be qualified for / be impressed by","meaning":"be qualified for sth 胜任；be impressed by/with sth 对…印象深刻。by/with 介词固定。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_93_g_mc39","content":"way 作副词","meaning":"way 放在形容词前表“远远/大大”：way overqualified 远远资历过高；way better 好得多。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_94_g_mc39","content":"It’s your call. = up to you","meaning":"口语：决定权在你。call 这里指决定。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_95_g_mc39","content":"young vs old 职场对比","meaning":"Young people have more energy and are creative. / Old people have rich experience and stay calm. 用对比结构表达观点。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_96_g_mc40","content":"听力场景：离职/裁员/收入与开销","meaning":"When Work Ends 主题：离职（quit/leave）、裁员（lay off/be made redundant）、收入（income/salary）、生活开销（rent/mortgage/bills）。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_97_g_mc06","content":"动词 + doing 固定搭配","meaning":"enjoy + doing；start + doing / to do；be good at + doing；without + doing。动名词作宾语/解释。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_98_g_mc06","content":"while + be doing","meaning":"while you are working with a company 当你与公司合作时，强调动作正在进行。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_99_g_mc06","content":"-ing / -ed 形容词","meaning":"tiring 令人疲倦的（修饰物）；tired 感到疲倦的（修饰人）。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_100_g_mc06","content":"不定式 to do 表目的","meaning":"To become a nurse, you need a nursing degree. to do 表目的。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_101_g_mc06","content":"定语从句 who / 省略关系代词","meaning":"the patient (that) you look after；who 指人，关系代词作宾语可省略。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_102_g_mc06","content":"what 主语从句","meaning":"What I do is look after other people’s money. what 引导主语从句。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_103_g_mc06","content":"be in + 行业","meaning":"I’m in investment banking. be in + 行业名词。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_104_g_mc06","content":"第一条件句 if + 一般现在","meaning":"If something goes wrong, I deal with a lot of stress. if + 一般现在表可能。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_105_g_oth","content":"⚠️ 误区：I am agree / I am disagree","meaning":"错误！agree 是动词，不与 be 连用。正确：I agree. / I disagree.","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_106_g_oth","content":"表达观点句型","meaning":"I think (that)… / In my opinion… / As far as I’m concerned… / If you ask me…","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_107_g_oth","content":"同意与礼貌不同意","meaning":"强烈同意：I completely agree. / I couldn’t agree more. 礼貌不同意：I’m afraid I disagree. / I’m not so sure about that.","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_108_s_mc39","content":"Young people have more energy and are creative.","meaning":"年轻人更有活力也更有创造力。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_109_s_mc39","content":"Old people have rich experience and can solve problems calmly.","meaning":"年长者经验丰富，能冷静地解决问题。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_110_s_mc39","content":"He is way overqualified for this internship.","meaning":"他做这份实习远远资历过高了。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_111_s_mc40","content":"That idea sounds ridiculous to me.","meaning":"那个想法在我听来很荒谬。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_112_s_mc40","content":"He overestimated how much he could save.","meaning":"他高估了自己能存下的钱。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_113_s_mc40","content":"I pay my mortgage every month.","meaning":"我每个月偿还房贷。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_114_s_mc06","content":"How do you feel about working with people?","meaning":"你对与人共事感觉如何？","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_115_s_mc06","content":"I find my job very rewarding.","meaning":"我觉得我的工作很有成就感。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_116_s_mc06","content":"What do you do for a living?","meaning":"你是做什么工作的？","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_117_s_mc06","content":"I love my job—working with people.","meaning":"我热爱我的工作——与人打交道。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_118_s_mc06","content":"To become a nurse, you need a nursing degree.","meaning":"要成为护士，你需要护理学位。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_119_s_mc06","content":"I’m good at making decisions.","meaning":"我擅长做决定。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_120_s_mc06","content":"I’m in investment banking.","meaning":"我从事投资银行业。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_121_s_mc06","content":"What I do is look after other people’s money.","meaning":"我的工作是照看别人的钱。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_122_s_oth","content":"Being single is much better than being married.","meaning":"单身比结婚好得多。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_123_s_oth","content":"In my opinion, being single is hassle-free.","meaning":"在我看来，单身没有琐事烦扰。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_124_s_oth","content":"I think that being single is perfect.","meaning":"我认为单身很完美。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_125_s_oth","content":"As far as I’m concerned, there is no happiness in marriage.","meaning":"在我看来，婚姻里没有幸福。","type":"sentence","level":"B2","noTest":true}
+]
   };
   function runSeed() {
     try {
