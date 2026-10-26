@@ -362,6 +362,7 @@
   // 用户首次打开任意模块即自动注入到 5 个学习模块；已手动添加过的不会重复。
   var SEED_KEY = 'english_kb_seed_v';
   /* INJECT-WB-20261019-KB */
+/* INJECT-WB-20261026-KB */
 var KB_SEED = /* SEED-MC21-WB */
 {
     version: '20260914-mc21',
@@ -819,7 +820,7 @@ var KB_SEED = /* SEED-MC21-WB */
       { id: 'seed_b2_mc30_getalongwith', content: 'get along with', meaning: '和某人相处', type: 'word', level: 'B2' },
       { id: 'seed_b2_mc30_getasmileoutof', content: 'get a smile out of', meaning: '逗某人笑出来', type: 'word', level: 'B2' },
       { id: 'seed_b2_mc30_noappetite', content: 'no appetite', meaning: '没有胃口', type: 'word', level: 'B2' },
-      { id: 'seed_b2_mc30_overthetop', content: 'over the top', meaning: '做得过火，夸张', type: 'word', level: 'B2' }
+      { id: 'seed_b2_mc30_overthetop', content: 'over the top', meaning: '做得过火，夸张', type: 'word', level: 'B2' },
       { id: 'seed_b2_festival', content: 'festival', meaning: '节日', type: 'word', ph: '/ˈfestɪvl/', level: 'B2' },
       { id: 'seed_b2_celebrate', content: 'celebrate', meaning: '庆祝', type: 'word', ph: '/ˈselɪbreɪt/', level: 'B2' },
       { id: 'seed_b2_tradition', content: 'tradition', meaning: '传统', type: 'word', ph: '/trəˈdɪʃn/', level: 'B2' },
@@ -1600,6 +1601,110 @@ var KB_SEED = /* SEED-MC21-WB */
     ,{"id":"seed_wb_123_s_oth","content":"In my opinion, being single is hassle-free.","meaning":"在我看来，单身没有琐事烦扰。","type":"sentence","level":"B2","noTest":true}
     ,{"id":"seed_wb_124_s_oth","content":"I think that being single is perfect.","meaning":"我认为单身很完美。","type":"sentence","level":"B2","noTest":true}
     ,{"id":"seed_wb_125_s_oth","content":"As far as I’m concerned, there is no happiness in marriage.","meaning":"在我看来，婚姻里没有幸福。","type":"sentence","level":"B2","noTest":true}
+
+    ,{"id":"seed_wb_1_mc02","content":"bunk beds","meaning":"上下铺","type":"word","level":"B2","ph":"/bʌŋk bedz/"}
+    ,{"id":"seed_wb_2_mc02","content":"capsule hotels","meaning":"胶囊旅馆","type":"word","level":"B2","ph":"/ˈkæpsjuːl həʊˈtelz/"}
+    ,{"id":"seed_wb_3_mc02","content":"budget hotels","meaning":"经济型酒店","type":"word","level":"B2","ph":"/ˈbʌdʒɪt həʊˈtelz/"}
+    ,{"id":"seed_wb_4_mc02","content":"motel","meaning":"汽车旅馆","type":"word","level":"B2","ph":"/məʊˈtel/"}
+    ,{"id":"seed_wb_5_mc02","content":"youth hostels","meaning":"青年旅舍","type":"word","level":"B2","ph":"/juːθ ˈhɒstlz/"}
+    ,{"id":"seed_wb_6_mc02","content":"dormitory","meaning":"宿舍","type":"word","level":"B2","ph":"/ˈdɔːmətri/"}
+    ,{"id":"seed_wb_7_mc02","content":"Air B&B","meaning":"民宿（Airbnb）","type":"word","level":"B2","ph":"/ˌeə biː ən biː/"}
+    ,{"id":"seed_wb_8_mc02","content":"resort","meaning":"度假村；度假胜地","type":"word","level":"B2","ph":"/rɪˈzɔːt/"}
+    ,{"id":"seed_wb_9_mc02","content":"villa","meaning":"别墅","type":"word","level":"B2","ph":"/ˈvɪlə/"}
+    ,{"id":"seed_wb_10_mc02","content":"yurt","meaning":"蒙古包；毡房","type":"word","level":"B2","ph":"/jɜːt/"}
+    ,{"id":"seed_wb_11_mc02","content":"meditation","meaning":"冥想","type":"word","level":"B2","ph":"/ˌmedɪˈteɪʃn/"}
+    ,{"id":"seed_wb_12_mc02","content":"locker","meaning":"储物柜","type":"word","level":"B2","ph":"/ˈlɒkə(r)/"}
+    ,{"id":"seed_wb_13_mc02","content":"belongings","meaning":"随身物品；财物","type":"word","level":"B2","ph":"/bɪˈlɒŋɪŋz/"}
+    ,{"id":"seed_wb_14_mc02","content":"convenient","meaning":"方便的","type":"word","level":"B2","ph":"/kənˈviːniənt/"}
+    ,{"id":"seed_wb_15_mc02","content":"clean","meaning":"干净的","type":"word","level":"B2","ph":"/kliːn/"}
+    ,{"id":"seed_wb_16_mc02","content":"cost-effective","meaning":"性价比高的","type":"word","level":"B2","ph":"/ˌkɒst ɪˈfektɪv/"}
+    ,{"id":"seed_wb_17_mc02","content":"filthy","meaning":"脏得要命的","type":"word","level":"B2","ph":"/ˈfɪlθi/"}
+    ,{"id":"seed_wb_18_mc02","content":"cramped","meaning":"狭窄拥挤的","type":"word","level":"B2","ph":"/kræmpt/"}
+    ,{"id":"seed_wb_19_mc02","content":"spacious","meaning":"宽敞的","type":"word","level":"B2","ph":"/ˈspeɪʃəs/"}
+    ,{"id":"seed_wb_20_mc02","content":"roomy","meaning":"宽敞的","type":"word","level":"B2","ph":"/ˈruːmi/"}
+    ,{"id":"seed_wb_22_mc02","content":"well-equipped","meaning":"设备齐全的","type":"word","level":"B2","ph":"/ˌwel ɪˈkwɪpt/"}
+    ,{"id":"seed_wb_23_mc02","content":"multi-functional","meaning":"多功能的","type":"word","level":"B2","ph":"/ˌmʌlti ˈfʌŋkʃənl/"}
+    ,{"id":"seed_wb_24_mc02","content":"well-ventilated","meaning":"通风良好的","type":"word","level":"B2","ph":"/ˌwel ˈventɪleɪtɪd/"}
+    ,{"id":"seed_wb_25_mc02","content":"stuffy","meaning":"闷热的；不通风的","type":"word","level":"B2","ph":"/ˈstʌfi/"}
+    ,{"id":"seed_wb_26_mc02","content":"bright","meaning":"明亮的","type":"word","level":"B2","ph":"/braɪt/"}
+    ,{"id":"seed_wb_27_mc02","content":"couch potato","meaning":"电视迷；久坐不动的人","type":"word","level":"B2","ph":"/kaʊtʃ pəˈteɪtəʊ/"}
+    ,{"id":"seed_wb_28_mc02","content":"social butterfly","meaning":"社交达人；交际花","type":"word","level":"B2","ph":"/ˈsəʊʃl ˈbʌtəflaɪ/"}
+    ,{"id":"seed_wb_29_mc02","content":"mind-blowing","meaning":"令人震撼的；极其惊艳的","type":"word","level":"B2","ph":"/ˈmaɪnd bləʊɪŋ/"}
+    ,{"id":"seed_wb_30_mc02","content":"manual","meaning":"手动的；手册","type":"word","level":"B2","ph":"/ˈmænjuəl/"}
+    ,{"id":"seed_wb_31_mc02","content":"automatic","meaning":"自动的","type":"word","level":"B2","ph":"/ˌɔːtəˈmætɪk/"}
+    ,{"id":"seed_wb_32_mc02","content":"feel like doing sth","meaning":"想要做某事","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_33_mc02","content":"It takes … to do sth","meaning":"做某事需要花费（时间/金钱）","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_34_mc02","content":"in other words","meaning":"换句话说","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_35_mc02","content":"not a fan of …","meaning":"不喜欢…；不是…的粉丝","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_36_mc02","content":"hang out with sb","meaning":"和某人一起玩；闲逛","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_37_mc02","content":"a home from home","meaning":"像家一样的地方；宾至如归","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_38_g_mc02","content":"现在完成时 + 最高级","meaning":"What is the best place you have ever lived in? 用 have ever + 过去分词谈论至今的经历，常与最高级 the best 搭配。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_39_g_mc02","content":"It takes sb + 时间 + to do sth","meaning":"It takes me 20 minutes to get to the airport. it 是形式主语，真正主语是 to do。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_40_g_mc02","content":"that 引导的定语从句描述空间","meaning":"Spaces that are bright and well-ventilated make people feel relaxed. that 从句修饰 spaces，谓语随先行词用复数。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_41_s_mc02","content":"What's the best place you have ever lived in?","meaning":"你住过的最好的地方是哪里？","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_42_s_mc02","content":"Why did you like it?","meaning":"你为什么喜欢它？","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_43_s_mc02","content":"Spaces that are bright and well-ventilated make people feel relaxed.","meaning":"明亮通风的空间让人感到放松。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_44_s_mc02","content":"I am not a fan of cramped hotel rooms.","meaning":"我不喜欢狭窄拥挤的酒店房间。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_45_mc04","content":"scenery","meaning":"风景（不可数）","type":"word","level":"B2","ph":"/ˈsiːnəri/"}
+    ,{"id":"seed_wb_46_mc04","content":"journey","meaning":"旅程","type":"word","level":"B2","ph":"/ˈdʒɜːni/"}
+    ,{"id":"seed_wb_47_mc04","content":"airsick","meaning":"晕机的","type":"word","level":"B2","ph":"/ˈeəsɪk/"}
+    ,{"id":"seed_wb_48_mc04","content":"seasick","meaning":"晕船的","type":"word","level":"B2","ph":"/ˈsiːsɪk/"}
+    ,{"id":"seed_wb_49_mc04","content":"carsick","meaning":"晕车的","type":"word","level":"B2","ph":"/ˈkɑːsɪk/"}
+    ,{"id":"seed_wb_50_mc04","content":"delay","meaning":"延误；推迟","type":"word","level":"B2","ph":"/dɪˈleɪ/"}
+    ,{"id":"seed_wb_51_mc04","content":"cancel","meaning":"取消","type":"word","level":"B2","ph":"/ˈkænsl/"}
+    ,{"id":"seed_wb_52_mc04","content":"report","meaning":"报告；报到","type":"word","level":"B2","ph":"/rɪˈpɔːt/"}
+    ,{"id":"seed_wb_53_mc04","content":"receptionist","meaning":"前台接待员","type":"word","level":"B2","ph":"/rɪˈsepʃənɪst/"}
+    ,{"id":"seed_wb_54_mc04","content":"cruise","meaning":"游轮；乘船游览","type":"word","level":"B2","ph":"/kruːz/"}
+    ,{"id":"seed_wb_55_mc04","content":"engine","meaning":"发动机；引擎","type":"word","level":"B2","ph":"/ˈendʒɪn/"}
+    ,{"id":"seed_wb_56_mc04","content":"power cut","meaning":"停电","type":"word","level":"B2","ph":"/ˈpaʊə kʌt/"}
+    ,{"id":"seed_wb_57_mc04","content":"candle","meaning":"蜡烛","type":"word","level":"B2","ph":"/ˈkændl/"}
+    ,{"id":"seed_wb_58_mc04","content":"get to one's destination","meaning":"到达目的地","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_59_mc04","content":"enjoy the scenery / journey","meaning":"欣赏风景／享受旅程","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_60_mc04","content":"avoid traffic jams","meaning":"避开堵车","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_61_mc04","content":"feel nervous about flying","meaning":"对坐飞机感到紧张","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_62_mc04","content":"miss a connecting flight","meaning":"错过转机航班","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_63_mc04","content":"book another flight / hotel","meaning":"预订另一班航班／另一家酒店","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_64_mc04","content":"have one's flight delayed / cancelled","meaning":"航班被延误／取消","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_65_mc04","content":"get food poisoning","meaning":"食物中毒","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_66_mc04","content":"get lost in an unfamiliar place","meaning":"在陌生地方迷路","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_67_mc04","content":"ask for directions","meaning":"问路","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_68_mc04","content":"have trouble doing sth","meaning":"做某事有困难","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_69_mc04","content":"luckily / eventually / in the end","meaning":"幸运的是／最终／最后","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_70_g_mc04","content":"have sth done（使役／遭遇）","meaning":"have + 宾语 + 过去分词：① 遭遇不愉快 I had my luggage stolen. 我的行李被偷了；② 请人代做 I had my hair cut. 我理了发。B2 重点结构。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_71_g_mc04","content":"when 从句 + 过去进行时","meaning":"When I was traveling, luckily, I met a local guide. 从句用过去进行时交代背景，主句用一般过去时叙述事件。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_72_g_mc04","content":"prefer doing / prefer to do","meaning":"I prefer traveling by train. = I prefer to travel by train. 对比时用 prefer A to B，此处 to 是介词。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_73_s_mc04","content":"I prefer traveling by train.","meaning":"我更喜欢坐火车旅行。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_74_s_mc04","content":"People sometimes get sick when they are on vacation.","meaning":"人们度假时有时会生病。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_75_s_mc04","content":"Once, I missed my connecting flight. When I was traveling, luckily, a stranger helped me.","meaning":"有一次我错过了转机航班。旅行途中，幸运的是，一位陌生人帮了我。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_76_s_mc04","content":"I had my luggage stolen on the cruise.","meaning":"我在游轮上行李被偷了。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_77_mc28","content":"allergic","meaning":"过敏的","type":"word","level":"B2","ph":"/əˈlɜːdʒɪk/"}
+    ,{"id":"seed_wb_78_mc28","content":"allergy","meaning":"过敏（症）","type":"word","level":"B2","ph":"/ˈælədʒi/"}
+    ,{"id":"seed_wb_79_mc28","content":"subscription","meaning":"订阅（服务）","type":"word","level":"B2","ph":"/səbˈskrɪpʃn/"}
+    ,{"id":"seed_wb_80_mc28","content":"assistant","meaning":"助手；店员","type":"word","level":"B2","ph":"/əˈsɪstənt/"}
+    ,{"id":"seed_wb_81_mc28","content":"assist","meaning":"协助；帮助","type":"word","level":"B2","ph":"/əˈsɪst/"}
+    ,{"id":"seed_wb_82_mc28","content":"assistance","meaning":"帮助；协助","type":"word","level":"B2","ph":"/əˈsɪstəns/"}
+    ,{"id":"seed_wb_83_mc28","content":"complaint","meaning":"投诉；抱怨","type":"word","level":"B2","ph":"/kəmˈpleɪnt/"}
+    ,{"id":"seed_wb_84_mc28","content":"annoyed","meaning":"恼火的；烦的","type":"word","level":"B2","ph":"/əˈnɔɪd/"}
+    ,{"id":"seed_wb_85_mc28","content":"angry","meaning":"生气的","type":"word","level":"B2","ph":"/ˈæŋɡri/"}
+    ,{"id":"seed_wb_86_mc28","content":"disappointed","meaning":"失望的","type":"word","level":"B2","ph":"/ˌdɪsəˈpɔɪntɪd/"}
+    ,{"id":"seed_wb_87_mc28","content":"have / cancel a subscription","meaning":"订阅／取消订阅","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_88_mc28","content":"take ages to do sth","meaning":"做某事花很长时间","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_89_mc28","content":"carry on doing sth","meaning":"继续做某事","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_90_mc28","content":"carry on with sth","meaning":"继续做某事","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_91_mc28","content":"offer any help","meaning":"提供任何帮助","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_92_g_mc28","content":"第二条件句（与现在事实相反）","meaning":"If + 一般过去时, would / could / might + 动词原形。If I were you, I would complain. 如果我是你，我就会投诉。be 动词统一用 were。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_93_g_mc28","content":"第三条件句（与过去事实相反）","meaning":"If + had done, would / could / might + have done。If they had replied, I would have used the company again. 如果他们当时回复了，我就会继续用这家公司。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_94_g_mc28","content":"条件句易错点","meaning":"❌ If I would have known ✅ If I had known。条件从句里不用 would，主句才用 would + have done。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_95_s_mc28","content":"I had an unpleasant experience when I ordered a subscription online.","meaning":"我在网上订购一项订阅服务时有过一次不愉快的经历。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_96_s_mc28","content":"It happened last month.","meaning":"这件事发生在上个月。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_97_s_mc28","content":"I expected that they would reply within a day.","meaning":"我原本期望他们一天内回复。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_98_s_mc28","content":"But nobody answered my emails or offered any help.","meaning":"但没有人回复我的邮件，也没有提供任何帮助。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_99_s_mc28","content":"I felt annoyed and disappointed.","meaning":"我感到恼火又失望。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_100_s_mc28","content":"If they had replied, I would use the company again.","meaning":"如果他们当时回复了，我就会继续用这家公司。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_101_mc04","content":"but","meaning":"转折：后面常跟真正的麻烦或结果","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_102_mc04","content":"luckily","meaning":"幸运的是：引出化险为夷的部分","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_103_mc04","content":"eventually","meaning":"最终：强调经过一段曲折后才发生","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_104_mc04","content":"in the end","meaning":"最后：与 eventually 近义，用于收尾","type":"phrase","level":"B2"}
 ]
   };
   function runSeed() {
