@@ -363,6 +363,7 @@
   var SEED_KEY = 'english_kb_seed_v';
   /* INJECT-WB-20261019-KB */
 /* INJECT-WB-20261026-KB */
+/* INJECT-WB-20261028-KB */
 var KB_SEED = /* SEED-MC21-WB */
 {
     version: '20260914-mc21',
@@ -1705,6 +1706,39 @@ var KB_SEED = /* SEED-MC21-WB */
     ,{"id":"seed_wb_102_mc04","content":"luckily","meaning":"幸运的是：引出化险为夷的部分","type":"phrase","level":"B2"}
     ,{"id":"seed_wb_103_mc04","content":"eventually","meaning":"最终：强调经过一段曲折后才发生","type":"phrase","level":"B2"}
     ,{"id":"seed_wb_104_mc04","content":"in the end","meaning":"最后：与 eventually 近义，用于收尾","type":"phrase","level":"B2"}
+
+    ,{"id":"seed_wb_1_mc38","content":"excuse","meaning":"借口；理由","type":"word","level":"B2","ph":"/ɪkˈskjuːs/"}
+    ,{"id":"seed_wb_2_mc38","content":"slippery","meaning":"滑的","type":"word","level":"B2","ph":"/ˈslɪpəri/"}
+    ,{"id":"seed_wb_3_mc38","content":"incorrect","meaning":"不正确的","type":"word","level":"B2","ph":"/ˌɪnkəˈrekt/"}
+    ,{"id":"seed_wb_4_mc38","content":"sudden","meaning":"突然的","type":"word","level":"B2","ph":"/ˈsʌdn/"}
+    ,{"id":"seed_wb_5_mc38","content":"accident","meaning":"事故；意外","type":"word","level":"B2","ph":"/ˈæksɪdənt/"}
+    ,{"id":"seed_wb_6_mc38","content":"attend","meaning":"参加；出席","type":"word","level":"B2","ph":"/əˈtend/"}
+    ,{"id":"seed_wb_7_mc38","content":"reported speech","meaning":"间接引语；转述","type":"word","level":"B2","ph":"/rɪˈpɔːtɪd spiːtʃ/"}
+    ,{"id":"seed_wb_8_mc38","content":"direct speech","meaning":"直接引语","type":"word","level":"B2","ph":"/dəˈrekt spiːtʃ/"}
+    ,{"id":"seed_wb_9_mc38","content":"make excuses","meaning":"找借口","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_10_mc38","content":"around here / there","meaning":"在这附近 / 在那附近","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_11_mc38","content":"a sudden road accident","meaning":"一起突发的交通事故","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_12_mc38","content":"be attending a meeting","meaning":"正在开会","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_13_mc38","content":"give the date of …","meaning":"提供…的日期","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_14_mc38","content":"the time is wrong / incorrect","meaning":"时间（显示）不对","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_15_mc38","content":"say that + 从句","meaning":"说……","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_16_mc38","content":"tell sb that + 从句","meaning":"告诉某人……","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_17_mc38","content":"a pair of glasses","meaning":"一副眼镜","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_18_mc38","content":"watch the time","meaning":"看时间","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_19_g_mc38","content":"一般现在时 → 一般过去时","meaning":"\"I travel a lot in my job.\" → Jane said that she travelled a lot in her job. travel → travelled（英式双写 l）。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_20_g_mc38","content":"现在进行时 → 过去进行时","meaning":"\"I'm making a cake.\" → Jake told me he was making a cake. am/is → was。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_21_g_mc38","content":"现在完成时 → 过去完成时","meaning":"\"I've finished my task.\" → James said he had finished his task. have done → had done。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_22_g_mc38","content":"一般过去时 → 过去完成时","meaning":"\"I had sushi last week.\" → Sue said she had had sushi last week. had（吃）→ had had。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_23_g_mc38","content":"过去进行时 → 过去完成进行时","meaning":"\"It was raining all day.\" → He told me it had been raining all day. was doing → had been doing。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_24_g_mc38","content":"say vs tell","meaning":"say (that)… 不接人；tell sb (that)… 必须接人。❌ Jane said me… ✅ Jane told me… / Jane said that…","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_25_s_mc38","content":"Jane said that she travelled a lot in her job.","meaning":"简说她工作里经常出差。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_26_s_mc38","content":"Jake told me he was making a cake.","meaning":"杰克告诉我他在做蛋糕。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_27_s_mc38","content":"Alex said that he had a lot of classes this week.","meaning":"亚历克斯说他这周有很多课。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_28_s_mc38","content":"Alex told me that he was going to watch a movie later.","meaning":"亚历克斯告诉我他晚点要去看电影。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_29_s_mc38","content":"Alex said that they had played football last week.","meaning":"亚历克斯说他们上周踢了足球。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_30_s_mc38","content":"I was attending a meeting.","meaning":"我当时正在开会。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_31_s_mc38","content":"The floor was slippery.","meaning":"地板很滑。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_32_s_mc38","content":"Other department didn't give the date of this project.","meaning":"其他部门没有提供这个项目的日期。","type":"sentence","level":"B2","noTest":true}
 ]
   };
   function runSeed() {
