@@ -364,9 +364,10 @@
   /* INJECT-WB-20261019-KB */
 /* INJECT-WB-20261026-KB */
 /* INJECT-WB-20261028-KB */
+/* INJECT-WB-20261029-KB */
 var KB_SEED = /* SEED-MC21-WB */
 {
-    version: '20260914-mc21',
+    version: '20261029-mc09',
     items: [
       // —— 星期 ——
       { id: 'seed_monday',    content: 'Monday',    meaning: '星期一', type: 'word', ph: '/ˈmʌndeɪ/',     level: 'B1' },
@@ -1739,6 +1740,32 @@ var KB_SEED = /* SEED-MC21-WB */
     ,{"id":"seed_wb_30_s_mc38","content":"I was attending a meeting.","meaning":"我当时正在开会。","type":"sentence","level":"B2","noTest":true}
     ,{"id":"seed_wb_31_s_mc38","content":"The floor was slippery.","meaning":"地板很滑。","type":"sentence","level":"B2","noTest":true}
     ,{"id":"seed_wb_32_s_mc38","content":"Other department didn't give the date of this project.","meaning":"其他部门没有提供这个项目的日期。","type":"sentence","level":"B2","noTest":true}
+
+    ,{"id":"seed_wb_09_1_v","content":"punctual","meaning":"准时的","type":"word","level":"B2","ph":"/ˈpʌŋktʃuəl/"}
+    ,{"id":"seed_wb_09_2_v","content":"rushed","meaning":"仓促的，赶时间的","type":"word","level":"B2","ph":"/rʌʃt/"}
+    ,{"id":"seed_wb_09_3_v","content":"unexpected","meaning":"意外的","type":"word","level":"B2","ph":"/ˌʌnɪkˈspektɪd/"}
+    ,{"id":"seed_wb_09_4_v","content":"misunderstand","meaning":"误解","type":"word","level":"B2","ph":"/ˌmɪsʌndəˈstænd/"}
+    ,{"id":"seed_wb_09_5_p","content":"on time","meaning":"准时","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_09_6_p","content":"feel rushed","meaning":"感到仓促、赶时间","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_09_7_p","content":"cut short","meaning":"缩短；中断","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_09_8_p","content":"in detail","meaning":"详细地","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_09_9_p","content":"plan as they go","meaning":"边做边规划","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_09_10_p","content":"keen to do sth","meaning":"非常想要做某事","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_09_11_p","content":"lead to","meaning":"导致","type":"phrase","level":"B2"}
+    ,{"id":"seed_wb_09_12_g","content":"前提：关系词作主语","meaning":"只有 who / which 在从句中作主语时才可以简化。The man who works at Costco → The man working at Costco。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_09_13_g","content":"主动关系 → doing","meaning":"先行词发出动作，用现在分词（-ing）。companies which are already working with China → companies already working with China。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_09_14_g","content":"被动关系 → done","meaning":"先行词被施加动作，用过去分词（-ed / 不规则）。a book which was written by Hemingway → a book written by Hemingway。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_09_15_g","content":"禁忌：关系词作宾语","meaning":"who / which 在从句中作宾语时不能简化。❌ The man met yesterday.（错）✅ The man who I met yesterday.","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_09_16_g","content":"口诀","meaning":"主做动作 doing，主被动作 done；不是主语别简化。","type":"grammar","level":"B2","noTest":true}
+    ,{"id":"seed_wb_09_17_s","content":"Culture influences how people behave and do business.","meaning":"文化影响人们的行为与商务方式。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_09_18_s","content":"Everyone knows the start and finish time of the meeting.","meaning":"所有人都知道会议的开始和结束时间。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_09_19_s","content":"Important discussions may be cut short.","meaning":"重要讨论可能被迫中断。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_09_20_s","content":"They like to plan everything in advance and in detail.","meaning":"他们喜欢提前并详细地规划一切。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_09_21_s","content":"Many companies still prefer to plan as they go.","meaning":"许多公司仍倾向于边做边规划。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_09_22_s","content":"A small thing can lead to a big problem.","meaning":"一件小事也可能导致大问题。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_09_23_s","content":"Being on time is very important in a job interview.","meaning":"求职面试中守时非常重要。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_09_24_s","content":"Misunderstandings in emails can make a deal fail.","meaning":"邮件中的误解可能导致交易失败。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_09_25_s","content":"The Chinese like to plan everything in advance and in detail.","meaning":"中国人喜欢提前并详细地规划一切。","type":"sentence","level":"B2","noTest":true}
 ]
   };
   function runSeed() {
