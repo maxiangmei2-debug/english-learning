@@ -365,9 +365,10 @@
 /* INJECT-WB-20261026-KB */
 /* INJECT-WB-20261028-KB */
 /* INJECT-WB-20261029-KB */
+/* INJECT-WB-20261102-KB */
 var KB_SEED = /* SEED-MC21-WB */
 {
-    version: '20261029-mc09',
+    version: '20261102-mc29-other',
     items: [
       // —— 星期 ——
       { id: 'seed_monday',    content: 'Monday',    meaning: '星期一', type: 'word', ph: '/ˈmʌndeɪ/',     level: 'B1' },
@@ -1766,6 +1767,45 @@ var KB_SEED = /* SEED-MC21-WB */
     ,{"id":"seed_wb_09_23_s","content":"Being on time is very important in a job interview.","meaning":"求职面试中守时非常重要。","type":"sentence","level":"B2","noTest":true}
     ,{"id":"seed_wb_09_24_s","content":"Misunderstandings in emails can make a deal fail.","meaning":"邮件中的误解可能导致交易失败。","type":"sentence","level":"B2","noTest":true}
     ,{"id":"seed_wb_09_25_s","content":"The Chinese like to plan everything in advance and in detail.","meaning":"中国人喜欢提前并详细地规划一切。","type":"sentence","level":"B2","noTest":true}
+
+    ,{"id":"seed_wb_1102_1_v","content":"have dinner","meaning":"吃晚饭；共进晚餐","type":"word","level":"B2","ph":"/hæv ˈdɪnə(r)/"}
+    ,{"id":"seed_wb_1102_2_v","content":"have a nice meal at a restaurant","meaning":"在餐厅好好吃一顿","type":"word","level":"B2","ph":"/hæv ə naɪs miːl æt ə ˈrestrɒnt/"}
+    ,{"id":"seed_wb_1102_3_v","content":"spend time with the people I love","meaning":"和我爱的人共度时光","type":"word","level":"B2"}
+    ,{"id":"seed_wb_1102_4_v","content":"have a birthday cake","meaning":"吃 / 准备生日蛋糕","type":"word","level":"B2"}
+    ,{"id":"seed_wb_1102_5_v","content":"blow out the candles","meaning":"吹灭蜡烛","type":"word","level":"B2","ph":"/bləʊ aʊt ðə ˈkændlz/"}
+    ,{"id":"seed_wb_1102_6_v","content":"lively atmosphere","meaning":"热闹、活跃的氛围","type":"word","level":"B2","ph":"/ˈlaɪvli ˈætməsfɪə(r)/"}
+    ,{"id":"seed_wb_1102_7_v","content":"relaxed atmosphere","meaning":"轻松、放松的氛围","type":"word","level":"B2","ph":"/rɪˈlækst ˈætməsfɪə(r)/"}
+    ,{"id":"seed_wb_1102_8_v","content":"freeway","meaning":"（美式）高速公路","type":"word","level":"B2","ph":"/ˈfriːweɪ/"}
+    ,{"id":"seed_wb_1102_9_v","content":"motorway","meaning":"（英式）高速公路","type":"word","level":"B2","ph":"/ˈməʊtəweɪ/"}
+    ,{"id":"seed_wb_1102_10_v","content":"highway","meaning":"（美式）公路 / 高速公路","type":"word","level":"B2","ph":"/ˈhaɪweɪ/"}
+    ,{"id":"seed_wb_1102_11_v","content":"drive past","meaning":"开车经过","type":"word","level":"B2","ph":"/draɪv pɑːst/"}
+    ,{"id":"seed_wb_1102_12_v","content":"take Exit 21","meaning":"从 21 号出口下（高速）","type":"word","level":"B2"}
+    ,{"id":"seed_wb_1102_13_v","content":"on the right","meaning":"在右边","type":"word","level":"B2","ph":"/ɒn ðə raɪt/"}
+    ,{"id":"seed_wb_1102_14_v","content":"viewpoint","meaning":"观点，看法","type":"word","level":"B2","ph":"/ˈvjuːpɔɪnt/"}
+    ,{"id":"seed_wb_1102_15_v","content":"point of view","meaning":"观点，角度","type":"word","level":"B2","ph":"/pɔɪnt əv vjuː/"}
+    ,{"id":"seed_wb_1102_16_v","content":"reckon","meaning":"认为，觉得（英式口语）","type":"word","level":"B2","ph":"/ˈrekən/"}
+    ,{"id":"seed_wb_1102_17_v","content":"outgoing","meaning":"外向的","type":"word","level":"B2","ph":"/ˈaʊtɡəʊɪŋ/"}
+    ,{"id":"seed_wb_1102_18_v","content":"patient","meaning":"有耐心的","type":"word","level":"B2","ph":"/ˈpeɪʃnt/"}
+    ,{"id":"seed_wb_1102_19_v","content":"talkative","meaning":"健谈的，话多的","type":"word","level":"B2","ph":"/ˈtɔːkətɪv/"}
+    ,{"id":"seed_wb_1102_20_v","content":"chatty","meaning":"爱聊天的","type":"word","level":"B2","ph":"/ˈtʃæti/"}
+    ,{"id":"seed_wb_1102_21_v","content":"responsible","meaning":"负责任的","type":"word","level":"B2","ph":"/rɪˈspɒnsəbl/"}
+    ,{"id":"seed_wb_1102_22_v","content":"partially","meaning":"部分地","type":"word","level":"B2","ph":"/ˈpɑːʃəli/"}
+    ,{"id":"seed_wb_1102_23_v","content":"to some extent","meaning":"在某种程度上","type":"word","level":"B2","ph":"/tə sʌm ɪkˈstent/"}
+    ,{"id":"seed_wb_1102_24_v","content":"on the same page","meaning":"意见一致，达成共识","type":"word","level":"B2","ph":"/ɒn ðə seɪm peɪdʒ/"}
+    ,{"id":"seed_wb_1102_25_s","content":"I usually celebrate my birthday by having dinner with my family.","meaning":"我通常和家人吃顿饭来庆祝生日。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_1102_26_s","content":"I prefer a small party because it is more relaxing.","meaning":"我更喜欢小型派对，因为它更轻松。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_1102_27_s","content":"I would rather have a small party than a big one.","meaning":"我宁愿办小派对也不要大派对。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_1102_28_s","content":"We had a lively atmosphere at the birthday party.","meaning":"我们的生日派对气氛很热闹。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_1102_29_s","content":"Take Exit 21 and the house is on the right.","meaning":"从 21 号出口下，房子就在右边。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_1102_30_s","content":"Drive past the school and turn left.","meaning":"开车经过学校然后左转。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_1102_31_s","content":"In my opinion, we should discuss this in the meeting.","meaning":"在我看来，我们应该在会上讨论这个。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_1102_32_s","content":"I reckon we need more time to finish the project.","meaning":"我觉得我们需要更多时间来完成这个项目。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_1102_33_s","content":"What do you think about this plan?","meaning":"你觉得这个计划怎么样？","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_1102_34_s","content":"I completely agree with you.","meaning":"我完全同意你。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_1102_35_s","content":"I’m afraid I disagree with that idea.","meaning":"恐怕我不同意那个想法。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_1102_36_s","content":"To some extent, I agree with you.","meaning":"在某种程度上我同意你。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_1102_37_s","content":"We are on the same page about the schedule.","meaning":"我们在日程安排上意见一致。","type":"sentence","level":"B2","noTest":true}
+    ,{"id":"seed_wb_1102_38_s","content":"From my point of view, it is a good idea.","meaning":"在我看来这是个好主意。","type":"sentence","level":"B2","noTest":true}
 ]
   };
   function runSeed() {
